@@ -446,7 +446,8 @@ parse:
                         }
                         ELSE 
                         {
-                                U->port = UNKNOWN_PORT;
+                                if (errno)
+                                        U->port = UNKNOWN_PORT;
                         }
                         END_TRY;
                         goto parse; 
