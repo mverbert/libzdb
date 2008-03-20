@@ -1,0 +1,65 @@
+<html>
+<body>
+<h2>MySQL URL properties</h2>
+<table border="1">
+<tr>
+<td><strong>Option</strong></td>
+<td><strong>Description</strong></td>
+<td><strong>Type</strong></td>
+<td><strong>Example</strong></td>
+</tr>
+<tr>
+<td nowrap><code>user</code></td>
+<td>The MySQL login ID. This property is required unless the auth-part 
+of the URL was used</td>
+<td>String</td>
+<td nowrap>user=root</td>
+</tr>
+<tr>
+<tr>
+<td nowrap><code>password</code></td>
+<td>The password for user. This property is required unless the 
+auth-part of the URL was used</td>
+<td>String</td>
+<td nowrap>password=swordfish</td>
+</tr>
+<tr>
+<tr>
+<td nowrap><code>connect-timeout</code></td>
+<td>Connect timeout in seconds. Default is 3 seconds. It is a checked error
+to use a value equal to or less than 0</td>
+<td>Integer</td>
+<td nowrap>connect-timeout=5</td>
+</tr>
+<tr>
+<td><code>compress</code></td>
+<td>Use the compressed client/server protocol. Default is false</td>
+<td>Boolean (true/false)</td>
+<td>compress=true</td>
+</tr>
+<tr>
+<td><code>use-ssl</code></td>
+<td>Used for establishing secure connections using SSL. OpenSSL support 
+must be enabled/linked in the client library. Default is false</td>
+<td>Boolean (true/false)</td>
+<td>use-ssl=true</td>
+</tr>
+<tr>
+<td><code>charset</code></td>
+<td>Use this character set when communicating with the server. MySQL 
+charsets, e.g. "utf8" or "latin1"</td>
+<td>String</td>
+<td>charset=utf8</td>
+</tr>
+<tr>
+<td><code>secure-auth</code></td>
+<td>Whether to connect to a server that does not support the password 
+hashing used in MySQL 4.1.1 and later. Default is false</td>
+<td>Boolean (true/false)</td>
+<td>secure-auth=true</td>
+</tr>
+</table>
+<p align="center">&nbsp;</p><br><p align="center"><font
+color="#808080" size="2"> Copyright &copy; 2008 Tildeslash Ltd. All
+rights reserved.</font></p>
+</body></html>

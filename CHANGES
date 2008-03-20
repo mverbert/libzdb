@@ -1,0 +1,122 @@
+                            CHANGES version 2.2
+
+                 This file summarizes changes made since 1.0
+                 
+
+
+Version 2.2
+-----------
+* Added error message to exception. An SQL error is now available via
+  Exception_frame.message.
+Bug fixes:
+* Fixed Connection_prepareStatement() error reported on a PostgreSQL
+  Connection. Thanks to Paul Stevens for bug report.
+* MySQL: Fixed error in ResultSet_getBlob() and ResultSet_getString() 
+  for "large" strings and blobs
+
+
+Version 2.1
+-----------
+* API: Connection_ping is promoted to a public method. Clients can use
+  this method to test if a Connection is alive.
+* API: Connection_clear() is exposed as a public method. Normally it 
+  is not necessary to call this method, but in some situations, if you
+  use PreparedStatement_executeQuery it is necessary to call this 
+  function to close a prepared statement explicit. Basically, if you
+  see this SQLite error, "SQL statements in progress", call this 
+  function to close any previous opened statements before proceeding.
+* Upon returning a Connection, the Connection Pool previously tried to 
+  commit a Connection if it was in a non-committed state, while now it
+  rollback instead, which is assumed to be more correct. 
+* Improved retry when SQLite report database lock, which should reduce
+  the chance to meet the infamous SQLite "database is locked" error
+* Removed section 3 from "Tildeslash License Exception" so libzdb is 
+  licensed clear and permissive.
+* Internal optimizing changes 
+
+Version 2.0.2
+-----------
+* Don't normalize path during URL parsing. If the path needs to be
+  normalized it is the responsibility of the caller
+* Minor internal changes 
+* libzdb is now licensed under GNU General Public License version 3
+
+Version 2.0.1
+-----------
+* ConnectionPool_version() is now a class method
+* Minor internal changes 
+
+Version 2.0
+-----------
+* Exceptions handling added to the library. This change how clients
+  should use the library. Methods in the library that can throw an 
+  SQL Exception should now be called from inside a try-catch block.
+Bug fixes:
+* Fixed a PostgreSQL prepared statement bug. If parts of a statement
+  was defined after its last parameter, preparation failed.
+
+Version 1.1.3
+-------------
+Bug fixes:
+* This release fixes a MySQL prepared statement bug. If a prepared statement
+ was used with two or more number parameters, the numbers were saved with a  
+ bogus value in the database. Thanks to José Antonio Sánchez
+
+Version 1.1.2
+-------------
+* ResultSet_next() can be given a NULL value, upon which false is returned.
+
+Version 1.1
+-------------
+* Added PostgreSQL support
+* Using 'mysql_config' when available. Thanks to Paul Stevens paul
+* Removed the viral clausal from the exceptions license
+* Note, the caller is now responsible for freeing the URL_T object used
+  in ConnectionPool_new(), via the URL_free() method.
+  
+Version 1.0.4
+-------------
+* Use libtool to set release information for the library.
+* Simplified and removed section 4 of the license exception.
+* Use new version of auto-tools so library extension is set correct
+* Include bootstrap script for recreating configure 
+* Minor internal changes
+
+Version 1.0.3
+-------------
+* Clear any previous resultset when calling Connection_execute() also. This
+  allow MySQL implementations to issue a Connection_executeQuery() followed
+  by Connection_execute() without having to close the Connection first. 
+  Otherwise MySQL may return a 'commands out of sync' error. 
+Bug fixes:
+* Changed declaration of AbortHandler() so clients are not required to 
+  provide this function.
+
+Version 1.0.2
+-------------
+Bug fixes:
+* Refactor and consolidate PreparedStatement clearResultSet
+* Do not free prepared statements on Connection_executeQuery(), only the
+  ResultSet if any.
+* MySQL: Avoid unnecessary re-allocation in MysqlResultSet.ensureCapacity()
+  and set the new buffer length properly. 
+* MySQL: Stop MysqlResultSet_next() sooner when maxRows is reached for 
+  versions < 5.0
+* MySQL: Do not try to bind params in PreparedStatement unless in-params 
+  are present in the statement
+
+Version 1.0.1
+-------------
+* API: Connection_beginTransaction(), Connection_commit() and 
+  Connection_rollback() now returns an int (true of false) instead of void.
+Bug fixes:
+* MySQL: Removed a debug statement in MySQL prepare statement so a 
+  potential error message is not lost - MySQL pops last error messages.
+* MySQL: Make room for a terminating NUL byte when fetching large strings. 
+* configure.ac: Don't link with zlib unless mysql version was confirmed
+* configure.ac: Don't print a warning if re2c was not found - Not required
+
+Version 1.0
+-----------
+* Initial release
+

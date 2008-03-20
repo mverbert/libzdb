@@ -1,0 +1,10 @@
+#!/bin/sh
+# Use this script to re-create configure. Requires the following auto-tools,
+# autoconf        >= 2.59
+# automake        >= 1.9
+# libtool         >= 1.4
+aclocal -I ./config \
+&& autoheader \
+&& automake --foreign --add-missing --copy \
+&& autoconf
+
