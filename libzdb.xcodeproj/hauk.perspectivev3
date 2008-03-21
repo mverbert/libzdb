@@ -305,7 +305,7 @@
 							<real>267</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>0 59 1920 1119 0 0 1920 1178 </string>
+						<string>-6 59 1920 1119 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -319,6 +319,8 @@
 							<key>Dock</key>
 							<array>
 								<dict>
+									<key>BecomeActive</key>
+									<true/>
 									<key>ContentConfiguration</key>
 									<dict>
 										<key>PBXProjectModuleGUID</key>
@@ -336,7 +338,7 @@
 												<key>_historyCapacity</key>
 												<integer>0</integer>
 												<key>bookmark</key>
-												<string>52047FB00D93CF45005B82A6</string>
+												<string>52047FD70D93CFB2005B82A6</string>
 												<key>history</key>
 												<array>
 													<string>526A4FF50B80897C00377EB8</string>
@@ -469,9 +471,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{0, 0}, {790, 751}}</string>
+										<string>{{0, 0}, {790, 1073}}</string>
 										<key>RubberWindowFrame</key>
-										<string>0 59 1920 1119 0 0 1920 1178 </string>
+										<string>-6 59 1920 1119 0 0 1920 1178 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXNavigatorGroup</string>
@@ -496,7 +498,7 @@
 												<key>_historyCapacity</key>
 												<integer>0</integer>
 												<key>bookmark</key>
-												<string>52047FB10D93CF45005B82A6</string>
+												<string>52047FD80D93CFB2005B82A6</string>
 												<key>history</key>
 												<array>
 													<string>526A4FF70B80897C00377EB8</string>
@@ -616,9 +618,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{795, 0}, {806, 751}}</string>
+										<string>{{795, 0}, {806, 1073}}</string>
 										<key>RubberWindowFrame</key>
-										<string>0 59 1920 1119 0 0 1920 1178 </string>
+										<string>-6 59 1920 1119 0 0 1920 1178 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXNavigatorGroup</string>
@@ -643,7 +645,7 @@
 												<key>_historyCapacity</key>
 												<integer>0</integer>
 												<key>bookmark</key>
-												<string>52047FB20D93CF45005B82A6</string>
+												<string>52047FD90D93CFB2005B82A6</string>
 												<key>history</key>
 												<array>
 													<string>526A4FF50B80897C00377EB8</string>
@@ -736,9 +738,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{1606, 0}, {3, 751}}</string>
+										<string>{{1606, 0}, {3, 1073}}</string>
 										<key>RubberWindowFrame</key>
-										<string>0 59 1920 1119 0 0 1920 1178 </string>
+										<string>-6 59 1920 1119 0 0 1920 1178 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXNavigatorGroup</string>
@@ -747,11 +749,11 @@
 								</dict>
 							</array>
 							<key>Proportion</key>
-							<string>751pt</string>
+							<string>1073pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
-							<string>322pt</string>
+							<string>0pt</string>
 							<key>Tabs</key>
 							<array>
 								<dict>
@@ -787,8 +789,6 @@
 									<string>PBXProjectFindModule</string>
 								</dict>
 								<dict>
-									<key>BecomeActive</key>
-									<true/>
 									<key>ContentConfiguration</key>
 									<dict>
 										<key>PBXCVSModuleFilterTypeKey</key>
@@ -822,9 +822,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {1609, 295}}</string>
+										<string>{{10, 27}, {1609, -27}}</string>
 										<key>RubberWindowFrame</key>
-										<string>0 59 1920 1119 0 0 1920 1178 </string>
+										<string>-6 59 1920 1119 0 0 1920 1178 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXCVSModule</string>
@@ -978,7 +978,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>52047FB30D93CF45005B82A6</string>
+										<string>52047FDA0D93CFB2005B82A6</string>
 										<key>history</key>
 										<array>
 											<string>52B4819C096C28690094B27E</string>
@@ -1325,7 +1325,7 @@
 		<string>/Users/hauk/src/libzdb/libzdb.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>0 59 1920 1119 0 0 1920 1178 </string>
+	<string>-6 59 1920 1119 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
