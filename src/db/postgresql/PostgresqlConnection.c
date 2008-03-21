@@ -304,8 +304,12 @@ static PGconn *doConnect(URL_T url, char **error) {
                 ssl = true;
         if ((timeout = URL_getParameter(url, "connect-timeout"))) {
                 int e = false;
-                connectTimeout = Str_parseInt(timeout, &e);
-                if (connectTimeout<=0 || e) ERROR("invalid connect timeout value");
+                TRY
+                connectTimeout = Str_parseInt(timeout);
+                ELSE
+                e = true;
+                END_TRY;
+                if (e) ERROR("invalid connect timeout value");
         }
         conninfo = Str_cat(" host='%s'"
                                   " port=%d"

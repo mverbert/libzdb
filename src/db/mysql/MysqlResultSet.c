@@ -119,7 +119,7 @@ static inline int ensureCapacity(T R, int i) {
                         THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
                         return false;
                 }
-                if (mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0)) {
+                if ((R->lastError = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0))) {
                         THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
                         return false;
                 }
