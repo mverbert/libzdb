@@ -14,7 +14,7 @@
 
 int main(void) {
         Connection_T con;
-        URL_T url = URL_new("sqlite:///tmp/sqlite.db");
+        URL_T url = URL_new("mysql://root:root@localhost:3306/test");
         ConnectionPool_T pool = ConnectionPool_new(url);
         ConnectionPool_start(pool);
         con = ConnectionPool_getConnection(pool);
