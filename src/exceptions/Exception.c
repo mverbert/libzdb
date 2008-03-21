@@ -114,6 +114,7 @@ void Exception_init() {
 #ifndef ZILD_PACKAGE_PROTECTED
 
 void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...) {
+        int n = 0;
         char message[EXCEPTION_MESSAGE_LENGTH + 1] = "?";
 	Exception_Frame *p = ThreadData_get(Exception_stack);
 	assert(e);
@@ -121,7 +122,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
         if (cause) {
                 va_list ap;
                 va_start(ap, cause);
-                vsnprintf(message, EXCEPTION_MESSAGE_LENGTH, cause, ap);
+                n = vsnprintf(message, EXCEPTION_MESSAGE_LENGTH, cause, ap);
                 va_end(ap);
         }
 	if (p == NULL) {
@@ -135,7 +136,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
                 p->line = line;
                 p->message[0] = 0;
                 if (cause)
-                        memcpy(p->message, message, EXCEPTION_MESSAGE_LENGTH);
+                        memcpy(p->message, message, n + 1);
                 pop_exception_stack;	
                 longjmp(p->env, Exception_throwd);
         }

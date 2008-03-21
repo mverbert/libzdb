@@ -134,6 +134,7 @@ static const uchar_t b2x[][256] = {
 #define YYMARKER      U->marker
 #define YYCTXMARKER   U->ctx
 #define YYFILL(n)     ((void)0)
+#define YYTOKEN       U->token
 #define SET_PROTOCOL(PORT) *(YYCURSOR-3)=0; \
 	U->protocol=U->token;U->port=PORT;goto parse
 #define STRDUP(s) (s?Str_dup(s):NULL)
@@ -146,7 +147,7 @@ static const uchar_t b2x[][256] = {
 static int x2b(char *x);
 static int parseURL(T U);
 static void setParams(T U);
-static void freeParams(param_t *p);
+static void freeParams(param_t p);
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -175,15 +176,15 @@ T URL_new(const char *url) {
 
 
 T URL_create(const char *url, ...) {
-	int r;
+	int n;
 	va_list ap;
 	uchar_t buf[BUFFER_SIZE];
 	if (! (url && *url))
 		return NULL;
 	va_start(ap, url);
-	r = vsnprintf(buf, BUFFER_SIZE, url, ap);
+	n = vsnprintf(buf, BUFFER_SIZE, url, ap);
 	va_end(ap);
-	if (r<0) 
+	if (n < 0 || n >= BUFFER_SIZE) 
 		return NULL;
 	return URL_new(buf);
 }
@@ -191,7 +192,7 @@ T URL_create(const char *url, ...) {
 
 void URL_free(T *U) {
 	assert(U && *U);
-        if ((*U)->params) freeParams(&(*U)->params);
+        if ((*U)->params) freeParams((*U)->params);
         FREE((*U)->paramNames);
 	FREE((*U)->toString);
 	FREE((*U)->portStr);
@@ -279,17 +280,17 @@ const char *URL_toString(T U) {
 	assert(U);
 	if (U->toString == NULL) {
 		U->toString = Str_cat("%s://%s%s%s%s%s%s%s%s%s%s", 
-					    U->protocol,
-					    U->user?U->user:"",
-					    U->password?":":"",
-					    U->password?U->password:"",
-					    U->user?"@":"",
-					    U->host?U->host:"",
-					    U->portStr?":":"",
-					    U->portStr?U->portStr:"",
-					    U->path?U->path:"",
-					    U->query?"?":"",
-					    U->query?U->query:""); 
+                                      U->protocol,
+                                      U->user?U->user:"",
+                                      U->password?":":"",
+                                      U->password?U->password:"",
+                                      U->user?"@":"",
+                                      U->host?U->host:"",
+                                      U->portStr?":":"",
+                                      U->portStr?U->portStr:"",
+                                      U->path?U->path:"",
+                                      U->query?"?":"",
+                                      U->query?U->query:""); 
 	}
 	return U->toString;
 }
@@ -388,7 +389,7 @@ static int parseURL(T U) {
 proto:
 	if (YYCURSOR >= YYLIMIT)
 		return false;
-	U->token=  YYCURSOR;
+	YYTOKEN=  YYCURSOR;
 	/*!re2c
 
         ws         {
@@ -414,7 +415,7 @@ proto:
 parse:
 	if (YYCURSOR >= YYLIMIT)
 		return true;
-	U->token=  YYCURSOR;
+	YYTOKEN=  YYCURSOR;
 	/*!re2c
     
         ws         { 
@@ -424,7 +425,7 @@ parse:
         auth       {
                         char *p;
                         *(YYCURSOR-1) = 0;
-                        U->user = U->token;
+                        U->user = YYTOKEN;
                         p = strchr(U->user, ':');
                         if (p) {
                                 *(p++) = 0;
@@ -434,12 +435,12 @@ parse:
                    }
 
         host       {
-                        U->host = STRNDUP(U->token, (YYCURSOR - U->token));
+                        U->host = STRNDUP(YYTOKEN, (YYCURSOR - YYTOKEN));
                         goto parse; 
                    }
 
         port       {
-                        U->portStr = STRNDUP(U->token+1, (YYCURSOR-U->token-1));
+                        U->portStr = STRNDUP(YYTOKEN+1, (YYCURSOR-YYTOKEN-1));
                         TRY
                         {
                                 U->port = Str_parseInt(U->portStr);
@@ -455,13 +456,13 @@ parse:
 
         path       {
                         *YYCURSOR = 0;
-                        U->path = U->token;
+                        U->path = YYTOKEN;
                         return true;
                    }
                    
         path[?]    {
                         *(YYCURSOR-1) = 0;
-                        U->path = U->token;
+                        U->path = YYTOKEN;
                         goto query; 
                    }
                    
@@ -473,13 +474,13 @@ parse:
 query:
 	if (YYCURSOR >= YYLIMIT)
 		return true;
-	U->token =  YYCURSOR;
+	YYTOKEN =  YYCURSOR;
 	/*!re2c
 
         query      {
                         *YYCURSOR = 0;
-                        U->qptr = U->token;
-                        U->query = STRNDUP(U->token, (YYCURSOR-U->token));
+                        U->qptr = YYTOKEN;
+                        U->query = STRNDUP(YYTOKEN, (YYCURSOR-YYTOKEN));
                         return true;
                    }
 
@@ -505,14 +506,16 @@ static void setParams(T U) {
 #undef YYLIMIT
 #undef YYMARKER
 #undef YYFILL
+#undef YYTOKEN
 #define YYCURSOR        s
 #define YYLIMIT         l
 #define YYMARKER        
 #define YYFILL(n)
+#define YYTOKEN         t
 start:
         if (YYCURSOR >= YYLIMIT)
                 return;
-	t = YYCURSOR;
+	YYTOKEN = YYCURSOR;
 	/*!re2c
 
         parameterkey {
@@ -522,19 +525,19 @@ start:
                       
 	parameterkey/[=] {
                         NEW(param);
-                        param->name = t;
+                        param->name = YYTOKEN;
                         param->next = U->params;
                         U->params = param;
                         goto start;
                    }
                    
 	[=]parametervalue[&]? {
-                        *t++= 0;
+                        *YYTOKEN++= 0;
                         if (*(YYCURSOR-1)=='&')
                                 *(YYCURSOR-1)= 0;
                         if (param==NULL) /* format error */
                                 return; 
-                         param->value = t;
+                         param->value = YYTOKEN;
 			 goto start;
                    }
                    
@@ -554,8 +557,10 @@ static int x2b(char *x) {
 }
 
 
-static void freeParams(param_t *p) {
-        if ((*p)->next)
-                freeParams(&(*p)->next);
-        FREE(*p);
+static void freeParams(param_t p) {
+        param_t q;
+        for (;p; p = q) {
+                q = p->next;
+                FREE(p);
+        }
 }

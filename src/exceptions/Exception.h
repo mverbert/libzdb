@@ -128,12 +128,18 @@
  * opportunity to "clean up" when an exception occurs. For example,  
  * <pre>
  * TRY
+ * {
  *      [...]
  *      Connection_execute(c, sql);
+ * }
  * CATCH(SQLException)
+ * {
  *      &lt;exception handler code&gt;
+ * }
  * FINALLY
+ * {
  *      Connection_close(c);
+ * }
  * END_TRY;
  * </pre>
  * closes the database Connection regardless if an exception
@@ -143,6 +149,32 @@
  * instead of C return statements inside TRY statements. If any of the 
  * statements in a TRY block must do a return, they <b>must</b> do so with 
  * this macro instead of the usual C return statement. 
+ * 
+ * <h3>Exception details</h3>
+ * Inside an exception handler, details about an exception is
+ * available in the variable <code>Exception_frame</code>. The
+ * following demonstrate usage of this variable to provide detailed 
+ * logging of an exception. For SQL errors, Connection_getLastError() can be 
+ * used instead, though in addition to SQL errors, <code>Exception_frame</code>,
+ * also contains API errors not directly related to SQL.
+ *
+ * <pre>
+ * TRY 
+ * {
+ *      code that can throw an exception
+ * }
+ * ELSE  
+ * {
+ *      fprintf(stderr, "%s: %s raised in %s at %s:%d\n",
+ *              Exception_frame.exception->name, 
+ *              Exception_frame.message, 
+ *              Exception_frame.func, 
+ *              Exception_frame.file,
+ *              Exception_frame.line);
+ *      ....
+ * }
+ * END_TRY;
+ * </pre>
  * 
  * <p>The Exception stack is stored in a thread-specific variable so Exceptions
  * are made thread-safe. <i>This means that Exceptions are thread local and an

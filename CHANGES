@@ -6,13 +6,15 @@
 
 Version 2.2
 -----------
-* Added error message to exception. An SQL error is now available via
-  Exception_frame.message.
+* Detailed error message added to exception. In an exception handler,
+  the variable Exception_frame.message, provides an alternative to 
+  Connection_getLastError() for obtaining the error message
 Bug fixes:
 * Fixed Connection_prepareStatement() error reported on a PostgreSQL
   Connection. Thanks to Paul Stevens for bug report.
 * MySQL: Fixed error in ResultSet_getBlob() and ResultSet_getString() 
-  for "large" strings and blobs
+  which lead to a segfault when trying to obtain "large" strings and 
+  blobs. Again thanks to Paul Stevens.
 
 
 Version 2.1

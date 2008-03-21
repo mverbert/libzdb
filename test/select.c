@@ -43,9 +43,10 @@ const char *blob = "From nobody@pacific.net.sg Tue Dec 04 19:52:17 2007\n"
 //#define DMTEST
 int main(void)
 {
-	int ZBDEBUG=1, i = 0;
+	int i = 0;
 	ResultSet_T res;
 	PreparedStatement_T s;
+        ZBDEBUG = 1;
 	URL_T url = URL_new("mysql://root:root@localhost/test");
 	assert(url);
 	ConnectionPool_T pool = ConnectionPool_new(url);

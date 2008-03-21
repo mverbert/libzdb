@@ -64,11 +64,11 @@ const struct rsetop mysqlrsetops = {
         MysqlResultSet_readData
 };
 
-typedef struct column {
+typedef struct column_t {
         my_bool is_null;
         MYSQL_FIELD *field;
-        unsigned long length;
-        char buffer[STRLEN];
+        unsigned long real_length;
+        char *buffer;
 } *column_t;
 
 #define T IResultSet_T
@@ -82,13 +82,13 @@ struct T {
         MYSQL_RES *meta;
         MYSQL_BIND *bind;
 	MYSQL_STMT *stmt;
-        column_t *columns;
+        column_t columns;
 };
 
 #define TEST_INDEX(RETVAL) \
         int i; assert(R);i= columnIndex-1; if (R->columnCount <= 0 || \
         i<0||i>R->columnCount) { THROW(SQLException, "Column index out of range"); \
-        return(RETVAL); } if (R->columns[i]->is_null) return (RETVAL); 
+        return(RETVAL); } if (R->columns[i].is_null) return (RETVAL); 
 #define GET_INDEX(RETVAL) \
         int i;assert(R);if ((i=getIndex(R,columnName))<0) { \
         THROW(SQLException, "Invalid column name"); return (RETVAL); }
@@ -100,26 +100,27 @@ struct T {
 static inline int getIndex(T R, const char *name) {
         int i;
         for (i = 0; i<R->columnCount; i++)
-                if (Str_isByteEqual(name, R->columns[i]->field->name))
+                if (Str_isByteEqual(name, R->columns[i].field->name))
                         return (i+1);
         return -1;
 }
 
 
-static int ensureCapacity(T R, int i) {
-        if ((R->columns[i]->length > R->bind[i].buffer_length)) {
-                /* Assume truncation, resize and fetch column directly. */
-                unsigned long newSize = (sizeof *(R->columns[i]) + 1 + R->columns[i]->field->length);
-                memset(&R->bind[i], 0, sizeof(MYSQL_BIND));
-                R->bind[i].buffer_type = R->columns[i]->field->type;
-                RESIZE(R->columns[i], newSize);
-                R->bind[i].buffer = R->columns[i]->buffer;
-                R->bind[i].buffer_length = newSize;
-                R->bind[i].is_null = &R->columns[i]->is_null;
-                R->bind[i].length = &R->columns[i]->length;
-                R->columns[i]->field = mysql_fetch_field_direct(R->meta, i);
+static inline int ensureCapacity(T R, int i) {
+        if ((R->columns[i].real_length > R->bind[i].buffer_length)) {
+                /* Column was truncated, resize and fetch column directly. */
+                assert(R->lastError == MYSQL_DATA_TRUNCATED);
+                unsigned long bufSize = R->columns[i].real_length;
+                RESIZE(R->columns[i].buffer, bufSize + 1);
+                R->bind[i].buffer = R->columns[i].buffer;
+                R->bind[i].buffer_length = bufSize;
+                /* Need to rebind as the buffer address has changed */
+                if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind))) {
+                        THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
+                        return false;
+                }
                 if (mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0)) {
-                        THROW(SQLException, "mysql_stmt_fetch_column");
+                        THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
                         return false;
                 }
         }
@@ -143,23 +144,26 @@ T MysqlResultSet_new(void *stmt, int maxRows, int keep) {
         R->keep = keep;
         R->maxRows = maxRows;
         R->columnCount = mysql_stmt_field_count(R->stmt);
-        if (R->columnCount <= 0 || !(R->meta = mysql_stmt_result_metadata(R->stmt)))
+        if ((R->columnCount <= 0) || ! (R->meta = mysql_stmt_result_metadata(R->stmt))) {
+                DEBUG("Warning: column error - %s\n", mysql_stmt_error(stmt));
                 R->stop = true;
-        else {
+        } else {
                 int i;
                 R->bind = CALLOC(R->columnCount, sizeof (MYSQL_BIND));
-                R->columns = CALLOC(R->columnCount, sizeof (column_t));
+                R->columns = CALLOC(R->columnCount, sizeof (struct column_t));
                 for (i = 0; i < R->columnCount; i++) {
-                        NEW(R->columns[i]);
+                        R->columns[i].buffer = ALLOC(STRLEN + 1);
                         R->bind[i].buffer_type = MYSQL_TYPE_STRING;
-                        R->bind[i].buffer = R->columns[i]->buffer;
-                        R->bind[i].buffer_length = STRLEN-1;
-                        R->bind[i].is_null = &R->columns[i]->is_null;
-                        R->bind[i].length = &R->columns[i]->length;
-                        R->columns[i]->field = mysql_fetch_field_direct(R->meta, i);
+                        R->bind[i].buffer = R->columns[i].buffer;
+                        R->bind[i].buffer_length = STRLEN;
+                        R->bind[i].is_null = &R->columns[i].is_null;
+                        R->bind[i].length = &R->columns[i].real_length;
+                        R->columns[i].field = mysql_fetch_field_direct(R->meta, i);
                 }
-                if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind))) 
+                if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind))) {
+                        DEBUG("Warning: bind error - %s\n", mysql_stmt_error(stmt));
                         R->stop = true;
+                }
         }
 	return R;
 }
@@ -168,13 +172,11 @@ T MysqlResultSet_new(void *stmt, int maxRows, int keep) {
 void MysqlResultSet_free(T *R) {
         int i;
 	assert(R && *R);
-        for (i = 0; i < (*R)->columnCount; i++) {
-                FREE((*R)->columns[i]);
-        }
+        for (i = 0; i < (*R)->columnCount; i++)
+                FREE((*R)->columns[i].buffer);
         mysql_stmt_free_result((*R)->stmt);
-        if ((*R)->keep==false) {
+        if ((*R)->keep==false)
                 mysql_stmt_close((*R)->stmt);
-        }
         if ((*R)->meta)
                 mysql_free_result((*R)->meta);
         FREE((*R)->columns);
@@ -197,7 +199,7 @@ const char *MysqlResultSet_getColumnName(T R, int column) {
 	   i < 0                ||
 	   i > R->columnCount)
 		return NULL;
-	return R->columns[i]->field->name;
+	return R->columns[i].field->name;
 }
 
 
@@ -224,7 +226,7 @@ int MysqlResultSet_next(T R) {
 
 long MysqlResultSet_getColumnSize(T R, int columnIndex) {
         TEST_INDEX(-1)
-        return R->columns[i]->length;
+        return R->columns[i].real_length;
 }
 
 
@@ -232,8 +234,8 @@ const char *MysqlResultSet_getString(T R, int columnIndex) {
         TEST_INDEX(NULL)
         if (! ensureCapacity(R, i))
                 return NULL;
-        R->columns[i]->buffer[R->columns[i]->length] = 0;
-        return R->columns[i]->buffer;
+        R->columns[i].buffer[R->columns[i].real_length] = 0;
+        return R->columns[i].buffer;
 }
 
 
@@ -245,7 +247,7 @@ const char *MysqlResultSet_getStringByName(T R, const char *columnName) {
 
 int MysqlResultSet_getInt(T R, int columnIndex) {
         TEST_INDEX(0)
-        return Str_parseInt(R->columns[i]->buffer);
+        return Str_parseInt(R->columns[i].buffer);
 }
 
 
@@ -257,7 +259,7 @@ int MysqlResultSet_getIntByName(T R, const char *columnName) {
 
 long long int MysqlResultSet_getLLong(T R, int columnIndex) {
         TEST_INDEX(0)
-        return Str_parseLLong(R->columns[i]->buffer);
+        return Str_parseLLong(R->columns[i].buffer);
 }
 
 
@@ -269,7 +271,7 @@ long long int MysqlResultSet_getLLongByName(T R, const char *columnName) {
 
 double MysqlResultSet_getDouble(T R, int columnIndex) {
         TEST_INDEX(0.0)
-        return Str_parseDouble(R->columns[i]->buffer);
+        return Str_parseDouble(R->columns[i].buffer);
 }
 
 
@@ -283,8 +285,8 @@ const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX(NULL)
         if (! ensureCapacity(R, i))
                 return NULL;
-        *size = R->columns[i]->length;
-        return R->columns[i]->buffer;
+        *size = R->columns[i].real_length;
+        return R->columns[i].buffer;
 }
 
 
@@ -299,16 +301,16 @@ int MysqlResultSet_readData(T R, int columnIndex, void *b, int l, long off) {
         TEST_INDEX(0)
         R->bind[i].buffer = b;
         R->bind[i].buffer_length = l;
-        R->bind[i].length = &R->columns[i]->length;
-        if (off>R->columns[i]->length)
+        R->bind[i].length = &R->columns[i].real_length;
+        if (off>R->columns[i].real_length)
                 return 0;
         if ((rc = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, off))) {
                 if (rc==CR_NO_DATA)
                         return 0;
-                THROW(SQLException, "mysql_stmt_fetch_column");
+                THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
                 return -1;
         }
-        return (R->columns[i]->length-off)>l?l:(R->columns[i]->length-off);
+        return (R->columns[i].real_length-off)>l?l:(R->columns[i].real_length-off);
 }
 
 

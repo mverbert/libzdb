@@ -391,7 +391,11 @@ void testPool(const char *testURL) {
                 END_TRY;
                 assert((con= ConnectionPool_getConnection(pool)));
                 /* 
-                 * The following should fail and throw exceptions 
+                 * The following should fail and throw exceptions. The exception error 
+                 * message can be obtained with Exception_frame.message, or from 
+                 * Connection_getLastError(con). Exception_frame.message contains both
+                 * SQL errors or api errors such as prepared statement parameter index
+                 * out of range, while Connection_getLastError(con) only has SQL errors
                  */
                 TRY
                 {
@@ -402,8 +406,7 @@ void testPool(const char *testURL) {
                 }
                 CATCH(SQLException)
                 {
-                        printf("\tResult: Ok got SQLException -- %s\n",
-                               Connection_getLastError(con));
+                        printf("\tResult: Ok got SQLException -- %s\n", Exception_frame.message);
                 }
                 END_TRY;
                 TRY
@@ -414,8 +417,7 @@ void testPool(const char *testURL) {
                 }
                 CATCH(SQLException)
                 {
-                        printf("ok got SQLException -- %s\n",
-                               Connection_getLastError(con));
+                        printf("ok got SQLException -- %s\n", Exception_frame.message);
                 }
                 END_TRY;
                 TRY

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXFileReference section */
@@ -41,7 +41,7 @@
 		523CBD3D0947A0F100A3FD10 /* Vector.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Vector.c; sourceTree = "<group>"; };
 		5241A964094F6DA00088AB05 /* ConnectionStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionStrategy.h; sourceTree = "<group>"; };
 		5241ABA3094FA75A0088AB05 /* MysqlConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MysqlConnection.c; sourceTree = "<group>"; };
-		5241ABA6094FA7D60088AB05 /* MysqlResultSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MysqlResultSet.c; sourceTree = "<group>"; };
+		5241ABA6094FA7D60088AB05 /* MysqlResultSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MysqlResultSet.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		525E13D2096475E700421770 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		525E13D50964764B00421770 /* EXCEPTIONS */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = EXCEPTIONS; sourceTree = "<group>"; };
 		525E13DA09647E4800421770 /* LICENSE.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = LICENSE.pdf; sourceTree = "<group>"; };
@@ -305,7 +305,7 @@
 		528363920942F2040083C31A /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 528363930942F2040083C31A /* Build configuration list for PBXProject "libzdb" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 0;
 			mainGroup = 528363900942F2040083C31A;
 			productRefGroup = 528363900942F2040083C31A;
@@ -323,6 +323,8 @@
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = NO;
+				LIBRARY_SEARCH_PATHS = "/Users/hauk/Downloads/mysql-5.0.51a/libmysql/**";
+				newSetting = "";
 			};
 			name = Debug;
 		};
@@ -331,6 +333,8 @@
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = YES;
+				LIBRARY_SEARCH_PATHS = "/Users/hauk/Downloads/mysql-5.0.51a/libmysql/**";
+				newSetting = "";
 			};
 			name = Release;
 		};
