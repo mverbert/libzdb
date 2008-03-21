@@ -18,7 +18,6 @@ Bug fixes:
   which lead to a segfault when trying to obtain "large" strings and 
   blobs. Again thanks to Paul Stevens.
 
-
 Version 2.1
 -----------
 * API: Connection_ping is promoted to a public method. Clients can use

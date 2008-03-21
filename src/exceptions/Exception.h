@@ -156,7 +156,7 @@
  * following demonstrate usage of this variable to provide detailed 
  * logging of an exception. For SQL errors, Connection_getLastError() can be 
  * used instead, though in addition to SQL errors, <code>Exception_frame</code>,
- * also contains API errors not directly related to SQL.
+ * also supports API errors not directly related to SQL.
  *
  * <pre>
  * TRY 
