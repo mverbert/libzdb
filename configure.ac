@@ -22,6 +22,10 @@ else
         MYFLEX=$FLEX
         export MYCC
         export MYFLEX
+        if test ! -d ./tools/bin/
+        then
+                mkdir ./tools/bin || AC_MSG_ERROR([Failed to create ./tools/bin])
+        fi
         /bin/sh ./tools/filterh/compfilterh || AC_MSG_ERROR([Failed to build tools])
 fi
 
