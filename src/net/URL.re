@@ -24,9 +24,6 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#include "Mem.h"
-#include "Str.h"
-#include "Util.h"
 #include "URL.h"
 
 
@@ -160,6 +157,9 @@ T URL_new(const char *url) {
 	T U;
 	if (! (url && *url))
 		return NULL;
+#ifndef ZILD_PACKAGE_PROTECTED
+        Exception_init();
+#endif
 	NEW(U);
 	U->data = (uchar_t*)Str_dup(url);
 	YYCURSOR = U->data;

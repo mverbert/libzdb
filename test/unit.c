@@ -3,9 +3,6 @@
 #include <string.h>
 
 #include "Config.h"
-#include "Str.h"
-#include "Mem.h"
-#include "Util.h"
 #include "URL.h"
 #include "Vector.h"
 #include "StringBuffer.h"

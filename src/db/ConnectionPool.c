@@ -22,9 +22,6 @@
 #include <string.h>
 
 #include "URL.h"
-#include "Mem.h"
-#include "Str.h"
-#include "Util.h"
 #include "Thread.h"
 #include "Vector.h"
 #include "ResultSet.h"
@@ -88,9 +85,6 @@ T ConnectionPool_new(URL_T url) {
         T P;
 	if (url==NULL)
                 return NULL;
-#ifndef ZILD_PACKAGE_PROTECTED
-        Exception_init();
-#endif
 	NEW(P);
         P->url = url;
 	Mutex_init(P->mutex);

@@ -22,9 +22,6 @@
 #include <string.h>
 #include <mysql.h>
 
-#include "Mem.h"
-#include "Str.h"
-#include "Util.h"
 #include "ResultSet.h"
 #include "MysqlResultSet.h"
 #include "PreparedStatementStrategy.h"
@@ -56,14 +53,14 @@ const struct prepop mysqlprepops = {
         MysqlPreparedStatement_executeQuery
 };
 
-typedef struct {
+typedef struct param_t {
         union {
                 long i;
                 long long int ll;
                 double d;
         };
         long length;
-} param_t;
+} *param_t;
 
 #define T IPreparedStatement_T
 struct T {
@@ -71,7 +68,7 @@ struct T {
         my_bool yes;
         int lastError;
         int paramCount;
-        param_t *params;
+        param_t params;
         MYSQL_STMT *stmt;
         MYSQL_BIND *bind;
 };
@@ -108,7 +105,7 @@ T MysqlPreparedStatement_new(void *stmt, int maxRows) {
         P->yes = true;
         P->paramCount = (int)mysql_stmt_param_count(P->stmt);
         if (P->paramCount>0) {
-                P->params = CALLOC(P->paramCount, sizeof(param_t));
+                P->params = CALLOC(P->paramCount, sizeof(struct param_t));
                 P->bind = CALLOC(P->paramCount, sizeof(MYSQL_BIND));
         }
         P->lastError = MYSQL_OK;
@@ -235,9 +232,8 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         }
 #endif
         P->lastError = mysql_stmt_execute(P->stmt);
-        if (P->lastError==MYSQL_OK) {
+        if (P->lastError==MYSQL_OK)
                 return ResultSet_new(MysqlResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&mysqlrsetops);
-        }
         return NULL;
 }
 
@@ -257,7 +253,7 @@ static int sendChunkedData(T P, int i) {
 		chunk = size > CHUNK_SIZE ? CHUNK_SIZE : size;
                 P->lastError = mysql_stmt_send_long_data(P->stmt, i, P->bind[i].buffer + off, chunk);
                 if (P->lastError != MYSQL_OK) {
-                        THROW(SQLException, "mysql_stmt_send_long_data -- Partial send of prepared statement data");
+                        THROW(SQLException, "mysql_stmt_send_long_data -- %s", mysql_stmt_error(P->stmt));
                         return false;
                 }
                 size -= chunk;

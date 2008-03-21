@@ -25,9 +25,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#include "Mem.h"
-#include "Str.h"
-
 
 /**
  * Implementation of the Str interface

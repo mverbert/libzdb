@@ -22,9 +22,6 @@
 #include <string.h>
 #include <sqlite3.h>
 
-#include "Mem.h"
-#include "Str.h"
-#include "Util.h"
 #include "ResultSetStrategy.h"
 #include "SQLiteResultSet.h"
 

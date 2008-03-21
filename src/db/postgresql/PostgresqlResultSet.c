@@ -24,9 +24,6 @@
 #include <sys/types.h>
 #include <libpq-fe.h>
 
-#include "Mem.h"
-#include "Str.h"
-#include "Util.h"
 #include "ResultSetStrategy.h"
 #include "PostgresqlResultSet.h"
 

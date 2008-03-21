@@ -22,9 +22,6 @@
 #include <stdarg.h>
 
 #include "URL.h"
-#include "Mem.h"
-#include "Str.h"
-#include "Util.h"
 #include "Vector.h"
 #include "ResultSet.h"
 #include "PreparedStatement.h"

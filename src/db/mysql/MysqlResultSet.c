@@ -23,9 +23,6 @@
 #include <mysql.h>
 #include <errmsg.h>
 
-#include "Mem.h"
-#include "Str.h"
-#include "Util.h"
 #include "ResultSetStrategy.h"
 #include "MysqlResultSet.h"
 

@@ -24,9 +24,6 @@
 #include <errmsg.h>
 
 #include "URL.h"
-#include "Str.h"
-#include "Mem.h"
-#include "Util.h"
 #include "ResultSet.h"
 #include "StringBuffer.h"
 #include "PreparedStatement.h"

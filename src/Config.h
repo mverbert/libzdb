@@ -32,6 +32,9 @@
 #include <errno.h>
 #include "xconfig.h"
 
+#include "Mem.h"
+#include "Str.h"
+#include "Util.h"
 #include "SQLException.h"
 #include "AssertException.h"
 

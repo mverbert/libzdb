@@ -21,9 +21,6 @@
 #include <stdio.h>
 
 #include "URL.h"
-#include "Mem.h"
-#include "Str.h"
-#include "Util.h"
 #include "ResultSet.h"
 
 
