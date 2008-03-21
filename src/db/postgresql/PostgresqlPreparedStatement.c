@@ -23,6 +23,8 @@
 #include <arpa/inet.h>
 #include <libpq-fe.h>
 
+#include "Mem.h"
+#include "Str.h"
 #include "Util.h"
 #include "ResultSet.h"
 #include "PostgresqlResultSet.h"
