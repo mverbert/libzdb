@@ -16,10 +16,9 @@
 #include "PreparedStatement.h"
 #include "Connection.h"
 #include "ConnectionPool.h"
-#ifdef WITH_EXCEPTIONS
 #include "AssertException.h"
 #include "SQLException.h"
-#endif
+
 
 /**
  * libzdb connection pool unity tests. 
@@ -292,7 +291,6 @@ void testPool(const char *testURL) {
         }
         printf("=> Test7: OK\n\n");
 
-#ifdef WITH_EXCEPTIONS
         printf("=> Test8: Exceptions handling\n");
         {
                 int i;
@@ -466,8 +464,6 @@ void testPool(const char *testURL) {
                 URL_free(&url);
         }
         printf("=> Test8: OK\n\n");     
-#endif
-        
         
         printf("============> Connection Pool Tests: OK\n\n");
 }
@@ -481,9 +477,7 @@ int main(void) {
                     "E.g. postgresql://localhost:5432/test?user=root&password=root\n"
                     "To exit, enter '.' on a single line\n\nConnection URL> ";
         ZBDEBUG= true;
-#ifdef WITH_EXCEPTIONS
         Exception_init();
-#endif
         printf("============> Start Connection Pool Tests\n\n");
         printf("This test will create and drop a table called zild_t in the database\n");
 	printf("%s", help);

@@ -88,10 +88,8 @@ T ConnectionPool_new(URL_T url) {
         T P;
 	if (url==NULL)
                 return NULL;
-#ifdef WITH_EXCEPTIONS
 #ifndef ZILD_PACKAGE_PROTECTED
         Exception_init();
-#endif
 #endif
 	NEW(P);
         P->url = url;

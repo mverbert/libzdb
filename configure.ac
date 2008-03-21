@@ -57,27 +57,6 @@ AC_ARG_ENABLE(optimized,
     ]
 )
 
-AC_ARG_ENABLE([exceptions],
-        AS_HELP_STRING([--disable-exceptions], 
-        [Disable exceptions handling in the library]),
-     [exceptions="false"],
-     [
-        AC_MSG_CHECKING(for setjmp)
-        AC_TRY_LINK([#include <setjmp.h>],
-                [jmp_buf env; setjmp(env);],
-                [have_setjmp="yes"],[have_setjmp="no"])
-        if test "x$have_setjmp" = "xyes"; then
-                AC_MSG_RESULT([yes])
-                exceptions="true"
-                AC_DEFINE([WITH_EXCEPTIONS], 1, 
-                        [Define to 1 to enable exceptions])
-        else
-                AC_MSG_RESULT([no])
-                AC_MSG_ERROR([This option (--enable-exceptions) require setjmp])
-        fi
-     ])
-AM_CONDITIONAL([WITH_EXCEPTIONS], test "xtrue" = "x$exceptions")
-
 AC_ARG_ENABLE([zild],
         AS_HELP_STRING([--enable-zild], 
                 [Reduce visbility of objects for linking with zild. 
@@ -125,12 +104,6 @@ AC_ARG_ENABLE(profiling,
     ]
 )
      
-if test "xtrue" = "x$exceptions"; then
-        EXCEPTIONTEST="./exception &&"
-else
-        EXCEPTIONTEST=""
-fi
-        
 if test "xfalse" = "x$protect" -a "xfalse" = "x$zild_protect"; then
         zild_build="false"
         test_build="true"
@@ -140,7 +113,6 @@ else
         test_build="false"
         UNIT_TEST=""
 fi
-AC_SUBST(EXCEPTIONTEST)
 AC_SUBST(UNIT_TEST)
 
 # ---------------------------------------------------------------------------
@@ -359,11 +331,6 @@ if test "xfalse" = "x$test_build"; then
 echo "|   Unit Tests Build:                             DISABLED   |"
 else
 echo "|   Unit Tests Build:                             ENABLED    |"
-fi
-if test "xfalse" = "x$exceptions"; then
-echo "|   Exceptions handling:                          DISABLED   |"
-else
-echo "|   Exceptions handling:                          ENABLED    |"
 fi
 echo "|                                                            |"
 if test "xyes" = "x$sqlite"; then

@@ -11,13 +11,14 @@ RE2CFLAGS       = -b
 FILTERH         = ./tools/bin/filterh
 
 AM_CPPFLAGS     = $(CPPFLAGS) $(DBCPPFLAGS)
-INCLUDES        = -Isrc -Isrc/util -Isrc/net -Isrc/db 
+INCLUDES        = -Isrc -Isrc/util -Isrc/net -Isrc/db -Isrc/exceptions
 
 lib_LTLIBRARIES = libzdb.la
 libzdb_la_SOURCES = src/util/Util.c src/util/Str.c src/util/Mem.c \
                     src/util/Vector.c src/net/URL.c src/db/ConnectionPool.c \
                     src/db/Connection.c src/db/ResultSet.c \
-                    src/db/PreparedStatement.c src/util/StringBuffer.c
+                    src/db/PreparedStatement.c src/util/StringBuffer.c \
+                    src/exceptions/assert.c src/exceptions/Exception.c
 if WITH_MYSQL
 libzdb_la_SOURCES += src/db/mysql/MysqlConnection.c \
                      src/db/mysql/MysqlResultSet.c \
@@ -35,22 +36,12 @@ libzdb_la_SOURCES += src/db/sqlite/SQLiteConnection.c \
 endif
 
 nodist_include_HEADERS = api/ConnectionPool.h api/Connection.h \
-                         api/ResultSet.h api/URL.h api/PreparedStatement.h
+                         api/ResultSet.h api/URL.h api/PreparedStatement.h \
+                         api/SQLException.h api/Exception.h
 
 API_INTERFACES  = src/db/ConnectionPool.h src/db/Connection.h \
-                  src/db/ResultSet.h src/net/URL.h src/db/PreparedStatement.h
-
-if WITH_EXCEPTIONS
-INCLUDES        += -Isrc/exceptions
-libzdb_la_SOURCES += src/exceptions/assert.c \
-                     src/exceptions/Exception.c
-nodist_include_HEADERS += \
-                          api/SQLException.h \
-                          api/Exception.h
-API_INTERFACES    += \
-                     src/exceptions/SQLException.h \
-                     src/exceptions/Exception.h
-endif
+                  src/db/ResultSet.h src/net/URL.h src/db/PreparedStatement.h \
+                  src/exceptions/SQLException.h src/exceptions/Exception.h
 
 libzdb_la_LDFLAGS = $(DBLDFLAGS) -release @VERSION@ -version-info 5:0:1
 

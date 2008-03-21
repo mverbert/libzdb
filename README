@@ -86,16 +86,11 @@
  every method that can throw an exception. Methods in the library that
  can throw an exception should be called from inside a try-catch block.
  
- Exception handling is included by default when building the library, 
- but may optionally be turned off at configure time. To disable this
- feature use the configure switch --disable-exceptions
- 
 
  Link and include
  ----------------
  
  Clients should include the following interfaces, in this order. 
- If exceptions handling was disabled, do not include SQLException.h
  
  #include <URL.h>
  #include <ResultSet.h>

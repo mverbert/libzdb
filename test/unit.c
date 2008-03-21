@@ -99,7 +99,6 @@ void testStr() {
                 printf("\tParsed long long = %lld\n", Str_parseLLong(ll));
                 printf("\tParsed double = %.9f\n", Str_parseDouble(d));
                 printf("\tParsed double exp = %.3e\n", Str_parseDouble(de));
-#ifdef WITH_EXCEPTIONS
                 TRY
                 {
                         printf("\tParsed truncated int = %d\n", Str_parseInt(ie));
@@ -114,7 +113,6 @@ void testStr() {
                 }
                 CATCH(SQLException)
                 END_TRY;
-#endif
         }
         printf("=> Test6: OK\n\n");
         
@@ -594,9 +592,8 @@ void testStringBuffer() {
 
 
 int main(void) {
-#ifdef WITH_EXCEPTIONS
         Exception_init();
-#endif
+
 	testStr();
 	testMem();
 	testUtil();

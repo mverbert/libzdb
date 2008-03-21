@@ -32,6 +32,9 @@
 #include <errno.h>
 #include "xconfig.h"
 
+#include "SQLException.h"
+#include "AssertException.h"
+
 
 /**
  * The libzdb URL
@@ -65,25 +68,6 @@
  * The standard maximum length for a checked error message 
  */
 #define ERROR_SIZE      1024
-
-
-/**
- * Mask out Exception statements if exceptions handling was disabled, 
- * otherwise include exception interfaces
- */
-#ifndef WITH_EXCEPTIONS
-#define THROW(e)        ((void)0)
-#define RETHROW         ((void)0)
-#define RETURN          ((void)0)
-#define TRY
-#define CATCH(e)        
-#define ELSE
-#define FINALLY
-#define END_TRY         ((void)0)
-#else
-#include "SQLException.h"
-#include "AssertException.h"
-#endif
 
 
 /* --------------------------------------------- SQL standard value macros */

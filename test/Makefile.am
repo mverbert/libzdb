@@ -1,18 +1,13 @@
 AUTOMAKE_OPTIONS = foreign no-dependencies
 
 LDADD = ../libzdb.la
-INCLUDES = -I../src -I../src/util -I../src/net -I../src/db 
+INCLUDES = -I../src -I../src/util -I../src/net -I../src/db -I../src/exceptions
 
-noinst_PROGRAMS = unit pool select
+noinst_PROGRAMS = unit pool select exception
 unit_SOURCES = unit.c
 pool_SOURCES = pool.c
 select_SOURCES = select.c
-
-if WITH_EXCEPTIONS
-INCLUDES += -I../src/exceptions
-noinst_PROGRAMS += exception
 exception_SOURCES = exception.c
-endif
 
 DISTCLEANFILES = *~ 
 
@@ -22,4 +17,4 @@ distclean-local:
 test: unit pool select
 
 verify:
-	@/bin/sh @EXCEPTIONTEST@ ./unit && ./pool
+	@/bin/sh ./exception && ./unit && ./pool
