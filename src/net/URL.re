@@ -441,15 +441,7 @@ parse:
 
         port       {
                         U->portStr = STRNDUP(YYTOKEN+1, (YYCURSOR-YYTOKEN-1));
-                        TRY
-                        {
-                                U->port = Str_parseInt(U->portStr);
-                        }
-                        ELSE 
-                        {
-                                U->port = UNKNOWN_PORT;
-                        }
-                        END_TRY;
+                        U->port = Str_parseInt(U->portStr);
                         goto parse; 
                    }
 
