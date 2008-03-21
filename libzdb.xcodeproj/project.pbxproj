@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		52047F8D0D93CE3B005B82A6 /* select.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = select.c; sourceTree = "<group>"; };
 		5210FB0B0AEBC2DA00506D1D /* PostgresqlConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PostgresqlConnection.c; sourceTree = "<group>"; };
 		5210FB0C0AEBC2DA00506D1D /* PostgresqlConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostgresqlConnection.h; sourceTree = "<group>"; };
 		5210FB0D0AEBC2DA00506D1D /* PostgresqlPreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PostgresqlPreparedStatement.c; sourceTree = "<group>"; };
@@ -22,7 +23,6 @@
 		5212056809586F4C00571866 /* PreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreparedStatement.h; sourceTree = "<group>"; };
 		52147B24095B3B5B00CF1B63 /* MysqlPreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MysqlPreparedStatement.c; sourceTree = "<group>"; };
 		52147B25095B3B5B00CF1B63 /* MysqlPreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MysqlPreparedStatement.h; sourceTree = "<group>"; };
-		521488130D6DE2680060CD0A /* select.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = select.c; sourceTree = "<group>"; };
 		521496F60D919B8E00C0153D /* Str.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Str.h; sourceTree = "<group>"; };
 		521496F70D919B8F00C0153D /* Str.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Str.c; sourceTree = "<group>"; };
 		521497220D91A11C00C0153D /* Mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mem.h; sourceTree = "<group>"; };
@@ -235,11 +235,11 @@
 		528363AF0942F2420083C31A /* test */ = {
 			isa = PBXGroup;
 			children = (
+				52047F8D0D93CE3B005B82A6 /* select.c */,
 				528363B00942F2420083C31A /* Makefile.am */,
 				528363B20942F2420083C31A /* unit.c */,
 				527FB404094C854700B177BE /* pool.c */,
 				52CE8EBE0C588CF800A4D96F /* exception.c */,
-				521488130D6DE2680060CD0A /* select.c */,
 			);
 			path = test;
 			sourceTree = "<group>";
