@@ -124,6 +124,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
                 va_start(ap, cause);
                 n = vsnprintf(message, EXCEPTION_MESSAGE_LENGTH, cause, ap);
                 va_end(ap);
+                n = (n >= EXCEPTION_MESSAGE_LENGTH) ? EXCEPTION_MESSAGE_LENGTH : n;
         }
 	if (p == NULL) {
                 ABORT("%s%s%s\n raised in %s at %s:%d\n", 
