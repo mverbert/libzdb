@@ -145,10 +145,10 @@
  * closes the database Connection regardless if an exception
  * was thrown or not by the code in the TRY-block. 
  *
- * <p>Finally, the RETURN statement, defined in this interface, must be used
- * instead of C return statements inside TRY statements. If any of the 
- * statements in a TRY block must do a return, they <b>must</b> do so with 
- * this macro instead of the usual C return statement. 
+ * Finally, the RETURN statement, defined in this interface, must be used
+ * instead of C return statements inside a TRY-END_TRY block. If any of the
+ * statements in a try-catch-finally block must do a return, they <b>must</b>
+ * do so with this macro instead of the usual C return statement. 
  * 
  * <h3>Exception details</h3>
  * Inside an exception handler, details about an exception is
