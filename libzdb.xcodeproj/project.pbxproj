@@ -323,7 +323,6 @@
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = NO;
-				LIBRARY_SEARCH_PATHS = "/Users/hauk/Downloads/mysql-5.0.51a/libmysql/**";
 				newSetting = "";
 			};
 			name = Debug;
@@ -333,7 +332,6 @@
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = YES;
-				LIBRARY_SEARCH_PATHS = "/Users/hauk/Downloads/mysql-5.0.51a/libmysql/**";
 				newSetting = "";
 			};
 			name = Release;

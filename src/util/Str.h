@@ -6,7 +6,6 @@
 #ifndef Str_H
 #define Str_H
 #include <stdarg.h>
-#include <assert.h>
 
 
 /**
