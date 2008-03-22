@@ -206,8 +206,7 @@ int MysqlPreparedStatement_execute(T P) {
 ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         assert(P);
         if (P->paramCount>0) {
-                P->lastError = mysql_stmt_bind_param(P->stmt, P->bind);
-                if (P->lastError != MYSQL_OK)
+                if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
                         THROW(SQLException, "mysql_stmt_bind_param -- %s", mysql_stmt_error(P->stmt));
         }
 #if MYSQL_VERSION_ID >= 50002

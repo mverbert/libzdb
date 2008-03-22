@@ -89,9 +89,11 @@ static int prepareStmt(T C, const char *sql, int len, MYSQL_STMT **stmt);
 
 /* ----------------------------------------------------- Protected methods */
 
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
+
 
 T MysqlConnection_new(URL_T url, char **error) {
 	T C;
@@ -211,9 +213,11 @@ const char *MysqlConnection_getLastError(T C) {
         return mysql_error(C->db);
 }
 
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
+
 
 /* ------------------------------------------------------- Private methods */
 
