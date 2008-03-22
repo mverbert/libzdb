@@ -31,7 +31,7 @@
 #define T IConnection_T
 typedef struct T *T;
 
-typedef struct conop {
+typedef struct cop {
         char *name;
 	T (*new)(URL_T url, char **error);
 	void (*free)(T *C);

@@ -41,7 +41,7 @@
 
 #define MYSQL_OK 0
 
-const struct prepop mysqlprepops = {
+const struct pop mysqlpops = {
         "mysql",
         MysqlPreparedStatement_free,
         MysqlPreparedStatement_setString,
@@ -78,7 +78,7 @@ struct T {
         i < 0 || i > P->paramCount) { THROW(SQLException, "Parameter index out of range"); \
         return false; }
 
-extern const struct rsetop mysqlrsetops;
+extern const struct rop mysqlrops;
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -216,7 +216,7 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         if ((P->lastError = mysql_stmt_execute(P->stmt))) 
                 THROW(SQLException, "mysql_stmt_execute -- %s", mysql_stmt_error(P->stmt));
         if (P->lastError==MYSQL_OK)
-                return ResultSet_new(MysqlResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&mysqlrsetops);
+                return ResultSet_new(MysqlResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&mysqlrops);
         return NULL;
 }
 

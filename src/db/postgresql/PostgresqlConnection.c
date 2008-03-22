@@ -47,7 +47,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct conop postgresqlconops = {
+const struct cop postgresqlcops = {
         "postgresql",
         PostgresqlConnection_new,
         PostgresqlConnection_free,
@@ -76,8 +76,8 @@ struct T {
         StringBuffer_T sb;
 };
 
-extern const struct rsetop postgresqlrsetops;
-extern const struct prepop postgresqlprepops;
+extern const struct rop postgresqlrops;
+extern const struct pop postgresqlpops;
 
 
 /* ------------------------------------------------------------ Prototypes */
@@ -197,7 +197,7 @@ ResultSet_T PostgresqlConnection_executeQuery(T C, const char *sql, va_list ap) 
         C->res = PQexec(C->db, StringBuffer_toString(C->sb));
         C->lastError = PQresultStatus(C->res);
         if (C->lastError == PGRES_TUPLES_OK) {
-                return ResultSet_new(PostgresqlResultSet_new(C->res, C->maxRows, false), (Rop_T)&postgresqlrsetops);
+                return ResultSet_new(PostgresqlResultSet_new(C->res, C->maxRows, false), (Rop_T)&postgresqlrops);
         }
         return NULL;
 }
@@ -256,7 +256,7 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql) 
                                                                              C->maxRows,
                                                                              name,
                                                                              prm1), 
-                                             (Pop_T)&postgresqlprepops);
+                                             (Pop_T)&postgresqlpops);
         }
         return NULL;
 }

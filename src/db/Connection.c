@@ -42,24 +42,24 @@
 
 
 #ifdef HAVE_LIBMYSQLCLIENT
-extern const struct conop mysqlconops;
+extern const struct cop mysqlcops;
 #endif
 #ifdef HAVE_LIBPQ
-extern const struct conop postgresqlconops;
+extern const struct cop postgresqlcops;
 #endif
 #ifdef HAVE_LIBSQLITE3
-extern const struct conop sqlite3conops;
+extern const struct cop sqlite3cops;
 #endif
 
-const struct conop *conops[] = {
+const struct cop *cops[] = {
 #ifdef HAVE_LIBMYSQLCLIENT
-        &mysqlconops,
+        &mysqlcops,
 #endif
 #ifdef HAVE_LIBPQ
-        &postgresqlconops,
+        &postgresqlcops,
 #endif
 #ifdef HAVE_LIBSQLITE3
-        &sqlite3conops,
+        &sqlite3cops,
 #endif
         NULL
 };
@@ -321,9 +321,9 @@ int Connection_isSupported(const char *url) {
 
 static Cop_T getOp(const char *protocol) {
         int i;
-        for (i = 0; conops[i]; i++) 
-                if (Str_startsWith(conops[i]->name, protocol)) 
-                        return (Cop_T)conops[i];
+        for (i = 0; cops[i]; i++) 
+                if (Str_startsWith(cops[i]->name, protocol)) 
+                        return (Cop_T)cops[i];
         return NULL;
 }
 

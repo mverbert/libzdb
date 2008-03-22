@@ -31,7 +31,7 @@
 #define T IResultSet_T
 typedef struct T *T;
 
-typedef struct rsetop {
+typedef struct rop {
         char *name;
         void (*free)(T *R);
         int (*getColumnCount)(T R);

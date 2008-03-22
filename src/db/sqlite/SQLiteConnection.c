@@ -42,7 +42,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct conop sqlite3conops = {
+const struct cop sqlite3cops = {
         "sqlite",
         SQLiteConnection_new,
         SQLiteConnection_free,
@@ -70,8 +70,8 @@ struct T {
         StringBuffer_T sb;
 };
 
-extern const struct rsetop sqlite3rsetops;
-extern const struct prepop sqlite3prepops;
+extern const struct rop sqlite3rops;
+extern const struct pop sqlite3pops;
 
 
 /* ------------------------------------------------------------ Prototypes */
@@ -186,7 +186,7 @@ ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
         EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, StringBuffer_toString(C->sb), 
                     StringBuffer_length(C->sb), &stmt, &tail), C->timeout);
 	if (C->lastError==SQLITE_OK)
-		return ResultSet_new(SQLiteResultSet_new(stmt, C->maxRows, false), (Rop_T)&sqlite3rsetops);
+		return ResultSet_new(SQLiteResultSet_new(stmt, C->maxRows, false), (Rop_T)&sqlite3rops);
 	return NULL;
 }
 
@@ -197,7 +197,7 @@ PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql) {
         assert(C);
         EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, sql, -1, &stmt, &tail), C->timeout);
 	if (C->lastError==SQLITE_OK)
-		return PreparedStatement_new(SQLitePreparedStatement_new(stmt, C->maxRows), (Pop_T)&sqlite3prepops);
+		return PreparedStatement_new(SQLitePreparedStatement_new(stmt, C->maxRows), (Pop_T)&sqlite3pops);
 	return NULL;
 }
 

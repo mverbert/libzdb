@@ -40,7 +40,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct prepop postgresqlprepops = {
+const struct pop postgresqlpops = {
         "postgresql",
         PostgresqlPreparedStatement_free,
         PostgresqlPreparedStatement_setString,
@@ -73,7 +73,7 @@ struct T {
         i < 0 || i > P->paramCount) { THROW(SQLException, "Parameter index out of range"); \
         return false; }
 
-extern const struct rsetop postgresqlrsetops;
+extern const struct rop postgresqlrops;
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -210,7 +210,7 @@ ResultSet_T PostgresqlPreparedStatement_executeQuery(T P) {
                              0);
         P->lastError = PQresultStatus(P->res);
         if (P->lastError == PGRES_TUPLES_OK) {
-                return ResultSet_new(PostgresqlResultSet_new(P->res, P->maxRows, true), (Rop_T)&postgresqlrsetops);
+                return ResultSet_new(PostgresqlResultSet_new(P->res, P->maxRows, true), (Rop_T)&postgresqlrops);
         }
         return NULL;
 }

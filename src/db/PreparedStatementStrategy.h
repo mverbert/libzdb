@@ -31,7 +31,7 @@
 #define T IPreparedStatement_T
 typedef struct T *T;
 
-typedef struct prepop {
+typedef struct pop {
 	char *name;
         void (*free)(T *P);
         int (*setString)(T P, int parameterIndex, const char *x);

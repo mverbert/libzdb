@@ -38,7 +38,7 @@
 /* ------------------------------------------------------------- Definitions */
 
 
-const struct rsetop sqlite3rsetops = {
+const struct rop sqlite3rops = {
 	"sqlite",
         SQLiteResultSet_free,
         SQLiteResultSet_getColumnCount,

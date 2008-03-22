@@ -48,7 +48,7 @@
 
 #define MYSQL_OK 0
 
-const struct conop mysqlconops = {
+const struct cop mysqlcops = {
         "mysql",
         MysqlConnection_new,
         MysqlConnection_free,
@@ -76,8 +76,8 @@ struct T {
         StringBuffer_T sb;
 };
 
-extern const struct rsetop mysqlrsetops;
-extern const struct prepop mysqlprepops;
+extern const struct rop mysqlrops;
+extern const struct pop mysqlpops;
 
 
 /* ------------------------------------------------------------ Prototypes */
@@ -193,7 +193,7 @@ ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap) {
                 if ((C->lastError = mysql_stmt_execute(stmt)))
                         mysql_stmt_close(stmt);
                 else
-                        return ResultSet_new(MysqlResultSet_new(stmt, C->maxRows, false), (Rop_T)&mysqlrsetops);
+                        return ResultSet_new(MysqlResultSet_new(stmt, C->maxRows, false), (Rop_T)&mysqlrops);
         }
         return NULL;
 }
@@ -203,7 +203,7 @@ PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql) {
         MYSQL_STMT *stmt = NULL;
         assert(C);
         if (prepareStmt(C, sql, strlen(sql), &stmt))
-		return PreparedStatement_new(MysqlPreparedStatement_new(stmt, C->maxRows), (Pop_T)&mysqlprepops);
+		return PreparedStatement_new(MysqlPreparedStatement_new(stmt, C->maxRows), (Pop_T)&mysqlpops);
         return NULL;
 }
 

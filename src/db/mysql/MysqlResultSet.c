@@ -41,7 +41,7 @@
 
 #define MYSQL_OK 0
 
-const struct rsetop mysqlrsetops = {
+const struct rop mysqlrops = {
 	"mysql",
         MysqlResultSet_free,
         MysqlResultSet_getColumnCount,

@@ -38,7 +38,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct prepop sqlite3prepops = {
+const struct pop sqlite3pops = {
         "sqlite",
         SQLitePreparedStatement_free,
         SQLitePreparedStatement_setString,
@@ -57,7 +57,7 @@ struct T {
 	sqlite3_stmt *stmt;
 };
 
-extern const struct rsetop sqlite3rsetops;
+extern const struct rop sqlite3rops;
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -152,7 +152,7 @@ int SQLitePreparedStatement_execute(T P) {
 ResultSet_T SQLitePreparedStatement_executeQuery(T P) {
         assert(P);
         if (P->lastError==SQLITE_OK) {
-                return ResultSet_new(SQLiteResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&sqlite3rsetops);
+                return ResultSet_new(SQLiteResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&sqlite3rops);
         }
         return NULL;
 }
