@@ -106,7 +106,6 @@ static inline int getIndex(T R, const char *name) {
 static inline int ensureCapacity(T R, int i) {
         if ((R->columns[i].real_length > R->bind[i].buffer_length)) {
                 /* Column was truncated, resize and fetch column directly. */
-                assert(R->lastError == MYSQL_DATA_TRUNCATED);
                 unsigned long bufSize = R->columns[i].real_length;
                 RESIZE(R->columns[i].buffer, bufSize + 1);
                 R->bind[i].buffer = R->columns[i].buffer;
@@ -217,7 +216,7 @@ int MysqlResultSet_next(T R) {
                 return false;
         }
         R->lastError = mysql_stmt_fetch(R->stmt);
-        return (R->lastError==MYSQL_OK || R->lastError==MYSQL_DATA_TRUNCATED);
+        return ((R->lastError==MYSQL_OK) || (R->lastError==MYSQL_DATA_TRUNCATED));
 }
 
 
