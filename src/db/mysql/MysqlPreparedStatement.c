@@ -84,17 +84,13 @@ struct T {
 extern const struct rsetop mysqlrsetops;
 
 
-/* ------------------------------------------------------------ Prototypes */
-
-
-static int sendChunkedData(T P, int i);
-
-
 /* ----------------------------------------------------- Protected methods */
+
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
+
 
 T MysqlPreparedStatement_new(void *stmt, int maxRows) {
         T P;
@@ -187,21 +183,10 @@ int MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x,
 
 
 int MysqlPreparedStatement_execute(T P) {
-        int i;
         assert(P);
         if (P->paramCount>0) {
                 if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
-                        return false;
-                for (i = 0; i < P->paramCount; i++) { 
-                        /* Parameter data larger than mysql's net_buffer_length 
-                         are sent separately in chunks */
-                        if (((! P->bind[i].is_null) 
-                             && (P->params[i].length > net_buffer_length) 
-                             && (P->bind[i].buffer_type==MYSQL_TYPE_BLOB 
-                                 || P->bind[i].buffer_type==MYSQL_TYPE_STRING)))
-                                if (! sendChunkedData(P, i))
-                                        return false;
-                }
+                        THROW(SQLException, "mysql_stmt_bind_param -- %s", mysql_stmt_error(P->stmt));
         }
 #if MYSQL_VERSION_ID >= 50002
         {
@@ -223,7 +208,7 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         if (P->paramCount>0) {
                 P->lastError = mysql_stmt_bind_param(P->stmt, P->bind);
                 if (P->lastError != MYSQL_OK)
-                        return NULL;
+                        THROW(SQLException, "mysql_stmt_bind_param -- %s", mysql_stmt_error(P->stmt));
         }
 #if MYSQL_VERSION_ID >= 50002
         {
@@ -237,27 +222,8 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         return NULL;
 }
 
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
 
-/* ------------------------------------------------------- Private methods */
-
-
-static int sendChunkedData(T P, int i) {
-#define CHUNK_SIZE net_buffer_length
-        long off = 0;
-        long chunk = 0;
-        long size = P->params[i].length;
-	while (size > 0) {
-		chunk = size > CHUNK_SIZE ? CHUNK_SIZE : size;
-                P->lastError = mysql_stmt_send_long_data(P->stmt, i, P->bind[i].buffer + off, chunk);
-                if (P->lastError != MYSQL_OK) {
-                        THROW(SQLException, "mysql_stmt_send_long_data -- %s", mysql_stmt_error(P->stmt));
-                        return false;
-                }
-                size -= chunk;
-		off += chunk;
-        }
-        return true;
-}

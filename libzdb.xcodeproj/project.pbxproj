@@ -56,7 +56,7 @@
 		528363A60942F2420083C31A /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; languageSpecificationIdentifier = make; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
 		528363A80942F2420083C31A /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		528363AA0942F2420083C31A /* URL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URL.h; sourceTree = "<group>"; };
-		528363AB0942F2420083C31A /* URL.re */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; fileEncoding = 4; languageSpecificationIdentifier = c; path = URL.re; sourceTree = "<group>"; };
+		528363AB0942F2420083C31A /* URL.re */ = {isa = PBXFileReference; explicitFileType = sourcecode.c; fileEncoding = 4; languageSpecificationIdentifier = c; path = URL.re; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		528363AD0942F2420083C31A /* Util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Util.c; sourceTree = "<group>"; };
 		528363AE0942F2420083C31A /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		528363B00942F2420083C31A /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
