@@ -97,9 +97,7 @@ static void init_once() { ThreadData_create(Exception_stack); }
 
 
 void Exception_init() {
-#ifndef WIN32
         pthread_once(&once_control, init_once);
-#endif
 }
 
 
