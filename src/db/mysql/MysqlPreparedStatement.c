@@ -73,9 +73,6 @@ struct T {
         MYSQL_BIND *bind;
 };
 
-#ifndef net_buffer_length
-#define net_buffer_length 4096
-#endif
 #define TEST_INDEX \
         int i; assert(P); i= parameterIndex - 1; if (P->paramCount <= 0 || \
         i < 0 || i > P->paramCount) { THROW(SQLException, "Parameter index out of range"); \
