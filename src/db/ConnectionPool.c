@@ -177,6 +177,22 @@ void ConnectionPool_setReaper(T P, int sweepInterval) {
 }
 
 
+int ConnectionPool_size(T P) {
+        assert(P);
+        return Vector_size(P->pool);
+}
+
+
+int ConnectionPool_active(T P) {
+        int n = 0;
+        assert(P);
+        LOCK(P->mutex)
+        n = getActive(P);
+        END_LOCK;
+        return n;
+}
+
+
 /* -------------------------------------------------------- Public methods */
 
 
@@ -270,22 +286,6 @@ int ConnectionPool_reapConnections(T P) {
         assert(P);
         LOCK(P->mutex)
                 n = reapConnections(P);
-        END_LOCK;
-        return n;
-}
-
-
-int ConnectionPool_size(T P) {
-        assert(P);
-        return Vector_size(P->pool);
-}
-
-
-int ConnectionPool_active(T P) {
-        int n = 0;
-        assert(P);
-        LOCK(P->mutex)
-                n = getActive(P);
         END_LOCK;
         return n;
 }

@@ -362,6 +362,24 @@ void ConnectionPool_setAbortHandler(T P, void(*abortHandler)(const char *error))
  */
 void ConnectionPool_setReaper(T P, int sweepInterval);
 
+
+/**
+ * Returns the current number of connections in the pool. The number of 
+ * both active and inactive connections are returned.
+ * @param P A ConnectionPool object
+ * @return The number of connections in the pool
+ */
+int ConnectionPool_size(T P);
+
+
+/**
+ * Returns the number of active connections in the pool. I.e. connections
+ * in use by clients.
+ * @param P A ConnectionPool object
+ * @return The number of active connections in the pool
+ */
+int ConnectionPool_active(T P);
+
 //@}
 
 /**
@@ -411,24 +429,6 @@ void ConnectionPool_returnConnection(T P, Connection_T connection);
  * @return The number of Connections that was closed
  */
 int ConnectionPool_reapConnections(T P);
-
-
-/**
- * Returns the current number of connections in the pool. The number of 
- * both active and inactive connections are returned.
- * @param P A ConnectionPool object
- * @return The number of connections in the pool
- */
-int ConnectionPool_size(T P);
-
-
-/**
- * Returns the number of active connections in the pool. I.e. connections
- * in use by clients.
- * @param P A ConnectionPool object
- * @return The number of active connections in the pool
- */
-int ConnectionPool_active(T P);
 
 
 /** @name class methods */
