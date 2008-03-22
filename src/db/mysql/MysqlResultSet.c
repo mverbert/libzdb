@@ -106,10 +106,9 @@ static inline int getIndex(T R, const char *name) {
 static inline void ensureCapacity(T R, int i) {
         if ((R->columns[i].real_length > R->bind[i].buffer_length)) {
                 /* Column was truncated, resize and fetch column directly. */
-                unsigned long bufSize = R->columns[i].real_length;
-                RESIZE(R->columns[i].buffer, bufSize + 1);
+                RESIZE(R->columns[i].buffer, R->columns[i].real_length + 1);
                 R->bind[i].buffer = R->columns[i].buffer;
-                R->bind[i].buffer_length = bufSize;
+                R->bind[i].buffer_length = R->columns[i].real_length;
                 /* Need to rebind as the buffer address has changed */
                 if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind)))
                         THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
