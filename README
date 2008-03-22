@@ -82,10 +82,10 @@
  -------------------
  
  The library implements an elegant solution for thread-safe exceptions
- handling to clients. Use of exceptions frees programmers from the 
- tedious return-code idiom for dealing with errors. The API documents 
- every method that can throw an exception. Methods in the library that
- can throw an exception should be called from inside a try-catch block.
+ handling. Use of exceptions frees programmers from the tedious return 
+ code idiom for dealing with errors. The API documents every method that
+ can throw an exception. Methods that can throw an exception should be 
+ called from inside a try-catch block.
  
 
  Link and include
