@@ -16,8 +16,8 @@
  */
 
 
-#ifndef MEM_H
-#define MEM_H
+#ifndef ZMEM_H
+#define ZMEM_H
 
 
 /**

@@ -16,8 +16,8 @@
  */
 
 
-#ifndef STRINGBUFFER_H
-#define STRINGBUFFER_H
+#ifndef ZSTRINGBUFFER_H
+#define ZSTRINGBUFFER_H
 #include <stdarg.h>
 
 

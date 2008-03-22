@@ -16,8 +16,8 @@
  */
 
 
-#ifndef Util_H
-#define Util_H
+#ifndef ZUTIL_H
+#define ZUTIL_H
 #include <stdarg.h>
 
 
