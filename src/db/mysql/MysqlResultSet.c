@@ -103,7 +103,7 @@ static inline int getIndex(T R, const char *name) {
 }
 
 
-static inline int ensureCapacity(T R, int i) {
+static inline void ensureCapacity(T R, int i) {
         if ((R->columns[i].real_length > R->bind[i].buffer_length)) {
                 /* Column was truncated, resize and fetch column directly. */
                 unsigned long bufSize = R->columns[i].real_length;
@@ -111,16 +111,11 @@ static inline int ensureCapacity(T R, int i) {
                 R->bind[i].buffer = R->columns[i].buffer;
                 R->bind[i].buffer_length = bufSize;
                 /* Need to rebind as the buffer address has changed */
-                if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind))) {
+                if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind)))
                         THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
-                        return false;
-                }
-                if ((R->lastError = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0))) {
+                if ((R->lastError = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0)))
                         THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
-                        return false;
-                }
         }
-        return true;
 }
 
 
@@ -228,8 +223,7 @@ long MysqlResultSet_getColumnSize(T R, int columnIndex) {
 
 const char *MysqlResultSet_getString(T R, int columnIndex) {
         TEST_INDEX(NULL)
-        if (! ensureCapacity(R, i))
-                return NULL;
+        ensureCapacity(R, i);
         R->columns[i].buffer[R->columns[i].real_length] = 0;
         return R->columns[i].buffer;
 }
@@ -279,8 +273,7 @@ double MysqlResultSet_getDoubleByName(T R, const char *columnName) {
 
 const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX(NULL)
-        if (! ensureCapacity(R, i))
-                return NULL;
+        ensureCapacity(R, i);
         *size = R->columns[i].real_length;
         return R->columns[i].buffer;
 }
