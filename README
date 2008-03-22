@@ -67,7 +67,7 @@
  switches are used respectively for package protect non-api objects
  in the library and for usage with the zild application server. It
  is strongly recommended to build the library with --enable-protected
- as it will be faster and potential name clashes will be reduced
+ as it will be faster and reduce the risk for name symbol interposing
  
   
  API Documentation
