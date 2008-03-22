@@ -103,6 +103,8 @@ void SQLiteResultSet_free(T *R) {
 	assert(R && *R);
         if ((*R)->keep==false)
                 sqlite3_finalize((*R)->stmt);
+        else
+                sqlite3_reset((*R)->stmt);
 	FREE(*R);
 }
 

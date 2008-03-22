@@ -191,7 +191,8 @@ int MysqlPreparedStatement_execute(T P) {
         mysql_stmt_attr_set(P->stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
         }
 #endif
-        P->lastError = mysql_stmt_execute(P->stmt);
+        if ((P->lastError = mysql_stmt_execute(P->stmt))) 
+                THROW(SQLException, "mysql_stmt_execute -- %s", mysql_stmt_error(P->stmt));
         if (P->lastError==MYSQL_OK) {
                 /* Discard prepared param data in client/server */
                 P->lastError = mysql_stmt_reset(P->stmt);
@@ -212,7 +213,8 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
                 mysql_stmt_attr_set(P->stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
         }
 #endif
-        P->lastError = mysql_stmt_execute(P->stmt);
+        if ((P->lastError = mysql_stmt_execute(P->stmt))) 
+                THROW(SQLException, "mysql_stmt_execute -- %s", mysql_stmt_error(P->stmt));
         if (P->lastError==MYSQL_OK)
                 return ResultSet_new(MysqlResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&mysqlrsetops);
         return NULL;

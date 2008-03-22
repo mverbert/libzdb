@@ -142,8 +142,8 @@ int SQLitePreparedStatement_execute(T P) {
                 return (P->lastError==SQLITE_OK);
         }
         if (P->lastError==SQLITE_ROW) {
-                THROW(SQLException, "Select statement not allowed in PreparedStatement_execute()");
                 P->lastError = sqlite3_reset(P->stmt);
+                THROW(SQLException, "Select statement not allowed in PreparedStatement_execute()");
         }
         return false;
 }
