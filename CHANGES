@@ -7,10 +7,11 @@
 Version 2.2
 -----------
 * Detailed error message added to exception. In an exception handler,
-  the variable Exception_frame.message, provides an alternative to 
+  the variable Exception_frame.message, now provides an alternative to 
   Connection_getLastError() for obtaining the error message
 * From this release, building with exceptions handling is no longer 
   optional but required
+* Internal optimizing changes 
 Bug fixes:
 * Fixed Connection_prepareStatement() error reported on a PostgreSQL
   Connection. Thanks to Paul Stevens for bug report.
