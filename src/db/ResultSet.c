@@ -71,7 +71,7 @@ void ResultSet_free(T *R) {
 #endif
 
 
-/* -------------------------------------------------------- Public methods */
+/* ------------------------------------------------------------ Properties */
 
 
 int ResultSet_getColumnCount(T R) {
@@ -86,16 +86,19 @@ const char *ResultSet_getColumnName(T R, int column) {
 }
 
 
+long ResultSet_getColumnSize(T R, int columnIndex) {
+	assert(R);
+	return R->op->getColumnSize(R->I, columnIndex);
+}
+
+
+/* -------------------------------------------------------- Public methods */
+
+
 int ResultSet_next(T R) {
         if (R)
                 return R->op->next(R->I);
         return false;
-}
-
-
-long ResultSet_getColumnSize(T R, int columnIndex) {
-	assert(R);
-	return R->op->getColumnSize(R->I, columnIndex);
 }
 
 

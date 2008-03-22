@@ -103,6 +103,9 @@ void ResultSet_free(T *R);
 
 //>> End filter-out
 
+/** @name Properties */
+//@{
+
 /**
  * Returns the number of columns in this ResultSet object.
  * @param R A ResultSet object
@@ -123,20 +126,6 @@ const char *ResultSet_getColumnName(T R, int column);
 
 
 /**
- * Moves the cursor down one row from its current position. A
- * ResultSet cursor is initially positioned before the first row; the
- * first call to this method makes the first row the current row; the
- * second call makes the second row the current row, and so on. When
- * there are not more available rows false is returned. An empty
- * ResultSet will return false on the first call to ResultSet_next().
- * @param R A ResultSet object
- * @return true if the new current row is valid; false if there are no
- * more rows
- */
-int ResultSet_next(T R);
-
-
-/**
  * Returns column size in bytes. If the column is a blob then 
  * this methtod returns the number of bytes in that blob. No type 
  * conversions occur. If the result is a string (or a number 
@@ -151,6 +140,21 @@ int ResultSet_next(T R);
  * @see SQLException.h
  */
 long ResultSet_getColumnSize(T R, int columnIndex);
+
+//@}
+
+/**
+ * Moves the cursor down one row from its current position. A
+ * ResultSet cursor is initially positioned before the first row; the
+ * first call to this method makes the first row the current row; the
+ * second call makes the second row the current row, and so on. When
+ * there are not more available rows false is returned. An empty
+ * ResultSet will return false on the first call to ResultSet_next().
+ * @param R A ResultSet object
+ * @return true if the new current row is valid; false if there are no
+ * more rows
+ */
+int ResultSet_next(T R);
 
 
 /**

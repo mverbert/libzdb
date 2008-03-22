@@ -153,7 +153,7 @@ int Connection_isInTransaction(T C) {
 #endif
 
 
-/* -------------------------------------------------------- Public methods */
+/* ------------------------------------------------------------ Properties */
 
 
 void Connection_setQueryTimeout(T C, int ms) {
@@ -189,6 +189,15 @@ URL_T Connection_getURL(T C) {
 }
 
 
+/* -------------------------------------------------------- Public methods */
+
+
+int Connection_ping(T C) {
+        assert(C);
+        return C->op->ping(C->db);
+}
+
+
 void Connection_clear(T C) {
         assert(C);
         if (C->resultSet) {
@@ -201,12 +210,6 @@ void Connection_clear(T C) {
 void Connection_close(T C) {
         assert(C);
         ConnectionPool_returnConnection(C->parent, C);
-}
-
-
-int Connection_ping(T C) {
-        assert(C);
-        return C->op->ping(C->db);
 }
 
 

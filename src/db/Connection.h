@@ -118,6 +118,9 @@ int Connection_isInTransaction(T C);
 
 //>> End filter-out
 
+/** @name Properties */
+//@{
+
 /**
  * Sets the number of milliseconds the Connection should wait for a
  * SQL statement to finish if the database is busy. If the limit is
@@ -162,6 +165,16 @@ int Connection_getMaxRows(T C);
 
 
 /**
+ * Returns this Connection URL
+ * @param C A Connection object
+ * @return This Connection URL
+ * @see URL.h
+ */
+URL_T Connection_getURL(T C);
+
+//@}
+
+/**
  * Ping the database server and returns true if this Connection is 
  * alive, otherwise false in which case the Connection should be closed. 
  * @param C A Connection object
@@ -169,15 +182,6 @@ int Connection_getMaxRows(T C);
  * otherwise false
  */
 int Connection_ping(T C);
-
-
-/**
- * Returns this Connection URL
- * @param C A Connection object
- * @return This Connection URL
- * @see URL.h
- */
-URL_T Connection_getURL(T C);
 
 
 /**

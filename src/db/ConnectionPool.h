@@ -255,6 +255,8 @@ T ConnectionPool_new(URL_T url);
  */
 void ConnectionPool_free(T *P);
 
+/** @name Properties */
+//@{
 
 /**
  * Returns this Connection Pool URL
@@ -360,6 +362,7 @@ void ConnectionPool_setAbortHandler(T P, void(*abortHandler)(const char *error))
  */
 void ConnectionPool_setReaper(T P, int sweepInterval);
 
+//@}
 
 /**
  * Prepare for the beginning of active use of this component. This method

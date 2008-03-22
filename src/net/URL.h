@@ -35,11 +35,9 @@
  * <code>http</code> protocol may use all components. Here is an
  * example where all components are used:
  *
- * \htmlonly
- * <code nowrap>
+ * <pre>
  * http://user:password@www.foo.bar:8080/document/index.csp?querystring#ref
- * </code>
- * \endhtmlonly
+ * </pre>
  *
  * This is a simplified version of the <a href="http://www.zild.org/">zild</a> 
  * URL class. The primary purpose of this class is to wrap database connection
@@ -95,6 +93,8 @@ T URL_create(const char *url, ...);
  */
 void URL_free(T *U);
 
+/** @name Properties */
+//@{
 
 /**
  * Get the protocol of the URL.
@@ -191,6 +191,8 @@ const char *URL_getParameter(T U, const char *name);
  * @return The URL string
  */
 const char *URL_toString(T U);
+
+//@}
 
 /** @name class methods */
 //@{
