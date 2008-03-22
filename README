@@ -63,9 +63,11 @@
  how to use the library. 
  
  Note that unit tests cannot be built if the following configure 
- switches was used; --enable-protected or --enable-zild. These
+ switches where used; --enable-protected or --enable-zild. These
  switches are used respectively for package protect non-api objects
- in the library and for usage with the zild application server.
+ in the library and for usage with the zild application server. It
+ is strongly recommended to build the library with --enable-protected
+ as it will be faster and potential name clashes will be reduced
  
   
  API Documentation
@@ -79,10 +81,9 @@
  Exceptions handling
  -------------------
  
- The library implements an elegant solution for providing thread-safe 
- exceptions handling to clients. Use of exceptions are recommend since
- it provides better error reporting and frees programmers from the 
- tedious return-code idiom for dealing with errors. The API documents
+ The library implements an elegant solution for thread-safe exceptions
+ handling to clients. Use of exceptions frees programmers from the 
+ tedious return-code idiom for dealing with errors. The API documents 
  every method that can throw an exception. Methods in the library that
  can throw an exception should be called from inside a try-catch block.
  
@@ -103,7 +104,7 @@
  was linked in static or dynamic when libzdb was created. To check, use 
  'otool -L libzdb.dylib' on Mac OS X, or 'ldd libzdb.so' on Linux. If 
  database libraries was linked static you can compile and link a program 
- that uses libzdb, like so (your paths may vary). Otherwise you may have 
+ which use libzdb, like so (your paths may vary). Otherwise you may have 
  to explicit add a link to a database library e.g. -lsqlite3
  
  gcc -o sql sql.c -L/usr/local/lib -lzdb -lpthread -I/usr/local/include
