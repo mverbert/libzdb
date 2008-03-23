@@ -180,7 +180,7 @@ int main(void) {
         printf("=> Test1: TRY-CATCH\n");
         {
                 TRY
-                        THROW(A, "A");
+                        THROW(A, NULL);
                         assert(false); // Should not be reached
                 CATCH(A)
                         printf("\tResult: Ok\n");
