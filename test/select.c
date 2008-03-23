@@ -9,7 +9,7 @@
 #include <SQLException.h>
 
 /*
- gcc -o sql select.c -L/<libzdb>/lib -lzdb -lpthread -I/<libzdb>/include
+ gcc -o select select.c -L/<libzdb>/lib -lzdb -lpthread -I/<libzdb>/include
  */
 
 int main(void) {
@@ -26,10 +26,7 @@ int main(void) {
                         "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", NULL
                 };
                 
-                TRY
-                Connection_execute(con, "drop table ztest;");
-                ELSE
-                END_TRY;
+                TRY Connection_execute(con, "drop table ztest;"); ELSE END_TRY;
                 
                 Connection_execute(con, "create table ztest(name varchar(255));");
                 PreparedStatement_T p = Connection_prepareStatement(con, "insert into ztest values (?);"); 
@@ -38,7 +35,7 @@ int main(void) {
                         PreparedStatement_execute(p);
                 }
                 p = Connection_prepareStatement(con, "select name from ztest where name like ?;"); 
-                PreparedStatement_setString(p, 1, "%Chad%");
+                PreparedStatement_setString(p, 1, "%Inoue%");
                 
                 ResultSet_T result = PreparedStatement_executeQuery(p);
                 while (ResultSet_next(result))
