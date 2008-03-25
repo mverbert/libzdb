@@ -17,7 +17,7 @@
 
 
 /**
- * Return true if the string <i>a</i> equals the string <i>b</i>. The
+ * Returns true if the string <i>a</i> equals the string <i>b</i>. The
  * test is <i>case-insensitive</i> but depends on that all characters
  * in the two strings can be translated in the current locale.
  * @param a The string to test for equality with <code>b</code>
@@ -28,7 +28,7 @@ int Str_isEqual(const char *a, const char *b);
 
 
 /**
- * Return true if the string <i>a</i> equals the string <i>b</i>. The
+ * Returns true if the string <i>a</i> equals the string <i>b</i>. The
  * test is <i>case-sensitive</i> and compares byte by byte 
  * @param a The string to test for equality with <code>b</code>
  * @param b The string to test for equality with <code>a</code>
@@ -38,7 +38,7 @@ int Str_isByteEqual(const char *a, const char *b);
 
 
 /**
- * Return true if the string <i>a</i> starts with the string
+ * Returns true if the string <i>a</i> starts with the string
  * <i>b</i>. The test is <i>case-insensitive</i> but depends 
  * on that all characters in the two strings can be translated 
  * in the current locale.
@@ -63,7 +63,7 @@ char *Str_copy(char *dest, const char *src, int n);
 
 
 /**
- * Return a copy of a string
+ * Returns a duplicate of <code>s</code>
  * @param s A String to duplicate
  * @return A duplicate of string s
  */

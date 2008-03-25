@@ -39,10 +39,10 @@
 
 /* ----------------------------------------------------------- Definitions */
 
-typedef struct params {
+typedef struct param_t {
         char *name;
         char *value;
-        struct params *next;
+        struct param_t *next;
 } *param_t;
 
 #define T URL_T
