@@ -8,7 +8,7 @@ Version 2.2
 -----------
 * Detailed error message added to exception. In an exception handler,
   the variable Exception_frame.message, now provides an alternative to 
-  Connection_getLastError() for obtaining the error message
+  Connection_getLastError() for obtaining the latest error message
 * From this release, building with exceptions handling is no longer 
   optional but required
 * Internal optimizing changes 
