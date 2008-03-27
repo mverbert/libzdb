@@ -109,7 +109,7 @@ void PostgresqlPreparedStatement_free(T *P) {
          * deallocation (postgres-8.1.x) - the DEALLOCATE statement
          * has to be used. The postgres documentation mentiones such
          * function as a possible future extension */
-        snprintf(stmt, STRLEN, "DEALLOCATE %s;", (*P)->stmt);
+        snprintf(stmt, STRLEN, "DEALLOCATE \"%s\";", (*P)->stmt);
         PQclear(PQexec((*P)->db, stmt));
         PQclear((*P)->res);
 	FREE((*P)->stmt);

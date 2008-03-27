@@ -18,6 +18,8 @@ Bug fixes:
 * MySQL: Fixed error in ResultSet_getBlob() and ResultSet_getString() 
   which lead to a segfault when trying to obtain "large" strings and 
   blobs. Again thanks to Paul Stevens.
+* PostgreSQL: Fixed the "syntax error at character 12" for prepared
+  statemen deallocation. Thanks to Paul Stevens for bug report.
 
 Version 2.1
 -----------
