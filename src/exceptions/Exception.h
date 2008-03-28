@@ -214,14 +214,11 @@ struct Exception_Frame {
 	Exception_Frame *prev;
         char message[EXCEPTION_MESSAGE_LENGTH];
 };
-enum { Exception_entered=0, Exception_throwd,
-        Exception_handled,   Exception_finalized };
+enum { Exception_entered=0, Exception_throwd, Exception_handled, Exception_finalized };
 extern ThreadData_T Exception_stack;
 void Exception_init();
-void Exception_throw(const T *e, const char *func, const char *file, 
-                     int line, const char *cause, ...);
-#define pop_exception_stack assert(ThreadData_set(Exception_stack, \
-        ((Exception_Frame*)ThreadData_get(Exception_stack))->prev)==0)
+void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...);
+#define pop_exception_stack assert(ThreadData_set(Exception_stack, ((Exception_Frame*)ThreadData_get(Exception_stack))->prev)==0)
 /** @endcond */
 
 

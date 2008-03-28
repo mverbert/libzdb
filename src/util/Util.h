@@ -16,8 +16,8 @@
  */
 
 
-#ifndef ZUTIL_H
-#define ZUTIL_H
+#ifndef UTIL_INCLUDED
+#define UTIL_INCLUDED
 #include <stdarg.h>
 
 

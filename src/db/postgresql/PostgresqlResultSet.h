@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef POSTGRESQLRESULTSET_H
-#define POSTGRESQLRESULTSET_H
+#ifndef POSTGRESQLRESULTSET_INCLUDED
+#define POSTGRESQLRESULTSET_INCLUDED
 #define T IResultSet_T
 T PostgresqlResultSet_new(void *stmt, int maxRows, int keep);
 void PostgresqlResultSet_free(T *R);

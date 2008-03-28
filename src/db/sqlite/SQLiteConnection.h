@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SQLITECONNECTION_H
-#define SQLITECONNECTION_H
+#ifndef SQLITECONNECTION_INCLUDED
+#define SQLITECONNECTION_INCLUDED
 #define T IConnection_T
 T SQLiteConnection_new(URL_T url, char **error);
 void SQLiteConnection_free(T *C);

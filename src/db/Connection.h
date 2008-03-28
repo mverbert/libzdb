@@ -16,8 +16,8 @@
  */
 
 
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#ifndef CONNECTION_INCLUDED
+#define CONNECTION_INCLUDED
 
 
 /**

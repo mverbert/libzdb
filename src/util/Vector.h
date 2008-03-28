@@ -16,8 +16,8 @@
  */
 
 
-#ifndef ZVECTOR_H
-#define ZVECTOR_H
+#ifndef VECTOR_INCLUDED
+#define VECTOR_INCLUDED
 
 
 /**

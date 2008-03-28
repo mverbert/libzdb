@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MYSQLPREPAREDSTATEMENT_H
-#define MYSQLPREPAREDSTATEMENT_H
+#ifndef MYSQLPREPAREDSTATEMENT_INCLUDED
+#define MYSQLPREPAREDSTATEMENT_INCLUDED
 #define T IPreparedStatement_T
 T MysqlPreparedStatement_new(void *stmt, int maxRows);
 void MysqlPreparedStatement_free(T *P);

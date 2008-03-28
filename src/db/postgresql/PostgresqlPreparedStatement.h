@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef POSTGRESQLPREPAREDSTATEMENT_H
-#define POSTGRESQLPREPAREDSTATEMENT_H
+#ifndef POSTGRESQLPREPAREDSTATEMENT_INCLUDED
+#define POSTGRESQLPREPAREDSTATEMENT_INCLUDED
 #define T IPreparedStatement_T
 T PostgresqlPreparedStatement_new(PGconn *db, int maxRows, char *stmt, int prm);
 void PostgresqlPreparedStatement_free(T *P);

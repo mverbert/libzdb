@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SQLITERESULTSET_H
-#define SQLITERESULTSET_H
+#ifndef SQLITERESULTSET_INCLUDED
+#define SQLITERESULTSET_INCLUDED
 #define T IResultSet_T
 T SQLiteResultSet_new(void *stmt, int maxRows, int keep);
 void SQLiteResultSet_free(T *R);

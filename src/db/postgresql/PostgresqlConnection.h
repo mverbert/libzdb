@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef POSTGRESQLCONNECTION_H
-#define POSTGRESQLCONNECTION_H
+#ifndef POSTGRESQLCONNECTION_INCLUDED
+#define POSTGRESQLCONNECTION_INCLUDED
 #define T IConnection_T
 T PostgresqlConnection_new(URL_T url, char **error);
 void PostgresqlConnection_free(T *C);

@@ -16,8 +16,8 @@
  */
 
 
-#ifndef ZTHREAD_H
-#define ZTHREAD_H
+#ifndef THREAD_INCLUDED
+#define THREAD_INCLUDED
 
 /**
  * This interface contains <b>Thread</b> and <b>Mutex</b> abstractions 

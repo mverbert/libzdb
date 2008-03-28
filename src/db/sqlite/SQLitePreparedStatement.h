@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SQLITEPREPAREDSTATEMENT_H
-#define SQLITEPREPAREDSTATEMENT_H
+#ifndef SQLITEPREPAREDSTATEMENT_INCLUDED
+#define SQLITEPREPAREDSTATEMENT_INCLUDED
 #define T IPreparedStatement_T
 T SQLitePreparedStatement_new(void *stmt, int maxRows);
 void SQLitePreparedStatement_free(T *P);

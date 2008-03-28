@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MYSQLCONNECTION_H
-#define MYSQLCONNECTION_H
+#ifndef MYSQLCONNECTION_INCLUDED
+#define MYSQLCONNECTION_INCLUDED
 #define T IConnection_T
 T MysqlConnection_new(URL_T url, char **error);
 void MysqlConnection_free(T *C);

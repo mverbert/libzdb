@@ -16,8 +16,8 @@
  */
 
 
-#ifndef DBURL_H
-#define DBURL_H
+#ifndef URL_INCLUDED
+#define URL_INCLUDED
 
 
 /**

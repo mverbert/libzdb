@@ -3,8 +3,8 @@
  */
 
 
-#ifndef ZSTR_H
-#define ZSTR_H
+#ifndef STR_INCLUDED
+#define STR_INCLUDED
 #include <stdarg.h>
 
 

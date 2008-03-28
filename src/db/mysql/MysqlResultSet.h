@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MYSQLRESULTSET_H
-#define MYSQLRESULTSET_H
+#ifndef MYSQLRESULTSET_INCLUDED
+#define MYSQLRESULTSET_INCLUDED
 #define T IResultSet_T
 T MysqlResultSet_new(void *stmt, int maxRows, int keep);
 void MysqlResultSet_free(T *R);

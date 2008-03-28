@@ -16,8 +16,8 @@
  */
 
 
-#ifndef ZCONFIG_H
-#define ZCONFIG_H
+#ifndef CONFIG_INCLUDED
+#define CONFIG_INCLUDED
 
 
 /**
