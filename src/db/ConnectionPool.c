@@ -362,7 +362,7 @@ static int reapConnections(T P) {
 
 
 static void *doSweep(void *args) {
-        ConnectionPool_T P = args;
+        T P = args;
         struct timespec wait = {0, 0};
         Mutex_lock(P->mutex);
         while (! P->stopped) {
