@@ -57,7 +57,6 @@
  * Allocate object <code>p</code> and clear the memory region
  * before the allocated object is returned. 
  * @param p ADT object to allocate
- * @return A pointer to the newly allocated object
  * @exception MemoryException if allocation failed
  * @hideinitializer
  */
@@ -76,7 +75,6 @@
  * Reallocate <code>p</code> with size <code>n</code>.
  * @param p pointer to reallocate
  * @param n new object size in bytes
- * @return A pointer to the newly reallocated memory
  * @exception MemoryException if allocation failed
  * @exception AssertException if <code>n <= 0</code> 
  * @hideinitializer
