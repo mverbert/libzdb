@@ -203,7 +203,7 @@ void ConnectionPool_start(T P) {
                 if (! P->filled) {
                         P->filled = fillPool(P);
                         if (P->filled && P->doSweep) {
-                                DEBUG("Starting reaper thread\n");
+                                DEBUG("Starting Database Connection Pool reaper thread\n");
                                 Sem_init(P->alarm);
                                 Thread_create(P->reaper, doSweep, P);
                         }
@@ -227,7 +227,7 @@ void ConnectionPool_stop(T P) {
                 }
         END_LOCK;
         if (stopSweep) {
-                DEBUG("Stopping reaper thread...\n");
+                DEBUG("Stopping Database Connection Pool reaper thread...\n");
                 Sem_signal(P->alarm);
                 Thread_join(P->reaper);
                 Sem_destroy(P->alarm);
@@ -372,6 +372,6 @@ static void *doSweep(void *args) {
                 reapConnections(P);
         }
         Mutex_unlock(P->mutex);
-        DEBUG("Reaper thread stopped\n");
+        DEBUG("Connection Pool reaper thread stopped\n");
         return NULL;
 }
