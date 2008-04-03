@@ -44,7 +44,7 @@ int main(void) {
         }
         CATCH(SQLException)
         {
-                printf("\tSQLException -- %s\n", Exception_frame.message);
+                printf("SQLException -- %s\n", Exception_frame.message);
         }
         FINALLY
         {
