@@ -34,8 +34,6 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-#define BUFFER_SIZE 256
-
 #define T StringBuffer_T
 struct T {
         int used;
@@ -51,16 +49,16 @@ static inline void doAppend(T S, const char *s, va_list ap) {
         va_list ap_copy;
         va_copy(ap_copy, ap);
         while (true) {
-                int n = vsnprintf(S->buffer + S->used, S->length-S->used, s, ap_copy);
+                int n = vsnprintf(S->buffer + S->used, S->length - S->used, s, ap_copy);
                 if (n > -1 && (S->used + n) < S->length) {
-                        S->used+= n;
+                        S->used += n;
                         break;
                 }
                 if (n > -1)
-                        S->length+= BUFFER_SIZE + n;
+                        S->length += STRLEN + n;
                 else
                         S->length *= 2;
-                RESIZE(S->buffer, S->length);
+                RESIZE(S->buffer, S->length + 1);
         }
         va_end(ap_copy);
 }
@@ -78,8 +76,8 @@ T StringBuffer_new(const char *s) {
         T S;
         NEW(S);
         S->used = 0;
-        S->length = BUFFER_SIZE;
-        S->buffer = ALLOC(BUFFER_SIZE);
+        S->length = STRLEN;
+        S->buffer = ALLOC(STRLEN + 1);
         return StringBuffer_append(S, s);
 }
 
