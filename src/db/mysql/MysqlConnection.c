@@ -171,19 +171,25 @@ long long int MysqlConnection_rowsChanged(T C) {
 
 
 int MysqlConnection_execute(T C, const char *sql, va_list ap) {
+        va_list ap_copy;
 	assert(C);
         StringBuffer_clear(C->sb);
-        StringBuffer_vappend(C->sb, sql, ap);
+        va_copy(ap_copy, ap);
+        StringBuffer_vappend(C->sb, sql, ap_copy);
+        va_end(ap_copy);
         C->lastError = mysql_real_query(C->db, StringBuffer_toString(C->sb), StringBuffer_length(C->sb));
 	return (C->lastError==MYSQL_OK);
 }
 
 
 ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap) {
+        va_list ap_copy;
         MYSQL_STMT *stmt = NULL;
 	assert(C);
         StringBuffer_clear(C->sb);
-        StringBuffer_vappend(C->sb, sql, ap);
+        va_copy(ap_copy, ap);
+        StringBuffer_vappend(C->sb, sql, ap_copy);
+        va_end(ap_copy);
         prepareStmt(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt);
         if (stmt) {
 #if MYSQL_VERSION_ID >= 50002

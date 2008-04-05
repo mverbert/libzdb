@@ -179,9 +179,12 @@ long long int PostgresqlConnection_rowsChanged(T C) {
 
 
 int PostgresqlConnection_execute(T C, const char *sql, va_list ap) {
+        va_list ap_copy;
 	assert(C);
         StringBuffer_clear(C->sb);
-        StringBuffer_vappend(C->sb, sql, ap);
+        va_copy(ap_copy, ap);
+        StringBuffer_vappend(C->sb, sql, ap_copy);
+        va_end(ap_copy);
         PQclear(C->res);
         C->res = PQexec(C->db, StringBuffer_toString(C->sb));
         C->lastError = PQresultStatus(C->res);
@@ -190,9 +193,12 @@ int PostgresqlConnection_execute(T C, const char *sql, va_list ap) {
 
 
 ResultSet_T PostgresqlConnection_executeQuery(T C, const char *sql, va_list ap) {
+        va_list ap_copy;
 	assert(C);
         StringBuffer_clear(C->sb);
-        StringBuffer_vappend(C->sb, sql, ap);
+        va_copy(ap_copy, ap);
+        StringBuffer_vappend(C->sb, sql, ap_copy);
+        va_end(ap_copy);
         PQclear(C->res);
         C->res = PQexec(C->db, StringBuffer_toString(C->sb));
         C->lastError = PQresultStatus(C->res);

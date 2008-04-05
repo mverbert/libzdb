@@ -169,20 +169,26 @@ long long int SQLiteConnection_rowsChanged(T C) {
 
 
 int SQLiteConnection_execute(T C, const char *sql, va_list ap) {
+        va_list ap_copy;
 	assert(C);
         StringBuffer_clear(C->sb);
-        StringBuffer_vappend(C->sb, sql, ap);
+        va_copy(ap_copy, ap);
+        StringBuffer_vappend(C->sb, sql, ap_copy);
+        va_end(ap_copy);
 	executeSQL(C, StringBuffer_toString(C->sb));
 	return (C->lastError==SQLITE_OK);
 }
 
 
 ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
+        va_list ap_copy;
         const char *tail;
 	sqlite3_stmt *stmt;
 	assert(C);
         StringBuffer_clear(C->sb);
-        StringBuffer_vappend(C->sb, sql, ap);
+        va_copy(ap_copy, ap);
+        StringBuffer_vappend(C->sb, sql, ap_copy);
+        va_end(ap_copy);
         EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, StringBuffer_toString(C->sb), 
                     StringBuffer_length(C->sb), &stmt, &tail), C->timeout);
 	if (C->lastError==SQLITE_OK)

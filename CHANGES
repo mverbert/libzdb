@@ -1,8 +1,12 @@
-                            CHANGES version 2.2
+                         CHANGES version 2.2.1
 
-                 This file summarizes changes made since 1.0
+              This file summarizes changes made since 1.0
                  
-
+Version 2.2.1
+-------------
+Bug fixes:
+* Using va_list ap_copy to ensure validity of variable argument
+  lists.
 
 Version 2.2
 -----------
@@ -64,9 +68,10 @@ Bug fixes:
 Version 1.1.3
 -------------
 Bug fixes:
-* This release fixes a MySQL prepared statement bug. If a prepared statement
- was used with two or more number parameters, the numbers were saved with a  
- bogus value in the database. Thanks to José Antonio Sánchez
+* This release fixes a MySQL prepared statement bug. If a prepared
+  statement was used with two or more number parameters, the numbers
+  were saved with a bogus value in the database. Thanks to José Antonio
+  Sánchez
 
 Version 1.1.2
 -------------
@@ -104,11 +109,12 @@ Bug fixes:
 * Refactor and consolidate PreparedStatement clearResultSet
 * Do not free prepared statements on Connection_executeQuery(), only the
   ResultSet if any.
-* MySQL: Avoid unnecessary re-allocation in MysqlResultSet.ensureCapacity()
-  and set the new buffer length properly. 
-* MySQL: Stop MysqlResultSet_next() sooner when maxRows is reached for 
+* MySQL: Avoid unnecessary re-allocation in
+  MysqlResultSet.ensureCapacity() and set the new buffer length
+  properly.
+* MySQL: Stop MysqlResultSet_next() sooner when maxRows is reached for
   versions < 5.0
-* MySQL: Do not try to bind params in PreparedStatement unless in-params 
+* MySQL: Do not try to bind params in PreparedStatement unless in-params
   are present in the statement
 
 Version 1.0.1
@@ -116,7 +122,7 @@ Version 1.0.1
 * API: Connection_beginTransaction(), Connection_commit() and 
   Connection_rollback() now returns an int (true of false) instead of void.
 Bug fixes:
-* MySQL: Removed a debug statement in MySQL prepare statement so a 
+* MySQL: Removed a debug statement in MySQL prepare statement so a
   potential error message is not lost - MySQL pops last error messages.
 * MySQL: Make room for a terminating NUL byte when fetching large strings. 
 * configure.ac: Don't link with zlib unless mysql version was confirmed
