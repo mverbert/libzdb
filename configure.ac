@@ -2,7 +2,7 @@
 
 AC_PREREQ([2.53])
 
-AC_INIT([libzdb], [2.2], [bugs-libzdb@tildeslash.com])
+AC_INIT([libzdb], [2.2.1], [bugs-libzdb@tildeslash.com])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/Config.h])
