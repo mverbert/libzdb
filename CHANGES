@@ -5,8 +5,8 @@
 Version 2.2.1
 -------------
 Bug fixes:
-* Using va_list ap_copy to ensure validity of variable argument
-  lists.
+* MySQL and PostgreSQL: Fixed off-by-one count when verifying validity
+  of parameter and column index. Thanks to Paul Stevens for bug report.
 
 Version 2.2
 -----------

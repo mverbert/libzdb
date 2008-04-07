@@ -70,7 +70,7 @@ struct T {
 #endif
 #define TEST_INDEX \
         int i; assert(P); i= parameterIndex - 1; if (P->paramCount <= 0 || \
-        i < 0 || i > P->paramCount) { THROW(SQLException, "Parameter index out of range"); \
+        i < 0 || parameterIndex > P->paramCount) { THROW(SQLException, "Parameter index out of range"); \
         return false; }
 
 extern const struct rop postgresqlrops;
