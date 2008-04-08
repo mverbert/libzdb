@@ -424,7 +424,7 @@ void testPool(const char *testURL) {
                                 const char *name= ResultSet_getString(result, 2);
                                 /* So far so good, now, try access an invalid
                                    column, which should throw an SQLException */
-                                int bogus= ResultSet_getInt(result, 42);
+                                int bogus= ResultSet_getInt(result, 3);
                                 assert(false); // Should not come here
                                 printf("%d, %s, %d", id, name, bogus);
                         }
@@ -440,7 +440,7 @@ void testPool(const char *testURL) {
                         p= Connection_prepareStatement(con, 
                                 "insert into zild_t (id, name) values(?, ?);");
                         printf("\tResult: Parameter index out of range.. ");
-                        PreparedStatement_setInt(p, 42, 42);
+                        PreparedStatement_setInt(p, 3, 123);
                         assert(false);
                 }
                 CATCH(SQLException)
