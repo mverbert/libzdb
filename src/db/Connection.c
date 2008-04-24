@@ -266,6 +266,7 @@ int Connection_execute(T C, const char *sql, ...) {
         int rv = false;
         va_list ap;
         assert(C);
+        assert(sql);
         if (C->resultSet)
                 ResultSet_free(&C->resultSet);
 	va_start(ap, sql);
@@ -280,6 +281,7 @@ int Connection_execute(T C, const char *sql, ...) {
 ResultSet_T Connection_executeQuery(T C, const char *sql, ...) {
         va_list ap;
         assert(C);
+        assert(sql);
         if (C->resultSet)
                 ResultSet_free(&C->resultSet);
 	va_start(ap, sql);
@@ -294,6 +296,7 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...) {
 PreparedStatement_T Connection_prepareStatement(T C, const char *sql) {
         PreparedStatement_T p;
         assert(C);
+        assert(sql);
         p = C->op->prepareStatement(C->db, sql);
         if (p)
                 Vector_push(C->prepared, p);
