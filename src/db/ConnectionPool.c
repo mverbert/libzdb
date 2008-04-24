@@ -258,8 +258,8 @@ Connection_T ConnectionPool_getConnection(T P) {
                                 DEBUG("Failed to create connection -- %s\n", P->error);
 				FREE(P->error);
 			}
-                }
-                con = NULL;
+                } else
+                        con = NULL;
 found:
         END_LOCK;
 	return con;
