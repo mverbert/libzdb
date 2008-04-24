@@ -259,6 +259,7 @@ Connection_T ConnectionPool_getConnection(T P) {
 				FREE(P->error);
 			}
                 }
+                con = NULL;
 found:
         END_LOCK;
 	return con;
