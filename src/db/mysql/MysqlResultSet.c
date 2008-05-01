@@ -112,8 +112,15 @@ static inline void ensureCapacity(T R, int i) {
                 /* Need to rebind as the buffer address has changed */
                 if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind)))
                         THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
+                /*
+                 MySQL bug: mysql_stmt_fetch_column does not update bind buffer on blob/text data
+                 See http://bugs.mysql.com/bug.php?id=33086 TODO find a workaround!
+                 */
                 if ((R->lastError = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0)))
                         THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
+                // TODO remove when workaround is found
+                if (strlen(R->columns[i].buffer) < R->columns[i].real_length)
+                        DEBUG("MYSQL BUG: Buffer was truncated see http://bugs.mysql.com/bug.php?id=33086\n");
         }
 }
 

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <assert.h>
 
 #include <URL.h>
@@ -8,50 +9,86 @@
 #include <ConnectionPool.h>
 #include <SQLException.h>
 
+
 /*
- gcc -o select select.c -L/<libzdb>/lib -lzdb -lpthread -I/<libzdb>/include
+ 
+ CREATE TABLE `test` (
+ `id` int(11) NOT NULL auto_increment,
+ `data` longblob NOT NULL,
+ PRIMARY KEY  (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1
+ 
  */
 
-int main(void) {
-        Connection_T con;
-        URL_T url = URL_new("mysql://root:root@localhost:3306/test");
-        ConnectionPool_T pool = ConnectionPool_new(url);
-        ConnectionPool_start(pool);
-        con = ConnectionPool_getConnection(pool);
-        TRY
+const char *blob1 = "From nobody@pacific.net.sg Tue Dec 04 19:52:17 2007\n"
+"X-Envelope-From: <nobody@pacific.net.sg>\n"
+"Received: from [127.0.0.1] (port=49353 helo=test11)\n"
+"        by centos.nowhere.com with smtp (Exim 4.63)\n"
+"        (envelope-from <nobody@pacific.net.sg>)\n"
+"        id 1IzWJv-0000Ep-5f\n"
+"        for wallace@nowhere.com; Tue, 04 Dec 2007 19:52:17 +0800\n"
+"From: \"Wallace\" <nobody@pacific.net.sg>\n"
+"To: wallace <wallace@nowhere.com>\n"
+"Subject: Test 11\n"
+"Message-Id: <E1IzWJv-0000Ep-5f@centos.nowhere.com>\n"
+"Date: Tue, 04 Dec 2007 19:52:16 +0800\n"
+"\n"
+"\n"
+"This line works, however,\n"
+"From what I know, this line gets truncated\n"
+"This line gets truncated\n"
+"This other line get truncated too\n";
+
+const char *blob2 = "(\"Tue, 06 Aug 2002 19:54:41 +0200\" \"[dovecot] mbox support\" ((\"Marcus Rueckert\" NIL \"rueckert\" \"informatik.uni-rostock.de\")) ((NIL NIL \"dovecot-bounce\" \"procontrol.fi\")) ((\"Marcus Rueckert\" NIL \"rueckert\" \"informatik.uni-rostock.de\")) ((\"dovecot mailing list\" NIL \"dovecot\" \"procontrol.fi\")) NIL NIL NIL \"<0000420020806175441.GA7148@linux.taugt.net>\")";
+
+
+//#define DMTEST
+#define BUFSIZE 8192
+int main(void)
+{
+	const char *in = blob1;
+	int i = 0;
+	ResultSet_T res;
+	PreparedStatement_T s;
+        ZBDEBUG=1;
+	URL_T url = URL_new("mysql://root:root@localhost:3306/test");
+	assert(url);
+	ConnectionPool_T pool = ConnectionPool_new(url);
+	assert(pool);
+	ConnectionPool_start(pool);
+	Connection_T con = ConnectionPool_getConnection(pool);
+	assert(con);
+	
+        
+	TRY
         {
-                int i;
-                char *bleach[] = {
-                        "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 
-                        "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", NULL
-                };
+                Connection_execute(con, "DELETE FROM test");
                 
-                TRY Connection_execute(con, "drop table ztest;"); ELSE END_TRY;
-                
-                Connection_execute(con, "create table ztest(name varchar(255));");
-                PreparedStatement_T p = Connection_prepareStatement(con, "insert into ztest values (?);"); 
-                for (i = 0; bleach[i]; i++) {
-                        PreparedStatement_setString(p, 1, bleach[i]);
-                        PreparedStatement_execute(p);
+                s = Connection_prepareStatement(con, "INSERT INTO test (data) values ( ? )");
+                for (i=0; i<20; i++) {
+                        PreparedStatement_setString(s,1,in);
+                        PreparedStatement_execute(s);
                 }
-                p = Connection_prepareStatement(con, "select name from ztest where name like ?;"); 
-                PreparedStatement_setString(p, 1, "%Inoue%");
                 
-                ResultSet_T result = PreparedStatement_executeQuery(p);
-                while (ResultSet_next(result))
-                        printf("%s\n", ResultSet_getString(result, 1));
-                Connection_execute(con, "drop table ztest;");
+                res = Connection_executeQuery(con, "SELECT id,data FROM test LIMIT 10");
+                while(ResultSet_next(res)) {
+                        const char *out = ResultSet_getString(res,2);
+                        if (strcmp(in, out) != 0) {
+                                printf("Error mismatch\n[%s]\n[%s]\n", in, out);
+                        } else {
+                                printf("Row matches\n");
+                        }
+                }
         }
-        CATCH(SQLException)
+	CATCH(SQLException)
         {
-                printf("SQLException -- %s\n", Exception_frame.message);
+                printf("SQLException: %s\n", Connection_getLastError(con));
         }
-        FINALLY
+	FINALLY
         {
                 Connection_close(con);
-                ConnectionPool_free(&pool);
-                URL_free(&url);
         }
-        END_TRY;
-        return 0;
+	END_TRY;
+        
+	return 0;
 }
