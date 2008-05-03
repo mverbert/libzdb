@@ -9,6 +9,8 @@ Version 2.3
 Bug fixes:
 * MySQL and PostgreSQL: Fixed off-by-one count when verifying validity
   of parameter and column index. Thanks to Paul Stevens for bug report.
+* MySQL: Workaround mysql bug http://bugs.mysql.com/bug.php?id=33086 
+  and fixed column truncation in first result row. 
 
 Version 2.2
 -----------
