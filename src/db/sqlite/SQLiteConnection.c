@@ -249,22 +249,20 @@ static sqlite3 *doConnect(URL_T url, char **error) {
 static int setProperties(T C, char **error) {
         int i;
         const char **properties = URL_getParameterNames(C->url);
-        if (properties==NULL)
-                return true;
-        StringBuffer_clear(C->sb);
-        for (i = 0; properties[i]; i++)
-                StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));
-        executeSQL(C, StringBuffer_toString(C->sb));
-        if (C->lastError!=SQLITE_OK) {
-                *error = Str_cat("unable to set database pragmas -- %s", sqlite3_errmsg(C->db));
-                return false;
+        if (properties) {
+                StringBuffer_clear(C->sb);
+                for (i = 0; properties[i]; i++)
+                        StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));
+                executeSQL(C, StringBuffer_toString(C->sb));
+                if (C->lastError!=SQLITE_OK) {
+                        *error = Str_cat("unable to set database pragmas -- %s", sqlite3_errmsg(C->db));
+                        return false;
+                }
         }
         return true;
 }
 
 
 static inline void executeSQL(T C, const char *sql) {
-        EXEC_SQLITE(C->lastError, 
-                    sqlite3_exec(C->db, sql, NULL, NULL, NULL), 
-                    C->timeout);
+        EXEC_SQLITE(C->lastError, sqlite3_exec(C->db, sql, NULL, NULL, NULL), C->timeout);
 }

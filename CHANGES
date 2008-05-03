@@ -1,8 +1,8 @@
-                         CHANGES version 2.3
+                         CHANGES version 2.2.1
 
               This file summarizes changes made since 1.0
                  
-Version 2.3
+Version 2.2.1
 -------------
 * SQLite: Improved error reporting by using sqlite3_prepare_v2() when 
   available. Thanks to Paul Stevens for suggesting this.
