@@ -109,16 +109,13 @@ static inline void ensureCapacity(T R, int i) {
                 RESIZE(R->columns[i].buffer, R->columns[i].real_length + 1);
                 R->bind[i].buffer = R->columns[i].buffer;
                 R->bind[i].buffer_length = R->columns[i].real_length;
-                /* Need to rebind as the buffer address has changed */
-                if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind)))
-                        THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
-                /*
-                 MySQL bug: mysql_stmt_fetch_column does not update bind buffer on blob/text data
-                 See http://bugs.mysql.com/bug.php?id=33086 TODO find a workaround!
-                 */
                 if ((R->lastError = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0)))
                         THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
-                DEBUG("MYSQL BUG: Buffer was truncated see http://bugs.mysql.com/bug.php?id=33086\n");
+                /* Need to rebind as the buffer address has changed. This is a workaround - if we do this 
+                 before calling mysql_stmt_fetch_column the column is not updated, but doing this 
+                 afterwards seems to work */
+                if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind)))
+                        THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
         }
 }
 
