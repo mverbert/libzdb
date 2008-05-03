@@ -118,9 +118,7 @@ static inline void ensureCapacity(T R, int i) {
                  */
                 if ((R->lastError = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0)))
                         THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
-                // TODO remove when workaround is found
-                if (strlen(R->columns[i].buffer) < R->columns[i].real_length)
-                        DEBUG("MYSQL BUG: Buffer was truncated see http://bugs.mysql.com/bug.php?id=33086\n");
+                DEBUG("MYSQL BUG: Buffer was truncated see http://bugs.mysql.com/bug.php?id=33086\n");
         }
 }
 
