@@ -111,9 +111,9 @@ static inline void ensureCapacity(T R, int i) {
                 R->bind[i].buffer_length = R->columns[i].real_length;
                 if ((R->lastError = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0)))
                         THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
-                /* Need to rebind as the buffer address has changed. This is a workaround - if we do this 
-                 before calling mysql_stmt_fetch_column the column is not updated, but doing this 
-                 afterwards seems to work, don't ask */
+                /* Need to rebind as the buffer address has changed. If we do this 
+                 before calling mysql_stmt_fetch_column the buffer is not updated, 
+                 but doing this afterwards work, don't ask */
                 if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind)))
                         THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
         }
