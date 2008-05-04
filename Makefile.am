@@ -56,6 +56,7 @@ dist-hook::
 	-rm -rf `find $(distdir) -name "._*"`
 	-rm -rf `find $(distdir) -name ".DS_Store"`
 	-rm -rf `find $(distdir) -name ".libs"`
+	-rm -rf `find $(distdir) -name ".svn"`
 	-rm -f $(distdir)/src/xconfig.h $(distdir)/src/stamp-* \
               $(distdir)/tools/bin/filterh
         
