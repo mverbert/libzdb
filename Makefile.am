@@ -43,7 +43,7 @@ API_INTERFACES  = src/db/ConnectionPool.h src/db/Connection.h \
                   src/db/ResultSet.h src/net/URL.h src/db/PreparedStatement.h \
                   src/exceptions/SQLException.h src/exceptions/Exception.h
 
-libzdb_la_LDFLAGS = $(DBLDFLAGS) -release @VERSION@ -version-info 5:1:1
+libzdb_la_LDFLAGS = $(DBLDFLAGS) -release @VERSION@ -version-info 5:2:1
 
 BUILT_SOURCES   = $(nodist_include_HEADERS)
 
