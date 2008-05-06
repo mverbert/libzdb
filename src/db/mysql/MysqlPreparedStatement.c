@@ -162,8 +162,7 @@ int MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
 }
 
 
-int MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, 
-                                    int size) {
+int MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
         TEST_INDEX
         P->bind[i].buffer_type = MYSQL_TYPE_BLOB;
         P->bind[i].buffer = (void*)x;

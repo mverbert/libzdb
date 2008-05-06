@@ -168,8 +168,7 @@ int PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
 }
 
 
-int PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, 
-                                    int size) {
+int PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
         TEST_INDEX
         if (x==NULL) {
                 P->paramValues[i] = NULL;

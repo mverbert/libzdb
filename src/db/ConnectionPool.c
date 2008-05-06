@@ -340,13 +340,15 @@ static int getActive(T P){
 
 
 static int reapConnections(T P) {
-        int i, x, n = 0;
+        int x; 
+        int i = 0;
+        int n = 0;
         long timedout;
         Connection_T con;
         x = Vector_size(P->pool)-getActive(P)-P->initialConnections;
         timedout = Util_seconds()-P->connectionTimeout;
         while (x-->0) {
-                for (i = 0; i < Vector_size(P->pool); i++) {
+                for (; i < Vector_size(P->pool); i++) {
                         con = Vector_get(P->pool, i);
                         if (! Connection_isAvailable(con))
                                 continue;
