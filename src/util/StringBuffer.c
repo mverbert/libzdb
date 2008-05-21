@@ -47,9 +47,10 @@ struct T {
 
 static inline void doAppend(T S, const char *s, va_list ap) {
         va_list ap_copy;
-        va_copy(ap_copy, ap);
         while (true) {
+                va_copy(ap_copy, ap);
                 int n = vsnprintf(S->buffer + S->used, S->length - S->used, s, ap_copy);
+                va_end(ap_copy);
                 if (n > -1 && (S->used + n) < S->length) {
                         S->used += n;
                         break;
@@ -60,7 +61,6 @@ static inline void doAppend(T S, const char *s, va_list ap) {
                         S->length *= 2;
                 RESIZE(S->buffer, S->length + 1);
         }
-        va_end(ap_copy);
 }
 
 
