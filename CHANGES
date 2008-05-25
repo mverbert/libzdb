@@ -5,7 +5,8 @@
 Version 2.2.2
 -------------
 Bug fixes:
-* Ensure that reaper progress forward and remove all connections it can 
+* Ensure that reaper progress forward and remove all connections it can
+* Fixed a va_copy bug on 64 bits systems
                  
 Version 2.2.1
 -------------
