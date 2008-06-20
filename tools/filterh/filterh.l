@@ -24,8 +24,8 @@ version		^.*"@version".*"\n"
 {author}	;
 {version}	;
 
-"//<<"	        { BEGIN(CPP); }
-"#<<"	        { BEGIN(BPP); }
+"//<<"	        	{ BEGIN(CPP); }
+"#<<"	        		{ BEGIN(BPP); }
 
 <CPP>{
 	"//>>".*"\n"    { BEGIN(INITIAL); }
@@ -37,6 +37,6 @@ version		^.*"@version".*"\n"
 	[\000-\377]     ;
 }
 
-<INITIAL>.      { fprintf(yyout, "%s", yytext); }
+<INITIAL>.      	{ fprintf(yyout, "%s", yytext); }
 
 %%
