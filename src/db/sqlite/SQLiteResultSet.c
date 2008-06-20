@@ -75,17 +75,25 @@ struct T {
         THROW(SQLException, "Invalid column name"); return (RETVAL); }
 
 
-/* ------------------------------------------------------------ Prototypes */
+/* ------------------------------------------------------- Private methods */
 
 
-static inline int getIndex(T R, const char *name);
+static inline int getIndex(T R, const char *name) {
+        int i;
+        for (i = 0; i < R->columnCount; i++)
+                if (Str_isByteEqual(name, sqlite3_column_name(R->stmt, i)))
+                        return (i+1);
+        return -1;
+}
 
 
 /* ----------------------------------------------------- Protected methods */
 
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
+
 
 T SQLiteResultSet_new(void *stmt, int maxRows, int keep) {
 	T R;
@@ -101,10 +109,10 @@ T SQLiteResultSet_new(void *stmt, int maxRows, int keep) {
 
 void SQLiteResultSet_free(T *R) {
 	assert(R && *R);
-        if ((*R)->keep==false)
-                sqlite3_finalize((*R)->stmt);
-        else
+        if ((*R)->keep)
                 sqlite3_reset((*R)->stmt);
+        else
+                sqlite3_finalize((*R)->stmt);
 	FREE(*R);
 }
 
@@ -220,17 +228,8 @@ int SQLiteResultSet_readData(T R, int columnIndex, void *b, int l, long off) {
         return r;
 }
 
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
 
-/* ------------------------------------------------------- Private methods */
-
-
-static inline int getIndex(T R, const char *name) {
-        int i;
-        for (i = 0; i<R->columnCount; i++)
-                if (Str_isByteEqual(name, sqlite3_column_name(R->stmt, i)))
-                        return (i+1);
-        return -1;
-}
