@@ -80,12 +80,38 @@ struct T {
 };
 
 
-/* ------------------------------------------------------------ Prototypes */
+/* ------------------------------------------------------- Private methods */
 
 
-static void freePrepared(T C);
-static Cop_T getOp(const char *protocol);
-static int setStrategy(T C, char **error);
+static Cop_T getOp(const char *protocol) {
+        int i;
+        for (i = 0; cops[i]; i++) 
+                if (Str_startsWith(cops[i]->name, protocol)) 
+                        return (Cop_T)cops[i];
+        return NULL;
+}
+
+
+static int setStrategy(T C, char **error) {
+        const char *protocol = URL_getProtocol(C->url);
+        C->op = getOp(protocol);
+        if (C->op == NULL) {
+                *error = Str_cat("database protocol '%s' not supported", protocol);
+                return false;
+        }
+        C->db = C->op->new(C->url, error);
+        return (C->db != NULL);
+}
+
+
+static void freePrepared(T C) {
+	PreparedStatement_T ps;
+        while (! Vector_isEmpty(C->prepared)) {
+		ps = Vector_pop(C->prepared);
+		PreparedStatement_free(&ps);
+	}
+        assert(Vector_isEmpty(C->prepared));
+}
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -320,39 +346,5 @@ const char *Connection_getLastError(T C) {
 
 int Connection_isSupported(const char *url) {
         return (url ? (getOp(url) != NULL) : false);
-}
-
-
-/* ------------------------------------------------------- Private methods */
-
-
-static Cop_T getOp(const char *protocol) {
-        int i;
-        for (i = 0; cops[i]; i++) 
-                if (Str_startsWith(cops[i]->name, protocol)) 
-                        return (Cop_T)cops[i];
-        return NULL;
-}
-
-
-static int setStrategy(T C, char **error) {
-        const char *protocol = URL_getProtocol(C->url);
-        C->op = getOp(protocol);
-        if (C->op == NULL) {
-                *error = Str_cat("database protocol '%s' not supported", protocol);
-                return false;
-        }
-        C->db = C->op->new(C->url, error);
-        return (C->db != NULL);
-}
-
-
-static void freePrepared(T C) {
-	PreparedStatement_T ps;
-        while (! Vector_isEmpty(C->prepared)) {
-		ps = Vector_pop(C->prepared);
-		PreparedStatement_free(&ps);
-	}
-        assert(Vector_isEmpty(C->prepared));
 }
 
