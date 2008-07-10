@@ -203,6 +203,8 @@ void Connection_clear(T C) {
         if (C->resultSet) {
                 ResultSet_free(&C->resultSet);
         }
+        Connection_setMaxRows(C, 0);
+        C->timeout = SQL_DEFAULT_TIMEOUT;
         freePrepared(C);
 }
 

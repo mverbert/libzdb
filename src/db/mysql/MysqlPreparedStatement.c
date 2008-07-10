@@ -65,13 +65,14 @@ typedef struct param_t {
 #define T IPreparedStatement_T
 struct T {
         int maxRows;
-        my_bool yes;
         int lastError;
         int paramCount;
         param_t params;
         MYSQL_STMT *stmt;
         MYSQL_BIND *bind;
 };
+
+static my_bool yes = true;
 
 #define TEST_INDEX \
         int i; assert(P); i= parameterIndex - 1; if (P->paramCount <= 0 || \
@@ -95,7 +96,6 @@ T MysqlPreparedStatement_new(void *stmt, int maxRows) {
         NEW(P);
         P->stmt = stmt;
         P->maxRows = maxRows;
-        P->yes = true;
         P->paramCount = (int)mysql_stmt_param_count(P->stmt);
         if (P->paramCount>0) {
                 P->params = CALLOC(P->paramCount, sizeof(struct param_t));
@@ -122,7 +122,7 @@ int MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
         P->bind[i].buffer = (char*)x;
         if (x==NULL) {
                 P->params[i].length = 0;
-                P->bind[i].is_null = &P->yes;
+                P->bind[i].is_null = &yes;
         } else {
                 P->params[i].length = strlen(x);
                 P->bind[i].is_null = 0;
@@ -168,7 +168,7 @@ int MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int s
         P->bind[i].buffer = (void*)x;
         if (x==NULL) {
                 P->params[i].length = 0;
-                P->bind[i].is_null = &P->yes;
+                P->bind[i].is_null = &yes;
         } else {
                 P->params[i].length = size;
                 P->bind[i].is_null = 0;
