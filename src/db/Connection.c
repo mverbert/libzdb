@@ -51,7 +51,7 @@ extern const struct Cop_T postgresqlcops;
 extern const struct Cop_T sqlite3cops;
 #endif
 
-const struct Cop_T *cops[] = {
+static const struct Cop_T *cops[] = {
 #ifdef HAVE_LIBMYSQLCLIENT
         &mysqlcops,
 #endif
