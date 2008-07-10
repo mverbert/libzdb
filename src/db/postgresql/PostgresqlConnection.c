@@ -47,7 +47,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct cop postgresqlcops = {
+const struct Cop_T postgresqlcops = {
         "postgresql",
         PostgresqlConnection_new,
         PostgresqlConnection_free,
@@ -76,8 +76,8 @@ struct T {
         StringBuffer_T sb;
 };
 
-extern const struct rop postgresqlrops;
-extern const struct pop postgresqlpops;
+extern const struct Rop_T postgresqlrops;
+extern const struct Pop_T postgresqlpops;
 
 
 /* ------------------------------------------------------------ Prototypes */

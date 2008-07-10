@@ -40,7 +40,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct pop postgresqlpops = {
+const struct Pop_T postgresqlpops = {
         "postgresql",
         PostgresqlPreparedStatement_free,
         PostgresqlPreparedStatement_setString,
@@ -73,7 +73,7 @@ struct T {
         i < 0 || i >= P->paramCount) { THROW(SQLException, "Parameter index out of range"); \
         return false; }
 
-extern const struct rop postgresqlrops;
+extern const struct Rop_T postgresqlrops;
 
 
 /* ----------------------------------------------------- Protected methods */

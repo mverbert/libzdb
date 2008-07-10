@@ -149,6 +149,7 @@ static void freeParams(param_t p);
 
 /* ----------------------------------------------------- Protected methods */
 
+
 #ifdef ZILD_PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
@@ -371,6 +372,7 @@ char *URL_normalize(char *path) {
 #ifdef ZILD_PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
+
 
 /* ------------------------------------------------------- Private methods */
 

@@ -38,7 +38,7 @@
 /* ------------------------------------------------------------- Definitions */
 
 
-const struct rop sqlite3rops = {
+const struct Rop_T sqlite3rops = {
 	"sqlite",
         SQLiteResultSet_free,
         SQLiteResultSet_getColumnCount,

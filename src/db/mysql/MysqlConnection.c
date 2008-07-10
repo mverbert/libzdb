@@ -48,7 +48,7 @@
 
 #define MYSQL_OK 0
 
-const struct cop mysqlcops = {
+const struct Cop_T mysqlcops = {
         "mysql",
         MysqlConnection_new,
         MysqlConnection_free,
@@ -76,8 +76,8 @@ struct T {
         StringBuffer_T sb;
 };
 
-extern const struct rop mysqlrops;
-extern const struct pop mysqlpops;
+extern const struct Rop_T mysqlrops;
+extern const struct Pop_T mysqlpops;
 
 
 /* ------------------------------------------------------------ Prototypes */

@@ -41,7 +41,7 @@
 
 #define MYSQL_OK 0
 
-const struct rop mysqlrops = {
+const struct Rop_T mysqlrops = {
 	"mysql",
         MysqlResultSet_free,
         MysqlResultSet_getColumnCount,

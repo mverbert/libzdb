@@ -6,7 +6,7 @@ Version 2.2.2
 -------------
 Bug fixes:
 * Make sure connection properties, max rows and query timeout are
-  reset on Connection_close().
+  reset on Connection_close(), if changed.
 
 Version 2.2.2
 -------------

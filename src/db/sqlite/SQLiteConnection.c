@@ -42,7 +42,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct cop sqlite3cops = {
+const struct Cop_T sqlite3cops = {
         "sqlite",
         SQLiteConnection_new,
         SQLiteConnection_free,
@@ -70,8 +70,8 @@ struct T {
         StringBuffer_T sb;
 };
 
-extern const struct rop sqlite3rops;
-extern const struct pop sqlite3pops;
+extern const struct Rop_T sqlite3rops;
+extern const struct Pop_T sqlite3pops;
 
 
 /* ------------------------------------------------------------ Prototypes */

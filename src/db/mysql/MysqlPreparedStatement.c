@@ -41,7 +41,7 @@
 
 #define MYSQL_OK 0
 
-const struct pop mysqlpops = {
+const struct Pop_T mysqlpops = {
         "mysql",
         MysqlPreparedStatement_free,
         MysqlPreparedStatement_setString,
@@ -79,7 +79,7 @@ static my_bool yes = true;
         i < 0 || i >= P->paramCount) { THROW(SQLException, "Parameter index out of range"); \
         return false; }
 
-extern const struct rop mysqlrops;
+extern const struct Rop_T mysqlrops;
 
 
 /* ----------------------------------------------------- Protected methods */

@@ -42,16 +42,16 @@
 
 
 #ifdef HAVE_LIBMYSQLCLIENT
-extern const struct cop mysqlcops;
+extern const struct Cop_T mysqlcops;
 #endif
 #ifdef HAVE_LIBPQ
-extern const struct cop postgresqlcops;
+extern const struct Cop_T postgresqlcops;
 #endif
 #ifdef HAVE_LIBSQLITE3
-extern const struct cop sqlite3cops;
+extern const struct Cop_T sqlite3cops;
 #endif
 
-const struct cop *cops[] = {
+const struct Cop_T *cops[] = {
 #ifdef HAVE_LIBMYSQLCLIENT
         &mysqlcops,
 #endif

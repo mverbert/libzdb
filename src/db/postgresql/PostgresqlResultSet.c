@@ -40,7 +40,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct rop postgresqlrops = {
+const struct Rop_T postgresqlrops = {
       "postgresql",
       PostgresqlResultSet_free,
       PostgresqlResultSet_getColumnCount,
