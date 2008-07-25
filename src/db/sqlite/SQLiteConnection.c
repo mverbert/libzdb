@@ -103,6 +103,7 @@ T SQLiteConnection_new(URL_T url, char **error) {
                 SQLiteConnection_free(&C);
                 return NULL;
         }
+        C->timeout = SQL_DEFAULT_TIMEOUT;
 	return C;
 }
 

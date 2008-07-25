@@ -104,6 +104,7 @@ T PostgresqlConnection_new(URL_T url, char **error) {
         C->res = NULL;
         C->url = url;
         C->sb = StringBuffer_new("");
+        C->timeout = SQL_DEFAULT_TIMEOUT;
 	return C;
 }
 

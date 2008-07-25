@@ -2,11 +2,12 @@
 
               This file summarizes changes made since 1.0
 
-Version 2.2.2
+Version 2.2.3
 -------------
 Bug fixes:
 * Make sure connection properties, max rows and query timeout are
   reset on Connection_close(), if changed.
+* Make sure that timeout is set also for new Connections
 
 Version 2.2.2
 -------------

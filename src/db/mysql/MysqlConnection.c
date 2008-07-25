@@ -106,6 +106,7 @@ T MysqlConnection_new(URL_T url, char **error) {
         C->db = db;
         C->url = url;
         C->sb = StringBuffer_new("");
+        C->timeout = SQL_DEFAULT_TIMEOUT;
 	return C;
 }
 
