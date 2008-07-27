@@ -169,7 +169,7 @@
 #define EXEC_SQLITE(status, action, timeout) \
         do { long s = (timeout * USEC_PER_MSEC); long t = s/5; \
         do { status = (action); } while ((status == SQLITE_BUSY) \
-        && (t <= s) && ((Util_usleep(t), (t+=(s/5)))));} while (0);
+        && (t <= s) && ((Util_usleep(t), (t+=(s/5)))));} while (0)
 
 
 /* ------------------------------------------------------ Type definitions */
