@@ -8,7 +8,7 @@ Bug fixes:
 * Make sure connection properties, max rows and query timeout are
   reset on Connection_close(), if changed.
 * Ensure that timeout is set for new Connections and fixed a bug
-  in the SQLite retry macro so the SQLite driver now actually retry 
+  in the SQLite retry macro so the SQLite driver now will retry 
   executing on database lock
 
 Version 2.2.2
