@@ -96,9 +96,7 @@ long ResultSet_getColumnSize(T R, int columnIndex) {
 
 
 int ResultSet_next(T R) {
-        if (R)
-                return R->op->next(R->I);
-        return false;
+        return R ? R->op->next(R->I) : false;
 }
 
 

@@ -245,10 +245,8 @@ void Connection_close(T C) {
 
 int Connection_beginTransaction(T C) {
         assert(C);
-        if (! C->op->beginTransaction(C->db)) {
+        if (! C->op->beginTransaction(C->db)) 
                 THROW(SQLException, Connection_getLastError(C));
-                return false;
-        }
         C->isInTransaction++;
         return true;
 }
@@ -256,22 +254,18 @@ int Connection_beginTransaction(T C) {
 
 int Connection_commit(T C) {
         assert(C);
-        if (C->isInTransaction) {
+        if (C->isInTransaction)
                 C->isInTransaction--;
-        }
-        if (! C->op->commit(C->db)) {
+        if (! C->op->commit(C->db)) 
                 THROW(SQLException, Connection_getLastError(C));
-                return false;
-        }
         return true;
 }
 
 
 int Connection_rollback(T C) {
         assert(C);
-        if (C->isInTransaction) {
+        if (C->isInTransaction)
                 C->isInTransaction--;
-        }
         if (! C->op->rollback(C->db)) {
                 THROW(SQLException, Connection_getLastError(C));
                 return false;

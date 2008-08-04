@@ -70,8 +70,7 @@ struct T {
 #endif
 #define TEST_INDEX \
         int i; assert(P); i= parameterIndex - 1; if (P->paramCount <= 0 || \
-        i < 0 || i >= P->paramCount) { THROW(SQLException, "Parameter index out of range"); \
-        return false; }
+        i < 0 || i >= P->paramCount) THROW(SQLException, "Parameter index out of range");
 
 extern const struct Rop_T postgresqlrops;
 
@@ -128,47 +127,43 @@ void PostgresqlPreparedStatement_free(T *P) {
 }
 
 
-int PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
+void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
         TEST_INDEX
 	FREE(P->paramValues[i]);
         P->paramValues[i] = Str_dup(x);
         P->paramLengths[i] = strlen(P->paramValues[i]);
         P->paramFormats[i] = 0;
-        return true;
 }
 
 
-int PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
+void PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
         TEST_INDEX
 	FREE(P->paramValues[i]);
         P->paramValues[i] = Str_cat("%d", x);
         P->paramLengths[i] = strlen(P->paramValues[i]);
         P->paramFormats[i] = 0;
-        return true;
 }
 
 
-int PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
+void PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
         TEST_INDEX
 	FREE(P->paramValues[i]);
         P->paramValues[i] = Str_cat("%lld", x);
         P->paramLengths[i] = strlen(P->paramValues[i]);
         P->paramFormats[i] = 0;
-        return true;
 }
 
 
-int PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
+void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
         TEST_INDEX
 	FREE(P->paramValues[i]);
         P->paramValues[i] = Str_cat("%lf", x);
         P->paramLengths[i] = strlen(P->paramValues[i]);
         P->paramFormats[i] = 0;
-        return true;
 }
 
 
-int PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
+void PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
         TEST_INDEX
         if (x==NULL) {
                 P->paramValues[i] = NULL;
@@ -178,11 +173,10 @@ int PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, 
                 P->paramLengths[i] = size;
         }
         P->paramFormats[i] = 1;
-        return true;
 }
 
 
-int PostgresqlPreparedStatement_execute(T P) {
+void PostgresqlPreparedStatement_execute(T P) {
         assert(P);
         PQclear(P->res);
         P->res = PQexecPrepared(P->db,
@@ -193,7 +187,7 @@ int PostgresqlPreparedStatement_execute(T P) {
                              P->paramFormats,
                              0);
         P->lastError = PQresultStatus(P->res);
-        return(P->lastError == PGRES_COMMAND_OK);
+        assert(P->lastError == PGRES_COMMAND_OK);
 }
 
 
@@ -208,9 +202,8 @@ ResultSet_T PostgresqlPreparedStatement_executeQuery(T P) {
                              P->paramFormats,
                              0);
         P->lastError = PQresultStatus(P->res);
-        if (P->lastError == PGRES_TUPLES_OK) {
+        if (P->lastError == PGRES_TUPLES_OK)
                 return ResultSet_new(PostgresqlResultSet_new(P->res, P->maxRows, true), (Rop_T)&postgresqlrops);
-        }
         return NULL;
 }
 

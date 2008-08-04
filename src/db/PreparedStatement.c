@@ -86,58 +86,40 @@ void PreparedStatement_free(T *P) {
 /* -------------------------------------------------------- Public methods */
 
 
-int PreparedStatement_setString(T P, int parameterIndex, const char *x) {
+void PreparedStatement_setString(T P, int parameterIndex, const char *x) {
 	assert(P);
-        if (P->op->setString(P->I, parameterIndex, x))
-                return true;
-        THROW(SQLException, "PreparedStatement_setString");
-        return false;
+        P->op->setString(P->I, parameterIndex, x);
 }
 
 
-int PreparedStatement_setInt(T P, int parameterIndex, int x) {
+void PreparedStatement_setInt(T P, int parameterIndex, int x) {
 	assert(P);
-	if (P->op->setInt(P->I, parameterIndex, x))
-                return true;
-        THROW(SQLException, "PreparedStatement_setInt");
-        return false;
+        P->op->setInt(P->I, parameterIndex, x);
 }
 
 
-int PreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
+void PreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
 	assert(P);
-	if (P->op->setLLong(P->I, parameterIndex, x))
-                return true;
-        THROW(SQLException, "PreparedStatement_setLLong");
-        return false;
+        P->op->setLLong(P->I, parameterIndex, x);
 }
 
 
-int PreparedStatement_setDouble(T P, int parameterIndex, double x) {
+void PreparedStatement_setDouble(T P, int parameterIndex, double x) {
 	assert(P);
-	if (P->op->setDouble(P->I, parameterIndex, x))
-                return true;
-        THROW(SQLException, "PreparedStatement_setDouble");
-        return false;
+        P->op->setDouble(P->I, parameterIndex, x);
 }
 
 
-int PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
+void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
 	assert(P);
-	if (P->op->setBlob(P->I, parameterIndex, x, size))
-                return true;
-        THROW(SQLException, "PreparedStatement_setBlob");
-        return false;
+        P->op->setBlob(P->I, parameterIndex, x, size);
 }
 
 
-int PreparedStatement_execute(T P) {
+void PreparedStatement_execute(T P) {
 	assert(P);
         clearResultSet(P);
-	if (P->op->execute(P->I))
-                return true;
-        THROW(SQLException, "PreparedStatement_execute");
-        return false;
+        P->op->execute(P->I);
 }
 
 

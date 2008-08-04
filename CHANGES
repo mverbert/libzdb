@@ -1,6 +1,12 @@
-                         CHANGES version 2.2.3
+                         CHANGES version 2.3
 
               This file summarizes changes made since 1.0
+
+
+Version 2.3
+-----------
+* Clean up API and removed return value from functions that can 
+  throw an exception. I.e. exception replace error return code
 
 Version 2.2.3
 -------------

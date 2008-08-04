@@ -135,12 +135,10 @@ void testPool(const char *testURL) {
                         PreparedStatement_setBlob(pre, 1, data[i], 
                                                   strlen(data[i])+1);
                         PreparedStatement_setInt(pre, 2, i);
-                        assert(PreparedStatement_execute(pre));
                 }
                 /* Add a database null value */
                 PreparedStatement_setBlob(pre, 1, NULL, 0);
                 PreparedStatement_setInt(pre, 2, 4);
-                assert(PreparedStatement_execute(pre));
                 /* Add a large blob */
                 for (j= 0; j<65532; j+=4)
                         snprintf(&blob[j], 5, "%s", "blob"); 
@@ -148,7 +146,6 @@ void testPool(const char *testURL) {
                 *blob='S'; blob[strlen(blob)-1]= 'E';
                 PreparedStatement_setBlob(pre, 1, blob, strlen(blob)+1);
                 PreparedStatement_setInt(pre, 2, i);
-                assert(PreparedStatement_execute(pre));
                 printf("\tResult: prepared statement successfully executed\n");
                 Connection_close(con);
         }

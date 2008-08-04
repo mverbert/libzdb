@@ -76,8 +76,7 @@ static my_bool yes = true;
 
 #define TEST_INDEX \
         int i; assert(P); i= parameterIndex - 1; if (P->paramCount <= 0 || \
-        i < 0 || i >= P->paramCount) { THROW(SQLException, "Parameter index out of range"); \
-        return false; }
+        i < 0 || i >= P->paramCount) THROW(SQLException, "Parameter index out of range"); 
 
 extern const struct Rop_T mysqlrops;
 
@@ -116,7 +115,7 @@ void MysqlPreparedStatement_free(T *P) {
 }
 
 
-int MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
+void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
         TEST_INDEX
         P->bind[i].buffer_type = MYSQL_TYPE_STRING;
         P->bind[i].buffer = (char*)x;
@@ -128,41 +127,37 @@ int MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
                 P->bind[i].is_null = 0;
         }
         P->bind[i].length = &P->params[i].length;
-        return true;
 }
 
 
-int MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
+void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
         TEST_INDEX
         P->params[i].i = x;
         P->bind[i].buffer_type = MYSQL_TYPE_LONG;
         P->bind[i].buffer = (char*)&P->params[i].i;
         P->bind[i].is_null = 0;
-        return true;
 }
 
 
-int MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
+void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
         TEST_INDEX
         P->params[i].ll = x;
         P->bind[i].buffer_type = MYSQL_TYPE_LONGLONG;
         P->bind[i].buffer = (char*)&P->params[i].ll;
         P->bind[i].is_null = 0;
-        return true;
 }
 
 
-int MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
+void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
         TEST_INDEX
         P->params[i].d = x;
         P->bind[i].buffer_type = MYSQL_TYPE_DOUBLE;
         P->bind[i].buffer = (char*)&P->params[i].d;
         P->bind[i].is_null = 0;
-        return true;
 }
 
 
-int MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
+void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
         TEST_INDEX
         P->bind[i].buffer_type = MYSQL_TYPE_BLOB;
         P->bind[i].buffer = (void*)x;
@@ -174,16 +169,13 @@ int MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int s
                 P->bind[i].is_null = 0;
         }
         P->bind[i].length = &P->params[i].length;
-        return true;
 }
 
 
-int MysqlPreparedStatement_execute(T P) {
+void MysqlPreparedStatement_execute(T P) {
         assert(P);
-        if (P->paramCount>0) {
-                if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
+        if ((P->paramCount > 0) && (P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
                         THROW(SQLException, "mysql_stmt_bind_param -- %s", mysql_stmt_error(P->stmt));
-        }
 #if MYSQL_VERSION_ID >= 50002
         {
         unsigned long cursor = CURSOR_TYPE_NO_CURSOR;
@@ -196,16 +188,13 @@ int MysqlPreparedStatement_execute(T P) {
                 /* Discard prepared param data in client/server */
                 P->lastError = mysql_stmt_reset(P->stmt);
         }
-        return (P->lastError==MYSQL_OK);
 }
 
 
 ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         assert(P);
-        if (P->paramCount>0) {
-                if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
+        if ((P->paramCount > 0) && (P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
                         THROW(SQLException, "mysql_stmt_bind_param -- %s", mysql_stmt_error(P->stmt));
-        }
 #if MYSQL_VERSION_ID >= 50002
         {
                 unsigned long cursor = CURSOR_TYPE_READ_ONLY;

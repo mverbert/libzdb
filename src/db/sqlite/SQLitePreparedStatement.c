@@ -52,6 +52,7 @@ const struct Pop_T sqlite3pops = {
 
 #define T IPreparedStatement_T
 struct T {
+        sqlite3 *db;
         int maxRows;
         int lastError;
 	sqlite3_stmt *stmt;
@@ -66,10 +67,11 @@ extern const struct Rop_T sqlite3rops;
 #pragma GCC visibility push(hidden)
 #endif
 
-T SQLitePreparedStatement_new(void *stmt, int maxRows) {
+T SQLitePreparedStatement_new(sqlite3 *db, void *stmt, int maxRows) {
         T P;
         assert(stmt);
         NEW(P);
+        P->db = db;
         P->stmt = stmt;
         P->maxRows = maxRows;
         P->lastError = SQLITE_OK;
@@ -84,76 +86,75 @@ void SQLitePreparedStatement_free(T *P) {
 }
 
 
-int SQLitePreparedStatement_setString(T P, int parameterIndex, const char *x) {
+void SQLitePreparedStatement_setString(T P, int parameterIndex, const char *x) {
         assert(P);
         sqlite3_reset(P->stmt);
         P->lastError = sqlite3_bind_text(P->stmt, parameterIndex, x, -1, SQLITE_STATIC);
         if (P->lastError == SQLITE_RANGE)
                 THROW(SQLException, "Parameter index out of range");
-        return (P->lastError==SQLITE_OK);
 }
 
 
-int SQLitePreparedStatement_setInt(T P, int parameterIndex, int x) {
+void SQLitePreparedStatement_setInt(T P, int parameterIndex, int x) {
         assert(P);
         sqlite3_reset(P->stmt);
         P->lastError = sqlite3_bind_int(P->stmt, parameterIndex, x);
         if (P->lastError == SQLITE_RANGE)
                 THROW(SQLException, "Parameter index out of range");
-        return (P->lastError==SQLITE_OK);
 }
 
 
-int SQLitePreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
+void SQLitePreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
         assert(P);
         sqlite3_reset(P->stmt);
         P->lastError = sqlite3_bind_int64(P->stmt, parameterIndex, x);
         if (P->lastError == SQLITE_RANGE)
                 THROW(SQLException, "Parameter index out of range");
-        return (P->lastError==SQLITE_OK);
 }
 
 
-int SQLitePreparedStatement_setDouble(T P, int parameterIndex, double x) {
+void SQLitePreparedStatement_setDouble(T P, int parameterIndex, double x) {
         assert(P);
         sqlite3_reset(P->stmt);
         P->lastError = sqlite3_bind_double(P->stmt, parameterIndex, x);
         if (P->lastError == SQLITE_RANGE)
                 THROW(SQLException, "Parameter index out of range");
-        return (P->lastError==SQLITE_OK);
 }
 
 
-int SQLitePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
+void SQLitePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
         assert(P);
         sqlite3_reset(P->stmt);
         P->lastError = sqlite3_bind_blob(P->stmt, parameterIndex, x, size, SQLITE_STATIC);
         if (P->lastError == SQLITE_RANGE)
                 THROW(SQLException, "Parameter index out of range");
-        return (P->lastError==SQLITE_OK);
 }
 
 
-int SQLitePreparedStatement_execute(T P) {
+void SQLitePreparedStatement_execute(T P) {
         assert(P);
         EXEC_SQLITE(P->lastError, sqlite3_step(P->stmt), SQL_DEFAULT_TIMEOUT);
-        if (P->lastError==SQLITE_DONE) {
-                P->lastError = sqlite3_reset(P->stmt);
-                return (P->lastError==SQLITE_OK);
+        switch (P->lastError)
+        {
+                case SQLITE_DONE: 
+                        P->lastError = sqlite3_reset(P->stmt);
+                        break;
+                case SQLITE_ROW:
+                        P->lastError = sqlite3_reset(P->stmt);
+                        THROW(SQLException, "Select statement not allowed in PreparedStatement_execute()");
+                        break;
+                default:
+                        P->lastError = sqlite3_reset(P->stmt);
+                        THROW(SQLException, "%s", sqlite3_errmsg(P->db));
+                        break;
         }
-        if (P->lastError==SQLITE_ROW) {
-                P->lastError = sqlite3_reset(P->stmt);
-                THROW(SQLException, "Select statement not allowed in PreparedStatement_execute()");
-        }
-        return false;
 }
 
 
 ResultSet_T SQLitePreparedStatement_executeQuery(T P) {
         assert(P);
-        if (P->lastError==SQLITE_OK) {
+        if (P->lastError==SQLITE_OK)
                 return ResultSet_new(SQLiteResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&sqlite3rops);
-        }
         return NULL;
 }
 

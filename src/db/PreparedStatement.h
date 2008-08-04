@@ -108,13 +108,11 @@ void PreparedStatement_free(T *P);
  * @param P A PreparedStatement object
  * @param parameterIndex the first parameter is 1, the second is 2,..
  * @param x The string value to set. Must be a NUL terminated string.
- * @return false if a database error occurred, such as the parameter index 
- * is out of range, otherwise true
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h
 */
-int PreparedStatement_setString(T P, int parameterIndex, const char *x);
+void PreparedStatement_setString(T P, int parameterIndex, const char *x);
 
 
 /**
@@ -123,13 +121,11 @@ int PreparedStatement_setString(T P, int parameterIndex, const char *x);
  * @param P A PreparedStatement object
  * @param parameterIndex the first parameter is 1, the second is 2,..
  * @param x The int value to set
- * @return false if a database error occurred, such as the parameter index 
- * is out of range, otherwise true
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h
  */
-int PreparedStatement_setInt(T P, int parameterIndex, int x);
+void PreparedStatement_setInt(T P, int parameterIndex, int x);
 
 
 /**
@@ -138,13 +134,11 @@ int PreparedStatement_setInt(T P, int parameterIndex, int x);
  * @param P A PreparedStatement object
  * @param parameterIndex the first parameter is 1, the second is 2,..
  * @param x The long long value to set
- * @return false if a database error occurred, such as the parameter index 
- * is out of range, otherwise true
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h
  */
-int PreparedStatement_setLLong(T P, int parameterIndex, long long int x);
+void PreparedStatement_setLLong(T P, int parameterIndex, long long int x);
 
 
 /**
@@ -153,13 +147,11 @@ int PreparedStatement_setLLong(T P, int parameterIndex, long long int x);
  * @param P A PreparedStatement object
  * @param parameterIndex the first parameter is 1, the second is 2,..
  * @param x The double value to set
- * @return false if a database error occurred, such as the parameter index 
- * is out of range, otherwise true
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h
  */
-int PreparedStatement_setDouble(T P, int parameterIndex, double x);
+void PreparedStatement_setDouble(T P, int parameterIndex, double x);
 
 
 /**
@@ -169,13 +161,11 @@ int PreparedStatement_setDouble(T P, int parameterIndex, double x);
  * @param parameterIndex the first parameter is 1, the second is 2,..
  * @param x The blob value to set
  * @param size the number of bytes in the blob 
- * @return false if a database error occurred, such as the parameter index 
- * is out of range, otherwise true
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h
  */
-int PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
+void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
 
 
 /**
@@ -183,12 +173,11 @@ int PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
  * or DELETE statement or an SQL statement that returns nothing, such
  * as an SQL DDL statement. 
  * @param P A PreparedStatement object
- * @return true on success otherwise false on error and the method
  * Connection_getLastError() can be used to obtain the error string.
  * @exception SQLException if a database error occurs
  * @see SQLException.h
  */
-int PreparedStatement_execute(T P);
+void PreparedStatement_execute(T P);
 
 
 /**

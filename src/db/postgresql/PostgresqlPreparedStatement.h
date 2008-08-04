@@ -19,12 +19,12 @@
 #define T IPreparedStatement_T
 T PostgresqlPreparedStatement_new(PGconn *db, int maxRows, char *stmt, int prm);
 void PostgresqlPreparedStatement_free(T *P);
-int PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *x);
-int PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x);
-int PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x);
-int PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x);
-int PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
-int PostgresqlPreparedStatement_execute(T P);
+void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *x);
+void PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x);
+void PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x);
+void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x);
+void PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
+void PostgresqlPreparedStatement_execute(T P);
 ResultSet_T PostgresqlPreparedStatement_executeQuery(T P);
 #undef T
 #endif

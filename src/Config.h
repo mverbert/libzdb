@@ -48,8 +48,7 @@
 /**
  * Version, copyright and contact information
  */
-#define ABOUT   "Zild Database Library, version " VERSION \
-                ". Copyright (C) 2008 Tildeslash Ltd. " LIBZDB_URL
+#define ABOUT   "Zild Database Library, version " VERSION ". Copyright (C) 2008 Tildeslash Ltd. " LIBZDB_URL
 
 
 /* ----------------------------------- Error, Exceptions and report macros */

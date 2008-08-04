@@ -17,14 +17,14 @@
 #ifndef SQLITEPREPAREDSTATEMENT_INCLUDED
 #define SQLITEPREPAREDSTATEMENT_INCLUDED
 #define T IPreparedStatement_T
-T SQLitePreparedStatement_new(void *stmt, int maxRows);
+T SQLitePreparedStatement_new(sqlite3 *db, void *stmt, int maxRows);
 void SQLitePreparedStatement_free(T *P);
-int SQLitePreparedStatement_setString(T P, int parameterIndex, const char *x);
-int SQLitePreparedStatement_setInt(T P, int parameterIndex, int x);
-int SQLitePreparedStatement_setLLong(T P, int parameterIndex, long long int x);
-int SQLitePreparedStatement_setDouble(T P, int parameterIndex, double x);
-int SQLitePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
-int SQLitePreparedStatement_execute(T P);
+void SQLitePreparedStatement_setString(T P, int parameterIndex, const char *x);
+void SQLitePreparedStatement_setInt(T P, int parameterIndex, int x);
+void SQLitePreparedStatement_setLLong(T P, int parameterIndex, long long int x);
+void SQLitePreparedStatement_setDouble(T P, int parameterIndex, double x);
+void SQLitePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
+void SQLitePreparedStatement_execute(T P);
 ResultSet_T SQLitePreparedStatement_executeQuery(T P);
 #undef T
 #endif

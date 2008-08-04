@@ -34,12 +34,12 @@ typedef struct T *T;
 typedef struct Pop_T {
 	char *name;
         void (*free)(T *P);
-        int (*setString)(T P, int parameterIndex, const char *x);
-        int (*setInt)(T P, int parameterIndex, int x);
-        int (*setLLong)(T P, int parameterIndex, long long int x);
-        int (*setDouble)(T P, int parameterIndex, double x);
-        int (*setBlob)(T P, int parameterIndex, const void *x, int size);
-        int (*execute)(T P);
+        void (*setString)(T P, int parameterIndex, const char *x);
+        void (*setInt)(T P, int parameterIndex, int x);
+        void (*setLLong)(T P, int parameterIndex, long long int x);
+        void (*setDouble)(T P, int parameterIndex, double x);
+        void (*setBlob)(T P, int parameterIndex, const void *x, int size);
+        void (*execute)(T P);
         ResultSet_T (*executeQuery)(T P);
 } *Pop_T;
 

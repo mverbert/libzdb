@@ -19,12 +19,12 @@
 #define T IPreparedStatement_T
 T MysqlPreparedStatement_new(void *stmt, int maxRows);
 void MysqlPreparedStatement_free(T *P);
-int MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x);
-int MysqlPreparedStatement_setInt(T P, int parameterIndex, int x);
-int MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x);
-int MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x);
-int MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
-int MysqlPreparedStatement_execute(T P);
+void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x);
+void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x);
+void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x);
+void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x);
+void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
+void MysqlPreparedStatement_execute(T P);
 ResultSet_T MysqlPreparedStatement_executeQuery(T P);
 #undef T
 #endif

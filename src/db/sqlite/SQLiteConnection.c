@@ -211,7 +211,7 @@ PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql) {
         EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, sql, -1, &stmt, &tail), C->timeout);
 #endif
         if (C->lastError==SQLITE_OK)
-		return PreparedStatement_new(SQLitePreparedStatement_new(stmt, C->maxRows), (Pop_T)&sqlite3pops);
+		return PreparedStatement_new(SQLitePreparedStatement_new(C->db, stmt, C->maxRows), (Pop_T)&sqlite3pops);
 	return NULL;
 }
 

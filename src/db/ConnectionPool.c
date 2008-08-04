@@ -187,7 +187,7 @@ int ConnectionPool_active(T P) {
         int n = 0;
         assert(P);
         LOCK(P->mutex)
-        n = getActive(P);
+                n = getActive(P);
         END_LOCK;
         return n;
 }
@@ -270,10 +270,7 @@ void ConnectionPool_returnConnection(T P, Connection_T connection) {
 	assert(P);
         assert(connection);
 	if (Connection_isInTransaction(connection)) {
-                TRY
-                        Connection_rollback(connection);
-                ELSE
-                END_TRY;
+                TRY  Connection_rollback(connection); ELSE  END_TRY;
 	}
 	Connection_clear(connection);
 	LOCK(P->mutex)
