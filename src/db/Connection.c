@@ -317,11 +317,14 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...) {
 }
 
 
-PreparedStatement_T Connection_prepareStatement(T C, const char *sql) {
+PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...) {
+        va_list ap;
         PreparedStatement_T p;
         assert(C);
         assert(sql);
-        p = C->op->prepareStatement(C->db, sql);
+        va_start(ap, sql);
+        p = C->op->prepareStatement(C->db, sql, ap);
+        va_end(ap);
         if (p)
                 Vector_push(C->prepared, p);
         else

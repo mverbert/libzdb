@@ -210,7 +210,8 @@ ResultSet_T PostgresqlConnection_executeQuery(T C, const char *sql, va_list ap) 
 }
 
 
-PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql) {
+PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, va_list ap) {
+        va_list ap_copy;
         int len = 0, prm1 = 0, prm2 = 0, maxparam = atoi(MAXPARAM);
         long index[maxparam];
         char *name = NULL;
@@ -224,7 +225,9 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql) 
          * We support just 999 parameters currently, but it should
          * be probably enough - in the case that more will be needed,
          * we can rise the limit via the MAXPARAM */
-        p = q = Str_dup(sql);
+        va_copy(ap_copy, ap);
+        p = q = Str_vcat(sql, ap);
+        va_end(ap_copy);
         memset(index, 0, sizeof(index));
         index[0] = (long)p;
         while (prm1 < maxparam && (p = strchr(p, '?'))) {
@@ -236,8 +239,8 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql) 
         if (! prm1) {
                 stmt = Str_dup(sql);
         } else if (prm1 > maxparam) {
-                DEBUG("Prepared statement limit is %d parameters\n", maxparam);
                 FREE(q);
+                THROW(SQLException, "Exceeded prepared statement parameter limit");
                 return NULL;
         } else {
                 len = strlen(sql) + prm1 * strlen(MAXPARAM + 1);
@@ -253,8 +256,14 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql) 
         /* Get the unique prepared statement ID */
 	name = Str_cat("%d", rand());
         PQclear(C->res);
-        C->res = PQprepare(C->db, name, stmt, 0, NULL);
+
+        StringBuffer_clear(C->sb);
+        va_copy(ap_copy, ap);
+        StringBuffer_vappend(C->sb, stmt, ap_copy);
+        va_end(ap_copy);
         FREE(stmt);
+        
+        C->res = PQprepare(C->db, name, StringBuffer_toString(C->sb), 0, NULL);
         if (C->res &&
             (C->lastError == PGRES_EMPTY_QUERY ||
              C->lastError == PGRES_COMMAND_OK ||

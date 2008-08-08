@@ -45,7 +45,7 @@ typedef struct Cop_T {
 	long long int (*rowsChanged)(T C);
 	int (*execute)(T C, const char *sql, va_list ap);
 	ResultSet_T (*executeQuery)(T C, const char *sql, va_list ap);
-        PreparedStatement_T (*prepareStatement)(T C, const char *sql);
+        PreparedStatement_T (*prepareStatement)(T C, const char *sql, va_list ap);
         const char *(*getLastError)(T C);
 } *Cop_T;
 

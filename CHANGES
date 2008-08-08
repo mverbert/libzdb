@@ -7,6 +7,9 @@ Version 2.3
 -----------
 * Clean up API and removed return value from functions that can 
   throw an exception. I.e. exception replace error return code
+  
+* Support varargs in Connection_prepareStatement() to make it
+  easy to build prepared statements in-place
 
 Version 2.2.3
 -------------

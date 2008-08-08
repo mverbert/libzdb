@@ -29,7 +29,7 @@ long long int MysqlConnection_lastRowId(T C);
 long long int MysqlConnection_rowsChanged(T C);
 int MysqlConnection_execute(T C, const char *sql, va_list ap);
 ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap);
-PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql);
+PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_list ap);
 const char *MysqlConnection_getLastError(T C);
 #undef T
 #endif

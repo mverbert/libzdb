@@ -29,7 +29,7 @@ long long int SQLiteConnection_lastRowId(T C);
 long long int SQLiteConnection_rowsChanged(T C);
 int SQLiteConnection_execute(T C, const char *sql, va_list ap);
 ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap);
-PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql);
+PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_list ap);
 const char *SQLiteConnection_getLastError(T C);
 #undef T
 #endif

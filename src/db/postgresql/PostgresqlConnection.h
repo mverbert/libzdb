@@ -29,7 +29,7 @@ long long int PostgresqlConnection_lastRowId(T C);
 long long int PostgresqlConnection_rowsChanged(T C);
 int PostgresqlConnection_execute(T C, const char *sql, va_list ap);
 ResultSet_T PostgresqlConnection_executeQuery(T C, const char *sql, va_list ap);
-PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql);
+PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, va_list ap);
 const char *PostgresqlConnection_getLastError(T C);
 #undef T
 #endif

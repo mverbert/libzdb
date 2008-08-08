@@ -201,14 +201,19 @@ ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
 }
 
 
-PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql) {
+PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_list ap) {
+        va_list ap_copy;
         const char *tail;
         sqlite3_stmt *stmt;
         assert(C);
+        StringBuffer_clear(C->sb);
+        va_copy(ap_copy, ap);
+        StringBuffer_vappend(C->sb, sql, ap_copy);
+        va_end(ap_copy);
 #if SQLITE_VERSION_NUMBER >= 3004000
-        EXEC_SQLITE(C->lastError, sqlite3_prepare_v2(C->db, sql, -1, &stmt, &tail), C->timeout);
+        EXEC_SQLITE(C->lastError, sqlite3_prepare_v2(C->db, StringBuffer_toString(C->sb), -1, &stmt, &tail), C->timeout);
 #else
-        EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, sql, -1, &stmt, &tail), C->timeout);
+        EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, StringBuffer_toString(C->sb), -1, &stmt, &tail), C->timeout);
 #endif
         if (C->lastError==SQLITE_OK)
 		return PreparedStatement_new(SQLitePreparedStatement_new(C->db, stmt, C->maxRows), (Pop_T)&sqlite3pops);

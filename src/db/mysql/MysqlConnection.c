@@ -206,10 +206,15 @@ ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap) {
 }
 
 
-PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql) {
+PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_list ap) {
+        va_list ap_copy;
         MYSQL_STMT *stmt = NULL;
         assert(C);
-        if (prepareStmt(C, sql, strlen(sql), &stmt))
+        StringBuffer_clear(C->sb);
+        va_copy(ap_copy, ap);
+        StringBuffer_vappend(C->sb, sql, ap_copy);
+        va_end(ap_copy);
+        if (prepareStmt(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt))
 		return PreparedStatement_new(MysqlPreparedStatement_new(stmt, C->maxRows), (Pop_T)&mysqlpops);
         return NULL;
 }

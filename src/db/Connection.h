@@ -316,7 +316,7 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...);
  * @see PreparedStatement.h
  * @see SQLException.h
  */
-PreparedStatement_T Connection_prepareStatement(T C, const char *sql);
+PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...);
 
 
 /**
