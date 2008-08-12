@@ -5,20 +5,21 @@
 
 Version 2.3
 -----------
-* Clean up API and removed return value from functions that can 
-  throw an exception. I.e. exception replace error return code
+* Cleaned up API and removed unused return values from functions that 
+  throws exceptions on error. 
   
-* Support varargs in Connection_prepareStatement() to make it
-  easy to build prepared statements in-place
+* Support variable arguments in Connection_prepareStatement() 
+  to make it easy to build prepared statements in-place
 
 Version 2.2.3
 -------------
 Bug fixes:
 * Make sure connection properties, max rows and query timeout are
   reset on Connection_close(), if changed.
-* Ensure that timeout is set for new Connections and fixed a bug
-  in the SQLite retry macro so the SQLite driver now will retry 
-  executing on database lock
+* Ensure that timeout is set for new Connections.
+* SQLite: Fixed a bug so the SQLite driver now will retry executing
+  on database lock. This should greatly improve concurrent usage of
+  SQLite and reduce database locks from occurring 
 
 Version 2.2.2
 -------------
