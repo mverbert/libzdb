@@ -243,34 +243,29 @@ void Connection_close(T C) {
 }
 
 
-int Connection_beginTransaction(T C) {
+void Connection_beginTransaction(T C) {
         assert(C);
         if (! C->op->beginTransaction(C->db)) 
                 THROW(SQLException, Connection_getLastError(C));
         C->isInTransaction++;
-        return true;
 }
 
 
-int Connection_commit(T C) {
+void Connection_commit(T C) {
         assert(C);
         if (C->isInTransaction)
                 C->isInTransaction--;
         if (! C->op->commit(C->db)) 
                 THROW(SQLException, Connection_getLastError(C));
-        return true;
 }
 
 
-int Connection_rollback(T C) {
+void Connection_rollback(T C) {
         assert(C);
         if (C->isInTransaction)
                 C->isInTransaction--;
-        if (! C->op->rollback(C->db)) {
+        if (! C->op->rollback(C->db))
                 THROW(SQLException, Connection_getLastError(C));
-                return false;
-        }
-        return true;
 }
 
 
@@ -286,7 +281,7 @@ long long int Connection_rowsChanged(T C) {
 }
 
 
-int Connection_execute(T C, const char *sql, ...) {
+void Connection_execute(T C, const char *sql, ...) {
         int rv = false;
         va_list ap;
         assert(C);
@@ -296,9 +291,7 @@ int Connection_execute(T C, const char *sql, ...) {
 	va_start(ap, sql);
         rv = C->op->execute(C->db, sql, ap);
         va_end(ap);
-        if (rv == false)
-                THROW(SQLException, Connection_getLastError(C));
-        return rv;
+        if (rv == false) THROW(SQLException, Connection_getLastError(C));
 }
 
 

@@ -98,13 +98,13 @@ void testPool(const char *testURL) {
                         Connection_execute(con, "drop table zild_t;");
                 ELSE
                 END_TRY;
-                assert(Connection_execute(con, schema));
-                assert(Connection_beginTransaction(con));
+                Connection_execute(con, schema);
+                Connection_beginTransaction(con);
                 for (i= 0; data[i]; i++) 
                         Connection_execute(con,
                         "insert into zild_t (id, name, percent) values(%d,"
                                         " '%s', %d.%d);", i, data[i], i+1, i);
-                assert(Connection_commit(con));
+                Connection_commit(con);
                 printf("\tResult: table zild_t successfully created\n");
                 Connection_close(con);
         }
@@ -241,7 +241,7 @@ void testPool(const char *testURL) {
                 /* Need to close and release statements before 
                    we can drop the table, sqlite need this */
                 Connection_clear(con);
-                assert(Connection_execute(con, "drop table zild_t;"));
+                Connection_execute(con, "drop table zild_t;");
                 Connection_close(con);
                 ConnectionPool_stop(pool);
                 ConnectionPool_free(&pool);

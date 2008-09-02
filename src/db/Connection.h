@@ -205,11 +205,10 @@ void Connection_close(T C);
 /**
  * Start a transaction. 
  * @param C A Connection object
- * @return true on success otherwise false
  * @exception SQLException if a database error occurs
  * @see SQLException.h
  */
-int Connection_beginTransaction(T C);
+void Connection_beginTransaction(T C);
 
 
 /**
@@ -217,22 +216,20 @@ int Connection_beginTransaction(T C);
  * and releases any database locks currently held by this Connection
  * object.
  * @param C A Connection object
- * @return true on sucess otherwise false
  * @exception SQLException if a database error occurs
  * @see SQLException.h
  */
-int Connection_commit(T C);
+void Connection_commit(T C);
 
 
 /**
  * Undoes all changes made in the current transaction and releases any
  * database locks currently held by this Connection object.
  * @param C A Connection object
- * @return true on sucess otherwise false
  * @exception SQLException if a database error occurs
  * @see SQLException.h
  */
-int Connection_rollback(T C);
+void Connection_rollback(T C);
 
 
 /**
@@ -264,12 +261,10 @@ long long int Connection_rowsChanged(T C);
  * clears any previous ResultSets associated with the Connection.
  * @param C A Connection object
  * @param sql A SQL statement
- * @return true on success otherwise false on error and the method
- * Connection_getLastError() can be used to obtain the error string.
  * @exception SQLException if a database error occurs
  * @see SQLException.h
  */
-int Connection_execute(T C, const char *sql, ...);
+void Connection_execute(T C, const char *sql, ...);
 
 
 /**
