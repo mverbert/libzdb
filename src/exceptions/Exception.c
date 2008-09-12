@@ -54,10 +54,10 @@
  * Exception stack and Exceptions used in the library. 
  * 
  * LEGAL NOTICE, the part that differs from the original code is Copyright
- * (C) Tildeslash Ltd. This implementation is licensed under the GPL
- * with Exceptions in the file EXCEPTIONS. The MIT license above applies
- * to the original and exceptional clever CII code which can be found at 
- * this URL http://www.cs.princeton.edu/software/cii/
+ * (C) Tildeslash Ltd. This implementation is licensed under GPLv3 with 
+ * Exceptions in the file EXCEPTIONS. The MIT license above applies to the
+ * original and exceptional clever CII code which can be found at this URL
+ * http://www.cs.princeton.edu/software/cii/
  *
  * @version \$Id: Exception.c,v 1.28 2008/03/20 11:28:54 hauk Exp $
  * @file
@@ -122,15 +122,12 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
                 va_end(ap);
         }
 	if (p == NULL) {
-                ABORT("%s%s%s\n raised in %s at %s:%d\n", 
-                      e->name, cause ? ": " : "", cause ? message : "",
-                      func ? func : "?", file ? file : "?", line);
+                ABORT("%s%s%s\n raised in %s at %s:%d\n", e->name, cause ? ": " : "", cause ? message : "", func ? func : "?", file ? file : "?", line);
 	} else {
                 p->exception = e;
                 p->func = func;
                 p->file = file;
                 p->line = line;
-                p->message[0] = 0;
                 if (cause)
                         Str_copy(p->message, message, EXCEPTION_MESSAGE_LENGTH);
                 pop_exception_stack;	
