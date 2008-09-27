@@ -35,25 +35,25 @@
  * 
  * Consider this statement: 
  * <pre>
- *  INSERT INTO blobs(key, value) VALUES(?, ?)
+ *  INSERT INTO employee(name, picture) VALUES(?, ?)
  * </pre>
  * There are two IN parameters in this statement, the parameter for setting
- * the value of the key has index 1 and the one for the value has index 2.
- * To set the values for the IN parameters we use a setter method. 
- * Assuming key has a string value we use PreparedStatement_setString().
- * To set the value of the blob we submit a binary value using the method
- * PreparedStatement_setBlob(). 
+ * the name has index 1 and the one for the picture has index 2. To set the 
+ * values for the IN parameters we use a setter method. Assuming name has
+ * a string value we use PreparedStatement_setString(). To set the value
+ * of the picture we submit a binary value using the 
+ * method PreparedStatement_setBlob(). 
  *
- * Please note that parameter values set in one of the setXXX methods are
- * set by reference and <b>must</b> not "disappear" before either 
- * PreparedStatement_execute() or PreparedStatement_executeQuery() is called. 
+ * Please note that string and blob parameter values are set by reference 
+ * and <b>must</b> not "disappear" before either PreparedStatement_execute()
+ * or PreparedStatement_executeQuery() is called. 
  * 
  * <h2>Example:</h2>
  * To summarize, here is the code in context. 
  * <pre>
- * PreparedStatement_T p = Connection_prepareStatement(con, "INSERT INTO blobs(key, value) VALUES(?, ?)");
- * PreparedStatement_setString(p, 1, "picture1");
- * PreparedStatement_setBlob(p, 2, blob, size);
+ * PreparedStatement_T p = Connection_prepareStatement(con, "INSERT INTO employee(name, picture) VALUES(?, ?)");
+ * PreparedStatement_setString(p, 1, "Maria Ozawa");
+ * PreparedStatement_setBlob(p, 2, jpeg, size);
  * PreparedStatement_execute(p);
  * </pre>
  * <h2>Reuse and ResultSets:</h2>
@@ -62,17 +62,17 @@
  * the same statement. Clients can also set new IN parameter values and
  * re-execute the statement as shown in this example:
  * <pre>
- * PreparedStatement_T p = Connection_prepareStatement(con, "INSERT INTO blobs(key, value) VALUES(?, ?)");
- * for (i = 0; data[i].key; i++) 
+ * PreparedStatement_T p = Connection_prepareStatement(con, "INSERT INTO employee(name, picture) VALUES(?, ?)");
+ * for (int i = 0; employees[i].name; i++) 
  * {
- *        PreparedStatement_setString(p, 1, data[i].key);
- *        PreparedStatement_setBlob(p, 2, data[i].value, data[i].size);
+ *        PreparedStatement_setString(p, 1, employees[i].name);
+ *        PreparedStatement_setBlob(p, 2, employees[i].picture, employees[i].picture_size);
  *        PreparedStatement_execute(p);
  * }
  * </pre>
- * <b>Note,</b> if PreparedStatement_executeQuery() returns a ResultSet then 
- * this ResultSet "lives" only until the next call to a PreparedStatement 
- * execute method or until the Connection is returned to the Connection Pool. 
+ * <b>Note,</b> a ResultSet returned from PreparedStatement_executeQuery()  
+ * "lives" only until the next call to a PreparedStatement execute method
+ * or until the Connection is returned to the Connection Pool. 
  * 
  * @see Connection.h ResultSet.h SQLException.h
  * @version \$Id: PreparedStatement.h,v 1.24 2008/01/21 20:17:45 hauk Exp $

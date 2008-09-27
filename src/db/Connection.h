@@ -21,7 +21,7 @@
 
 
 /**
- * A <b>Connection</b> class represent a connection to a SQL database system.
+ * A <b>Connection</b> represent a connection to a SQL database system.
  *
  * A Connection is used to execute SQL statements and return the result. 
  * There are three ways to execute a SQL statement: Connection_execute() 
@@ -36,10 +36,9 @@
  *
  * If an error occurred during execution, the method
  * Connection_getLastError() can be used to obtain a string describing
- * the error. The method Connection_executeQuery() will return an
- * empty ResultSet (not NULL) if the SQL statement did not return any
- * values.  NULL is <i>only</i> returned if an error occurred. A
- * ResultSet lives until the next call to Connection_executeQuery() or
+ * the error. The method Connection_executeQuery() will return an empty 
+ * ResultSet (not NULL) if the SQL statement did not return any values. 
+ * A ResultSet lives until the next call to Connection_executeQuery() or
  * until the Connection is returned to the Connection Pool.
  *
  * Any SQL statement that changes the database (basically, any SQL
@@ -47,12 +46,11 @@
  * if one is not already in effect. Automatically started transactions
  * are committed at the conclusion of the command.
  *
- * Transactions can also be started manually using the
- * Connection_beginTransaction() method. Such transactions usually
- * persist until the next call to Connection_commit() or
- * Connection_rollback(). A transaction will also ROLLBACK if the
- * database is closed or if an error occurs. Nested transactions are not 
- * allowed.
+ * Transactions can also be started manually using 
+ * Connection_beginTransaction(). Such transactions usually persist
+ * until the next call to Connection_commit() or Connection_rollback().
+ * A transaction will also ROLLBACK if the database is closed or if an 
+ * error occurs. Nested transactions are not allowed.
  *
  * @see ResultSet.h PreparedStatement.h SQLException.h
  * @version \$Id: Connection.h,v 1.35 2008/01/21 20:17:45 hauk Exp $
@@ -261,7 +259,8 @@ long long int Connection_rowsChanged(T C);
  * clears any previous ResultSets associated with the Connection.
  * @param C A Connection object
  * @param sql A SQL statement
- * @exception SQLException if a database error occurs
+ * @exception SQLException if a database error occurs. The error message
+ * is available in Exception_frame.message
  * @see SQLException.h
  */
 void Connection_execute(T C, const char *sql, ...);
@@ -281,9 +280,9 @@ void Connection_execute(T C, const char *sql, ...);
  * @param C A Connection object
  * @param sql A SQL statement
  * @return A ResultSet object that contains the data produced by the
- * given query. If there was an error, NULL is returned and the method
- * Connection_getLastError() can be used to obtain the error string.
- * @exception SQLException if a database error occurs
+ * given query. 
+ * @exception SQLException if a database error occurs. The error message
+ * is available in Exception_frame.message
  * @see ResultSet.h
  * @see SQLException.h
  */
@@ -304,10 +303,9 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...);
  * @param sql a single SQL statement that may contain one or more '?' 
  * IN parameter placeholders
  * @return a new PreparedStatement object containing the pre-compiled
- * SQL statement or NULL if a database error occurred. If NULL was 
- * returned, the method Connection_getLastError() can be used to obtain
- * the error string.
- * @exception SQLException if a database error occurs
+ * SQL statement.
+ * @exception SQLException if a database error occurs. The error message
+ * is available in Exception_frame.message
  * @see PreparedStatement.h
  * @see SQLException.h
  */

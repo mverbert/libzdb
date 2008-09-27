@@ -21,7 +21,7 @@
 
 
 /**
- * A <b>ConnectionPool</b> class represent a database connection pool.
+ * A <b>ConnectionPool</b> represent a database connection pool.
  *
  * A connection pool can be used to get a connection to a database and
  * execute statements. This class opens a number of database

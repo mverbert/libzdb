@@ -590,7 +590,6 @@ void testStringBuffer() {
 
 int main(void) {
         Exception_init();
-
 	testStr();
 	testMem();
 	testUtil();

@@ -31,12 +31,12 @@
  *
  * A ResultSet object maintains a cursor pointing to its current row
  * of data. Initially the cursor is positioned before the first
- * row. The ResultSet_next() method moves the cursor to the next row,
- * and because it returns false when there are no more rows in the
- * ResultSet object, it can be used in a while loop to iterate through
- * the result set.  A ResultSet object is not updatable and has a
- * cursor that moves forward only. Thus, you can iterate through it
- * only once and only from the first row to the last row.
+ * row. ResultSet_next() moves the cursor to the next row, and because 
+ * it returns false when there are no more rows in the ResultSet object,
+ * it can be used in a while loop to iterate through the result set.  
+ * A ResultSet object is not updatable and has a cursor that moves forward
+ * only. Thus, you can iterate through it only once and only from the first
+ * row to the last row.
  *
  * The ResultSet interface provides getter methods for retrieving
  * column values from the current row. Values can be retrieved using
@@ -58,13 +58,13 @@
  * The following examples demonstrate how to obtain a ResultSet and get 
  * values from the set:
  * <pre>
- * ResultSet_T r = Connection_executeQuery(con, "SELECT ssn, name, picture FROM CUSTOMERS");
+ * ResultSet_T r = Connection_executeQuery(con, "SELECT ssn, name, picture FROM EMPLOYEES");
  * while (ResultSet_next(r)) 
  * {
  *      int ssn = ResultSet_getIntByName(r, "ssn");
  *      const char *name =  ResultSet_getStringByName(r, "name");
- *      int blobSize;
- *      void *picture = ResultSet_getBlobByName(r, "picture", &blobSize);
+ *      int pictureSize;
+ *      void *picture = ResultSet_getBlobByName(r, "picture", &pictureSize);
  *      [..]
  * }
  * </pre>
@@ -72,7 +72,7 @@
  * <pre>
  * ResultSet_T r = Connection_executeQuery(con, "SELECT count(*) FROM USERS");
  * if (ResultSet_next(r))
- *  	printf("Number of users: %d\n", ResultSet_getInt(r, 1));
+ *      printf("Number of users: %d\n", ResultSet_getInt(r, 1));
  * </pre>
  *
  * @see Connection.h PreparedStatement.h SQLException.h
@@ -127,12 +127,10 @@ const char *ResultSet_getColumnName(T R, int column);
 
 /**
  * Returns column size in bytes. If the column is a blob then 
- * this methtod returns the number of bytes in that blob. No type 
+ * this method returns the number of bytes in that blob. No type 
  * conversions occur. If the result is a string (or a number 
  * since a number can be converted into a string) then return the 
- * number of bytes in the resulting string. If <code>columnIndex</code>
- * is outside the range [1..ResultSet_getColumnCount()] this
- * method returns -1.
+ * number of bytes in the resulting string. 
  * @param R A ResultSet object
  * @param columnIndex the first column is 1, the second is 2, ...
  * @return column data size
@@ -161,9 +159,9 @@ int ResultSet_next(T R);
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a C-string. If <code>columnIndex</code>
  * is outside the range [1..ResultSet_getColumnCount()] this
- * method returns NULL. <i>The returned string may only be valid until 
- * the next call to ResultSet_next() and if you plan to use the returned 
- * value longer, you must make a copy.</i>
+ * method throws an SQLException. <i>The returned string may only be 
+ * valid until the next call to ResultSet_next() and if you plan to use
+ * the returned value longer, you must make a copy.</i>
  * @param R A ResultSet object
  * @param columnIndex the first column is 1, the second is 2, ...
  * @return the column value; if the value is SQL NULL, the value
@@ -178,8 +176,8 @@ const char *ResultSet_getString(T R, int columnIndex);
 /**
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a C-string. If <code>columnName</code>
- * is not found this method returns NULL. <i>The returned string may 
- * only be valid until the next call to ResultSet_next() and if you plan
+ * is not found this method throws an SQLException. <i>The returned string
+ * may only be valid until the next call to ResultSet_next() and if you plan
  * to use the returned value longer, you must make a copy.</i>
  * @param R A ResultSet object
  * @param columnName the SQL name of the column. <i>case-sensitive</i>
@@ -196,7 +194,7 @@ const char *ResultSet_getStringByName(T R, const char *columnName);
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as an int. If <code>columnIndex</code>
  * is outside the range [1..ResultSet_getColumnCount()] this
- * method returns 0.
+ * method throws an SQLException.
  * @param R A ResultSet object
  * @param columnIndex the first column is 1, the second is 2, ...
  * @return the column value; if the value is SQL NULL, the value
@@ -211,7 +209,7 @@ int ResultSet_getInt(T R, int columnIndex);
 /**
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as an int. If <code>columnName</code> is not 
- * found this method returns 0.
+ * found this method throws an SQLException.
  * @param R A ResultSet object
  * @param columnName the SQL name of the column. <i>case-sensitive</i>
  * @return the column value; if the value is SQL NULL, the value
@@ -227,7 +225,7 @@ int ResultSet_getIntByName(T R, const char *columnName);
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a long long. If <code>columnIndex</code>
  * is outside the range [1..ResultSet_getColumnCount()] this
- * method returns 0.
+ * method throws an SQLException.
  * @param R A ResultSet object
  * @param columnIndex the first column is 1, the second is 2, ...
  * @return the column value; if the value is SQL NULL, the value
@@ -242,7 +240,7 @@ long long int ResultSet_getLLong(T R, int columnIndex);
 /**
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a long long. If <code>columnName</code>
- * is not found this method returns 0.
+ * is not found this method throws an SQLException.
  * @param R A ResultSet object
  * @param columnName the SQL name of the column. <i>case-sensitive</i>
  * @return the column value; if the value is SQL NULL, the value
@@ -258,7 +256,7 @@ long long int ResultSet_getLLongByName(T R, const char *columnName);
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a double. If <code>columnIndex</code>
  * is outside the range [1..ResultSet_getColumnCount()] this
- * method returns 0.0.
+ * method throws an SQLException.
  * @param R A ResultSet object
  * @param columnIndex the first column is 1, the second is 2, ...
  * @return the column value; if the value is SQL NULL, the value
@@ -273,7 +271,7 @@ double ResultSet_getDouble(T R, int columnIndex);
 /**
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a double. If <code>columnName</code> is 
- * not found this method returns 0.0.
+ * not found this method throws an SQLException.
  * @param R A ResultSet object
  * @param columnName the SQL name of the column. <i>case-sensitive</i>
  * @return the column value; if the value is SQL NULL, the value
@@ -289,9 +287,9 @@ double ResultSet_getDoubleByName(T R, const char *columnName);
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a void pointer. If <code>columnIndex</code>
  * is outside the range [1..ResultSet_getColumnCount()] this method 
- * returns NULL. This method allocate <code>size</code> bytes of memory 
- * for the returned blob. If the size of the blob is expected to be 
- * "large", consider instead using the method ResultSet_readData() 
+ * throws an SQLException. This method allocate <code>size</code> bytes 
+ * of memory for the returned blob. If the size of the blob is expected
+ * to be "large", consider instead using the method ResultSet_readData() 
  * defined below and read the content of the blob in chunks. <i>The 
  * returned blob may only be valid until the next call to ResultSet_next()
  * and if you plan to use the returned value longer, you must make a copy.</i> 
@@ -310,7 +308,7 @@ const void *ResultSet_getBlob(T R, int columnIndex, int *size);
 /**
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a void pointer. If <code>columnName</code>
- * is not found this method returns NULL. This method allocate 
+ * is not found this method throws an SQLException. This method allocate 
  * <code>size</code> bytes of memory for the returned blob. If the size
  * of the blob is expected to be "large", consider instead using the 
  * method ResultSet_readData() defined below and read the content of the
@@ -354,8 +352,7 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  * @param b A byte buffer
  * @param length The size of the buffer b
  * @param off The offset to start reading data from
- * @return Number of bytes read or -1 if an error occured. 0 is returned
- * when end of data was reached
+ * @return Number of bytes read. 0 is returned when end of data was reached
  * @exception SQLException if a database access error occurs or 
  * columnIndex is outside the valid range
  * @see SQLException.h
