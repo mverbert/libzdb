@@ -184,14 +184,13 @@ int MysqlResultSet_getColumnCount(T R) {
 
 
 const char *MysqlResultSet_getColumnName(T R, int column) {
-	int i;
 	assert(R);
-	i = column - 1;
+	column--;
 	if (R->columnCount <= 0 ||
-	   i < 0                ||
-	   i > R->columnCount)
+	   column < 0           ||
+	   column > R->columnCount)
 		return NULL;
-	return R->columns[i].field->name;
+	return R->columns[column].field->name;
 }
 
 

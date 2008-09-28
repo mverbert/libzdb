@@ -124,14 +124,13 @@ int SQLiteResultSet_getColumnCount(T R) {
 
 
 const char *SQLiteResultSet_getColumnName(T R, int column) {
-	int i;
 	assert(R);
-	i = column - 1;
+	column--;
 	if (R->columnCount <= 0 ||
-	   i < 0                ||
-	   i > R->columnCount)
+	   column < 0           ||
+	   column > R->columnCount)
                 return NULL;
-	return sqlite3_column_name(R->stmt, i);
+	return sqlite3_column_name(R->stmt, column);
 }
 
 
