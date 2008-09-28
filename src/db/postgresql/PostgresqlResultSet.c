@@ -72,11 +72,11 @@ struct T {
 };
 
 #define TEST_INDEX(RETVAL) \
-int i; assert(R); i= columnIndex - 1; if (R->columnCount <= 0 || \
-i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index out of range"); return(RETVAL); }
+        int i; assert(R); i= columnIndex - 1; if (R->columnCount <= 0 || \
+        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index out of range"); return(RETVAL); }
 #define GET_INDEX(RETVAL) \
-int i; assert(R); if ((i= PQfnumber(R->res, columnName))<0) { \
-THROW(SQLException, "Invalid column name"); return (RETVAL);} i++;
+        int i; assert(R); if ((i= PQfnumber(R->res, columnName))<0) { \
+        THROW(SQLException, "Invalid column name"); return (RETVAL);} i++;
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -130,9 +130,7 @@ const char *PostgresqlResultSet_getColumnName(T R, int column) {
 
 int PostgresqlResultSet_next(T R) {
         assert(R);
-        if ((R->currentRow++ >= (R->rowCount - 1)) || (R->maxRows && (R->currentRow >= R->maxRows)))
-                return false;
-        return true;
+        return (! ((R->currentRow++ >= (R->rowCount - 1)) || (R->maxRows && (R->currentRow >= R->maxRows))));
 }
 
 
