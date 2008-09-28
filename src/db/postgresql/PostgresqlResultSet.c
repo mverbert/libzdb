@@ -41,23 +41,23 @@
 
 
 const struct Rop_T postgresqlrops = {
-"postgresql",
-PostgresqlResultSet_free,
-PostgresqlResultSet_getColumnCount,
-PostgresqlResultSet_getColumnName,
-PostgresqlResultSet_next,
-PostgresqlResultSet_getColumnSize,
-PostgresqlResultSet_getString,
-PostgresqlResultSet_getStringByName,
-PostgresqlResultSet_getInt,
-PostgresqlResultSet_getIntByName,
-PostgresqlResultSet_getLLong,
-PostgresqlResultSet_getLLongByName,
-PostgresqlResultSet_getDouble,
-PostgresqlResultSet_getDoubleByName,
-PostgresqlResultSet_getBlob,
-PostgresqlResultSet_getBlobByName,
-PostgresqlResultSet_readData
+        "postgresql",
+        PostgresqlResultSet_free,
+        PostgresqlResultSet_getColumnCount,
+        PostgresqlResultSet_getColumnName,
+        PostgresqlResultSet_next,
+        PostgresqlResultSet_getColumnSize,
+        PostgresqlResultSet_getString,
+        PostgresqlResultSet_getStringByName,
+        PostgresqlResultSet_getInt,
+        PostgresqlResultSet_getIntByName,
+        PostgresqlResultSet_getLLong,
+        PostgresqlResultSet_getLLongByName,
+        PostgresqlResultSet_getDouble,
+        PostgresqlResultSet_getDoubleByName,
+        PostgresqlResultSet_getBlob,
+        PostgresqlResultSet_getBlobByName,
+        PostgresqlResultSet_readData
 };
 
 #define T IResultSet_T
