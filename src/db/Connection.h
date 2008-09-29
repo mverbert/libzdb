@@ -259,8 +259,7 @@ long long int Connection_rowsChanged(T C);
  * clears any previous ResultSets associated with the Connection.
  * @param C A Connection object
  * @param sql A SQL statement
- * @exception SQLException if a database error occurs. The error message
- * is available in Exception_frame.message
+ * @exception SQLException if a database error occurs. 
  * @see SQLException.h
  */
 void Connection_execute(T C, const char *sql, ...);
