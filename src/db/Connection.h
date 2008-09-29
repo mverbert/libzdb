@@ -281,8 +281,7 @@ void Connection_execute(T C, const char *sql, ...);
  * @param sql A SQL statement
  * @return A ResultSet object that contains the data produced by the
  * given query. 
- * @exception SQLException if a database error occurs. The error message
- * is available in Exception_frame.message
+ * @exception SQLException if a database error occurs. 
  * @see ResultSet.h
  * @see SQLException.h
  */
@@ -304,8 +303,7 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...);
  * IN parameter placeholders
  * @return a new PreparedStatement object containing the pre-compiled
  * SQL statement.
- * @exception SQLException if a database error occurs. The error message
- * is available in Exception_frame.message
+ * @exception SQLException if a database error occurs. 
  * @see PreparedStatement.h
  * @see SQLException.h
  */
@@ -314,7 +312,8 @@ PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...);
 
 /**
  * This method can be used to obtain a string describing the last
- * error that occurred. 
+ * error that occurred. Inside a TRY-END_TRY block you can also find
+ * the error message directly in the variable in Exception_frame.message
  * @param C A Connection object
  * @return A string explaining the last error
  */
