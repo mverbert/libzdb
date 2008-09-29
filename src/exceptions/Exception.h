@@ -181,7 +181,7 @@
  * Exception thrown in one thread cannot be catched in another thread</i>. 
  * This also means that clients must handle Exceptions per thread and cannot 
  * use one TRY-ELSE block in the main program to catch all Exceptions. This is
- * only possible if no threads was started. 
+ * only possible if no threads were started. 
  * <p>This implementation is a minor modification of code found in 
  * <a href="http://www.drhanson.net/">David R. Hanson's</a> excellent
  * book <a href="http://www.cs.princeton.edu/software/cii/">C Interfaces and
