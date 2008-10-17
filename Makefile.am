@@ -81,7 +81,7 @@ cleanall: clean distclean
         libzdb-[0-9].*tar.gz conf/config.*
 
 verify: libzdb.la
-	cd $(srcdir)/test && make verify	
+	cd $(srcdir)/test && $(MAKE) verify	
 
 doc: $(nodist_include_HEADERS)
 	doxygen config/Doxyfile
