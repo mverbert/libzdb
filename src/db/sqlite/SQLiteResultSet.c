@@ -56,7 +56,7 @@ const struct Rop_T sqlite3rops = {
         SQLiteResultSet_readData
 };
 
-#define T IResultSet_T
+#define T ResultSetImpl_T
 struct T {
         int keep;
         int maxRows;

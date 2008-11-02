@@ -14,7 +14,7 @@
  */
 #ifndef MYSQLCONNECTION_INCLUDED
 #define MYSQLCONNECTION_INCLUDED
-#define T IConnection_T
+#define T ConnectionImpl_T
 T MysqlConnection_new(URL_T url, char **error);
 void MysqlConnection_free(T *C);
 void MysqlConnection_setQueryTimeout(T C, int ms);

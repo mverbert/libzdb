@@ -60,7 +60,7 @@ typedef struct param_t {
         long length;
 } *param_t;
 
-#define T IPreparedStatement_T
+#define T PreparedStatementImpl_T
 struct T {
         int maxRows;
         int lastError;

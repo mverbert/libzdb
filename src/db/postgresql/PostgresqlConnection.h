@@ -14,7 +14,7 @@
  */
 #ifndef POSTGRESQLCONNECTION_INCLUDED
 #define POSTGRESQLCONNECTION_INCLUDED
-#define T IConnection_T
+#define T ConnectionImpl_T
 T PostgresqlConnection_new(URL_T url, char **error);
 void PostgresqlConnection_free(T *C);
 void PostgresqlConnection_setQueryTimeout(T C, int ms);

@@ -26,7 +26,7 @@
  * @file
  */ 
 
-#define T IPreparedStatement_T
+#define T PreparedStatementImpl_T
 typedef struct T *T;
 
 typedef struct Pop_T {

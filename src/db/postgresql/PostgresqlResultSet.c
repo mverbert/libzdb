@@ -58,7 +58,7 @@ const struct Rop_T postgresqlrops = {
         PostgresqlResultSet_readData
 };
 
-#define T IResultSet_T
+#define T ResultSetImpl_T
 struct T {
         int keep;
         int maxRows;

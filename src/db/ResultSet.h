@@ -90,7 +90,7 @@ typedef struct T *T;
  * @param op implementation opcodes
  * @return A new ResultSet object
  */
-T ResultSet_new(IResultSet_T I, Rop_T op);
+T ResultSet_new(ResultSetImpl_T I, Rop_T op);
 
 
 /**

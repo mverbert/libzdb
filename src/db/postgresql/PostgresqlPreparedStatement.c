@@ -50,7 +50,7 @@ const struct Pop_T postgresqlpops = {
         PostgresqlPreparedStatement_executeQuery
 };
 
-#define T IPreparedStatement_T
+#define T PreparedStatementImpl_T
 struct T {
         int maxRows;
         int lastError;

@@ -14,7 +14,7 @@
  */
 #ifndef SQLITECONNECTION_INCLUDED
 #define SQLITECONNECTION_INCLUDED
-#define T IConnection_T
+#define T ConnectionImpl_T
 T SQLiteConnection_new(URL_T url, char **error);
 void SQLiteConnection_free(T *C);
 void SQLiteConnection_setQueryTimeout(T C, int ms);

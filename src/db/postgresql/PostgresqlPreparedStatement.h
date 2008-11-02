@@ -14,7 +14,7 @@
  */
 #ifndef POSTGRESQLPREPAREDSTATEMENT_INCLUDED
 #define POSTGRESQLPREPAREDSTATEMENT_INCLUDED
-#define T IPreparedStatement_T
+#define T PreparedStatementImpl_T
 T PostgresqlPreparedStatement_new(PGconn *db, int maxRows, char *stmt, int prm);
 void PostgresqlPreparedStatement_free(T *P);
 void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *x);

@@ -89,7 +89,7 @@ typedef struct T *T;
  * @param op implementation opcodes
  * @return A new PreparedStatement object
  */
-T PreparedStatement_new(IPreparedStatement_T I, Pop_T op);
+T PreparedStatement_new(PreparedStatementImpl_T I, Pop_T op);
 
 
 /**

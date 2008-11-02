@@ -36,7 +36,7 @@
 #define T ResultSet_T
 struct T {
         Rop_T op;
-        IResultSet_T I;
+        ResultSetImpl_T I;
 };
 
 
@@ -47,7 +47,7 @@ struct T {
 #pragma GCC visibility push(hidden)
 #endif
 
-T ResultSet_new(IResultSet_T I, Rop_T op) {
+T ResultSet_new(ResultSetImpl_T I, Rop_T op) {
 	T R;
 	assert(I);
 	assert(op);

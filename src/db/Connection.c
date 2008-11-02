@@ -69,8 +69,8 @@ struct T {
 	int maxRows;
 	int timeout;
 	int isAvailable;
-        IConnection_T db;
         Vector_T prepared;
+        ConnectionImpl_T I;
 	int isInTransaction;
         long lastAccessedTime;
         ResultSet_T resultSet;
@@ -97,8 +97,8 @@ static int setStrategy(T C, char **error) {
                 *error = Str_cat("database protocol '%s' not supported", protocol);
                 return false;
         }
-        C->db = C->op->new(C->url, error);
-        return (C->db != NULL);
+        C->I = C->op->new(C->url, error);
+        return (C->I != NULL);
 }
 
 
@@ -142,8 +142,8 @@ void Connection_free(T *C) {
         assert(C && *C);
         Connection_clear((*C));
         Vector_free(&(*C)->prepared);
-        if ((*C)->db)
-                (*C)->op->free(&(*C)->db);
+        if ((*C)->I)
+                (*C)->op->free(&(*C)->I);
 	FREE(*C);
 }
 
@@ -184,7 +184,7 @@ void Connection_setQueryTimeout(T C, int ms) {
         assert(C);
         assert(ms >= 0);
         C->timeout = ms;
-        C->op->setQueryTimeout(C->db, ms);
+        C->op->setQueryTimeout(C->I, ms);
 }
 
 
@@ -197,7 +197,7 @@ int Connection_getQueryTimeout(T C) {
 void Connection_setMaxRows(T C, int max) {
         assert(C);
 	C->maxRows = max;
-        C->op->setMaxRows(C->db, max);
+        C->op->setMaxRows(C->I, max);
 }
 
 
@@ -218,7 +218,7 @@ URL_T Connection_getURL(T C) {
 
 int Connection_ping(T C) {
         assert(C);
-        return C->op->ping(C->db);
+        return C->op->ping(C->I);
 }
 
 
@@ -243,7 +243,7 @@ void Connection_close(T C) {
 
 void Connection_beginTransaction(T C) {
         assert(C);
-        if (! C->op->beginTransaction(C->db)) 
+        if (! C->op->beginTransaction(C->I)) 
                 THROW(SQLException, Connection_getLastError(C));
         C->isInTransaction++;
 }
@@ -253,7 +253,7 @@ void Connection_commit(T C) {
         assert(C);
         if (C->isInTransaction)
                 C->isInTransaction--;
-        if (! C->op->commit(C->db)) 
+        if (! C->op->commit(C->I)) 
                 THROW(SQLException, Connection_getLastError(C));
 }
 
@@ -262,20 +262,20 @@ void Connection_rollback(T C) {
         assert(C);
         if (C->isInTransaction)
                 C->isInTransaction--;
-        if (! C->op->rollback(C->db))
+        if (! C->op->rollback(C->I))
                 THROW(SQLException, Connection_getLastError(C));
 }
 
 
 long long int Connection_lastRowId(T C) {
         assert(C);
-        return C->op->lastRowId(C->db);
+        return C->op->lastRowId(C->I);
 }
 
 
 long long int Connection_rowsChanged(T C) {
         assert(C);
-        return C->op->rowsChanged(C->db);
+        return C->op->rowsChanged(C->I);
 }
 
 
@@ -287,7 +287,7 @@ void Connection_execute(T C, const char *sql, ...) {
         if (C->resultSet)
                 ResultSet_free(&C->resultSet);
 	va_start(ap, sql);
-        rv = C->op->execute(C->db, sql, ap);
+        rv = C->op->execute(C->I, sql, ap);
         va_end(ap);
         if (rv == false) THROW(SQLException, Connection_getLastError(C));
 }
@@ -300,7 +300,7 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...) {
         if (C->resultSet)
                 ResultSet_free(&C->resultSet);
 	va_start(ap, sql);
-        C->resultSet = C->op->executeQuery(C->db, sql, ap);
+        C->resultSet = C->op->executeQuery(C->I, sql, ap);
         va_end(ap);
         if (C->resultSet == NULL)
                 THROW(SQLException, Connection_getLastError(C));
@@ -314,7 +314,7 @@ PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...) {
         assert(C);
         assert(sql);
         va_start(ap, sql);
-        p = C->op->prepareStatement(C->db, sql, ap);
+        p = C->op->prepareStatement(C->I, sql, ap);
         va_end(ap);
         if (p)
                 Vector_push(C->prepared, p);
@@ -327,7 +327,7 @@ PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...) {
 const char *Connection_getLastError(T C) {
         const char *s;
 	assert(C);
-	s = C->op->getLastError(C->db);
+	s = C->op->getLastError(C->I);
         return (s ? s : "?");
 }
 

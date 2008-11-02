@@ -38,7 +38,7 @@
 struct T {
         Pop_T op;
         ResultSet_T resultSet;
-        IPreparedStatement_T I;
+        PreparedStatementImpl_T I;
 };
 
 
@@ -58,7 +58,7 @@ static void clearResultSet(T P) {
 #pragma GCC visibility push(hidden)
 #endif
 
-T PreparedStatement_new(IPreparedStatement_T I, Pop_T op) {
+T PreparedStatement_new(PreparedStatementImpl_T I, Pop_T op) {
 	T P;
 	assert(I);
 	assert(op);

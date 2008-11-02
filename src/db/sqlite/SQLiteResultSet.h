@@ -14,7 +14,7 @@
  */
 #ifndef SQLITERESULTSET_INCLUDED
 #define SQLITERESULTSET_INCLUDED
-#define T IResultSet_T
+#define T ResultSetImpl_T
 T SQLiteResultSet_new(void *stmt, int maxRows, int keep);
 void SQLiteResultSet_free(T *R);
 int SQLiteResultSet_getColumnCount(T R);

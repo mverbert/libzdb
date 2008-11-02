@@ -26,7 +26,7 @@
  * @file
  */ 
 
-#define T IResultSet_T
+#define T ResultSetImpl_T
 typedef struct T *T;
 
 typedef struct Rop_T {

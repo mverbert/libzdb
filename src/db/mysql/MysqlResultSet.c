@@ -66,7 +66,7 @@ typedef struct column_t {
         char *buffer;
 } *column_t;
 
-#define T IResultSet_T
+#define T ResultSetImpl_T
 struct T {
         int stop;
         int keep;
