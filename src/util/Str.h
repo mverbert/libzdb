@@ -20,10 +20,10 @@
 
 
 /**
- *  General purpose <b>String</b> <b>class methods</b>.
+ * General purpose <b>String</b> <b>class methods</b>.
  *
- *  @version \$Id: Str.h,v 1.1 2008/03/20 11:28:54 hauk Exp $
- *  @file
+ * @version \$Id: Str.h,v 1.1 2008/03/20 11:28:54 hauk Exp $
+ * @file
  */
 
 
@@ -50,9 +50,7 @@ int Str_isByteEqual(const char *a, const char *b);
 
 /**
  * Returns true if the string <i>a</i> starts with the string
- * <i>b</i>. The test is <i>case-insensitive</i> but depends 
- * on that all characters in the two strings can be translated 
- * in the current locale.
+ * <i>b</i>. The test is <i>case-sensitive</i>.
  * @param a The string to search for b in
  * @param b The <i>sub-string</i> to test a against
  * @return true if a starts with b, otherwise false

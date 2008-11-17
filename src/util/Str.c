@@ -27,8 +27,8 @@
 /**
  * Implementation of the Str interface
  *
- *  @version \$Id: Str.c,v 1.1 2008/03/20 11:28:54 hauk Exp $
- *  @file
+ * @version \$Id: Str.c,v 1.1 2008/03/20 11:28:54 hauk Exp $
+ * @file
  */
 
 

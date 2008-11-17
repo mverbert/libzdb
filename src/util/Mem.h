@@ -19,10 +19,10 @@
 
 
 /**
- *  General purpose memory allocation <b>class methods</b>.
+ * General purpose memory allocation <b>class methods</b>.
  *
- *  @version \$Id: Mem.h,v 1.1 2008/03/20 11:28:54 hauk Exp $
- *  @file
+ * @version \$Id: Mem.h,v 1.1 2008/03/20 11:28:54 hauk Exp $
+ * @file
  */
 
 

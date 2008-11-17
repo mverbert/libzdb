@@ -20,10 +20,10 @@
 
 
 /**
- *  General purpose utility <b>class methods</b>.
+ * General purpose utility <b>class methods</b>.
  *
- *  @version \$Id: Util.h,v 1.16 2008/03/20 11:28:55 hauk Exp $
- *  @file
+ * @version \$Id: Util.h,v 1.16 2008/03/20 11:28:55 hauk Exp $
+ * @file
  */
 
 

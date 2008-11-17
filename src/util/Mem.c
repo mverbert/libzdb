@@ -26,8 +26,8 @@
 /**
  * Implementation of the Mem interface
  *
- *  @version \$Id: Mem.c,v 1.1 2008/03/20 11:28:54 hauk Exp $
- *  @file
+ * @version \$Id: Mem.c,v 1.1 2008/03/20 11:28:54 hauk Exp $
+ * @file
  */
 
 

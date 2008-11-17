@@ -33,8 +33,8 @@
 /**
  * Implementation of the Util interface
  *
- *  @version \$Id: Util.c,v 1.27 2008/03/20 11:28:54 hauk Exp $
- *  @file
+ * @version \$Id: Util.c,v 1.27 2008/03/20 11:28:54 hauk Exp $
+ * @file
  */
 
 
