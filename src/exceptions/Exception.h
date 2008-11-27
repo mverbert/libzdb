@@ -145,8 +145,8 @@
  *
  * Finally, the RETURN statement, defined in this interface, must be used
  * instead of C return statements inside a TRY-END_TRY block. If any of the
- * statements in a try-catch-finally block must do a return, they <b>must</b>
- * do so with this macro instead of the usual C return statement. 
+ * statements in a try block must do a return, they <b>must</b> do so with 
+ * this macro instead of the usual C return statement. 
  * 
  * <h3>Exception details</h3>
  * Inside an exception handler, details about an exception is
@@ -242,7 +242,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
 
 /**
  * Clients <b>must</b> use this macro instead of C return statements
- * inside any TRY-CATCH-ELSE-FINALLY statements
+ * inside a TRY-END_TRY block
  * @hideinitializer
  */
 #define RETURN switch((pop_exception_stack,0)) default:return
