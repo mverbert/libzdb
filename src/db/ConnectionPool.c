@@ -120,7 +120,9 @@ void ConnectionPool_setInitialConnections(T P, int connections) {
         assert(P);
         assert(connections >= 0);
         LOCK(P->mutex)
+        {
                 P->initialConnections = connections;
+        }
         END_LOCK;
 }
 
@@ -135,7 +137,9 @@ void ConnectionPool_setMaxConnections(T P, int maxConnections) {
         assert(P);
         assert(P->initialConnections <= maxConnections);
         LOCK(P->mutex)
+        {
                 P->maxConnections = maxConnections;
+        }
         END_LOCK;
 }
 
@@ -169,8 +173,10 @@ void ConnectionPool_setReaper(T P, int sweepInterval) {
         assert(P);
         assert(sweepInterval>0);
         LOCK(P->mutex)
+        {
                 P->doSweep = true;
                 P->sweepInterval = sweepInterval;
+        }
         END_LOCK;
 }
 
@@ -185,7 +191,9 @@ int ConnectionPool_active(T P) {
         int n = 0;
         assert(P);
         LOCK(P->mutex)
+        {
                 n = getActive(P);
+        }
         END_LOCK;
         return n;
 }
@@ -197,6 +205,7 @@ int ConnectionPool_active(T P) {
 void ConnectionPool_start(T P) {
         assert(P);
         LOCK(P->mutex)
+        {
                 P->stopped = false;
                 if (! P->filled) {
                         P->filled = fillPool(P);
@@ -206,6 +215,7 @@ void ConnectionPool_start(T P) {
                                 Thread_create(P->reaper, doSweep, P);
                         }
                 }
+        }
         END_LOCK;
         if (! P->filled) {
                ABORT("Failed to start connection pool -- %s\n", P->error);
@@ -217,12 +227,14 @@ void ConnectionPool_stop(T P) {
         int stopSweep = false;
         assert(P);
         LOCK(P->mutex)
+        {
                 P->stopped = true;
                 if (P->filled) {
                         drainPool(P);
                         P->filled = false;
                         stopSweep = (P->doSweep && P->reaper);
                 }
+        }
         END_LOCK;
         if (stopSweep) {
                 DEBUG("Stopping Database reaper thread...\n");
@@ -237,15 +249,15 @@ Connection_T ConnectionPool_getConnection(T P) {
 	Connection_T con = NULL;
 	assert(P);
 	LOCK(P->mutex) 
-	        int i, size = Vector_size(P->pool);
-		for (i= 0; i < size; i++) {
-			con = Vector_get(P->pool, i);
-			if (Connection_isAvailable(con) && Connection_ping(con)) {
-				Connection_setAvailable(con, false);
+                int i, size = Vector_size(P->pool);
+                for (i= 0; i < size; i++) {
+                        con = Vector_get(P->pool, i);
+                        if (Connection_isAvailable(con) && Connection_ping(con)) {
+                                Connection_setAvailable(con, false);
                                 Connection_setQueryTimeout(con, SQL_DEFAULT_TIMEOUT);
-				goto found;
-			} 
-		}
+                                goto found;
+                        } 
+                }
                 if (size < P->maxConnections) {
                         con = Connection_new(P, &P->error);
                         if (con) {
@@ -254,10 +266,11 @@ Connection_T ConnectionPool_getConnection(T P) {
                                 goto found;
                         } else {
                                 DEBUG("Failed to create connection -- %s\n", P->error);
-				FREE(P->error);
-			}
-                } else
+                                FREE(P->error);
+                        }
+                } else {
                         con = NULL;
+                }
 found:
         END_LOCK;
 	return con;
@@ -272,7 +285,9 @@ void ConnectionPool_returnConnection(T P, Connection_T connection) {
 	}
 	Connection_clear(connection);
 	LOCK(P->mutex)
+        {
 		Connection_setAvailable(connection, true);
+        }
 	END_LOCK;
 }
 
@@ -281,7 +296,9 @@ int ConnectionPool_reapConnections(T P) {
         int n = 0;
         assert(P);
         LOCK(P->mutex)
+        {
                 n = reapConnections(P);
+        }
         END_LOCK;
         return n;
 }

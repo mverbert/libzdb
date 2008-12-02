@@ -62,8 +62,8 @@
 #define Mutex_lock(mutex) wrapper(pthread_mutex_lock(&mutex))
 #define Mutex_unlock(mutex) wrapper(pthread_mutex_unlock(&mutex))
 #define LOCK(mutex) do { Mutex_T *_yymutex= &(mutex); \
-        pthread_mutex_lock(_yymutex);
-#define END_LOCK pthread_mutex_unlock(_yymutex); } while (0)
+        assert(pthread_mutex_lock(_yymutex)==0);
+#define END_LOCK assert(pthread_mutex_unlock(_yymutex)==0); } while (0)
 #define ThreadData_create(key) wrapper(pthread_key_create(&(key), NULL))
 #define ThreadData_set(key, value) pthread_setspecific((key), (value))
 #define ThreadData_get(key) pthread_getspecific((key))
