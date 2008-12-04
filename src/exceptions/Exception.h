@@ -52,12 +52,12 @@
 
 
 /**
- * An <b>Exception</b> is a class indicating an error condition from which 
- * recovery may be possible. The Library <i>raise</i> exceptions, which can 
- * be handled by recovery code, if recovery is possible. When an exception 
- * is raised, it is handled by the handler that was most recently instantiated.
- * If no handlers are defined an exception will cause the library to call its
- * abort handler to abort with an error message. 
+ * An <b>Exception</b> indicate an error condition from which recovery may
+ * be possible. The Library <i>raise</i> exceptions, which can be handled by
+ * recovery code, if recovery is possible. When an exception is raised, it is
+ * handled by the handler that was most recently instantiated. If no handlers
+ * are defined an exception will cause the library to call its abort handler 
+ * to abort with an error message. 
  *
  * <p>
  * Handlers are instantiated by the TRY-CATCH and TRY-FINALLY statements, 

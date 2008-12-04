@@ -19,7 +19,7 @@
 
 
 /**
- * The <b>URL</b> class represent an immutable Uniform Resource Locator. 
+ * <b>URL</b> represent an immutable Uniform Resource Locator. 
  * A Uniform Resource Locator (URL), is used to uniquely identify a
  * resource on the Internet. The URL is a compact text string with a
  * restricted syntax that consists of four main components:
@@ -37,13 +37,11 @@
  * http://user:password@www.foo.bar:8080/document/index.csp?querystring#ref
  * </pre>
  *
- * This is a simplified version of the <a href="http://www.zild.org/">zild</a> 
- * URL class. The primary purpose of this class is to wrap database connection
- * URLs. The URL class does not normalize the path, nor escape or unescape URL 
+ * The primary purpose of this class is to wrap database connection URLs. 
+ * The URL class does not normalize the path, nor escape or unescape URL 
  * components according to the escaping mechanism defined in RFC 2396. It is 
  * the responsibility of the caller to escape or unescape fields prior to
- * calling URL. The <code>ref</code> part of the URL is not considered in this
- * version. 
+ * calling URL. 
  * 
  * For more information about the URL syntax and specification, see,
  * <a href="ftp://ftp.rfc-editor.org/in-notes/rfc2396.txt">RFC2396 -
