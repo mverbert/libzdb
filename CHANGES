@@ -5,8 +5,8 @@
 
 Version 2.3
 -----------
-* Cleaned up API and removed unused return values from functions that 
-  can throw exception on error. 
+* Cleaned up API and changed function return type to void for 
+  those functions that can throw exception on error. 
   
 * Support variable arguments in Connection_prepareStatement() 
   to make it easy to build prepared statements in-place

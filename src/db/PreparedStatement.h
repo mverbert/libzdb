@@ -50,7 +50,7 @@
  * To summarize, here is the code in context. 
  * <pre>
  * PreparedStatement_T p = Connection_prepareStatement(con, "INSERT INTO employee(name, picture) VALUES(?, ?)");
- * PreparedStatement_setString(p, 1, "Maria Ozawa");
+ * PreparedStatement_setString(p, 1, "Reon Kadena");
  * PreparedStatement_setBlob(p, 2, jpeg, size);
  * PreparedStatement_execute(p);
  * </pre>

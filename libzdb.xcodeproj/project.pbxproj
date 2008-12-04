@@ -72,6 +72,8 @@
 		52A937BC0B7DBE13002AB7ED /* Exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exception.h; sourceTree = "<group>"; };
 		52A937BF0B7DBE65002AB7ED /* assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = assert.h; sourceTree = "<group>"; };
 		52A937C00B7DBE6F002AB7ED /* assert.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = assert.c; sourceTree = "<group>"; };
+		52ACB6650EE880010092FCC7 /* doxy_head */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doxy_head; sourceTree = "<group>"; };
+		52ACB6660EE880810092FCC7 /* DoxygenLayout.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DoxygenLayout.xml; sourceTree = "<group>"; };
 		52C3BC76094AED270050FDE4 /* ConnectionPool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ConnectionPool.c; sourceTree = "<group>"; };
 		52C3BE90094B9A170050FDE4 /* Connection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Connection.c; sourceTree = "<group>"; };
 		52CCB84C0B7DE804006AA81F /* SQLException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLException.h; sourceTree = "<group>"; };
@@ -175,11 +177,13 @@
 		5283639F0942F2420083C31A /* config */ = {
 			isa = PBXGroup;
 			children = (
+				52ACB6660EE880810092FCC7 /* DoxygenLayout.xml */,
 				52FF8986096DD391000F1912 /* doxy_bottom */,
 				523CB8FF0945F2D900A3FD10 /* Doxyfile */,
 				528363A00942F2420083C31A /* install-sh */,
 				528363A10942F2420083C31A /* ltmain.sh */,
 				528363A20942F2420083C31A /* missing */,
+				52ACB6650EE880010092FCC7 /* doxy_head */,
 			);
 			path = config;
 			sourceTree = "<group>";
