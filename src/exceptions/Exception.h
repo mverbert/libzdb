@@ -150,11 +150,11 @@
  * 
  * <h3>Exception details</h3>
  * Inside an exception handler, details about an exception is
- * available in the variable <code>Exception_frame</code>. The
- * following demonstrate usage of this variable to provide detailed 
- * logging of an exception. For SQL errors, Connection_getLastError() can be 
- * used instead, though in addition to SQL errors, <code>Exception_frame</code>,
- * also supports API errors not directly related to SQL.
+ * available in the variable <code>Exception_frame</code>. The following
+ * demonstrate usage of this variable to provide detailed logging of an 
+ * exception. For SQL errors, Connection_getLastError() can be used instead,
+ * though <code>Exception_frame</code> is recommended since in addition to 
+ * SQL errors, it also contains API errors not directly related to SQL.
  *
  * <pre>
  * TRY 
@@ -255,7 +255,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
 #define TRY do { \
 	volatile int Exception_flag; \
         Exception_Frame Exception_frame; \
-        Exception_frame.message[0]= 0; \
+        Exception_frame.message[0] = 0; \
         Exception_frame.prev = ThreadData_get(Exception_stack); \
         assert(ThreadData_set(Exception_stack, &Exception_frame)==0); \
         Exception_flag = setjmp(Exception_frame.env); \
