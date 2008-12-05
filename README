@@ -104,6 +104,9 @@
 
  gcc -o sql sql.c -L/<libzdb>/lib -lzdb -I/<libzdb>/include
  
+ On some systems you may have to explicite link with -lpthread and
+ set LD_LIBRARY_PATH if libzdb was installed in a non-standard location
+ 
   
  License Notes
  -------------
