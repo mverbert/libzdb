@@ -100,14 +100,9 @@
  #include <ConnectionPool.h>
  #include <SQLException.h>
 
- Compiling and linking with the library depends on, if database libraries 
- was linked in static or dynamic when libzdb was created. To check, use 
- 'otool -L libzdb.dylib' on Mac OS X, or 'ldd libzdb.so' on Linux. If 
- database libraries was linked static you can compile and link a program 
- which use libzdb, like so (your paths may vary). Otherwise you may have 
- to explicit add a link to a database library e.g. -lsqlite3
- 
- gcc -o sql sql.c -L/usr/local/lib -lzdb -lpthread -I/usr/local/include
+ Compile and link with libzdb,
+
+ gcc -o sql sql.c -L/<libzdb>/lib -lzdb -I/<libzdb>/include
  
   
  License Notes
@@ -144,7 +139,7 @@
  please subscribe to the libzdb general mailing list and post your 
  questions there. 
  
-         http://www.tildeslash.com/mailman/listinfo/libzdb-general
+   http://www.tildeslash.com/mailman/listinfo/libzdb-general
 
 
  Contact information
