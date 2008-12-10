@@ -16,7 +16,6 @@
 
 #ifndef CONNECTION_INCLUDED
 #define CONNECTION_INCLUDED
-#include <stdarg.h>
 
 
 /**
