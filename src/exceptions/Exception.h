@@ -212,7 +212,7 @@ struct Exception_Frame {
 	Exception_Frame *prev;
         char message[EXCEPTION_MESSAGE_LENGTH];
 };
-enum { Exception_entered=0, Exception_throwd, Exception_handled, Exception_finalized };
+enum { Exception_entered=0, Exception_thrown, Exception_handled, Exception_finalized };
 extern ThreadData_T Exception_stack;
 void Exception_init();
 void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...);
@@ -304,7 +304,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
  */
 #define END_TRY \
                 if (Exception_flag == Exception_entered) pop_exception_stack; \
-        } if (Exception_flag == Exception_throwd) RETHROW; \
+        } if (Exception_flag == Exception_thrown) RETHROW; \
         } while (0)
 
 

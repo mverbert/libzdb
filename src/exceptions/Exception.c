@@ -129,7 +129,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
                 if (cause)
                         Str_copy(p->message, message, EXCEPTION_MESSAGE_LENGTH);
                 pop_exception_stack;	
-                longjmp(p->env, Exception_throwd);
+                longjmp(p->env, Exception_thrown);
         }
 }
 
