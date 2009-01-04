@@ -1,7 +1,14 @@
-                         CHANGES version 2.3
+                         CHANGES version 2.4
 
               This file summarizes changes made since 1.0
 
+
+Version 2.4
+-----------
+* ConnectionPool_setWaitConnections() and ConnectionPool_getWaitConnections()
+  methods added. It allows to set the ConnectionPool_getConnection()
+  blocking until free connection is available. Default behavior is
+  non-blocking (backward compatible) - return error if no connection is available.
 
 Version 2.3
 -----------

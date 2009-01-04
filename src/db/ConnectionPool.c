@@ -45,12 +45,14 @@ struct T {
         int filled;
         int doSweep;
         char *error;
-        int stopped;
+        volatile int stopped;
         Sem_T alarm;
+        Sem_T waitConnection;
 	Mutex_T mutex;
 	Vector_T pool;
         Thread_T reaper;
         int sweepInterval;
+	int waitConnections;
 	int maxConnections;
         int connectionTimeout;
 	int initialConnections;
@@ -86,6 +88,7 @@ T ConnectionPool_new(URL_T url) {
 	NEW(P);
         P->url = url;
 	Mutex_init(P->mutex);
+        Sem_init(P->waitConnection);
 	P->maxConnections = SQL_DEFAULT_MAX_CONNECTIONS;
         P->pool = Vector_new(SQL_DEFAULT_MAX_CONNECTIONS);
 	P->initialConnections = SQL_DEFAULT_INIT_CONNECTIONS;
@@ -101,6 +104,7 @@ void ConnectionPool_free(T *P) {
         if (! (*P)->stopped)
                 ConnectionPool_stop((*P));
         Vector_free(&pool);
+        Sem_destroy((*P)->waitConnection);
 	Mutex_destroy((*P)->mutex);
         FREE((*P)->error);
 	FREE(*P);
@@ -160,6 +164,18 @@ void ConnectionPool_setConnectionTimeout(T P, int connectionTimeout) {
 int ConnectionPool_getConnectionTimeout(T P) {
         assert(P);
         return P->connectionTimeout;
+}
+
+
+void ConnectionPool_setWaitConnections(T P, int waitConnections) {
+        assert(P);
+        P->waitConnections = waitConnections;
+}
+
+
+int ConnectionPool_getWaitConnections(T P) {
+        assert(P);
+        return P->waitConnections;
 }
 
 
@@ -229,6 +245,7 @@ void ConnectionPool_stop(T P) {
         LOCK(P->mutex)
         {
                 P->stopped = true;
+                Sem_broadcast(P->waitConnection);
                 if (P->filled) {
                         drainPool(P);
                         P->filled = false;
@@ -249,29 +266,36 @@ Connection_T ConnectionPool_getConnection(T P) {
 	Connection_T con = NULL;
 	assert(P);
 	LOCK(P->mutex) 
-                int i, size = Vector_size(P->pool);
-                for (i= 0; i < size; i++) {
-                        con = Vector_get(P->pool, i);
-                        if (Connection_isAvailable(con) && Connection_ping(con)) {
-                                Connection_setAvailable(con, false);
-                                Connection_setQueryTimeout(con, SQL_DEFAULT_TIMEOUT);
-                                goto found;
-                        } 
-                }
-                if (size < P->maxConnections) {
-                        con = Connection_new(P, &P->error);
-                        if (con) {
-                                Connection_setAvailable(con, false);
-                                Vector_push(P->pool, con);
-                                goto found;
-                        } else {
-                                DEBUG("Failed to create connection -- %s\n", P->error);
-                                FREE(P->error);
+                while (! P->stopped) {
+                        int i, size = Vector_size(P->pool);
+                        for (i= 0; i < size; i++) {
+                                con = Vector_get(P->pool, i);
+                                if (Connection_isAvailable(con) && Connection_ping(con)) {
+                                        Connection_setAvailable(con, false);
+                                        Connection_setQueryTimeout(con, SQL_DEFAULT_TIMEOUT);
+                                        goto done;
+                                } 
                         }
-                } else {
-                        con = NULL;
+                        if (size < P->maxConnections) {
+                                con = Connection_new(P, &P->error);
+                                if (con) {
+                                        Connection_setAvailable(con, false);
+                                        Vector_push(P->pool, con);
+                                        break;
+                                } else {
+                                        DEBUG("Failed to create connection -- %s\n", P->error);
+                                        FREE(P->error);
+                                }
+                        } else {
+                                con = NULL;
+                                if (P->waitConnections && ! P->stopped) {
+                                        Sem_wait(P->waitConnection, P->mutex);
+                                        continue;
+                                }
+                                break;
+                        }
                 }
-found:
+done:
         END_LOCK;
 	return con;
 }
@@ -287,6 +311,7 @@ void ConnectionPool_returnConnection(T P, Connection_T connection) {
 	LOCK(P->mutex)
         {
 		Connection_setAvailable(connection, true);
+                Sem_signal(P->waitConnection);
         }
 	END_LOCK;
 }

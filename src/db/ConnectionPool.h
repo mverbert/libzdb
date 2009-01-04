@@ -331,6 +331,22 @@ int ConnectionPool_getConnectionTimeout(T P);
 
 
 /**
+ * Set a ConnectionPool_getConnection() to blocking mode.
+ * @param P A ConnectionPool object
+ * @param waitConnections 0 to set non-blocking (default), 1 for blocking.
+ */
+void ConnectionPool_setWaitConnections(T P, int waitConnections);
+
+
+/**
+ * Get a ConnectionPool_getConnection() blocking mode.
+ * 0 = non-blocking (default), 1 = blocking.
+ * @param P A ConnectionPool object
+ */
+int ConnectionPool_getWaitConnections(T P);
+
+
+/**
  * Set the function to call if a fatal error occurs in the library. 
  * Clients may optionally provide this function. If not provided
  * the library will call <code>abort(3)</code> upon encountering a 

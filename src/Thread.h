@@ -54,6 +54,7 @@
 #define Sem_init(sem) wrapper(pthread_cond_init(&sem, NULL))
 #define Sem_wait(sem, mutex) wrapper(pthread_cond_wait(&sem, &mutex))
 #define Sem_signal(sem) wrapper(pthread_cond_signal(&sem))
+#define Sem_broadcast(sem) wrapper(pthread_cond_broadcast(&sem))
 #define Sem_destroy(sem) wrapper(pthread_cond_destroy(&sem))
 #define Sem_timeWait(sem, mutex, time) \
         wrapper(pthread_cond_timedwait(&sem, &mutex, &time))
