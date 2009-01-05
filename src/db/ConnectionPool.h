@@ -331,19 +331,28 @@ int ConnectionPool_getConnectionTimeout(T P);
 
 
 /**
- * Set a ConnectionPool_getConnection() to blocking mode.
+ * Set if the Connection Pool should block on ConnectionPool_getConnection()
+ * if no connection is available. If <code>flag</code> is false (the default)
+ * calling ConnectionPool_getConnection() will return immediately with a new
+ * connection or null if no connection was available. If <code>flag</code> 
+ * is true, the calling thread will block until a connection is made available.
+ * Client code may still want to test if ConnectionPool_getConnection() returns
+ * null even if in blocking mode since failure to create a new connection will
+ * still return null. 
  * @param P A ConnectionPool object
- * @param waitConnections 0 to set non-blocking (default), 1 for blocking.
+ * @param flag set to true if ConnectionPool_getConnection() should block
+ * otherwise false. The default is false.
  */
-void ConnectionPool_setWaitConnections(T P, int waitConnections);
+void ConnectionPool_setWaitForConnection(T P, int flag);
 
 
 /**
- * Get a ConnectionPool_getConnection() blocking mode.
- * 0 = non-blocking (default), 1 = blocking.
+ * Returns true if ConnectionPool_getConnection() should block the calling 
+ * thread if no connection is available. The default is false.
  * @param P A ConnectionPool object
+ * @return True if ConnectionPool_getConnection() should block, otherwise false
  */
-int ConnectionPool_getWaitConnections(T P);
+int ConnectionPool_getWaitForConnection(T P);
 
 
 /**

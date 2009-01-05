@@ -434,7 +434,24 @@ void testPool(const char *testURL) {
                 assert(pool==NULL);
                 URL_free(&url);
         }
-        printf("=> Test8: OK\n\n");     
+        printf("=> Test8: OK\n\n");    
+        
+        printf("=> Test9: wait for connection\n");
+        {
+                Connection_T con;
+                url = URL_new(testURL);
+                pool= ConnectionPool_new(url);
+                assert(pool);
+                assert(ConnectionPool_getWaitForConnection(pool) == false);
+                ConnectionPool_setWaitForConnection(pool, true);
+                assert(ConnectionPool_getWaitForConnection(pool));
+                assert((con= ConnectionPool_getConnection(pool)));
+                Connection_close(con);
+                ConnectionPool_free(&pool);
+                assert(pool==NULL);
+                URL_free(&url);
+        }
+        printf("=> Test9: OK\n\n");
         
         printf("============> Connection Pool Tests: OK\n\n");
 }
