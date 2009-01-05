@@ -337,7 +337,7 @@ int ConnectionPool_getConnectionTimeout(T P);
  * connection or null if no connection was available. If <code>flag</code> 
  * is true, the calling thread will block until a connection is made available.
  * Client code may still want to test if ConnectionPool_getConnection() returns
- * null even if in blocking mode since failure to create a new connection will
+ * null even in blocking mode since failure to create a new connection will
  * still return null. 
  * @param P A ConnectionPool object
  * @param flag set to true if ConnectionPool_getConnection() should block
