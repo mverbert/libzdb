@@ -5,10 +5,11 @@
 
 Version 2.4
 -----------
-* ConnectionPool_setWaitConnections() and ConnectionPool_getWaitConnections()
-  methods added. It allows to set the ConnectionPool_getConnection()
-  blocking until free connection is available. Default behavior is
-  non-blocking (backward compatible) - return error if no connection is available.
+* Added ConnectionPool_setWaitForConnection() and ConnectionPool_\
+  getWaitForConnection(). ConnectionPool_setWaitForConnection()
+  can be used to set the Connection Pool in blocking mode. That is, 
+  ConnectionPool_getConnection() will block the calling thread until
+  a connection is available. The default behavior is non-blocking.
 
 Version 2.3
 -----------
