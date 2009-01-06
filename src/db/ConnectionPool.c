@@ -42,7 +42,6 @@
 #define T ConnectionPool_T
 struct T {
         URL_T url;
-        Sem_T wait;
         int filled;
         int doSweep;
         char *error;
@@ -54,7 +53,6 @@ struct T {
 	int maxConnections;
         volatile int stopped;
         int connectionTimeout;
-	int waitForConnection;
 	int initialConnections;
 };
 
@@ -88,7 +86,6 @@ T ConnectionPool_new(URL_T url) {
 	NEW(P);
         P->url = url;
 	Mutex_init(P->mutex);
-        Sem_init(P->wait);
 	P->maxConnections = SQL_DEFAULT_MAX_CONNECTIONS;
         P->pool = Vector_new(SQL_DEFAULT_MAX_CONNECTIONS);
 	P->initialConnections = SQL_DEFAULT_INIT_CONNECTIONS;
@@ -104,7 +101,6 @@ void ConnectionPool_free(T *P) {
         if (! (*P)->stopped)
                 ConnectionPool_stop((*P));
         Vector_free(&pool);
-        Sem_destroy((*P)->wait);
 	Mutex_destroy((*P)->mutex);
         FREE((*P)->error);
 	FREE(*P);
@@ -164,22 +160,6 @@ void ConnectionPool_setConnectionTimeout(T P, int connectionTimeout) {
 int ConnectionPool_getConnectionTimeout(T P) {
         assert(P);
         return P->connectionTimeout;
-}
-
-
-void ConnectionPool_setWaitForConnection(T P, int flag) {
-        assert(P);
-        LOCK(P->mutex)
-        {
-                P->waitForConnection = flag;
-        }
-        END_LOCK;
-}
-
-
-int ConnectionPool_getWaitForConnection(T P) {
-        assert(P);
-        return P->waitForConnection;
 }
 
 
@@ -249,7 +229,6 @@ void ConnectionPool_stop(T P) {
         LOCK(P->mutex)
         {
                 P->stopped = true;
-                Sem_broadcast(P->wait);
                 if (P->filled) {
                         drainPool(P);
                         P->filled = false;
@@ -270,7 +249,6 @@ Connection_T ConnectionPool_getConnection(T P) {
 	Connection_T con = NULL;
 	assert(P);
 	LOCK(P->mutex) 
-again:
         {
                 int i, size = Vector_size(P->pool);
                 for (i= 0; i < size; i++) {
@@ -293,11 +271,6 @@ again:
                         }
                 } else {
                         con = NULL;
-                        if (P->waitForConnection) {
-                                Sem_wait(P->wait, P->mutex);
-                                if (! P->stopped)
-                                        goto again;
-                        }
                 }
         }
 done: 
@@ -316,8 +289,6 @@ void ConnectionPool_returnConnection(T P, Connection_T connection) {
 	LOCK(P->mutex)
         {
 		Connection_setAvailable(connection, true);
-                if (P->waitForConnection)
-                        Sem_signal(P->wait);
         }
 	END_LOCK;
 }
@@ -397,7 +368,7 @@ static int reapConnections(T P) {
                                 continue;
                         break;
                 }
-                if ((Connection_getLastAccessedTime(con) < timedout) || (! Connection_ping(con))) {
+                if ((! Connection_ping(con)) || (Connection_getLastAccessedTime(con) < timedout)) {
                         Vector_remove(P->pool, i);
                         Connection_free(&con);
                         n++;

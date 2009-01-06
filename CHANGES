@@ -5,11 +5,10 @@
 
 Version 2.4
 -----------
-* Added ConnectionPool_setWaitForConnection() and ConnectionPool_\
-  getWaitForConnection(). ConnectionPool_setWaitForConnection()
-  can be used to set the Connection Pool in blocking mode. That is, 
-  ConnectionPool_getConnection() will block the calling thread until
-  a connection is available. The default behavior is non-blocking.
+* Improved parallelism of SQLite. Previous versions could exhibit 
+  lock problems with 2 or more threads. This version is tested to
+  work with at least upto 10 parallel threads accessing a SQLite
+  database.
 
 Version 2.3
 -----------
