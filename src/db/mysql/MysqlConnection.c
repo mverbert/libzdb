@@ -237,7 +237,6 @@ static MYSQL *doConnect(URL_T url, char **error) {
         int port;
         my_bool yes = 1;
         my_bool no = 0;
-        unsigned int protocol = MYSQL_PROTOCOL_DEFAULT;
         int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
         unsigned long clientFlags = CLIENT_MULTI_STATEMENTS;
         const char *user, *password, *host, *database, *charset, *timeout;
@@ -262,15 +261,6 @@ static MYSQL *doConnect(URL_T url, char **error) {
         else
                 database++;
         /* Options */
-        if (IS(URL_getParameter(url, "protocol"), "tcp"))
-                protocol = MYSQL_PROTOCOL_TCP;
-        if (IS(URL_getParameter(url, "protocol"), "socket"))
-                protocol = MYSQL_PROTOCOL_SOCKET;
-        if (IS(URL_getParameter(url, "protocol"), "pipe"))
-                protocol = MYSQL_PROTOCOL_PIPE;
-        if (IS(URL_getParameter(url, "protocol"), "memory"))
-                protocol = MYSQL_PROTOCOL_MEMORY;
-        mysql_options(db, MYSQL_OPT_PROTOCOL, (const char*)&protocol);
         if (IS(URL_getParameter(url, "compress"), "true"))
                 clientFlags |= CLIENT_COMPRESS;
         if (IS(URL_getParameter(url, "use-ssl"), "true"))
