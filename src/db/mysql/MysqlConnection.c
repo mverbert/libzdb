@@ -237,6 +237,7 @@ static MYSQL *doConnect(URL_T url, char **error) {
         int port;
         my_bool yes = 1;
         my_bool no = 0;
+        unsigned int protocol = MYSQL_PROTOCOL_DEFAULT;
         int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
         unsigned long clientFlags = CLIENT_MULTI_STATEMENTS;
         const char *user, *password, *host, *database, *charset, *timeout;
@@ -259,6 +260,17 @@ static MYSQL *doConnect(URL_T url, char **error) {
                 ERROR("no database specified in URL");
         else
                 database++;
+
+        /* Options */
+        if (IS(URL_getParameter(url, "protocol"), "TCP"))
+                protocol = MYSQL_PROTOCOL_TCP;
+        if (IS(URL_getParameter(url, "protocol"), "SOCKET"))
+                protocol = MYSQL_PROTOCOL_SOCKET;
+        if (IS(URL_getParameter(url, "protocol"), "PIPE"))
+                protocol = MYSQL_PROTOCOL_PIPE;
+        if (IS(URL_getParameter(url, "protocol"), "MEMORY"))
+                protocol = MYSQL_PROTOCOL_MEMORY;
+        mysql_options(db, MYSQL_OPT_PROTOCOL, (const char*)&protocol);
         if (IS(URL_getParameter(url, "compress"), "true"))
                 clientFlags |= CLIENT_COMPRESS;
         if (IS(URL_getParameter(url, "use-ssl"), "true"))
@@ -282,6 +294,8 @@ static MYSQL *doConnect(URL_T url, char **error) {
 #if MYSQL_VERSION_ID >= 50013
         mysql_options(db, MYSQL_OPT_RECONNECT, (const char*)&yes);
 #endif
+
+        /* Connect */
         if (! mysql_real_connect(db, host, user, password, database, port, 
                                NULL, clientFlags)) {
                 *error = Str_cat("%s", mysql_error(db));

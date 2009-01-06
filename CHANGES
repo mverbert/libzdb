@@ -5,6 +5,12 @@
 
 Version 2.4
 -----------
+* Added mysql protocol option which allows to force specific
+  protocol which is used to connect to the server. Possible values:
+        TCP
+        SOCKET
+        PIPE
+        MEMORY
 
 Version 2.3
 -----------
