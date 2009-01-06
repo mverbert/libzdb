@@ -164,7 +164,7 @@
 
 /* SQLite timed retry macro */
 #define EXEC_SQLITE(status, action, timeout) \
-        do { long t = (timeout * USEC_PER_MSEC)/200; int x = 0;\
+        do { long t = (timeout * USEC_PER_MSEC)/100; int x = 0;\
         do { status = (action); } while ((status == SQLITE_BUSY) \
         && (x++ <= 5) && ((Util_usleep(t))));} while (0)
 

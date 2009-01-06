@@ -5,10 +5,6 @@
 
 Version 2.4
 -----------
-* Improved parallelism of SQLite. Previous versions could exhibit 
-  lock problems with 2 or more threads. This version is tested to
-  work with at least upto 10 parallel threads accessing a SQLite
-  database.
 
 Version 2.3
 -----------
