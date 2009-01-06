@@ -140,10 +140,13 @@ AC_ARG_WITH([mysql],
                 CPPFLAGS="-I$with_mysql/include $CPPFLAGS"
                 AC_CHECK_HEADERS([mysql.h], [
                         mysql="yes"
-                        if test -r "$with_mysql/lib/libmysqlclient.a"; then
+                        AC_MSG_CHECKING(mysql client library)
+                        if test -r $with_mysql/lib/libmysqlclient.*a; then
                                 DBCPPFLAGS="$DBCPPFLAGS -I$with_mysql/include"
                                 DBLDFLAGS="$DBLDFLAGS -L$with_mysql/lib/ -lmysqlclient"
+                                AC_MSG_RESULT([ok])
                         else
+                                AC_MSG_RESULT([fail, cannot find libmysqlclient in $with_mysql/lib])
                                 mysql="no"
                         fi
                 ], [mysql="no"])
