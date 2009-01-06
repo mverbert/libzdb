@@ -58,6 +58,28 @@ hashing used in MySQL 4.1.1 and later. Default is false</td>
 <td>Boolean (true/false)</td>
 <td>secure-auth=true</td>
 </tr>
+<tr>
+<td><code>protocol</code></td>
+<td>
+How to connect to the server. Valid options are, tcp, socket, pipe and memory. 
+If not specified, connection is determined by the host parameter to the 
+connection URL. If host is NULL or localhost unix socket is attempted otherwise
+regular socket is used.
+</td>
+<td>String</td>
+<td>protocol=pipe</td>
+</tr>
+<tr>
+<td><code>unix_socket</code></td>
+<td>
+Specifies the socket or named pipe that should be used. The default
+is /tmp/mysql.sock. Note that the URL host value determines the type 
+of the connection. If host is the string "localhost", a connection to the 
+local host over a unix socket is assumed, otherwise TCP/IP is used.
+</td>
+<td>String</td>
+<td>unix_socket=/var/tmp/mysql.sock</td>
+</tr>
 </table>
 <p align="center">&nbsp;</p><br><p align="center"><font
 color="#808080" size="2"> Copyright &copy; 2008 Tildeslash Ltd. All

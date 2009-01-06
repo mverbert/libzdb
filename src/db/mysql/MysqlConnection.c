@@ -241,6 +241,7 @@ static MYSQL *doConnect(URL_T url, char **error) {
         int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
         unsigned long clientFlags = CLIENT_MULTI_STATEMENTS;
         const char *user, *password, *host, *database, *charset, *timeout;
+        const char *unix_socket = URL_getParameter(url, "unix_socket");
         MYSQL *db = mysql_init(NULL);
         if (NULL==db) {
                 *error = Str_dup("unable to allocate mysql handler");
@@ -260,15 +261,14 @@ static MYSQL *doConnect(URL_T url, char **error) {
                 ERROR("no database specified in URL");
         else
                 database++;
-
         /* Options */
-        if (IS(URL_getParameter(url, "protocol"), "TCP"))
+        if (IS(URL_getParameter(url, "protocol"), "tcp"))
                 protocol = MYSQL_PROTOCOL_TCP;
-        if (IS(URL_getParameter(url, "protocol"), "SOCKET"))
+        if (IS(URL_getParameter(url, "protocol"), "socket"))
                 protocol = MYSQL_PROTOCOL_SOCKET;
-        if (IS(URL_getParameter(url, "protocol"), "PIPE"))
+        if (IS(URL_getParameter(url, "protocol"), "pipe"))
                 protocol = MYSQL_PROTOCOL_PIPE;
-        if (IS(URL_getParameter(url, "protocol"), "MEMORY"))
+        if (IS(URL_getParameter(url, "protocol"), "memory"))
                 protocol = MYSQL_PROTOCOL_MEMORY;
         mysql_options(db, MYSQL_OPT_PROTOCOL, (const char*)&protocol);
         if (IS(URL_getParameter(url, "compress"), "true"))
@@ -296,8 +296,7 @@ static MYSQL *doConnect(URL_T url, char **error) {
 #endif
 
         /* Connect */
-        if (! mysql_real_connect(db, host, user, password, database, port, 
-                               NULL, clientFlags)) {
+        if (! mysql_real_connect(db, host, user, password, database, port, unix_socket, clientFlags)) {
                 *error = Str_cat("%s", mysql_error(db));
                 goto error;
         }
