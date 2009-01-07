@@ -224,9 +224,8 @@ int Connection_ping(T C) {
 
 void Connection_clear(T C) {
         assert(C);
-        if (C->resultSet) {
+        if (C->resultSet)
                 ResultSet_free(&C->resultSet);
-        }
         if (C->maxRows)
                 Connection_setMaxRows(C, 0);
         if (C->timeout != SQL_DEFAULT_TIMEOUT)
