@@ -197,20 +197,23 @@ AC_ARG_WITH([postgresql],
                         AC_MSG_RESULT([no])
                         postgresql="no"
                 else
-                        PATH="$with_postgresql:$PATH"
+                        if test "x" = "x$with_postgresql"; then
+                                PGCONFIG="pg_config"
+                        else
+                                PGCONFIG="$with_postgresql"
+                        fi
                 fi
         ])
 if test "xyes" = "x$postgresql"; then
-        PATH="$PATH:/usr/local/bin:/usr/local/pgsql/bin:/opt/local/pgsql/bin"
         svd_CPPFLAGS=$CPPFLAGS
         svd_LDFLAGS=$LDFLAGS
-        CPPFLAGS="-I`pg_config --includedir` $CPPFLAGS"
-        LDFLAGS="-L`pg_config --libdir` $LDFLAGS"
+        CPPFLAGS="-I`$PGCONFIG --includedir` $CPPFLAGS"
+        LDFLAGS="-L`$PGCONFIG --libdir` $LDFLAGS"
         AC_CHECK_HEADERS([libpq-fe.h], [], [postgresql="no"])
         AC_CHECK_LIB([pq], [PQprepare], [], [postgresql="no"])
         if test "xyes" = "x$postgresql"; then
-                DBCPPFLAGS="$DBCPPFLAGS -I`pg_config --includedir`"
-                DBLDFLAGS="$DBLDFLAGS -L`pg_config --libdir` -lpq"
+                DBCPPFLAGS="$DBCPPFLAGS -I`$PGCONFIG --includedir`"
+                DBLDFLAGS="$DBLDFLAGS -L`$PGCONFIG --libdir` -lpq"
                 AC_DEFINE([HAVE_LIBPQ])
         else
                 CPPFLAGS=$svd_CPPFLAGS
