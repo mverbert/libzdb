@@ -118,8 +118,8 @@ AC_ARG_ENABLE([openssl],
 		AC_CHECK_LIB([crypto], [SHA1_Init], [], [AC_MSG_ERROR([libcrypto not found])])
 	else
                 AC_MSG_CHECKING([for openssl in $enableval])
-                LDFLAGS="$LDFLAGS -L$enableval/lib -lssl -lcrypto"
-                CPPFLAGS="$CPPFLAGS -I$enableval/include"
+                LDFLAGS="-L$enableval/lib -lssl -lcrypto $LDFLAGS "
+                CPPFLAGS="-I$enableval/include $CPPFLAGS"
                 if test -r "$enableval/lib/libssl.a" -a -r "$enableval/lib/libcrypto.a"; then
                         AC_MSG_RESULT([ok])
                 else
@@ -194,7 +194,6 @@ if test "xyes" = "x$mysql"; then
         then
                 AC_MSG_RESULT([fail, >= 4.1 required])
         else
-                AC_MSG_RESULT([ok])
                 AC_CHECK_LIB([z], [compress],[],[mysql="no"])
         fi
 fi
