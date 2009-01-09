@@ -210,11 +210,10 @@ if test "xyes" = "x$postgresql"; then
         CPPFLAGS="-I`$PGCONFIG --includedir` $CPPFLAGS"
         LDFLAGS="-L`$PGCONFIG --libdir` $LDFLAGS"
         AC_CHECK_HEADERS([libpq-fe.h], [], [postgresql="no"])
-        AC_CHECK_LIB([pq], [PQprepare], [], [postgresql="no"])
         if test "xyes" = "x$postgresql"; then
                 DBCPPFLAGS="$DBCPPFLAGS -I`$PGCONFIG --includedir`"
                 DBLDFLAGS="$DBLDFLAGS -L`$PGCONFIG --libdir` -lpq"
-                AC_DEFINE([HAVE_LIBPQ])
+                AC_DEFINE([HAVE_LIBPQ], 1, [Define to 1 to enable postgresql])
         else
                 CPPFLAGS=$svd_CPPFLAGS
                 LDFLAGS=$svd_LDFLAGS
