@@ -103,7 +103,31 @@ AC_ARG_ENABLE(profiling,
         profile="false"
     ]
 )
-     
+
+AC_ARG_ENABLE([openssl],
+        AS_HELP_STRING([--enable-openssl(=<path)], 
+                [Link libzdb with openssl. If database libraries were linked static,
+                libzdb may have to link with openssl to support crypto and ssl 
+                functionality in SQL client libraries. An optional path argument may
+                be given to specify the top-level directory to search for openssl to
+                link with]),
+     [
+        openssl="true"
+        if test "x$enableval" = "xyes"; then
+		AC_CHECK_LIB([ssl], [SSL_library_init], [], [AC_MSG_ERROR([libssl not found])])
+		AC_CHECK_LIB([crypto], [SHA1_Init], [], [AC_MSG_ERROR([libcrypto not found])])
+	else
+                AC_MSG_CHECKING([for openssl in $enableval])
+                LDFLAGS="$LDFLAGS -L$enableval/lib -lssl -lcrypto"
+                CPPFLAGS="$CPPFLAGS -I$enableval/include"
+                if test -r "$enableval/lib/libssl.a" -a -r "$enableval/lib/libcrypto.a"; then
+                        AC_MSG_RESULT([ok])
+                else
+                       AC_MSG_ERROR([openssl not found in $enableval])
+                fi
+        fi
+     ],[openssl="false"])
+
 if test "xfalse" = "x$protect" -a "xfalse" = "x$zild_protect"; then
         zild_build="false"
         test_build="true"
@@ -138,29 +162,21 @@ AC_ARG_WITH([mysql],
                 svd_CPPFLAGS=$CPPFLAGS
                 LDFLAGS="-L$with_mysql/lib $LDFLAGS"
                 CPPFLAGS="-I$with_mysql/include $CPPFLAGS"
-                AC_CHECK_HEADERS([mysql.h], [
+                if test -r $with_mysql/lib/libmysqlclient.*a; then
                         mysql="yes"
-                        AC_MSG_CHECKING(mysql client library)
-                        if test -r $with_mysql/lib/libmysqlclient.*a; then
-                                DBCPPFLAGS="$DBCPPFLAGS -I$with_mysql/include"
-                                DBLDFLAGS="$DBLDFLAGS -L$with_mysql/lib/ -lmysqlclient"
-                                AC_MSG_RESULT([ok])
-                        else
-                                AC_MSG_RESULT([fail, cannot find libmysqlclient in $with_mysql/lib])
-                                mysql="no"
-                        fi
-                ], [mysql="no"])
+                        DBCPPFLAGS="$DBCPPFLAGS -I$with_mysql/include"
+                        DBLDFLAGS="$DBLDFLAGS -L$with_mysql/lib/ -lmysqlclient"
+                        AC_MSG_RESULT([ok, using libmysqlclient in $with_mysql/lib/])
+                else
+                        AC_MSG_RESULT([fail, cannot find libmysqlclient in $with_mysql/lib])
+                        mysql="no"
+                fi
                 if test "xno" = "x$mysql"; then
                         LDFLAGS=$svd_LDFLAGS
                         CPPFLAGS=$svd_CPPFLAGS
                 fi
         fi
-        ], [
-
-	LDFLAGS=`mysql_config --libs $LDFLAGS`
-	CPPFLAGS=`mysql_config --include $CPPFLAGS`
-
-	AC_CHECK_LIB([mysqlclient], [mysql_init], [], [mysql="no"], [-lz])])
+        ], [AC_CHECK_LIB([mysqlclient], [mysql_init], [], [mysql="no"], [-lz])])
 
 if test "xyes" = "x$mysql"; then
         AC_MSG_CHECKING(mysql version)
@@ -337,7 +353,10 @@ echo "|   Unit Tests Build:                             DISABLED   |"
 else
 echo "|   Unit Tests Build:                             ENABLED    |"
 fi
-echo "|                                                            |"
+if test "xtrue" = "x$openssl"; then
+echo "|   Openssl:                                      ENABLED    |"
+fi
+echo "|------------------------------------------------------------|"
 if test "xyes" = "x$sqlite"; then
 echo "|   SQLite3:                                      ENABLED    |"
 else
