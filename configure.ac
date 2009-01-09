@@ -105,7 +105,7 @@ AC_ARG_ENABLE(profiling,
 )
 
 AC_ARG_ENABLE([openssl],
-        AS_HELP_STRING([--enable-openssl(=<path)], 
+        AS_HELP_STRING([--enable-openssl(=<path>)], 
                 [Link libzdb with openssl. If database libraries were linked static,
                 libzdb may have to link with openssl to support crypto and ssl 
                 functionality in SQL client libraries. An optional path argument may
