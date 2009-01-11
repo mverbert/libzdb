@@ -185,7 +185,8 @@ void PostgresqlPreparedStatement_execute(T P) {
                              P->paramFormats,
                              0);
         P->lastError = PQresultStatus(P->res);
-        assert(P->lastError == PGRES_COMMAND_OK);
+        if (P->lastError != PGRES_COMMAND_OK)
+                THROW(SQLException, "Prepared statement failed -- %s", PQresultErrorMessage(P->res));
 }
 
 
