@@ -129,7 +129,7 @@ void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *
         TEST_INDEX
 	FREE(P->paramValues[i]);
         P->paramValues[i] = Str_dup(x);
-        P->paramLengths[i] = strlen(P->paramValues[i]);
+        P->paramLengths[i] = P->paramValues[i] ? strlen(P->paramValues[i]) : 0;
         P->paramFormats[i] = 0;
 }
 
