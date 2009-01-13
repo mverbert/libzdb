@@ -236,22 +236,22 @@ void testPool(const char *testURL) {
         printf("=> Test7: reaper start/stop\n");
         {
                 int i;
-                Vector_T v= Vector_new(50);
+                Vector_T v= Vector_new(20);
                 url= URL_new(testURL);
                 pool= ConnectionPool_new(url);
                 assert(pool);
                 ConnectionPool_setInitialConnections(pool, 4);
-                ConnectionPool_setMaxConnections(pool, 50);
+                ConnectionPool_setMaxConnections(pool, 20);
                 ConnectionPool_setConnectionTimeout(pool, 4);
                 ConnectionPool_setReaper(pool, 4);
                 ConnectionPool_setAbortHandler(pool, TabortHandler);
                 ConnectionPool_start(pool);
                 assert(4==ConnectionPool_size(pool));
-                printf("Creating 50 Connections..");
-                for (i= 0; i<50; i++)
+                printf("Creating 20 Connections..");
+                for (i= 0; i<20; i++)
                         Vector_push(v, ConnectionPool_getConnection(pool));
-                assert(50==ConnectionPool_size(pool));
-                assert(ConnectionPool_active(pool)==50);
+                assert(20==ConnectionPool_size(pool));
+                assert(ConnectionPool_active(pool)==20);
                 printf("success\n");
                 printf("Closing Connections down to initial..");
                 while (! Vector_isEmpty(v))

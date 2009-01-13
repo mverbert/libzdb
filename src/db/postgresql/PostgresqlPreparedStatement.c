@@ -29,6 +29,8 @@
 
 /**
  * Implementation of the PreparedStatement/Strategy interface for postgresql.
+ * All parameter values are sent as text except for blobs. Postgres ignore
+ * paramLengths for text parameters and is therefor set to 0, except for blob.
  *
  * @version \$Id: PostgresqlPreparedStatement.c,v 1.11 2008/03/20 11:28:53 hauk Exp $
  * @file
@@ -50,6 +52,9 @@ const struct Pop_T postgresqlpops = {
         PostgresqlPreparedStatement_executeQuery
 };
 
+typedef struct param_t {
+        char s[65];
+} *param_t;
 #define T PreparedStatementImpl_T
 struct T {
         int maxRows;
@@ -61,6 +66,7 @@ struct T {
         char **paramValues; 
         int *paramLengths; 
         int *paramFormats;
+        param_t params;
 };
 
 #ifndef net_buffer_length
@@ -91,9 +97,10 @@ T PostgresqlPreparedStatement_new(PGconn *db, int maxRows, char *stmt, int prm) 
         P->res = NULL;
         P->paramCount = prm;
         if (P->paramCount) {
-                P->paramValues = CALLOC(prm, sizeof(char *));
-                P->paramLengths = CALLOC(prm, sizeof(int));
-                P->paramFormats = CALLOC(prm, sizeof(int));
+                P->paramValues = CALLOC(P->paramCount, sizeof(char *));
+                P->paramLengths = CALLOC(P->paramCount, sizeof(int));
+                P->paramFormats = CALLOC(P->paramCount, sizeof(int));
+                P->params = CALLOC(P->paramCount, sizeof(struct param_t));
         }
         return P;
 }
@@ -111,15 +118,10 @@ void PostgresqlPreparedStatement_free(T *P) {
         PQclear((*P)->res);
 	FREE((*P)->stmt);
         if ((*P)->paramCount) {
-                int i;
-                for (i = 0; i < (*P)->paramCount; i++) {
-                        if ((*P)->paramFormats[i] == 0) {
-	                        FREE((*P)->paramValues[i]);
-                        }
-                }
 	        FREE((*P)->paramValues);
 	        FREE((*P)->paramLengths);
 	        FREE((*P)->paramFormats);
+	        FREE((*P)->params);
         }
 	FREE(*P);
 }
@@ -127,40 +129,35 @@ void PostgresqlPreparedStatement_free(T *P) {
 
 void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
         TEST_INDEX
-        if (x==NULL) {
-                P->paramValues[i] = NULL;
-                P->paramLengths[i] = 0;
-        } else {
-                P->paramValues[i] = (char *)x;
-                P->paramLengths[i] = strlen(x);
-        }
+        P->paramValues[i] = (char *)x;
+        P->paramLengths[i] = 0;
         P->paramFormats[i] = 0;
 }
 
 
 void PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
         TEST_INDEX
-	FREE(P->paramValues[i]);
-        P->paramValues[i] = Str_cat("%d", x);
-        P->paramLengths[i] = strlen(P->paramValues[i]);
+        snprintf(P->params[i].s, 64, "%d", x);
+        P->paramValues[i] =  P->params[i].s;
+        P->paramLengths[i] = 0;
         P->paramFormats[i] = 0;
 }
 
 
 void PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
         TEST_INDEX
-	FREE(P->paramValues[i]);
-        P->paramValues[i] = Str_cat("%lld", x);
-        P->paramLengths[i] = strlen(P->paramValues[i]);
+        snprintf(P->params[i].s, 64, "%lld", x);
+        P->paramValues[i] =  P->params[i].s;
+        P->paramLengths[i] = 0; 
         P->paramFormats[i] = 0;
 }
 
 
 void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
         TEST_INDEX
-	FREE(P->paramValues[i]);
-        P->paramValues[i] = Str_cat("%lf", x);
-        P->paramLengths[i] = strlen(P->paramValues[i]);
+        snprintf(P->params[i].s, 64, "%lf", x);
+        P->paramValues[i] =  P->params[i].s;
+        P->paramLengths[i] = 0;
         P->paramFormats[i] = 0;
 }
 
