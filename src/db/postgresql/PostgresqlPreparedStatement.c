@@ -127,9 +127,13 @@ void PostgresqlPreparedStatement_free(T *P) {
 
 void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
         TEST_INDEX
-	FREE(P->paramValues[i]);
-        P->paramValues[i] = Str_dup(x);
-        P->paramLengths[i] = P->paramValues[i] ? strlen(P->paramValues[i]) : 0;
+        if (x==NULL) {
+                P->paramValues[i] = NULL;
+                P->paramLengths[i] = 0;
+        } else {
+                P->paramValues[i] = (char *)x;
+                P->paramLengths[i] = strlen(x);
+        }
         P->paramFormats[i] = 0;
 }
 
