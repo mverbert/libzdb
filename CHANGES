@@ -5,6 +5,14 @@
 
 Version 2.4
 -----------
+* Improved error reporting for PostgreSQL prepared statements.
+
+* Fix crash when PreparedStatement_setString was called with NULL
+  for PostgreSQL backend.
+
+* Fix --with_postgresql=<path> configure option. The path is path
+  to pg_config. Example:
+     ./configure --with_postgresql=/usr/local/pgsql/bin/pg_config
 
 Version 2.3
 -----------
