@@ -30,7 +30,7 @@
 /**
  * Implementation of the PreparedStatement/Strategy interface for postgresql.
  * All parameter values are sent as text except for blobs. Postgres ignore
- * paramLengths for text parameters and is therefor set to 0, except for blob.
+ * paramLengths for text parameters and it is therefor set to 0, except for blob.
  *
  * @version \$Id: PostgresqlPreparedStatement.c,v 1.11 2008/03/20 11:28:53 hauk Exp $
  * @file
