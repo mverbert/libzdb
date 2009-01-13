@@ -176,7 +176,12 @@ AC_ARG_WITH([mysql],
                         CPPFLAGS=$svd_CPPFLAGS
                 fi
         fi
-        ], [AC_CHECK_LIB([mysqlclient], [mysql_init], [], [mysql="no"], [-lz])])
+        ], 
+        [
+        LDFLAGS=`mysql_config --libs $LDFLAGS`
+	CPPFLAGS=`mysql_config --include $CPPFLAGS`
+        AC_CHECK_LIB([mysqlclient], [mysql_init], [], [mysql="no"], [-lz])
+        ])
 
 if test "xyes" = "x$mysql"; then
         AC_MSG_CHECKING(mysql version)
