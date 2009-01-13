@@ -152,7 +152,8 @@ const char *PostgresqlResultSet_getStringByName(T R, const char *columnName) {
 
 int PostgresqlResultSet_getInt(T R, int columnIndex) {
         TEST_INDEX(0)
-        return Str_parseInt(PQgetvalue(R->res, R->currentRow, i));
+        const char *result = PQgetvalue(R->res, R->currentRow, i);
+        return result && *result ? Str_parseInt(result) : 0;
 }
 
 
@@ -164,7 +165,8 @@ int PostgresqlResultSet_getIntByName(T R, const char *columnName) {
 
 long long int PostgresqlResultSet_getLLong(T R, int columnIndex) {
         TEST_INDEX(0)
-        return Str_parseLLong(PQgetvalue(R->res, R->currentRow, i));
+        const char *result = PQgetvalue(R->res, R->currentRow, i);
+        return result && *result ? Str_parseLLong(result) : 0LL;
 }
 
 
@@ -176,7 +178,8 @@ long long int PostgresqlResultSet_getLLongByName(T R, const char *columnName) {
 
 double PostgresqlResultSet_getDouble(T R, int columnIndex) {
         TEST_INDEX(0.0)
-        return Str_parseDouble(PQgetvalue(R->res, R->currentRow, i));
+        const char *result = PQgetvalue(R->res, R->currentRow, i);
+        return result && *result ? Str_parseDouble(result) : 0.0;
 }
 
 
