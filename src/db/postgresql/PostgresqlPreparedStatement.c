@@ -18,7 +18,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <arpa/inet.h>
 #include <libpq-fe.h>
 
 #include "ResultSet.h"
@@ -164,13 +163,8 @@ void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
 
 void PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
         TEST_INDEX
-        if (x==NULL) {
-                P->paramValues[i] = NULL;
-                P->paramLengths[i] = 0;
-        } else {
-                P->paramValues[i] = (char *)x;
-                P->paramLengths[i] = size;
-        }
+        P->paramValues[i] = (char *)x;
+        P->paramLengths[i] = (x) ? size : 0;
         P->paramFormats[i] = 1;
 }
 
