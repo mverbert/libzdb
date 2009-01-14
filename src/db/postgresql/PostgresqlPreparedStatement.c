@@ -129,7 +129,7 @@ void PostgresqlPreparedStatement_free(T *P) {
 
 void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
         TEST_INDEX
-        P->paramValues[i] = (x && *x) ? (char *)x : 0;
+        P->paramValues[i] = (char *)x;
         P->paramLengths[i] = 0;
         P->paramFormats[i] = 0;
 }
