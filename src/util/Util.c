@@ -48,7 +48,7 @@
 
 long Util_seconds() {
 	struct timeval tv;
-	gettimeofday(&tv, NULL);
+	assert(gettimeofday(&tv, NULL) == 0);
 	return tv.tv_sec;
 }
 

@@ -31,6 +31,7 @@
  * Returns the time since the Epoch (00:00:00 UTC, January 1, 1970),
  * measured in seconds.
  * @return The current time since the Epoch in seconds
+ * @exception AssertException If time could not be obtained
  */
 long Util_seconds();
 

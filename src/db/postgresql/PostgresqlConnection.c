@@ -221,7 +221,7 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
         va_end(ap_copy);
         /* Thanks PostgreSQL for not using '?' as the wildcard marker, but instead $1, $2.. $n */
         paramCount = StringBuffer_prepare2postgres(C->sb);
-        name = Str_cat("%d", rand() + Util_seconds());
+        name = Str_cat("%d", rand());
         C->res = PQprepare(C->db, name, StringBuffer_toString(C->sb), 0, NULL);
         if (C->res &&
             (C->lastError == PGRES_EMPTY_QUERY ||
