@@ -185,7 +185,6 @@ AC_ARG_WITH([mysql],
 
 if test "xyes" = "x$mysql"; then
         AC_MSG_CHECKING(mysql version)
-        CPPFLAGS="-I/usr/include/mysql $CPPFLAGS"
         AC_CHECK_HEADERS([mysql.h])
         AC_RUN_IFELSE([AC_LANG_PROGRAM([[#include <mysql.h>]],
         [[
