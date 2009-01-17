@@ -85,8 +85,9 @@ extern const struct Rop_T postgresqlrops;
 #pragma GCC visibility push(hidden)
 #endif
 
-T PostgresqlPreparedStatement_new(PGconn *db, int maxRows, char *stmt, int prm) {
+T PostgresqlPreparedStatement_new(PGconn *db, int maxRows, char *stmt, int paramCount) {
         T P;
+        assert(db);
         assert(stmt);
         NEW(P);
         P->maxRows = maxRows;
@@ -94,7 +95,7 @@ T PostgresqlPreparedStatement_new(PGconn *db, int maxRows, char *stmt, int prm) 
         P->stmt = stmt;
         P->db = db;
         P->res = NULL;
-        P->paramCount = prm;
+        P->paramCount = paramCount;
         if (P->paramCount) {
                 P->paramValues = CALLOC(P->paramCount, sizeof(char *));
                 P->paramLengths = CALLOC(P->paramCount, sizeof(int));

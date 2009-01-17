@@ -54,7 +54,7 @@ void StringBuffer_free(T *S);
  * buffer by the length of the arguments. 
  * @param S StringBuffer object
  * @param s A string with optional var args
- * @return a reference to this StringBuffer
+ * @return A reference to this StringBuffer
  */
 T StringBuffer_append(T S, const char *s, ...);
 
@@ -66,15 +66,29 @@ T StringBuffer_append(T S, const char *s, ...);
  * @param S StringBuffer object
  * @param s A string with optional var args
  * @param ap A variable argument list
- * @return a reference to this StringBuffer
+ * @return A reference to this StringBuffer
  */
 T StringBuffer_vappend(T S, const char *s, va_list ap);
 
 
 /**
+ * Replace all occurences of <code>?</code> in String Buffer with <code>$n</code>. 
+ * Example: 
+ * <pre>
+ * StringBuffer_T b = StringBuffer_new("insert into host values(?, ?, ?);"); 
+ * StringBuffer_prepare2postgres(b) -> "insert into host values($1, $2, $3);"
+ * </pre>
+ * @param S StringBuffer object
+ * @return The number of replacements that took place
+ * @exception SQLException if there are more than 99 wild card '?' parameters
+ */
+int StringBuffer_prepare2postgres(T S);
+
+
+/**
  * Returns the length (character count) of this string buffer.
  * @param S StringBuffer object
- * @return the length of the sequence of characters currently represented 
+ * @return The length of the sequence of characters currently represented 
  * by this string buffer
  */
 int StringBuffer_length(T S);
@@ -90,7 +104,7 @@ void StringBuffer_clear(T S);
 /**
  * Converts to a string representing the data in this string buffer.
  * @param S StringBuffer object
- * @return a string representation of the string buffer 
+ * @return A string representation of the string buffer 
  */
 const char *StringBuffer_toString(T S);
 

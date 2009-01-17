@@ -17,6 +17,7 @@
 #include "Config.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include "StringBuffer.h"
 
@@ -108,6 +109,35 @@ T StringBuffer_vappend(T S, const char *s, va_list ap) {
                 va_end(ap_copy);
         }
         return S;
+}
+
+
+int StringBuffer_prepare2postgres(T S) {
+        int n, i;
+        assert(S);
+        for (n = i = 0; S->buffer[i]; i++) if (S->buffer[i] == '?') n++;
+        if (n > 99)
+                THROW(SQLException, "Max 99 parameters are allowed in a PostgreSQL prepared statement. Found %d parameters in statement", n);
+        else if (n) {
+                int j, xl;
+                char x[3] = {'$'};
+                int required = (n * 2) + S->used;
+                if (required >= S->length) {
+                        S->length = required;
+                        RESIZE(S->buffer, S->length);
+                }
+                for (i = 0, j = 1; (j<=n); i++) {
+                        if (S->buffer[i] == '?') {
+                                if(j<10){xl=2;x[1]=(j%10)+'0';}else{xl=3;x[1]=(j/10)+'0';x[2]=(j%10)+'0';}
+                                memmove(S->buffer + i + xl, S->buffer + i + 1, (S->used - (i + 1)));
+                                memmove(S->buffer + i, x, xl);
+                                S->used += xl - 1;
+                                j++;
+                        }
+                }
+                S->buffer[S->used] = 0;
+        }
+        return n;
 }
 
 

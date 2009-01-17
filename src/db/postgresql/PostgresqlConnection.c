@@ -209,58 +209,19 @@ ResultSet_T PostgresqlConnection_executeQuery(T C, const char *sql, va_list ap) 
 
 
 PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, va_list ap) {
+        char *name;
+        int paramCount = 0;
         va_list ap_copy;
-        int len = 0, prm1 = 0, prm2 = 0, maxparam = atoi(MAXPARAM);
-        long index[maxparam];
-        char *name = NULL;
-        char *stmt = NULL;
-        char *p = NULL;
-        char *q = NULL;
-
         assert(C);
         assert(sql);
-        /* We have to replace the wildcard '?' using the '$x' here.
-         * We support just 999 parameters currently, but it should
-         * be probably enough - in the case that more will be needed,
-         * we can rise the limit via the MAXPARAM */
-        va_copy(ap_copy, ap);
-        p = q = Str_vcat(sql, ap);
-        va_end(ap_copy);
-        memset(index, 0, sizeof(index));
-        index[0] = (long)p;
-        while (prm1 < maxparam && (p = strchr(p, '?'))) {
-                prm1++;
-                *p = 0;
-                p++;
-                index[prm1] = (long)p;
-        }
-        if (! prm1) {
-                stmt = Str_dup(sql);
-        } else if (prm1 > maxparam) {
-                FREE(q);
-                THROW(SQLException, "Exceeded prepared statement parameter limit");
-                return NULL;
-        } else {
-                len = strlen(sql) + prm1 * strlen(MAXPARAM + 1);
-                stmt = CALLOC(1, len + 1);
-                while (prm2 <= prm1) {
-                        sprintf(stmt + strlen(stmt), "%s", (char *)index[prm2]);
-                        if (prm2 < prm1)
-                                sprintf(stmt + strlen(stmt), "$%d", prm2 + 1);
-                        prm2++;
-                }
-        }
-        FREE(q);
-        /* Get the unique prepared statement ID */
-	name = Str_cat("%d", rand());
         PQclear(C->res);
-
         StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, stmt, ap_copy);
+        StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
-        FREE(stmt);
-        
+        /* Thanks PostgreSQL for not using '?' as the wildcard marker, but instead $1, $2.. $n */
+        paramCount = StringBuffer_prepare2postgres(C->sb);
+        name = Str_cat("%d", rand() + StringBuffer_length(C->sb));
         C->res = PQprepare(C->db, name, StringBuffer_toString(C->sb), 0, NULL);
         if (C->res &&
             (C->lastError == PGRES_EMPTY_QUERY ||
@@ -269,7 +230,7 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
 		return PreparedStatement_new(PostgresqlPreparedStatement_new(C->db,
                                                                              C->maxRows,
                                                                              name,
-                                                                             prm1), 
+                                                                             paramCount), 
                                              (Pop_T)&postgresqlpops);
         }
         return NULL;
