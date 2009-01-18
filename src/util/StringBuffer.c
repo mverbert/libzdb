@@ -128,7 +128,7 @@ int StringBuffer_prepare2postgres(T S) {
                 }
                 for (i = 0, j = 1; (j<=n); i++) {
                         if (S->buffer[i] == '?') {
-                                if(j<10){xl=2;x[1]=(j%10)+'0';}else{xl=3;x[1]=(j/10)+'0';x[2]=(j%10)+'0';}
+                                if(j<10){xl=2;x[1]=j+'0';}else{xl=3;x[1]=(j/10)+'0';x[2]=(j%10)+'0';}
                                 memmove(S->buffer + i + xl, S->buffer + i + 1, (S->used - (i + 1)));
                                 memmove(S->buffer + i, x, xl);
                                 S->used += xl - 1;
