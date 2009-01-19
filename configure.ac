@@ -237,7 +237,7 @@ AC_ARG_WITH([postgresql],
         ],
         [
                 AC_MSG_RESULT([yes])
-                AC_PATH_PROG([PGCONFIG], [pg_config], [no], [$PATH:/usr/local/bin:/usr/local/postgresql/bin])
+                AC_PATH_PROG([PGCONFIG], [pg_config], [no], [$PATH:/usr/local/bin:/usr/local/pgsql/bin])
                 if test "x$PGCONFIG" = "xno"; then
                         AC_MSG_WARN([pg_config is required to build libzdb with postgresql])
                         postgresql="no"

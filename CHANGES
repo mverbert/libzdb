@@ -5,13 +5,17 @@
 
 Version 2.4
 -----------
+MySQL:
+* The configure option, --with_mysql=<path>, if <path> is given
+  it is assumed to be the full path to mysql_config. Example:
+     ./configure --with_mysql=/usr/local/mysql/bin/mysql_config
 PostgreSQL:
 * Improved error reporting and fixed potential allocation bug in
   prepared statements.
 * Fix crash when PreparedStatement_setString was called with NULL
   for PostgreSQL backend.
-* Fix --with_postgresql=<path> configure option. The path is path
-  to pg_config. Example:
+* The configure option, --with_postgresql=<path>, if <path> is given
+  it is assumed to be the full path to pg_config. Example:
      ./configure --with_postgresql=/usr/local/pgsql/bin/pg_config
 
 Version 2.3
