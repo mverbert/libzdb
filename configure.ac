@@ -148,79 +148,99 @@ AC_SEARCH_LIBS(crypt, crypt)
 
 # Database Libraries 
 
+
 mysql="yes"
 AC_MSG_CHECKING(for mysql)
 AC_ARG_WITH([mysql], 
-        AS_HELP_STRING([--with-mysql=<path>], 
-                [prefix of mysql installation. e.g. /usr/local/mysql]), 
+        AS_HELP_STRING([--with-mysql(=<path>)], 
+                [path is optional and if given should specify the full path to the MySQL
+                 configure script, mysql_config. E.g. --with-mysql=/<path>/mysql_config]), 
         [
-        if test "xno" = "x$with_mysql"; then
-                AC_MSG_RESULT([mysql=no])
-                mysql="no"
-        else
-                svd_LDFLAGS=$LDFLAGS
-                svd_CPPFLAGS=$CPPFLAGS
-                LDFLAGS="-L$with_mysql/lib $LDFLAGS"
-                CPPFLAGS="-I$with_mysql/include $CPPFLAGS"
-                if test -r $with_mysql/lib/libmysqlclient.*a; then
-                        mysql="yes"
-                        DBCPPFLAGS="$DBCPPFLAGS -I$with_mysql/include"
-                        DBLDFLAGS="$DBLDFLAGS -L$with_mysql/lib/ -lmysqlclient"
-                        AC_MSG_RESULT([ok, using libmysqlclient in $with_mysql/lib/])
+                if test "xno" = "x$with_mysql"; then
+                        AC_MSG_RESULT([no])
+                        mysql="no"
                 else
-                        AC_MSG_RESULT([fail, cannot find libmysqlclient in $with_mysql/lib])
+                        AC_MSG_RESULT([yes])
+                        AC_CHECK_FILE([$with_mysql], 
+                        [
+                                MYSQLCONFIG=$with_mysql
+                        ], 
+                        [
+                                AC_MSG_WARN([mysql_config given as $with_mysql not found])
+                                mysql="no"
+                        ])        
+                fi
+        ],
+        [
+                AC_MSG_RESULT([yes])
+                AC_PATH_PROG([MYSQLCONFIG], [mysql_config], [no], [$PATH:/usr/local/bin:/usr/local/mysql/bin])
+                if test "x$MYSQLCONFIG" = "xno"; then
+                        AC_MSG_WARN([mysql_config is required to build libzdb with mysql])
                         mysql="no"
                 fi
-                if test "xno" = "x$mysql"; then
-                        LDFLAGS=$svd_LDFLAGS
-                        CPPFLAGS=$svd_CPPFLAGS
-                fi
-        fi
-        ], 
-        [
-        LDFLAGS=`mysql_config --libs $LDFLAGS`
-	CPPFLAGS=`mysql_config --include $CPPFLAGS`
-        AC_CHECK_LIB([mysqlclient], [mysql_init], [], [mysql="no"], [-lz])
         ])
-
 if test "xyes" = "x$mysql"; then
-        AC_MSG_CHECKING(mysql version)
+        svd_CPPFLAGS=$CPPFLAGS
+        svd_LDFLAGS=$LDFLAGS
+        CPPFLAGS="`$MYSQLCONFIG --include` $CPPFLAGS"
+        LDFLAGS="`$MYSQLCONFIG --libs` $LDFLAGS"
         AC_CHECK_HEADERS([mysql.h])
-        AC_RUN_IFELSE([AC_LANG_PROGRAM([[#include <mysql.h>]],
-        [[
-        if (MYSQL_VERSION_ID < 40100)
-                return(1);
+        AC_CHECK_LIB([mysqlclient], [mysql_init], 
+        [
+                AC_RUN_IFELSE([AC_LANG_PROGRAM([[#include <mysql.h>]],
+                [[
+                if (MYSQL_VERSION_ID < 40100)
+                        return 1;
+                else
+                        return 0;
+                ]])
+                ],[mysql="yes"],[mysql="no"])
+                if test "$mysql" = "no"
+                then
+                        AC_MSG_RESULT([fail, >= 4.1 required])
+                else
+                        AC_CHECK_LIB([z], [compress],[],[mysql="no"])
+                fi
+        ], [mysql="no"], [-lz])
+        if test "xyes" = "x$mysql"; then
+                DBCPPFLAGS="$DBCPPFLAGS `$MYSQLCONFIG --include`"
+                DBLDFLAGS="$DBLDFLAGS `$MYSQLCONFIG --libs`"
+                AC_DEFINE([HAVE_LIBMYSQLCLIENT], 1, [Define to 1 to enable mysql])
         else
-                return(0);
-        ]])
-        ],[mysql="yes"],[mysql="no"])
-        if test "$mysql" = "no"
-        then
-                AC_MSG_RESULT([fail, >= 4.1 required])
-        else
-                AC_CHECK_LIB([z], [compress],[],[mysql="no"])
+                CPPFLAGS=$svd_CPPFLAGS
+                LDFLAGS=$svd_LDFLAGS
         fi
-fi
-if test "xyes" = "x$mysql"; then
-        AC_DEFINE([HAVE_LIBMYSQLCLIENT])
 fi
 AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
 
 postgresql="yes"
 AC_MSG_CHECKING(for postgresql)
 AC_ARG_WITH([postgresql], 
-        AS_HELP_STRING([--with-postgresql=<path>], 
-                [path to the pg_config e.g. /usr/local/pgsql/bin/pg_config]), 
+        AS_HELP_STRING([--with-postgresql(=<path>)], 
+                [path is optional and if given should specify the full path to the PostgreSQL
+                 configure script, pg_config. E.g. --with-postgresql=/<path>/pg_config]), 
         [
                 if test "xno" = "x$with_postgresql"; then
                         AC_MSG_RESULT([no])
                         postgresql="no"
                 else
-                        if test "x" = "x$with_postgresql"; then
-                                PGCONFIG="pg_config"
-                        else
-                                PGCONFIG="$with_postgresql"
-                        fi
+                        AC_MSG_RESULT([yes])
+                        AC_CHECK_FILE([$with_postgresql], 
+                        [
+                                PGCONFIG=$with_postgresql
+                        ], 
+                        [
+                                AC_MSG_WARN([pg_config given as $with_postgresql not found])
+                                postgresql="no"
+                        ])        
+                fi
+        ],
+        [
+                AC_MSG_RESULT([yes])
+                AC_PATH_PROG([PGCONFIG], [pg_config], [no], [$PATH:/usr/local/bin:/usr/local/postgresql/bin])
+                if test "x$PGCONFIG" = "xno"; then
+                        AC_MSG_WARN([pg_config is required to build libzdb with postgresql])
+                        postgresql="no"
                 fi
         ])
 if test "xyes" = "x$postgresql"; then
@@ -236,7 +256,6 @@ if test "xyes" = "x$postgresql"; then
         else
                 CPPFLAGS=$svd_CPPFLAGS
                 LDFLAGS=$svd_LDFLAGS
-                AC_MSG_RESULT([no])
         fi
 fi
 AM_CONDITIONAL([WITH_POSTGRESQL], test "xyes" = "x$postgresql")
@@ -248,9 +267,10 @@ AC_ARG_WITH([sqlite],
                 [prefix of SQLite installation. e.g. /usr/local/sqlite3 or /usr]), 
         [
         if test "xno" = "x$with_sqlite"; then
-                AC_MSG_RESULT([sqlite=no])
+                AC_MSG_RESULT([no])
                 sqlite="no"
         else
+                AC_MSG_RESULT([yes])
                 svd_LDFLAGS=$LDFLAGS
                 svd_CPPFLAGS=$CPPFLAGS
                 LDFLAGS="-L$with_sqlite/lib $LDFLAGS"
@@ -267,7 +287,11 @@ AC_ARG_WITH([sqlite],
                 LDFLAGS=$svd_LDFLAGS
                 CPPFLAGS=$svd_CPPFLAGS
         fi
-        ], [AC_CHECK_LIB([sqlite3], [sqlite3_open], [], [sqlite="no"])])
+        ], 
+        [
+                AC_MSG_RESULT([yes])
+                AC_CHECK_LIB([sqlite3], [sqlite3_open], [], [sqlite="no"])
+        ])
 if test "xyes" = "x$sqlite"; then
         AC_DEFINE([HAVE_LIBSQLITE3])
 fi
