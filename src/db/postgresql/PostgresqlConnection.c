@@ -31,9 +31,6 @@
 #include "PostgresqlConnection.h"
 
 
-#define MAXPARAM  "999"
-
-
 /**
  * Implementation of the Connection/Strategy interface for postgresql. 
  * 

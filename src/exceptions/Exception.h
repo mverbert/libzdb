@@ -90,7 +90,7 @@
  * exception, it will cause the application to abort.
  *
  * <p>
- * Here's a concrete example calling a method in the zild API which may throw
+ * Here's a concrete example calling a method in the libzdb API which may throw
  * an exception. If the method Connection_execute() fails it will throw an 
  * SQLException. The CATCH statement will catch this exception, if thrown, 
  * and log an error message
@@ -144,7 +144,7 @@
  * was thrown or not by the code in the TRY-block. 
  *
  * Finally, the RETURN statement, defined in this interface, must be used
- * instead of C return statements inside a TRY-END_TRY block. If any of the
+ * instead of C return statements inside a try-block. If any of the
  * statements in a try block must do a return, they <b>must</b> do so with 
  * this macro instead of the usual C return statement. 
  * 
