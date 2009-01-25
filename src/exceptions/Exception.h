@@ -242,7 +242,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
 
 /**
  * Clients <b>must</b> use this macro instead of C return statements
- * inside a TRY-END_TRY block
+ * inside a try-block
  * @hideinitializer
  */
 #define RETURN switch((pop_exception_stack,0)) default:return
