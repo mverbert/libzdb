@@ -169,13 +169,13 @@
  * can be set for a postgresql connection URL.
  * <h2>Example:</h2>
  * To obtain a connection pool for a mysql database, the code below can be
- * used. Here we connect to localhost on the standard mysql port and start
- * the pool with the default 5 initial connections.
+ * used. Here we connect to the database test on localhost and start the pool
+ * with the default 5 initial connections.
  *
  * \htmlonly
  * <dt><dd><code>
  * <pre>
- * URL_T url = URL_new("mysql://localhost:3306/zild?user=root&password=swordfish");
+ * URL_T url = URL_new("mysql://localhost/test?user=root&password=swordfish");
  * ConnectionPool_T pool = ConnectionPool_new(url);
  * ConnectionPool_start(pool);
  * [..]
