@@ -69,8 +69,7 @@
  * Here is another example where a generated result is selected and printed:
  * <pre>
  * ResultSet_T r = Connection_executeQuery(con, "SELECT count(*) FROM USERS");
- * if (ResultSet_next(r))
- *      printf("Number of users: %d\n", ResultSet_getInt(r, 1));
+ * printf("Number of users: %s\n", ResultSet_next(r) ? ResultSet_getString(r, 1) : "no users");
  * </pre>
  *
  * @see Connection.h PreparedStatement.h SQLException.h
