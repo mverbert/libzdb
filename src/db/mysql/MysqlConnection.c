@@ -270,13 +270,7 @@ static MYSQL *doConnect(URL_T url, char **error) {
         else
                 mysql_options(db, MYSQL_SECURE_AUTH, (const char*)&no);
         if ((timeout = URL_getParameter(url, "connect-timeout"))) {
-                int e = false;
-                TRY
-                connectTimeout = Str_parseInt(timeout);
-                ELSE
-                e = true;
-                END_TRY;
-                if (e) ERROR("invalid connect timeout value");
+                TRY connectTimeout = Str_parseInt(timeout); ELSE ERROR("invalid connect timeout value"); END_TRY;
         }
         mysql_options(db, MYSQL_OPT_CONNECT_TIMEOUT, (const char*)&connectTimeout);
         if ((charset = URL_getParameter(url, "charset")))

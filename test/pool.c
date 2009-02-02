@@ -100,7 +100,7 @@ void testPool(const char *testURL) {
                 /* Insert values into database and assume that auto increment of id works */
                 for (i= 0; data[i]; i++) 
                         Connection_execute(con, "insert into zild_t (name, percent) values('%s', %d.%d);", data[i], i+1, i);
-                // Assert that last insert statement added one row
+                // Assert that the last insert statement added one row
                 assert(Connection_rowsChanged(con) == 1);
                 /* Assert that last row id works for MySQL and SQLite. PostgreSQL does not
                  support last row id directly. The way to do this in PostgreSQL is to use 
