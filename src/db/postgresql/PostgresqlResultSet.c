@@ -134,7 +134,7 @@ int PostgresqlResultSet_next(T R) {
 
 long PostgresqlResultSet_getColumnSize(T R, int columnIndex) {
         TEST_INDEX(-1)
-        return PQfsize(R->res, i);
+        return PQgetlength(R->res, R->currentRow, i);
 }
 
 

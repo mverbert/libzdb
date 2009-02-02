@@ -115,9 +115,9 @@ void *Vector_remove(T V, int i) {
 	assert(i >= 0 && i < V->length);
 	V->timestamp++;
  	x = V->array[i];
+        V->length--;
         for (j = i; j < V->length; j++)
                 V->array[j] = V->array[j+1];
-        V->length--;
         return x;
 }
 

@@ -362,7 +362,7 @@ static int reapConnections(T P) {
         x = Vector_size(P->pool)-getActive(P)-P->initialConnections;
         timedout = Util_seconds()-P->connectionTimeout;
         while (x-->0) {
-                for (; i < Vector_size(P->pool); i++) {
+                for (i = 0; i < Vector_size(P->pool); i++) {
                         con = Vector_get(P->pool, i);
                         if (! Connection_isAvailable(con))
                                 continue;

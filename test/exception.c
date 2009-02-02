@@ -15,7 +15,7 @@
  * Exceptions handling unit tests
  */
 
-#define THREADS 200
+#define THREADS 50
 
 Exception_T A= {"AException"};
 Exception_T B= {"BException"};

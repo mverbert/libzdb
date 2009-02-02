@@ -4,15 +4,14 @@
  Introduction
  ------------
 
- The Zild Database Library implements a small, fast and easy to use 
- database API with the following features: C database library - 
- connect to multiple database systems - zero runtime configuration,
- connect using URL scheme - Thread safe Connection Pooling and exceptions
- handling.
+ The Zild Database Library implements a small, fast and easy to use
+ database API with the following features: C database library - connect
+ to multiple database systems - zero runtime configuration, connect using
+ URL scheme - Thread safe Connection Pooling and exceptions handling.
 
- This database library is part of the Zild Application Server and is 
- released as Open Source with the hope that others may find it useful
- in their Open Source Work.
+ This database library is part of the Zild Application Server and is
+ released as Open Source with the hope that others may find it useful in
+ their Open Source Work.
 
 
  System requirements
@@ -29,7 +28,8 @@
    You will need an ANSI-C compiler installed to build the library.
    The GNU C compiler (GCC) from the Free Software Foundation (FSF) is
    recommended. In addition, your PATH must contain basic build tools
-   such as make and flex.
+   such as make and flex and database configuration scripts for MySQL
+   and PostgreSQL, that is, mysql_config and pg_config respectively. 
 
  * Database systems
  
@@ -64,7 +64,7 @@
  
  Note that unit tests cannot be built if the following configure 
  switches where used; --enable-protected or --enable-zild. These
- switches are used respectively for package protect non-api objects
+ switches are used respectively for package protect non-API objects
  in the library and for usage with the zild application server. It
  is strongly recommended to build the library with --enable-protected
  as it will be faster and reduce the risk for name symbol interposing
@@ -156,9 +156,6 @@
 
  E-mail:
    info@tildeslash.com
-
- Telefax:
-   All inquiries: +47 22 71 29 99
 
  Internet:
    http://www.tildeslash.com/

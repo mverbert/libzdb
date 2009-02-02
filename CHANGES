@@ -5,24 +5,25 @@
 
 Version 2.4
 -----------
-MySQL:
-* The configure option, --with_mysql=<path>, if <path> is given
-  it is assumed to be the full path to mysql_config. Example:
-     ./configure --with_mysql=/usr/local/mysql/bin/mysql_config
-PostgreSQL:
-* Improved error reporting and fixed potential allocation bug in
-  prepared statements.
-* Fix crash when PreparedStatement_setString was called with NULL
-  for PostgreSQL backend.
-* The configure option, --with_postgresql=<path>, if <path> is given
-  it is assumed to be the full path to pg_config. Example:
-     ./configure --with_postgresql=/usr/local/pgsql/bin/pg_config
+* The configure options --with_mysql=<path> and --with_postgresql=<path>
+  has a new meaning. If <path> is given it is assumed to be the full
+  path to respectively mysql_config and to pg_config. Example: 
+    ./configure --with_mysql=/usr/local/mysql/bin/mysql_config
+    ./configure --with_postgresql=/usr/local/pgsql/bin/pg_config
+* Internal optimizing changes and improvements
+Bug fixes:
+* Fixed off-by-one bug in Vector_remove
+* PostgreSQL: Fixed PostgresqlResultSet_getColumnSize to report correct
+  value. 
+* PostgreSQL: Improved error reporting and fixed potential allocation
+  bugs in prepared statements.
+* PostgreSQL: Calling PreparedStatement_setString with a NULL value now
+  works
 
 Version 2.3
 -----------
 * Cleaned up API and changed function return type to void for 
   those functions that can throw exception on error. 
-  
 * Support variable arguments in Connection_prepareStatement() 
   to make it easy to build prepared statements in-place
 

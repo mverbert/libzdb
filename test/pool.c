@@ -22,9 +22,9 @@
  */
 #define BSIZE 2048
 
-#define SCHEMA_MYSQL      "create table zild_t(id int, name varchar(255), percent real, image blob);"
-#define SCHEMA_POSTGRESQL "create table zild_t(id int, name varchar(255), percent real, image bytea);"
-#define SCHEMA_SQLITE     "create table zild_t(id int, name varchar(255), percent real, image blob);"
+#define SCHEMA_MYSQL      "CREATE TABLE zild_t(id INTEGER AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), percent REAL, image BLOB);"
+#define SCHEMA_POSTGRESQL "CREATE TABLE zild_t(id SERIAL PRIMARY KEY, name VARCHAR(255), percent REAL, image BYTEA);"
+#define SCHEMA_SQLITE     "CREATE TABLE zild_t(id INTEGER PRIMARY KEY, name VARCHAR(255), percent REAL, image BLOB);"
 
 const char *schema;
 
@@ -97,8 +97,16 @@ void testPool(const char *testURL) {
                 TRY Connection_execute(con, "drop table zild_t;"); ELSE END_TRY;
                 Connection_execute(con, schema);
                 Connection_beginTransaction(con);
+                /* Insert values into database and assume that auto increment of id works */
                 for (i= 0; data[i]; i++) 
-                        Connection_execute(con, "insert into zild_t (id, name, percent) values(%d, '%s', %d.%d);", i, data[i], i+1, i);
+                        Connection_execute(con, "insert into zild_t (name, percent) values('%s', %d.%d);", data[i], i+1, i);
+                // Assert that last insert statement added one row
+                assert(Connection_rowsChanged(con) == 1);
+                /* Assert that last row id works for MySQL and SQLite. PostgreSQL does not
+                 support last row id directly. The way to do this in PostgreSQL is to use 
+                 currval() or return the id on insert. Its just frakked up */
+                if (IS(URL_getProtocol(url), "sqlite") || IS(URL_getProtocol(url), "mysql")) 
+                        assert(Connection_lastRowId(con) == 12);
                 Connection_commit(con);
                 printf("\tResult: table zild_t successfully created\n");
                 Connection_close(con);
@@ -123,12 +131,12 @@ void testPool(const char *testURL) {
                 assert(pre);
                 for (i= 0; data[i]; i++) {
                         PreparedStatement_setBlob(pre, 1, data[i], strlen(data[i])+1);
-                        PreparedStatement_setInt(pre, 2, i);
+                        PreparedStatement_setInt(pre, 2, i + 1);
                         PreparedStatement_execute(pre);
                 }
                 /* Add a database null value */
                 PreparedStatement_setBlob(pre, 1, NULL, 0);
-                PreparedStatement_setInt(pre, 2, 4);
+                PreparedStatement_setInt(pre, 2, 5);
                 PreparedStatement_execute(pre);
                 /* Add a large blob */
                 for (j= 0; j<65532; j+=4)
@@ -136,7 +144,7 @@ void testPool(const char *testURL) {
                 /* Mark start and end */
                 *blob='S'; blob[strlen(blob)-1]= 'E';
                 PreparedStatement_setBlob(pre, 1, blob, strlen(blob)+1);
-                PreparedStatement_setInt(pre, 2, i);
+                PreparedStatement_setInt(pre, 2, i + 1);
                 PreparedStatement_execute(pre);
                 printf("\tResult: prepared statement successfully executed\n");
                 Connection_close(con);
@@ -172,7 +180,7 @@ void testPool(const char *testURL) {
                         const char *blob= (char*)ResultSet_getBlob(rset, 4, &imagesize);
                         printf("\t%-5d%-16s%-10.2f%-16.38s\n", id, name?name:"null", percent, blob&&imagesize?blob:"");
                 }
-                rset= Connection_executeQuery(con, "select image from zild_t where id=11;");
+                rset= Connection_executeQuery(con, "select image from zild_t where id=12;");
                 assert(1==ResultSet_getColumnCount(rset));
                 if (ResultSet_next(rset)) {
                         int n= 0;
@@ -199,14 +207,14 @@ void testPool(const char *testURL) {
                 Connection_setMaxRows(con, 0);
                 pre= Connection_prepareStatement(con, "select name from zild_t where id=?");
                 assert(pre);
-                PreparedStatement_setInt(pre, 1, 1);
+                PreparedStatement_setInt(pre, 1, 2);
                 names= PreparedStatement_executeQuery(pre);
                 assert(names);
                 assert(ResultSet_next(names));
                 assert(Str_isEqual("Leela", ResultSet_getString(names, 1)));
                 printf("success\n");
                 printf("\tResult: check prepared statement re-execute..");
-                PreparedStatement_setInt(pre, 1, 0);
+                PreparedStatement_setInt(pre, 1, 1);
                 names= PreparedStatement_executeQuery(pre);
                 assert(names);
                 assert(ResultSet_next(names));
@@ -300,7 +308,7 @@ void testPool(const char *testURL) {
                 {
                         Connection_beginTransaction(con);
                         for (i= 0; data[i]; i++) 
-                                Connection_execute(con, "insert into zild_t (id, name, percent) values(%d, '%s', %d.%d);", i, data[i], i+1, i);
+                                Connection_execute(con, "insert into zild_t (name, percent) values('%s', %d.%d);", data[i], i+1, i);
                         Connection_commit(con);
                         printf("\tResult: table zild_t successfully created\n");
                 }
@@ -322,7 +330,7 @@ void testPool(const char *testURL) {
                                 "Number Six", "Gaius Baltar", "William Adama",
                                 "Lee \"Apollo\" Adama", "Laura Roslin", 0};
                         PreparedStatement_T p = Connection_prepareStatement
-                        (con, "insert into zild_t (id, name) values(?, ?);");
+                        (con, "insert into zild_t (name) values(?);");
                         /* If we did not get a statement, an SQLException is thrown
                            and we will not get here. So we can safely use the 
                            statement now. Likewise, below, we do not have to 
@@ -331,8 +339,7 @@ void testPool(const char *testURL) {
                            to the exception handler
                         */
                         for (i= 0, j= 42; bg[i]; i++, j++) {
-                                PreparedStatement_setInt(p, 1, j);
-                                PreparedStatement_setString(p, 2, bg[i]);
+                                PreparedStatement_setString(p, 1, bg[i]);
                                 PreparedStatement_execute(p);
                         }
                 }
@@ -345,7 +352,7 @@ void testPool(const char *testURL) {
                 TRY
                 {
                         printf("\t\tBattlestar Galactica: \n");
-                        result= Connection_executeQuery(con, "select name from zild_t where id > 40;");
+                        result= Connection_executeQuery(con, "select name from zild_t where id < 20;");
                         while (ResultSet_next(result))
                                 printf("\t\t%s\n", ResultSet_getString(result, 1));
                 }
@@ -412,7 +419,7 @@ void testPool(const char *testURL) {
                 TRY
                 {
                         PreparedStatement_T p;
-                        p= Connection_prepareStatement(con, "insert into zild_t (id, name) values(?, ?);");
+                        p= Connection_prepareStatement(con, "update zild_t set name = ? where id = ?;");
                         printf("\tResult: Parameter index out of range.. ");
                         PreparedStatement_setInt(p, 3, 123);
                         assert(false);
