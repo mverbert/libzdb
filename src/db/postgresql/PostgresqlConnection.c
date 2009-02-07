@@ -285,28 +285,25 @@ static PGconn *doConnect(URL_T url, char **error) {
                 TRY connectTimeout = Str_parseInt(timeout); ELSE ERROR("invalid connect timeout value"); END_TRY;
         }
         conninfo = Str_cat(" host='%s'"
-                                  " port=%d"
-                                  " dbname='%s'"
-                                  " user='%s'"
-                                  " password='%s'"
-                                  " connect_timeout=%d"
-                                  " sslmode='%s'",
-                                  host,
-                                  port,
-                                  database,
-                                  user,
-                                  password,
-                                  connectTimeout,
-                                  ssl?"require":"disable"
-                                  
-                                  );
+                           " port=%d"
+                           " dbname='%s'"
+                           " user='%s'"
+                           " password='%s'"
+                           " connect_timeout=%d"
+                           " sslmode='%s'",
+                           host,
+                           port,
+                           database,
+                           user,
+                           password,
+                           connectTimeout,
+                           ssl?"require":"disable"
+                           );
         db = PQconnectdb(conninfo);
         FREE(conninfo);
-        if (PQstatus(db) != CONNECTION_OK) {
-                *error = Str_cat("%s", PQerrorMessage(db));
-                goto error;
-        }
-	return db;
+        if (PQstatus(db) == CONNECTION_OK)
+                return db;
+        *error = Str_cat("%s", PQerrorMessage(db));
 error:
         PQfinish(db);
         return NULL;
