@@ -247,9 +247,9 @@ static MYSQL *doConnect(URL_T url, char **error) {
         int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
         unsigned long clientFlags = CLIENT_MULTI_STATEMENTS;
         const char *user, *password, *host, *database, *charset, *timeout;
-        const char *unix_socket = URL_getParameter(url, "unix_socket");
+        const char *unix_socket = URL_getParameter(url, "unix-socket");
         MYSQL *db = mysql_init(NULL);
-        if (NULL==db) {
+        if (! db) {
                 *error = Str_dup("unable to allocate mysql handler");
                 return NULL;
         } 
