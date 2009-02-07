@@ -38,7 +38,7 @@ void testPool(const char *testURL) {
         ConnectionPool_T pool;
         char *data[]= {"Fry", "Leela", "Bender", "Farnsworth",
                 "Zoidberg", "Amy", "Hermes", "Nibbler", "Cubert",
-                "Zapp", "Joey Mousepad", "ЯΣ༆", NULL}; 
+                "Zapp", "Joey Mousepad", "ЯΣ༆", 0}; 
         
         if (Str_startsWith(testURL,        "mysql")) {
                 schema = SCHEMA_MYSQL;
@@ -300,7 +300,7 @@ void testPool(const char *testURL) {
                 }
                 ELSE
                 {
-                        printf("\tResult: Creating table zild_t failed -- %s\n", Connection_getLastError(con));
+                        printf("\tResult: Creating table zild_t failed -- %s\n", Exception_frame.message);
                         assert(false); // Should not fail
                 }
                 END_TRY;
@@ -352,7 +352,7 @@ void testPool(const char *testURL) {
                 TRY
                 {
                         printf("\t\tBattlestar Galactica: \n");
-                        result= Connection_executeQuery(con, "select name from zild_t where id < 20;");
+                        result= Connection_executeQuery(con, "select name from zild_t where id > 12;");
                         while (ResultSet_next(result))
                                 printf("\t\t%s\n", ResultSet_getString(result, 1));
                 }
@@ -366,7 +366,6 @@ void testPool(const char *testURL) {
                         Connection_close(con);
                 }
                 END_TRY;
-                assert((con= ConnectionPool_getConnection(pool)));
                 /* 
                  * The following should fail and throw exceptions. The exception error 
                  * message can be obtained with Exception_frame.message, or from 
@@ -376,6 +375,7 @@ void testPool(const char *testURL) {
                  */
                 TRY
                 {
+                        assert((con= ConnectionPool_getConnection(pool)));
                         Connection_execute(con, schema);
                         /* Creating the table again should fail and we 
                         should not come here */
@@ -384,10 +384,12 @@ void testPool(const char *testURL) {
                 CATCH(SQLException)
                 {
                         printf("\tResult: Ok got SQLException -- %s\n", Exception_frame.message);
+                        Connection_close(con);
                 }
                 END_TRY;
                 TRY
                 {
+                        assert((con= ConnectionPool_getConnection(pool)));
                         printf("\tResult: query with errors.. ");
                         Connection_executeQuery(con, "blablabala;");
                         assert(false);
@@ -395,10 +397,27 @@ void testPool(const char *testURL) {
                 CATCH(SQLException)
                 {
                         printf("ok got SQLException -- %s\n", Exception_frame.message);
+                        Connection_close(con);
                 }
                 END_TRY;
                 TRY
                 {
+                        printf("\tResult: prepared statement query with errors.. ");
+                        assert((con= ConnectionPool_getConnection(pool)));
+                        PreparedStatement_T p= Connection_prepareStatement(con, "blablabala;");
+                        ResultSet_T r = PreparedStatement_executeQuery(p);
+                        while(ResultSet_next(r));
+                        assert(false);
+                }
+                CATCH(SQLException)
+                {
+                        printf("ok got SQLException -- %s\n", Exception_frame.message);
+                        Connection_close(con);
+                }
+                END_TRY;
+                TRY
+                {
+                        assert((con= ConnectionPool_getConnection(pool)));
                         printf("\tResult: Column index out of range.. ");
                         result= Connection_executeQuery(con, "select id, name from zild_t;");
                         while (ResultSet_next(result)) {
@@ -414,12 +433,13 @@ void testPool(const char *testURL) {
                 CATCH(SQLException)
                 {
                         printf("ok got SQLException -- %s\n", Exception_frame.message);
+                        Connection_close(con);
                 }
                 END_TRY;
                 TRY
                 {
-                        PreparedStatement_T p;
-                        p= Connection_prepareStatement(con, "update zild_t set name = ? where id = ?;");
+                        assert((con= ConnectionPool_getConnection(pool)));
+                        PreparedStatement_T p = Connection_prepareStatement(con, "update zild_t set name = ? where id = ?;");
                         printf("\tResult: Parameter index out of range.. ");
                         PreparedStatement_setInt(p, 3, 123);
                         assert(false);

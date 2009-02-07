@@ -203,6 +203,7 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
                 THROW(SQLException, "mysql_stmt_execute -- %s", mysql_stmt_error(P->stmt));
         if (P->lastError==MYSQL_OK)
                 return ResultSet_new(MysqlResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&mysqlrops);
+        THROW(SQLException, "MysqlPreparedStatement_executeQuery -- %s", mysql_stmt_error(P->stmt));
         return NULL;
 }
 

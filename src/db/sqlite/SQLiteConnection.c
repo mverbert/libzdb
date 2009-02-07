@@ -82,9 +82,11 @@ static inline void executeSQL(T C, const char *sql);
 
 /* ----------------------------------------------------- Protected methods */
 
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
+
 
 T SQLiteConnection_new(URL_T url, char **error) {
 	T C;
@@ -175,7 +177,12 @@ int SQLiteConnection_execute(T C, const char *sql, va_list ap) {
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
 	executeSQL(C, StringBuffer_toString(C->sb));
-	return (C->lastError==SQLITE_OK);
+	if (C->lastError == SQLITE_OK)
+                return true;
+        else {
+                THROW(SQLException, "SQLiteConnection_execute -- %s", sqlite3_errmsg(C->db));
+                return false;
+        }
 }
 
 
@@ -195,6 +202,7 @@ ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
 #endif
 	if (C->lastError==SQLITE_OK)
 		return ResultSet_new(SQLiteResultSet_new(stmt, C->maxRows, false), (Rop_T)&sqlite3rops);
+        THROW(SQLException, "SQLiteConnection_executeQuery -- %s", sqlite3_errmsg(C->db));
 	return NULL;
 }
 
@@ -215,6 +223,7 @@ PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_l
 #endif
         if (C->lastError==SQLITE_OK)
 		return PreparedStatement_new(SQLitePreparedStatement_new(C->db, stmt, C->maxRows), (Pop_T)&sqlite3pops);
+        THROW(SQLException, "SQLiteConnection_prepareStatement -- %s", sqlite3_errmsg(C->db));
 	return NULL;
 }
 
@@ -224,9 +233,11 @@ const char *SQLiteConnection_getLastError(T C) {
 	return sqlite3_errmsg(C->db);
 }
 
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
+
 
 /* ------------------------------------------------------- Private methods */
 

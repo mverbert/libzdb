@@ -83,9 +83,11 @@ static PGconn *doConnect(URL_T url, char **error);
 
 /* ----------------------------------------------------- Protected methods */
 
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
+
 
 T PostgresqlConnection_new(URL_T url, char **error) {
 	T C;
@@ -184,7 +186,12 @@ int PostgresqlConnection_execute(T C, const char *sql, va_list ap) {
         PQclear(C->res);
         C->res = PQexec(C->db, StringBuffer_toString(C->sb));
         C->lastError = PQresultStatus(C->res);
-        return (C->lastError == PGRES_COMMAND_OK);
+        if (C->lastError == PGRES_COMMAND_OK)
+                return true;
+        else {
+                THROW(SQLException, "PostgresqlConnection_execute -- %s", PostgresqlConnection_getLastError(C));
+                return false;
+        }
 }
 
 
@@ -201,6 +208,7 @@ ResultSet_T PostgresqlConnection_executeQuery(T C, const char *sql, va_list ap) 
         if (C->lastError == PGRES_TUPLES_OK) {
                 return ResultSet_new(PostgresqlResultSet_new(C->res, C->maxRows, false), (Rop_T)&postgresqlrops);
         }
+        THROW(SQLException, "PostgresqlConnection_executeQuery -- %s", PostgresqlConnection_getLastError(C));
         return NULL;
 }
 
@@ -230,18 +238,21 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
                                                                              paramCount), 
                                              (Pop_T)&postgresqlpops);
         }
+        THROW(SQLException, "PostgresqlConnection_prepareStatement -- %s", PostgresqlConnection_getLastError(C));
         return NULL;
 }
 
 
 const char *PostgresqlConnection_getLastError(T C) {
 	assert(C);
-        return PQresultErrorMessage(C->res);
+        return C->res ? PQresultErrorMessage(C->res) : "unknown error";
 }
+
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
+
 
 /* ------------------------------------------------------- Private methods */
 
