@@ -6,6 +6,8 @@ DIST_SUBDIRS    = . test
 EXTRA_DIST      = README CHANGES AUTHORS COPYING EXCEPTIONS bootstrap \
                   doc test src tools config
 
+LIBRARY_NAME    = zdb
+
 RE2C		= @RE2C@
 RE2CFLAGS       = -b
 FILTERH         = ./tools/bin/filterh
@@ -35,17 +37,15 @@ libzdb_la_SOURCES += src/db/sqlite/SQLiteConnection.c \
                      src/db/sqlite/SQLitePreparedStatement.c
 endif
 
-nodist_include_HEADERS = api/ConnectionPool.h api/Connection.h \
-                         api/ResultSet.h api/URL.h api/PreparedStatement.h \
-                         api/SQLException.h api/Exception.h
-
 API_INTERFACES  = src/db/ConnectionPool.h src/db/Connection.h \
                   src/db/ResultSet.h src/net/URL.h src/db/PreparedStatement.h \
                   src/exceptions/SQLException.h src/exceptions/Exception.h
 
+nobase_nodist_include_HEADERS = $(patsubst %, $(LIBRARY_NAME)/%, $(notdir $(API_INTERFACES)))
+
 libzdb_la_LDFLAGS = $(DBLDFLAGS) -version-info 6:0:1
 
-BUILT_SOURCES   = $(nodist_include_HEADERS)
+BUILT_SOURCES   = $(nobase_nodist_include_HEADERS)
 
 CLEANFILES      = $(BUILT_SOURCES)
 
@@ -67,7 +67,7 @@ clean-local:
 distclean-local: 
 		-rm -rf autom4te.cache/ \
                         build/ \
-                        api
+                        $(LIBRARY_NAME)
 		-rm -f  doc/api-docs/*h.html \
                         doc/api-docs/*.css \
                         doc/api-docs/*.gif \
@@ -83,7 +83,7 @@ cleanall: clean distclean
 verify: libzdb.la
 	cd $(srcdir)/test && $(MAKE) verify	
 
-doc: $(nodist_include_HEADERS)
+doc: $(nobase_nodist_include_HEADERS)
 	doxygen config/Doxyfile
 	-cp doc/api-docs/files.html doc/api-docs/index.html
 
@@ -92,10 +92,10 @@ define check-exit
 
 endef
 
-$(nodist_include_HEADERS): $(API_INTERFACES)
-	$(shell test -d api || mkdir api)
+$(nobase_nodist_include_HEADERS): $(API_INTERFACES)
+	$(shell test -d $(LIBRARY_NAME) || mkdir $(LIBRARY_NAME))
 	$(foreach file, $(API_INTERFACES), \
-                $(FILTERH) < $(file) > api/$(notdir $(file)) \
+                $(FILTERH) < $(file) > $(LIBRARY_NAME)/$(notdir $(file)) \
 	$(check-exit))
 
 #<< start-filter out
