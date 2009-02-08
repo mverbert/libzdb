@@ -10,6 +10,12 @@ Version 2.4
   path to respectively mysql_config and to pg_config. Example: 
     ./configure --with_mysql=/usr/local/mysql/bin/mysql_config
     ./configure --with_postgresql=/usr/local/pgsql/bin/pg_config
+* From version 2.4, libzdb places its header files into a zdb 
+  sub-directory as in, <prefix>/include/zdb. Clients can choose to
+  use the include-dir compiler flag, -I<prefix>/include/zdb and not
+  modify their code or skip zdb from the include flag and instead prefix
+  their #include statements with zdb like so; #include <zdb/URL.h>. If
+  name interposing can be a problem the latter variant should be used.
 * Internal optimizing changes and improvements
 Bug fixes:
 * Fixed off-by-one bug in Vector_remove
