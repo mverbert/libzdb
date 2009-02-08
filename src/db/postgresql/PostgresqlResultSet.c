@@ -70,7 +70,7 @@ struct T {
 
 #define TEST_INDEX(RETVAL) \
         int i; assert(R); i= columnIndex - 1; if (R->columnCount <= 0 || \
-        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index out of range"); return(RETVAL); } \
+        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); return(RETVAL); } \
         if (PQgetisnull(R->res, R->currentRow, i)) return (RETVAL); 
 #define GET_INDEX(RETVAL) \
         int i; assert(R); if ((i= PQfnumber(R->res, columnName))<0) { \

@@ -82,7 +82,7 @@ struct T {
 
 #define TEST_INDEX(RETVAL) \
         int i; assert(R);i= columnIndex-1; if (R->columnCount <= 0 || \
-        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index out of range"); \
+        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); \
         return(RETVAL); } if (R->columns[i].is_null) return (RETVAL); 
 #define GET_INDEX(RETVAL) \
         int i;assert(R);if ((i=getIndex(R,columnName))<0) { \
