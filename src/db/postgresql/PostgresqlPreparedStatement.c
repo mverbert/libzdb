@@ -179,7 +179,7 @@ void PostgresqlPreparedStatement_execute(T P) {
                              0);
         P->lastError = PQresultStatus(P->res);
         if (P->lastError != PGRES_COMMAND_OK)
-                THROW(SQLException, "PostgresqlPreparedStatement_execute -- %s", PQresultErrorMessage(P->res));
+                THROW(SQLException, "%s", PQresultErrorMessage(P->res));
 }
 
 
@@ -196,7 +196,7 @@ ResultSet_T PostgresqlPreparedStatement_executeQuery(T P) {
         P->lastError = PQresultStatus(P->res);
         if (P->lastError == PGRES_TUPLES_OK)
                 return ResultSet_new(PostgresqlResultSet_new(P->res, P->maxRows, true), (Rop_T)&postgresqlrops);
-        THROW(SQLException, "PostgresqlPreparedStatement_executeQuery -- %s", PQresultErrorMessage(P->res));
+        THROW(SQLException, "%s", PQresultErrorMessage(P->res));
         return NULL;
 }
 

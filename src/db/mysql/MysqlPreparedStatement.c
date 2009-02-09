@@ -173,7 +173,7 @@ void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int 
 void MysqlPreparedStatement_execute(T P) {
         assert(P);
         if ((P->paramCount > 0) && (P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
-                        THROW(SQLException, "mysql_stmt_bind_param -- %s", mysql_stmt_error(P->stmt));
+                        THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
 #if MYSQL_VERSION_ID >= 50002
         {
         unsigned long cursor = CURSOR_TYPE_NO_CURSOR;
@@ -181,7 +181,7 @@ void MysqlPreparedStatement_execute(T P) {
         }
 #endif
         if ((P->lastError = mysql_stmt_execute(P->stmt))) 
-                THROW(SQLException, "mysql_stmt_execute -- %s", mysql_stmt_error(P->stmt));
+                THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         if (P->lastError==MYSQL_OK) {
                 /* Discard prepared param data in client/server */
                 P->lastError = mysql_stmt_reset(P->stmt);
@@ -192,7 +192,7 @@ void MysqlPreparedStatement_execute(T P) {
 ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         assert(P);
         if ((P->paramCount > 0) && (P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
-                        THROW(SQLException, "mysql_stmt_bind_param -- %s", mysql_stmt_error(P->stmt));
+                        THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
 #if MYSQL_VERSION_ID >= 50002
         {
                 unsigned long cursor = CURSOR_TYPE_READ_ONLY;
@@ -200,10 +200,10 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         }
 #endif
         if ((P->lastError = mysql_stmt_execute(P->stmt))) 
-                THROW(SQLException, "mysql_stmt_execute -- %s", mysql_stmt_error(P->stmt));
+                THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         if (P->lastError==MYSQL_OK)
                 return ResultSet_new(MysqlResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&mysqlrops);
-        THROW(SQLException, "MysqlPreparedStatement_executeQuery -- %s", mysql_stmt_error(P->stmt));
+        THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         return NULL;
 }
 

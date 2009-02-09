@@ -180,7 +180,7 @@ int MysqlConnection_execute(T C, const char *sql, va_list ap) {
 	if (C->lastError == MYSQL_OK)
                 return true;
         else {
-                THROW(SQLException, "MysqlConnection_execute -- %s", mysql_error(C->db));
+                THROW(SQLException, "%s", mysql_error(C->db));
                 return false;
         }
 }
@@ -205,7 +205,7 @@ ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap) {
                 else
                         return ResultSet_new(MysqlResultSet_new(stmt, C->maxRows, false), (Rop_T)&mysqlrops);
         }
-        THROW(SQLException, "MysqlConnection_executeQuery -- %s", mysql_error(C->db));
+        THROW(SQLException, "%s", mysql_error(C->db));
         return NULL;
 }
 
@@ -220,7 +220,7 @@ PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_li
         va_end(ap_copy);
         if (prepareStmt(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt))
 		return PreparedStatement_new(MysqlPreparedStatement_new(stmt, C->maxRows), (Pop_T)&mysqlpops);
-        THROW(SQLException, "MysqlConnection_prepareStatement -- %s", mysql_error(C->db));
+        THROW(SQLException, "%s", mysql_error(C->db));
         return NULL;
 }
 

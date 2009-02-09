@@ -145,7 +145,7 @@ void SQLitePreparedStatement_execute(T P) {
                         break;
                 default:
                         P->lastError = sqlite3_reset(P->stmt);
-                        THROW(SQLException, "SQLitePreparedStatement_execute -- %s", sqlite3_errmsg(P->db));
+                        THROW(SQLException, "%s", sqlite3_errmsg(P->db));
                         break;
         }
 }
@@ -155,7 +155,7 @@ ResultSet_T SQLitePreparedStatement_executeQuery(T P) {
         assert(P);
         if (P->lastError==SQLITE_OK)
                 return ResultSet_new(SQLiteResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&sqlite3rops);
-        THROW(SQLException, "SQLitePreparedStatement_execute -- %s", sqlite3_errmsg(P->db));
+        THROW(SQLException, "%s", sqlite3_errmsg(P->db));
         return NULL;
 }
 

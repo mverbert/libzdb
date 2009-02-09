@@ -180,7 +180,7 @@ int SQLiteConnection_execute(T C, const char *sql, va_list ap) {
 	if (C->lastError == SQLITE_OK)
                 return true;
         else {
-                THROW(SQLException, "SQLiteConnection_execute -- %s", sqlite3_errmsg(C->db));
+                THROW(SQLException, "%s", sqlite3_errmsg(C->db));
                 return false;
         }
 }
@@ -202,7 +202,7 @@ ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
 #endif
 	if (C->lastError==SQLITE_OK)
 		return ResultSet_new(SQLiteResultSet_new(stmt, C->maxRows, false), (Rop_T)&sqlite3rops);
-        THROW(SQLException, "SQLiteConnection_executeQuery -- %s", sqlite3_errmsg(C->db));
+        THROW(SQLException, "%s", sqlite3_errmsg(C->db));
 	return NULL;
 }
 
@@ -223,7 +223,7 @@ PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_l
 #endif
         if (C->lastError==SQLITE_OK)
 		return PreparedStatement_new(SQLitePreparedStatement_new(C->db, stmt, C->maxRows), (Pop_T)&sqlite3pops);
-        THROW(SQLException, "SQLiteConnection_prepareStatement -- %s", sqlite3_errmsg(C->db));
+        THROW(SQLException, "%s", sqlite3_errmsg(C->db));
 	return NULL;
 }
 
