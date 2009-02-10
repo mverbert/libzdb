@@ -66,7 +66,7 @@
 
 
 #define T Exception_T
-/* Placeholder for system exceptions. */
+/* Placeholder for systems exceptions. */
 T SQLException = {"SQLException"};
 #ifdef ZILD_PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)

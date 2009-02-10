@@ -87,12 +87,11 @@ T PostgresqlPreparedStatement_new(PGconn *db, int maxRows, char *stmt, int param
         assert(db);
         assert(stmt);
         NEW(P);
-        P->maxRows = maxRows;
-        P->lastError = PGRES_COMMAND_OK;
-        P->stmt = stmt;
         P->db = db;
-        P->res = NULL;
+        P->stmt = stmt;
+        P->maxRows = maxRows;
         P->paramCount = paramCount;
+        P->lastError = PGRES_COMMAND_OK;
         if (P->paramCount) {
                 P->paramValues = CALLOC(P->paramCount, sizeof(char *));
                 P->paramLengths = CALLOC(P->paramCount, sizeof(int));

@@ -102,7 +102,7 @@
 
  Compile and link with libzdb,
 
- gcc -o sql sql.c -L/<libzdb>/lib -lzdb -I/<libzdb>/include/zdb
+ gcc -o sql sql.c -L/<prefix>/lib -lzdb -I/<prefix>/include/zdb
  
  On some systems you may have to explicit link with -lpthread and
  set LD_LIBRARY_PATH if libzdb was installed in a non-standard location
