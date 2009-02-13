@@ -94,9 +94,7 @@ static void init_once() { ThreadData_create(Exception_stack); }
 #endif
 
 
-void Exception_init() {
-        pthread_once(&once_control, init_once);
-}
+void Exception_init(void) { pthread_once(&once_control, init_once); }
 
 
 #ifdef PACKAGE_PROTECTED

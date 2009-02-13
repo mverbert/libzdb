@@ -306,7 +306,7 @@ int ConnectionPool_reapConnections(T P) {
 }
 
 
-const char *ConnectionPool_version() {
+const char *ConnectionPool_version(void) {
         return ABOUT;
 }
 

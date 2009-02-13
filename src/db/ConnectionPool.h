@@ -436,7 +436,7 @@ int ConnectionPool_reapConnections(T P);
  * <b>Class method</b>, returns this library version information 
  * @return Library version information
  */
-const char *ConnectionPool_version();
+const char *ConnectionPool_version(void);
 
 // @}
 
