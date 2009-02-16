@@ -2,25 +2,29 @@
 
               This file summarizes changes made since 1.0
 
+Version 2.5
+-----------
+* PostgreSQL: Don't byte escape a blob value on retrieval. 
+
 
 Version 2.4
 -----------
-* The configure options --with_mysql=<path> and --with_postgresql=<path>
-  has a new meaning. If <path> is given it is assumed to be the full
-  path to respectively mysql_config and to pg_config. Example: 
-    ./configure --with_mysql=/usr/local/mysql/bin/mysql_config
-    ./configure --with_postgresql=/usr/local/pgsql/bin/pg_config
-* From version 2.4, libzdb places its header files into a zdb 
-  sub-directory as in, <prefix>/include/zdb. Clients must now use the 
-  include-dir compiler flag, -I<prefix>/include/zdb. 
+* The options --with_mysql=<path> and --with_postgresql=<path> to
+  configure has a new meaning; If <path> is given it is assumed to be
+  the full path to respectively mysql_config and to pg_config. Example:
+  ./configure --with_mysql=/usr/local/mysql/bin/mysql_config 
+  ./configure --with_postgresql=/usr/local/pgsql/bin/pg_config
+* From version 2.4, libzdb places its header files into a zdb
+  sub-directory as in, <prefix>/include/zdb. Clients must now use the
+  include-dir compiler flag, -I<prefix>/include/zdb.
 * Internal optimizing changes and improvements
-* Changed prototypes of type 'extern void foo()' to 'extern void foo(void)'
-  so the library compiles without warning if -Wstrict-prototype is 
-  used with gcc. Thanks to Paul Stevens
+* Changed two prototypes to 'extern void foo(void)' so the library
+  compiles without warning if -Wstrict-prototype is used with gcc.
+  Thanks to Paul Stevens
 Bug fixes:
 * Fixed off-by-one bug in Vector_remove
 * PostgreSQL: Fixed PostgresqlResultSet_getColumnSize to report correct
-  value. 
+  value.
 * PostgreSQL: Improved error reporting and fixed potential allocation
   bugs in prepared statements.
 * PostgreSQL: Calling PreparedStatement_setString with a NULL value now

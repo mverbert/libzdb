@@ -64,7 +64,6 @@ struct T {
         int currentRow;
         int columnCount;
         int rowCount;
-        unsigned char **blob;
         PGresult *res;
 };
 
@@ -95,7 +94,6 @@ T PostgresqlResultSet_new(void *res, int maxRows, int keep) {
         R->currentRow = -1;
         R->columnCount = PQnfields(R->res);
         R->rowCount = PQntuples(R->res);
-        R->blob = CALLOC(R->columnCount, sizeof(unsigned char *));
         return R;
 }
 
@@ -103,10 +101,6 @@ T PostgresqlResultSet_new(void *res, int maxRows, int keep) {
 void PostgresqlResultSet_free(T *R) {
         int i;
         assert(R && *R);
-        for (i = 0; i < (*R)->columnCount; i++) {
-                PQfreemem((*R)->blob[i]);
-        }
-        FREE((*R)->blob);
         FREE(*R);
 }
 
@@ -189,14 +183,9 @@ double PostgresqlResultSet_getDoubleByName(T R, const char *columnName) {
 
 
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
-        size_t s;
         TEST_INDEX(NULL)
-        if (R->blob[i]) {
-                PQfreemem(R->blob[i]);
-        }
-        R->blob[i] = PQunescapeBytea(PQgetvalue(R->res, R->currentRow, i), &s);
-        *size = s;
-        return R->blob[i];
+        *size = PQgetlength(R->res, R->currentRow, i);
+        return PQgetvalue(R->res, R->currentRow, i);
 }
 
 
@@ -208,15 +197,15 @@ const void *PostgresqlResultSet_getBlobByName(T R, const char *columnName, int *
 
 int PostgresqlResultSet_readData(T R, int columnIndex, void *b, int l, long off) {
         long r;
-        size_t size;
-        unsigned char *blob;
+        int size;
+        const void *blob;
         TEST_INDEX(0)
-        blob = PQunescapeBytea(PQgetvalue(R->res, R->currentRow, i), &size);
+        blob = PQgetvalue(R->res, R->currentRow, i);
+        size = PQgetlength(R->res, R->currentRow, i);
         if (off > size)
                 return 0;
-        r = off + l>size?size-off:l;
+        r = off + l > size ? size - off : l;
         memcpy(b, blob + off, r);
-        PQfreemem(blob);
         return r;
 }
 

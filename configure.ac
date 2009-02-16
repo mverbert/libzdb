@@ -59,7 +59,7 @@ AC_ARG_ENABLE(optimized,
 
 AC_ARG_ENABLE([zild],
         AS_HELP_STRING([--enable-zild], 
-                [Reduce visbility of objects for linking with zild. 
+                [Reduce visibility of objects for linking with zild. 
                 Require gcc version 4.x]),
      [
                 if test "x$GCC" = "xyes"; then
@@ -75,8 +75,8 @@ AC_ARG_ENABLE([zild],
 
 AC_ARG_ENABLE([protected],
         AS_HELP_STRING([--enable-protected], 
-        [Package protect non-api objects. Require gcc version 4.x
-         This option hide objects in the DSO which are not part of the api and
+        [Package protect non-API objects. Require gcc version 4.x
+         This option hide objects in the DSO which are not part of the API and
          not to be exported. The rationale is to optimize the ABI and protect
          non-public methods of the DSO and thereby reduce the potential for 
          namespace conflicts for clients linking with the library. Recommend]),
