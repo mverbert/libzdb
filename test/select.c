@@ -9,7 +9,7 @@
 #include <SQLException.h>
 
 /*
- gcc -o select select.c -L/<libzdb>/lib -lzdb -lpthread -I/<libzdb>/include
+ gcc -o select select.c -L/<libzdb>/lib -lzdb -lpthread -I/<libzdb>/include/zdb
  */
 
 int main(void) {
