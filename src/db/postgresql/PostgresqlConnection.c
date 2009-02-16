@@ -224,7 +224,7 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
         /* Thanks PostgreSQL for not using '?' as the wildcard marker, but instead $1, $2.. $n */
-        paramCount = StringBuffer_prepare2postgres(C->sb);
+        paramCount = StringBuffer_prepare4postgres(C->sb);
         name = Str_cat("%d", rand());
         C->res = PQprepare(C->db, name, StringBuffer_toString(C->sb), 0, NULL);
         if (C->res &&

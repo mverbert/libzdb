@@ -111,7 +111,7 @@ T StringBuffer_vappend(T S, const char *s, va_list ap) {
 }
 
 
-int StringBuffer_prepare2postgres(T S) {
+int StringBuffer_prepare4postgres(T S) {
         int n, i;
         assert(S);
         for (n = i = 0; S->buffer[i]; i++) if (S->buffer[i] == '?') n++;
