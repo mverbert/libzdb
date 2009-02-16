@@ -22,7 +22,6 @@
  * This interface defines the <b>contract</b> for the concrete database 
  * implementation used for delegation in the Connection class.
  *
- * @version \$Id: ConnectionStrategy.h,v 1.20 2008/01/03 17:26:04 hauk Exp $
  * @file
  */ 
 

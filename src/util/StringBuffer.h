@@ -22,7 +22,6 @@
 /** 
  * A <b>String Buffer</b> implements a mutable sequence of characters.
  *
- * @version \$Id: StringBuffer.h,v 1.13 2008/01/03 17:26:06 hauk Exp $
  * @file
  */
 

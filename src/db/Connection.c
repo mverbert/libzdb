@@ -31,7 +31,6 @@
 /**
  * Implementation of the Connection interface 
  *
- * @version \$Id: Connection.c,v 1.53 2008/03/20 11:28:53 hauk Exp $
  * @file
  */
 

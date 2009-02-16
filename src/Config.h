@@ -21,7 +21,6 @@
 /**
  * Global defines, macros and types
  *
- * @version \$Id: Config.h,v 1.30 2008/03/20 11:28:53 hauk Exp $
  * @file
  */
 

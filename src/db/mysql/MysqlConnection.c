@@ -36,7 +36,6 @@
  * Remember the swedish chef from the muppet show? I think he got 
  * a new job at MySQL AB; Hoobi-dubi-doh mysql chicken-soup! 
  * 
- * @version \$Id: MysqlConnection.c,v 1.55 2008/03/20 11:28:53 hauk Exp $
  * @file
  */
 

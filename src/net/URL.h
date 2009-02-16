@@ -47,7 +47,6 @@
  * <a href="ftp://ftp.rfc-editor.org/in-notes/rfc2396.txt">RFC2396 -
  * Uniform Resource Identifiers (URI): Generic Syntax</a>
  *
- * @version \$Id: URL.h,v 1.18 2008/02/23 19:57:29 hauk Exp $
  * @file
  */
 

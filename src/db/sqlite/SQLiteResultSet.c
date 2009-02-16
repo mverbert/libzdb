@@ -28,7 +28,6 @@
  * Implementation of the ResultSet/Strategy interface for SQLite. 
  * Accessing columns with index outside range throws SQLException
  *
- * @version \$Id: SQLiteResultSet.c,v 1.30 2008/03/20 11:28:54 hauk Exp $
  * @file
  */
 

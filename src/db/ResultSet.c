@@ -25,7 +25,6 @@
 /**
  * Implementation of the ResultSet interface 
  *
- * @version \$Id: ResultSet.c,v 1.30 2008/03/20 11:28:53 hauk Exp $
  * @file
  */
 

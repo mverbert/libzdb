@@ -34,7 +34,6 @@
 /**
  * Implementation of the Connection/Strategy interface for postgresql. 
  * 
- * @version \$Id: PostgresqlConnection.c,v 1.18 2008/03/20 11:28:53 hauk Exp $
  * @file
  */
 

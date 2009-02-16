@@ -57,7 +57,6 @@
  * original and exceptional clever CII code which can be found at this URL
  * http://www.cs.princeton.edu/software/cii/
  *
- * @version \$Id: Exception.c,v 1.28 2008/03/20 11:28:54 hauk Exp $
  * @file
  */
 

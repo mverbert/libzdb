@@ -73,7 +73,6 @@
  * </pre>
  *
  * @see Connection.h PreparedStatement.h SQLException.h
- * @version \$Id: ResultSet.h,v 1.28 2008/02/23 19:57:28 hauk Exp $
  * @file
  */
 

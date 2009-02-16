@@ -32,7 +32,6 @@
 /**
  * Implementation of the Connection/Strategy interface for SQLite 
  *
- * @version \$Id: SQLiteConnection.c,v 1.36 2008/03/20 11:28:54 hauk Exp $
  * @file
  */
 

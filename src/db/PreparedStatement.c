@@ -26,7 +26,6 @@
 /**
  * Implementation of the PreparedStatement interface 
  *
- * @version \$Id: PreparedStatement.c,v 1.19 2008/03/20 11:28:53 hauk Exp $
  * @file
  */
 

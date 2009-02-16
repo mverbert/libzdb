@@ -29,7 +29,6 @@
  * Implementation of the ResultSet/Strategy interface for mysql. 
  * Accessing columns with index outside range throws SQLException
  *
- * @version \$Id: MysqlResultSet.c,v 1.51 2008/03/20 11:28:53 hauk Exp $
  * @file
  */
 

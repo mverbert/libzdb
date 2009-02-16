@@ -22,7 +22,6 @@
 /**
  * General purpose <b>String</b> <b>class methods</b>.
  *
- * @version \$Id: Str.h,v 1.1 2008/03/20 11:28:54 hauk Exp $
  * @file
  */
 

@@ -22,7 +22,6 @@
  * This interface defines the <b>contract</b> for the concrete database 
  * implementation used for delegation in the PreparedStatement class.
  *
- * @version \$Id: PreparedStatementStrategy.h,v 1.11 2008/01/03 17:26:05 hauk Exp $
  * @file
  */ 
 

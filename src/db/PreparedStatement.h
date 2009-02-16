@@ -73,7 +73,6 @@
  * or until the Connection is returned to the Connection Pool. 
  * 
  * @see Connection.h ResultSet.h SQLException.h
- * @version \$Id: PreparedStatement.h,v 1.24 2008/01/21 20:17:45 hauk Exp $
  * @file
  */
 

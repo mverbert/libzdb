@@ -27,7 +27,6 @@
  * Vector_push() and Vector_pop() which respectively act as push and pop 
  * operations.
  *
- * @version \$Id: Vector.h,v 1.12 2008/01/21 20:17:46 hauk Exp $
  * @file
  */
 

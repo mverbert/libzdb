@@ -31,7 +31,6 @@
 /**
  * Implementation of the ConnectionPool interface
  *
- * @version \$Id: ConnectionPool.c,v 1.59 2008/03/20 11:28:53 hauk Exp $
  * @file
  */
 

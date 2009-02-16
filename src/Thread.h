@@ -21,7 +21,6 @@
  * This interface contains <b>Thread</b> and <b>Mutex</b> abstractions 
  * via Macros.
  *
- * @version \$Id: Thread.h,v 1.16 2008/02/23 19:57:27 hauk Exp $
  * @file
  */
 

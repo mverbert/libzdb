@@ -29,7 +29,6 @@
  * Implementation of the ResultSet/Strategy interface for postgresql. 
  * Accessing columns with index outside range throws SQLException
  *
- * @version \$Id: PostgresqlResultSet.c,v 1.10 2008/03/20 11:28:54 hauk Exp $
  * @file
  */
 
@@ -99,7 +98,6 @@ T PostgresqlResultSet_new(void *res, int maxRows, int keep) {
 
 
 void PostgresqlResultSet_free(T *R) {
-        int i;
         assert(R && *R);
         FREE(*R);
 }

@@ -24,7 +24,6 @@
 /**
  * Implementation of the Vector interface. 
  *
- * @version \$Id: Vector.c,v 1.22 2008/03/20 11:28:55 hauk Exp $
  * @file
  */
 

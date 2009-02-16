@@ -30,7 +30,6 @@
  * handle wide character code but URL_new() does. The scanner 
  * handle ISO Latin 1 or UTF-8 encoded url's transparently.
  *
- * @version \$Id: URL.re,v 1.32 2008/03/20 11:28:54 hauk Exp $
  * @file
  */
 

@@ -51,7 +51,6 @@
  * error occurs. Nested transactions are not allowed.
  *
  * @see ResultSet.h PreparedStatement.h SQLException.h
- * @version \$Id: Connection.h,v 1.35 2008/01/21 20:17:45 hauk Exp $
  * @file
  */
 

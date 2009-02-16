@@ -28,7 +28,6 @@
 /**
  * Implementation of the PreparedStatement/Strategy interface for SQLite 
  *
- * @version \$Id: SQLitePreparedStatement.c,v 1.23 2008/03/20 11:28:54 hauk Exp $
  * @file
  */
 

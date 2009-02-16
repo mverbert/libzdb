@@ -29,7 +29,6 @@
 /**
  * Implementation of the PreparedStatement/Strategy interface for mysql.
  *
- * @version \$Id: MysqlPreparedStatement.c,v 1.31 2008/03/20 11:28:53 hauk Exp $
  * @file
  */
 

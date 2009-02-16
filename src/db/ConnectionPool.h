@@ -222,7 +222,6 @@
  * current use by your application. 
  *
  * @see Connection.h ResultSet.h URL.h PreparedStatement.h
- * @version \$Id: ConnectionPool.h,v 1.49 2008/01/21 20:17:45 hauk Exp $
  * @file
  */
 

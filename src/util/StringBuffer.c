@@ -25,7 +25,6 @@
 /**
  * Implementation of the StringBuffer interface.
  *
- * @version \$Id: StringBuffer.c,v 1.24 2008/03/20 11:28:54 hauk Exp $
  * @file
  */
 
