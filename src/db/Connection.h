@@ -183,7 +183,7 @@ int Connection_ping(T C);
  * Close any ResultSet and PreparedStatements in the Connection. 
  * Normally it is not necessary to call this method, but for some
  * implementation (SQLite) it <i>may, in some situations,</i> be 
- * necessary to call this if PreparedStatement_executeQuery() was used.
+ * necessary to call this method if a execution sequence error occurs.
  * @param C A Connection object
  */
 void Connection_clear(T C);

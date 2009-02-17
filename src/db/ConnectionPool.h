@@ -84,9 +84,6 @@
  * alternatively be specified in the auth-part of the URL. If port number is 
  * omitted, the default port number for the database server is used.
  *
- * <i>The caller is responsible for freeing the URL_T object given in 
- * ConnectionPool_new(), using the URL_free() method</i>
- *
  * <b>MySQL:</b>
  *
  * Here is an example on how to connect to a <a href="http://www.mysql.org/">
@@ -183,7 +180,7 @@
  * ResultSet_T result = Connection_executeQuery(con, "select id, name, image from employee where salary>%d", anumber);
  * while (ResultSet_next(result)) 
  * {
- *      int id = ResultSet_getIntByName(result, "id");
+ *      int id = ResultSet_getInt(result, 1);
  *      const char *name = ResultSet_getString(result, 2);
  *      int blobSize;
  *      const void *image = ResultSet_getBlob(result, 3, &blobSize);

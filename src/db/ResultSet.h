@@ -62,7 +62,7 @@
  *      int ssn = ResultSet_getIntByName(r, "ssn");
  *      const char *name =  ResultSet_getStringByName(r, "name");
  *      int pictureSize;
- *      void *picture = ResultSet_getBlobByName(r, "picture", &pictureSize);
+ *      const void *picture = ResultSet_getBlobByName(r, "picture", &pictureSize);
  *      [..]
  * }
  * </pre>
