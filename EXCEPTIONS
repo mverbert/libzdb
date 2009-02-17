@@ -5,7 +5,7 @@ Exception Intent
 ================
 
 We want Open Source Software applications to be able to use the
-GNU General Public Licensed Zild Database Library (the `Program') 
+GNU General Public Licensed Zild Database Library (the `Library') 
 despite the fact that not all Open Source licenses are compatible
 with version 3 of the GNU General Public License (the `GPL'). 
 
@@ -15,17 +15,17 @@ Legal Terms and Conditions
 As a special exception to the terms and conditions of version 
 3.0 of the GPL
 
-1.  You are free to distribute the Program and link the Program
+1.  You are free to distribute the Library and link the Library
     with Work licensed under one or more of the Open Source 
     licenses listed below in section 2, as long as:
 
- a) You obey the GPL in all respects for the Program and the Work, 
+ a) You obey the GPL in all respects for the Library and the Work, 
     except for identifiable sections of the Work which are not 
-    derived from the Program, and which can reasonably be 
+    derived from the Library, and which can reasonably be 
     considered independent and separate works in themselves,
 
- b) all identifiable sections of the Work which are not derived
-    from the Program, and which can reasonably be considered
+ b) All identifiable sections of the Work which are not derived
+    from the Library, and which can reasonably be considered
     independent and separate works in themselves,
 
     i)  are distributed subject to one of the Open Source
@@ -38,17 +38,16 @@ As a special exception to the terms and conditions of version
         corresponding object code or executable forms of those
         sections.
 
-    If the above conditions are not met, then the Program may 
-    only be copied, modified, distributed or used under the 
-    terms and conditions of the GPL version 3 or another valid
-    licensing option from Tildeslash Ltd. 
+If the above conditions are not met, then the Library may only 
+be copied, modified, distributed or used under the terms and 
+conditions of the GPL version 3. 
 
 2.  Open Source License List 
 +--------------------------------------------------------------+
-|           License name              | Version/Copyright Date |
+| License name                        | Version/Copyright Date |
 +--------------------------------------------------------------+
 | Academic Free License               | 2.0                    |
-| Apache Software License             | 1.0/1.1/               |
+| Apache Software License             | 1.0/1.1/2.0            |
 | Apple Public Source License         | 2.0                    |
 | BSD license                         | "July 22 1999"         |
 | Common Public License               | 1.0                    |
