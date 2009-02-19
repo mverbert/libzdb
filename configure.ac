@@ -343,8 +343,8 @@ cat <<EOT
 +------------------------------------------------------------+
 | License:                                                   |
 | This is Open Source Software and use is subject to the GNU |
-| GENERAL PUBLIC LICENSE with exceptions, available in this  |
-| distribution in the files COPYING and EXCEPTIONS.          |
+| GENERAL PUBLIC LICENSE, available in this distribution in  |
+| the file COPYING.                                          |
 |                                                            |
 | By continuing this installation process, you are bound by  | 
 | the terms of this license agreement. If you do not agree   |

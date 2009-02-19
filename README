@@ -112,19 +112,13 @@
  -------------
 
  This Software product is licensed under the GNU General Public License
- version 3, with additional exceptions to allow most BSD licensed Open
- Source Work to use and link with the Software. Contact us if you want 
- to distribute the Software under another Open Source license than those
- listed in EXCEPTIONS.
-
- You can use this Software product free of charge to develop, use and
- distribute Open Source application programs, including reusable
- components and other software that link with the Software. You may
- also use and modify any example source code included with the
- Software for any purpose.
+ version 3. You can use this Software product free of charge to develop, 
+ use and distribute Open Source application programs, including reusable
+ components and other software that link with the Software. You may also
+ use and modify any example source code included with the Software for 
+ any purpose.
  
- See the files COPYING and EXCEPTIONS accompanying the Software for
- details. 
+ See the file COPYING accompanying the Software for details. 
 
 
  Reporting a bug

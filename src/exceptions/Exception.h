@@ -39,10 +39,9 @@
 
 /*
  * LEGAL NOTICE, the part that differs from the original code is Copyright
- * (C) Tildeslash Ltd. This implementation is licensed under GPLv3 with 
- * Exceptions in the file EXCEPTIONS. The MIT license above applies to the
- * original and exceptional clever CII code which can be found at this URL
- * http://www.cs.princeton.edu/software/cii/
+ * (C) Tildeslash Ltd. This implementation is licensed under GPLv3. The MIT
+ * license above applies to the original and exceptional clever CII code which
+ * can be found at this URL http://www.cs.princeton.edu/software/cii/
  */
 
 

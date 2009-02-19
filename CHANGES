@@ -1,9 +1,16 @@
-                         CHANGES version 2.4
+                         CHANGES version 2.5
 
               This file summarizes changes made since 1.0
 
 Version 2.5
 -----------
+* Removed GPL license exceptions. The library is now licensed under the
+  GPL, version 3 only. The orginal intent behind the exception was to 
+  make it possible to link and distribute the library or modifications
+  thereof with other open source programs not licensed under the GPL. 
+  However, the exception seemed to be more confusing than clarifying 
+  for some and to remove any legal fog around the licensing of libzdb
+  its now GPLv3 only. 
 * PostgreSQL: Blob retrieval optimized. 
 
 

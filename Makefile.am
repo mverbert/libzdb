@@ -3,8 +3,7 @@ AUTOMAKE_OPTIONS = foreign no-dependencies
 SUBDIRS         = . $(UNIT_TEST)
 DIST_SUBDIRS    = . test
 
-EXTRA_DIST      = README CHANGES AUTHORS COPYING EXCEPTIONS bootstrap \
-                  doc test src tools config
+EXTRA_DIST      = README CHANGES AUTHORS COPYING bootstrap doc test src tools config
 
 LIBRARY_NAME    = zdb
 

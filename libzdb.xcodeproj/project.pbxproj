@@ -43,7 +43,6 @@
 		5241ABA3094FA75A0088AB05 /* MysqlConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MysqlConnection.c; sourceTree = "<group>"; };
 		5241ABA6094FA7D60088AB05 /* MysqlResultSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MysqlResultSet.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		525E13D2096475E700421770 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
-		525E13D50964764B00421770 /* EXCEPTIONS */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = text; path = EXCEPTIONS; sourceTree = "<group>"; };
 		525E13DA09647E4800421770 /* LICENSE.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = LICENSE.pdf; sourceTree = "<group>"; };
 		5264BD5B095391FD005D622D /* MysqlConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MysqlConnection.h; sourceTree = "<group>"; };
 		5264BD5C095391FD005D622D /* MysqlResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MysqlResultSet.h; sourceTree = "<group>"; };
@@ -160,7 +159,6 @@
 			children = (
 				52EF89A60954734000FA60B1 /* AUTHORS */,
 				525E13D2096475E700421770 /* COPYING */,
-				525E13D50964764B00421770 /* EXCEPTIONS */,
 				52EF89A70954734000FA60B1 /* CHANGES */,
 				52EF89A80954734000FA60B1 /* README */,
 				5283639E0942F2420083C31A /* bootstrap */,
