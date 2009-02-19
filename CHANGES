@@ -10,7 +10,7 @@ Version 2.5
   thereof with other open source programs not licensed under the GPL. 
   However, the exception seemed to be more confusing than clarifying 
   for some and to remove any legal fog around the licensing of libzdb
-  its now GPLv3 only. 
+  it is now GPLv3 only. 
 * PostgreSQL: Blob retrieval optimized. 
 
 
