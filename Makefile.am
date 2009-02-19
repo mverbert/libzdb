@@ -1,4 +1,5 @@
 AUTOMAKE_OPTIONS = foreign no-dependencies
+ACLOCAL_AMFLAGS  = -I m4
 
 SUBDIRS         = . $(UNIT_TEST)
 DIST_SUBDIRS    = . test
