@@ -3,8 +3,11 @@
 # autoconf        >= 2.59
 # automake        >= 1.9
 # libtool         >= 1.4
-libtoolize --force \
-&& aclocal -I ./config \
+if test `which libtoolize`
+then
+        libtoolize --force
+fi
+aclocal -I ./config \
 && autoheader \
 && automake --foreign --add-missing --copy \
 && autoconf
