@@ -262,6 +262,7 @@ static PGconn *doConnect(URL_T url, char **error) {
         int ssl = false;
         int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
         const char *user, *password, *host, *database, *timeout;
+        const char *unix_socket = URL_getParameter(url, "unix-socket");
         char *conninfo;
         PGconn *db = NULL;
         if (! (user = URL_getUser(url)))
@@ -270,7 +271,11 @@ static PGconn *doConnect(URL_T url, char **error) {
         if (! (password = URL_getPassword(url)))
                 if (! (password = URL_getParameter(url, "password")))
                         ERROR("no password specified in URL");
-        if (! (host = URL_getHost(url)))
+        if (unix_socket) {
+                if (unix_socket[0] != '/') 
+                        ERROR("invalid unix-socket directory");
+                host = unix_socket;
+        } else if (! (host = URL_getHost(url)))
                 ERROR("no host specified in URL");
         if ((port = URL_getPort(url))<=0)
                 ERROR("no port specified in URL");

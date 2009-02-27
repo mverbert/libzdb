@@ -38,6 +38,17 @@ must be enabled/linked in the client library. Default is false</td>
 <td>use-ssl=true</td>
 </tr>
 <tr>
+<tr>
+<td><code>unix-socket</code></td>
+<td>
+Connect to the database server over a unix socket on localhost. The host value 
+in the connection url is ignored. The unix-socket value should be the name of the 
+directory in which the unix socket file is stored. Note that this is different
+from the MySQL unix-socket parameter which specify the full path to the socket file.  
+</td>
+<td>String</td>
+<td>unix-socket=/tmp</td>
+</tr>
 </table>
 <p align="center">&nbsp;</p><br><p align="center"><font
 color="#808080" size="2"> Copyright &copy; 2009 Tildeslash Ltd. All

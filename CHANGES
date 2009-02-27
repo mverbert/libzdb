@@ -12,6 +12,7 @@ Version 2.5
   for some and to remove any legal fog around the licensing of libzdb
   it is now GPLv3 only. 
 * PostgreSQL: Blob retrieval optimized. 
+* PostgreSQL: Added unix-socket parameter to connection URL
 
 
 Version 2.4
