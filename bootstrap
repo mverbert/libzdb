@@ -3,9 +3,12 @@
 # autoconf        >= 2.59
 # automake        >= 1.9
 # libtool         >= 1.4
-if test `which libtoolize`
+if test `which libtoolize` 
 then
-        libtoolize --force
+        libtoolize -f
+elif test `which glibtoolize` 
+then
+        glibtoolize -f
 fi
 aclocal -I ./config \
 && autoheader \

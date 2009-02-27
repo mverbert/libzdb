@@ -391,9 +391,9 @@ else
 echo "|   SQLite3:                                      DISABLED   |"
 fi
 if test "xyes" = "x$mysql"; then
-echo "|   Mysql:                                        ENABLED    |"
+echo "|   MySQL:                                        ENABLED    |"
 else
-echo "|   Mysql:                                        DISABLED   |"
+echo "|   MySQL:                                        DISABLED   |"
 fi
 if test "xyes" = "x$postgresql"; then
 echo "|   PostgreSQL:                                   ENABLED    |"
