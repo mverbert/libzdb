@@ -185,12 +185,7 @@ int PostgresqlConnection_execute(T C, const char *sql, va_list ap) {
         PQclear(C->res);
         C->res = PQexec(C->db, StringBuffer_toString(C->sb));
         C->lastError = PQresultStatus(C->res);
-        if (C->lastError == PGRES_COMMAND_OK)
-                return true;
-        else {
-                THROW(SQLException, "%s", PostgresqlConnection_getLastError(C));
-                return false;
-        }
+        return (C->lastError == PGRES_COMMAND_OK);
 }
 
 
@@ -207,7 +202,6 @@ ResultSet_T PostgresqlConnection_executeQuery(T C, const char *sql, va_list ap) 
         if (C->lastError == PGRES_TUPLES_OK) {
                 return ResultSet_new(PostgresqlResultSet_new(C->res, C->maxRows, false), (Rop_T)&postgresqlrops);
         }
-        THROW(SQLException, "%s", PostgresqlConnection_getLastError(C));
         return NULL;
 }
 
@@ -237,7 +231,6 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
                                                                              paramCount), 
                                              (Pop_T)&postgresqlpops);
         }
-        THROW(SQLException, "%s", PostgresqlConnection_getLastError(C));
         return NULL;
 }
 

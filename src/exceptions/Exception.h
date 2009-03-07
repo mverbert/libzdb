@@ -209,7 +209,7 @@ struct Exception_Frame {
 	const char *file;
 	const T *exception;
 	Exception_Frame *prev;
-        char message[EXCEPTION_MESSAGE_LENGTH];
+        char message[EXCEPTION_MESSAGE_LENGTH + 1];
 };
 enum { Exception_entered=0, Exception_thrown, Exception_handled, Exception_finalized };
 extern ThreadData_T Exception_stack;

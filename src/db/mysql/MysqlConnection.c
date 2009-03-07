@@ -176,12 +176,7 @@ int MysqlConnection_execute(T C, const char *sql, va_list ap) {
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
         C->lastError = mysql_real_query(C->db, StringBuffer_toString(C->sb), StringBuffer_length(C->sb));
-	if (C->lastError == MYSQL_OK)
-                return true;
-        else {
-                THROW(SQLException, "%s", mysql_error(C->db));
-                return false;
-        }
+	return (C->lastError == MYSQL_OK);
 }
 
 
@@ -204,7 +199,6 @@ ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap) {
                 else
                         return ResultSet_new(MysqlResultSet_new(stmt, C->maxRows, false), (Rop_T)&mysqlrops);
         }
-        THROW(SQLException, "%s", mysql_error(C->db));
         return NULL;
 }
 
@@ -219,7 +213,6 @@ PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_li
         va_end(ap_copy);
         if (prepareStmt(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt))
 		return PreparedStatement_new(MysqlPreparedStatement_new(stmt, C->maxRows), (Pop_T)&mysqlpops);
-        THROW(SQLException, "%s", mysql_error(C->db));
         return NULL;
 }
 
