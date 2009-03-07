@@ -13,6 +13,7 @@ Version 2.5
   it is now GPLv3 only. 
 * PostgreSQL: Blob retrieval optimized. 
 * PostgreSQL: Added unix-socket parameter to connection URL
+* Internal optimizing changes and improvements
 
 
 Version 2.4

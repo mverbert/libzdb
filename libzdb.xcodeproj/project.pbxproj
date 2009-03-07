@@ -123,10 +123,10 @@
 			children = (
 				5264BD5B095391FD005D622D /* MysqlConnection.h */,
 				5241ABA3094FA75A0088AB05 /* MysqlConnection.c */,
-				52147B25095B3B5B00CF1B63 /* MysqlPreparedStatement.h */,
 				52147B24095B3B5B00CF1B63 /* MysqlPreparedStatement.c */,
-				5264BD5C095391FD005D622D /* MysqlResultSet.h */,
+				52147B25095B3B5B00CF1B63 /* MysqlPreparedStatement.h */,
 				5241ABA6094FA7D60088AB05 /* MysqlResultSet.c */,
+				5264BD5C095391FD005D622D /* MysqlResultSet.h */,
 			);
 			path = mysql;
 			sourceTree = "<group>";
@@ -138,8 +138,8 @@
 				523CB8A50945C38E00A3FD10 /* SQLiteConnection.c */,
 				529029440959F04000BC5A2D /* SQLitePreparedStatement.h */,
 				5290294B0959F11D00BC5A2D /* SQLitePreparedStatement.c */,
-				52114B56095313B200D1BAB5 /* SQLiteResultSet.h */,
 				523CB8A60945C38E00A3FD10 /* SQLiteResultSet.c */,
+				52114B56095313B200D1BAB5 /* SQLiteResultSet.h */,
 			);
 			path = sqlite;
 			sourceTree = "<group>";

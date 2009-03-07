@@ -83,9 +83,6 @@ struct T {
         int i; assert(R);i= columnIndex-1; if (R->columnCount <= 0 || \
         i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); \
         return(RETVAL); } if (R->columns[i].is_null) return (RETVAL); 
-#define GET_INDEX(RETVAL) \
-        int i;assert(R);if ((i=getIndex(R,columnName))<0) { \
-        THROW(SQLException, "Invalid column name"); return (RETVAL); }
 
 
 /* ------------------------------------------------------- Private methods */
@@ -93,9 +90,11 @@ struct T {
 
 static inline int getIndex(T R, const char *name) {
         int i;
-        for (i = 0; i<R->columnCount; i++)
-                if (Str_isByteEqual(name, R->columns[i].field->name))
-                        return (i+1);
+        if (name && *name) 
+                for (i = 0; i<R->columnCount; i++)
+                        if (Str_isByteEqual(name, R->columns[i].field->name))
+                                return (i + 1);
+        THROW(SQLException, "Invalid column name [%s]", name ? name : "null");
         return -1;
 }
 
@@ -227,8 +226,7 @@ const char *MysqlResultSet_getString(T R, int columnIndex) {
 
 
 const char *MysqlResultSet_getStringByName(T R, const char *columnName) {
-        GET_INDEX(NULL)
-        return MysqlResultSet_getString(R, i);
+        return MysqlResultSet_getString(R, getIndex(R, columnName));
 }
 
 
@@ -239,8 +237,7 @@ int MysqlResultSet_getInt(T R, int columnIndex) {
 
 
 int MysqlResultSet_getIntByName(T R, const char *columnName) {
-        GET_INDEX(0)
-        return MysqlResultSet_getInt(R, i);
+        return MysqlResultSet_getInt(R, getIndex(R, columnName));
 }
 
 
@@ -251,8 +248,7 @@ long long int MysqlResultSet_getLLong(T R, int columnIndex) {
 
 
 long long int MysqlResultSet_getLLongByName(T R, const char *columnName) {
-        GET_INDEX(0)
-        return MysqlResultSet_getLLong(R, i);
+        return MysqlResultSet_getLLong(R, getIndex(R, columnName));
 }
 
 
@@ -263,8 +259,7 @@ double MysqlResultSet_getDouble(T R, int columnIndex) {
 
 
 double MysqlResultSet_getDoubleByName(T R, const char *columnName) {
-        GET_INDEX(0.0)
-        return MysqlResultSet_getDouble(R, i);
+        return MysqlResultSet_getDouble(R, getIndex(R, columnName));
 }
 
 
@@ -277,8 +272,7 @@ const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
 
 
 const void *MysqlResultSet_getBlobByName(T R, const char *columnName, int *size) {
-        GET_INDEX(NULL)
-        return MysqlResultSet_getBlob(R, i, size);
+        return MysqlResultSet_getBlob(R, getIndex(R, columnName), size);
 }
 
 

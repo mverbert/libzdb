@@ -67,9 +67,6 @@ struct T {
 #define TEST_INDEX(RETVAL) \
         int i; assert(R); i= columnIndex - 1; if (R->columnCount <= 0 || \
         i < 0 || i >= R->columnCount) THROW(SQLException, "Column index is out of range");
-#define GET_INDEX(RETVAL) \
-        int i; assert(R); if ((i= getIndex(R, columnName))<0) \
-        THROW(SQLException, "Invalid column name");
 
 
 /* ------------------------------------------------------- Private methods */
@@ -77,9 +74,11 @@ struct T {
 
 static inline int getIndex(T R, const char *name) {
         int i;
-        for (i = 0; i < R->columnCount; i++)
-                if (Str_isByteEqual(name, sqlite3_column_name(R->stmt, i)))
-                        return (i+1);
+        if (name && *name) 
+                for (i = 0; i < R->columnCount; i++)
+                        if (Str_isByteEqual(name, sqlite3_column_name(R->stmt, i)))
+                                return (i + 1);
+        THROW(SQLException, "Invalid column name [%s]", name ? name : "null");
         return -1;
 }
 
@@ -154,8 +153,7 @@ const char *SQLiteResultSet_getString(T R, int columnIndex) {
 
 
 const char *SQLiteResultSet_getStringByName(T R, const char *columnName) {
-        GET_INDEX(NULL)
-        return SQLiteResultSet_getString(R, i);
+        return SQLiteResultSet_getString(R, getIndex(R, columnName));
 }
 
 
@@ -166,8 +164,7 @@ int SQLiteResultSet_getInt(T R, int columnIndex) {
 
 
 int SQLiteResultSet_getIntByName(T R, const char *columnName) {
-        GET_INDEX(0)
-        return SQLiteResultSet_getInt(R, i);
+        return SQLiteResultSet_getInt(R, getIndex(R, columnName));
 }
 
 
@@ -178,8 +175,7 @@ long long int SQLiteResultSet_getLLong(T R, int columnIndex) {
 
 
 long long int SQLiteResultSet_getLLongByName(T R, const char *columnName) {
-        GET_INDEX(0)
-        return SQLiteResultSet_getLLong(R, i);
+        return SQLiteResultSet_getLLong(R, getIndex(R, columnName));
 }
 
 
@@ -190,8 +186,7 @@ double SQLiteResultSet_getDouble(T R, int columnIndex) {
 
 
 double SQLiteResultSet_getDoubleByName(T R, const char *columnName) {
-        GET_INDEX(0.0)
-        return SQLiteResultSet_getDouble(R, i);
+        return SQLiteResultSet_getDouble(R, getIndex(R, columnName));
 }
 
 
@@ -205,8 +200,7 @@ const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size) {
 
 
 const void *SQLiteResultSet_getBlobByName(T R, const char *columnName, int *size) {
-        GET_INDEX(NULL)
-        return SQLiteResultSet_getBlob(R, i, size);
+        return SQLiteResultSet_getBlob(R, getIndex(R, columnName), size);
 }
 
 

@@ -439,6 +439,23 @@ void testPool(const char *testURL) {
                 TRY
                 {
                         assert((con= ConnectionPool_getConnection(pool)));
+                        printf("\tResult: Invalid column name.. ");
+                        result= Connection_executeQuery(con, "select name from zild_t;");
+                        while (ResultSet_next(result)) {
+                                const char *name= ResultSet_getStringByName(result, "nonexistingcolumnname");
+                                assert(false); // Should not come here
+                                printf("%s", name);
+                        }
+                }
+                CATCH(SQLException)
+                {
+                        printf("ok got SQLException -- %s\n", Exception_frame.message);
+                        Connection_close(con);
+                }
+                END_TRY;
+                TRY
+                {
+                        assert((con= ConnectionPool_getConnection(pool)));
                         PreparedStatement_T p = Connection_prepareStatement(con, "update zild_t set name = ? where id = ?;");
                         printf("\tResult: Parameter index is out of range.. ");
                         PreparedStatement_setInt(p, 3, 123);
