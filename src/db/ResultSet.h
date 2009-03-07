@@ -353,7 +353,7 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  * columnIndex is outside the valid range
  * @see SQLException.h
  */
-int ResultSet_readData(T R, int columnIndex, void *b, int length, long off);
+int ResultSet_readData(T R, int columnIndex, void *b, int length, long off) __attribute__((deprecated));
 
 
 #undef T

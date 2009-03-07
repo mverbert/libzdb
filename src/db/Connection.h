@@ -259,7 +259,7 @@ long long int Connection_rowsChanged(T C);
  * @exception SQLException if a database error occurs. 
  * @see SQLException.h
  */
-void Connection_execute(T C, const char *sql, ...);
+void Connection_execute(T C, const char *sql, ...) __attribute__((format (printf, 2, 3)));
 
 
 /**
@@ -281,7 +281,7 @@ void Connection_execute(T C, const char *sql, ...);
  * @see ResultSet.h
  * @see SQLException.h
  */
-ResultSet_T Connection_executeQuery(T C, const char *sql, ...);
+ResultSet_T Connection_executeQuery(T C, const char *sql, ...) __attribute__((format (printf, 2, 3)));
 
 
 /**
@@ -303,7 +303,7 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...);
  * @see PreparedStatement.h
  * @see SQLException.h
  */
-PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...);
+PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...) __attribute__((format (printf, 2, 3)));
 
 
 /**
