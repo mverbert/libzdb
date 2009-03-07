@@ -94,7 +94,7 @@ char *Str_ndup(const char *s, int n);
  * @return The new String or NULL if the string could not be created
  * @exception MemoryException if memory allocation fails
  */
-char *Str_cat(const char *s, ...);
+char *Str_cat(const char *s, ...) __attribute__((format (printf, 1, 2)));
 
 
 /**

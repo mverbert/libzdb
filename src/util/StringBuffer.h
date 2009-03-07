@@ -55,7 +55,7 @@ void StringBuffer_free(T *S);
  * @param s A string with optional var args
  * @return A reference to this StringBuffer
  */
-T StringBuffer_append(T S, const char *s, ...);
+T StringBuffer_append(T S, const char *s, ...) __attribute__((format (printf, 2, 3)));
 
 
 /**

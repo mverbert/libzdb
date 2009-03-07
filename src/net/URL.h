@@ -79,7 +79,7 @@ T URL_new(const char *url);
  * @return A URL object or NULL if the <code>url</code> parameter
  * cannot be parsed as an URL.
  */
-T URL_create(const char *url, ...);
+T URL_create(const char *url, ...) __attribute__((format (printf, 1, 2)));
 
 
 /**

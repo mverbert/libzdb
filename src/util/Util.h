@@ -48,7 +48,7 @@ long Util_usleep(long u);
  * Print a formated message to stdout
  * @param e A formated (printf-style) message string
  */
-void Util_debug(const char *e, ...);
+void Util_debug(const char *e, ...) __attribute__((format (printf, 1, 2)));
 
 
 /**
@@ -57,7 +57,7 @@ void Util_debug(const char *e, ...);
  * function is defined for the library, this function is called instead.
  * @param e A formated (printf-style) message string
  */
-void Util_abort(const char *e, ...);
+void Util_abort(const char *e, ...) __attribute__((format (printf, 1, 2)));
 
 
 #endif
