@@ -3,13 +3,7 @@
 # autoconf        >= 2.59
 # automake        >= 1.9
 # libtool         >= 1.4
-if test `which libtoolize` 
-then
-        libtoolize -f
-elif test `which glibtoolize` 
-then
-        glibtoolize -f
-fi
+glibtoolize -f 2>/dev/null || libtoolize -f
 aclocal -I ./config \
 && autoheader \
 && automake --foreign --add-missing --copy \
