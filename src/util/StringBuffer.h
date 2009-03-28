@@ -71,7 +71,7 @@ T StringBuffer_vappend(T S, const char *s, va_list ap);
 
 
 /**
- * Replace all occurences of <code>?</code> in String Buffer with <code>$n</code>. 
+ * Replace all occurences of <code>?</code> in this string buffer with <code>$n</code>.
  * Example: 
  * <pre>
  * StringBuffer_T b = StringBuffer_new("insert into host values(?, ?, ?);"); 

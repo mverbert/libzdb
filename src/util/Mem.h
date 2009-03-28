@@ -26,7 +26,7 @@
 
 
 /**
- * Allocate <code>n</code>.
+ * Allocate <code>n</code> bytes of memory.
  * @param n number of bytes to allocate
  * @return A pointer to the newly allocated memory
  * @exception MemoryException if allocation failed
@@ -51,7 +51,7 @@
 
 
 /**
- * Allocate object <code>p</code> and clear the memory region
+ * Allocate <code>p</code> and clear the memory region
  * before the allocated object is returned. 
  * @param p ADT object to allocate
  * @exception MemoryException if allocation failed
@@ -81,10 +81,12 @@
 
 /**
  * Allocate and return <code>size</code> bytes of memory. If 
- * allocation failed this method aborts the program
+ * allocation failed this method throws AssertException
  * @param size The number of bytes to allocate
  * @param file location of caller
  * @param line location of caller
+ * @exception MemoryException if allocation failed
+ * @exception AssertException if <code>n <= 0</code> 
  * @return a pointer to the allocated memory
  */
 void *Mem_alloc(long size, const char *file, int line);
@@ -93,11 +95,13 @@ void *Mem_alloc(long size, const char *file, int line);
 /**
  * Allocate and return memory for <code>count</code> objects, each of 
  * <code>size</code> bytes. The returned memory is cleared. If allocation
- * failed this method aborts the program
+ * failed this method throws AssertException
  * @param count The number of objects to allocate
  * @param size The size of each object to allocate
  * @param file location of caller
  * @param line location of caller
+ * @exception MemoryException if allocation failed
+ * @exception AssertException if <code>c or n <= 0</code> 
  * @return a pointer to the allocated memory 
  */
 void *Mem_calloc(long count, long size, const char *file, int line);
@@ -115,11 +119,13 @@ void Mem_free(void *p, const char *file, int line);
 /**
  * Resize the allocation pointed to by <code>p</code> by <code>size</code>
  * bytes and return the changed allocation. If allocation failed this 
- * method aborts the program
+ * method throws AssertException
  * @param p A pointer to the allocation to change
  * @param size The new size of <code>p</code>
  * @param file location of caller
  * @param line location of caller
+ * @exception MemoryException if allocation failed
+ * @exception AssertException if <code>n <= 0</code> 
  * @return a pointer to the changed memory 
  */
 void *Mem_resize(void *p, long size, const char *file, int line);
