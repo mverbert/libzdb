@@ -98,14 +98,14 @@ void testStr() {
                 printf("\tParsed double exp = %.3e\n", Str_parseDouble(de));
                 TRY
                 {
-                        printf("\tParsed truncated int = %d\n", Str_parseInt(ie));
+                        printf("\tParse truncated int = %d\n", Str_parseInt(ie));
                         assert(false); //Should not come here
                 }
                 CATCH(SQLException)
                 END_TRY;
                 TRY
                 {
-                        printf("\tParsed non-number = %d\n", Str_parseInt("blabla"));
+                        printf("\tParse NaN = %d\n", Str_parseInt("blabla"));
                         assert(false); //Should not come here
                 }
                 CATCH(SQLException)
@@ -123,7 +123,7 @@ void testMem() {
         
         printf("=> Test1: alloc\n");
         {
-                char *s7= Mem_alloc(2048, __FILE__, __LINE__);
+                char *s7= ALLOC(2048);
                 assert(IS(strncpy(s7, "123456789", 2048), "123456789"));
                 FREE(s7);
         }
@@ -131,7 +131,7 @@ void testMem() {
         
         printf("=> Test2: calloc\n");
         {
-                char *s8= Mem_calloc(2, 1024, __FILE__, __LINE__);
+                char *s8= CALLOC(2, 1024);
                 assert(s8[2047]=='\0');
                 FREE(s8);
         }
@@ -139,10 +139,10 @@ void testMem() {
         
         printf("=> Test3: resize\n");
         {
-                char *s9= Mem_alloc(4, __FILE__, __LINE__);
+                char *s9= ALLOC(4);
                 strncpy(s9, "abc", 3);
                 assert(IS(s9, "abc"));
-                s9= Mem_resize(s9, 7, __FILE__, __LINE__);
+                RESIZE(s9, 7);
                 strncpy(s9, "abc123", 6);
                 assert(IS(s9, "abc123"));
                 FREE(s9);
@@ -610,7 +610,7 @@ void testStringBuffer() {
                 TRY
                 {
                         StringBuffer_prepare4postgres(sb);
-                        assert("Should not come here");
+                        assert(!"Should not come here");
                 }
                 CATCH(SQLException)
                 {
