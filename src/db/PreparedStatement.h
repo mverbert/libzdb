@@ -46,7 +46,7 @@
  * and <b>must</b> not "disappear" before either PreparedStatement_execute()
  * or PreparedStatement_executeQuery() is called. 
  * 
- * <h2>Example:</h2>
+ * <h3>Example:</h3>
  * To summarize, here is the code in context. 
  * <pre>
  * PreparedStatement_T p = Connection_prepareStatement(con, "INSERT INTO employee(name, picture) VALUES(?, ?)");
@@ -54,7 +54,7 @@
  * PreparedStatement_setBlob(p, 2, jpeg, size);
  * PreparedStatement_execute(p);
  * </pre>
- * <h2>Reuse and ResultSets:</h2>
+ * <h3>Reuse:</h3>
  * A PreparedStatement can be reused. That is, the method 
  * PreparedStatement_execute() can be called one or more times to execute 
  * the same statement. Clients can also set new IN parameter values and
@@ -68,9 +68,21 @@
  *        PreparedStatement_execute(p);
  * }
  * </pre>
- * <b>Note,</b> a ResultSet returned from PreparedStatement_executeQuery()  
- * "lives" only until the next call to a PreparedStatement execute method
- * or until the Connection is returned to the Connection Pool. 
+ * <h3>ResultSets:</h3>
+ * Here is another example where we use a Prepared Statement to execute a query
+ * which returns a Result Set:
+ * 
+ * <pre>
+ * PreparedStatement_T p = Connection_prepareStatement(con, "SELECT id FROM employee WHERE name LIKE ?"); 
+ * PreparedStatement_setString(p, 1, "%Kaoru%");
+ * ResultSet_T r = PreparedStatement_executeQuery(p);
+ * while (ResultSet_next(r))
+ *        printf("employee.id = %d\n", ResultSet_getInt(r, 1));
+ * </pre>
+ * 
+ * A ResultSet returned from PreparedStatement_executeQuery() "lives" until
+ * the Prepared Statement is executed again or until the Connection is
+ * returned to the Connection Pool. 
  * 
  * @see Connection.h ResultSet.h SQLException.h
  * @file

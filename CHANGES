@@ -4,14 +4,12 @@
 
 Version 2.5
 -----------
-* Removed GPL license exceptions. The library is now licensed under the
-  GPL, version 3 only. The orginal intent behind the exception was to 
-  make it possible to link and distribute the library or modifications
-  thereof with other open source programs not licensed under the GPL. 
-  However, the exception seemed to be more confusing than clarifying 
-  for some and to remove any legal fog around the licensing of libzdb
-  it is now GPLv3 only. 
-* PostgreSQL: Blob retrieval optimized. 
+* Removed GPL license exceptions. The library is now licensed under
+  the  GPL version 3 only. 
+* Deprecated ResultSet_readData(). This function _is_ useful for MySQL,
+  but not for other drivers where it has some overhead.
+* Added GCC __attribute__ printf checks where applicable
+* PostgreSQL: Blob retrieval optimized
 * PostgreSQL: Added unix-socket parameter to connection URL
 * Internal optimizing changes and improvements
 

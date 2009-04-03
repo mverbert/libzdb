@@ -27,9 +27,9 @@
  * Connection_executeQuery() method or by using a prepared statement's
  * PreparedStatement_executeQuery() method.
  *
- * A ResultSet object maintains a cursor pointing to its current row
- * of data. Initially the cursor is positioned before the first
- * row. ResultSet_next() moves the cursor to the next row, and because 
+ * A ResultSet maintains a cursor pointing to its current row of data. 
+ * Initially the cursor is positioned before the first row. 
+ * ResultSet_next() moves the cursor to the next row, and because 
  * it returns false when there are no more rows in the ResultSet object,
  * it can be used in a while loop to iterate through the result set.  
  * A ResultSet object is not updatable and has a cursor that moves forward
@@ -71,6 +71,14 @@
  * ResultSet_T r = Connection_executeQuery(con, "SELECT count(*) FROM USERS");
  * printf("Number of users: %s\n", ResultSet_next(r) ? ResultSet_getString(r, 1) : "no users");
  * </pre>
+ *
+ * <h3>Type conversions</h3>
+ * A ResultSet represent values internally as bytes and convert values 
+ * on-the-fly to numeric types when requested, such as when ResultSet_getInt()
+ * or one of the other numeric get-methods are called. In the above example, 
+ * even if <i>count(*)</i> returns a numeric value, we can use 
+ * ResultSet_getString() to get the number as a string or if we choose, use
+ * ResultSet_getInt() to get the value as an integer.
  *
  * @see Connection.h PreparedStatement.h SQLException.h
  * @file
@@ -351,6 +359,7 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  * @return Number of bytes read. 0 is returned when end of data was reached
  * @exception SQLException if a database access error occurs or 
  * columnIndex is outside the valid range
+ * @deprecated Use ResultSet_getBlob() or ResultSet_getString() instead 
  * @see SQLException.h
  */
 int ResultSet_readData(T R, int columnIndex, void *b, int length, long off) __attribute__((deprecated));
