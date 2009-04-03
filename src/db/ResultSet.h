@@ -72,13 +72,14 @@
  * printf("Number of users: %s\n", ResultSet_next(r) ? ResultSet_getString(r, 1) : "no users");
  * </pre>
  *
- * <h3>Type conversions</h3>
+ * <h3>Automatic type conversions</h3>
  * A ResultSet represent values internally as bytes and convert values 
  * on-the-fly to numeric types when requested, such as when ResultSet_getInt()
  * or one of the other numeric get-methods are called. In the above example, 
  * even if <i>count(*)</i> returns a numeric value, we can use 
  * ResultSet_getString() to get the number as a string or if we choose, use
- * ResultSet_getInt() to get the value as an integer.
+ * ResultSet_getInt() to get the value as an integer. In the latter case, note
+ * that if the value cannot be converted to a number a SQLException is thrown.
  *
  * @see Connection.h PreparedStatement.h SQLException.h
  * @file
@@ -121,12 +122,12 @@ int ResultSet_getColumnCount(T R);
 /**
  * Get the designated column's name.
  * @param R A ResultSet object
- * @param column the first column is 1, the second is 2, and so on
+ * @param columnIndex The first column is 1, the second is 2, ...
  * @return Column name or NULL if the column does not exist. You 
  * should use the method ResultSet_getColumnCount() to test for 
  * the availablity of columns in the result set.
  */
-const char *ResultSet_getColumnName(T R, int column);
+const char *ResultSet_getColumnName(T R, int columnIndex);
 
 
 /**
@@ -136,8 +137,8 @@ const char *ResultSet_getColumnName(T R, int column);
  * since a number can be converted into a string) then return the 
  * number of bytes in the resulting string. 
  * @param R A ResultSet object
- * @param columnIndex the first column is 1, the second is 2, ...
- * @return column data size
+ * @param columnIndex The first column is 1, the second is 2, ...
+ * @return Column data size
  * @exception SQLException if columnIndex is outside the valid range
  * @see SQLException.h
  */
@@ -167,8 +168,8 @@ int ResultSet_next(T R);
  * valid until the next call to ResultSet_next() and if you plan to use
  * the returned value longer, you must make a copy.</i>
  * @param R A ResultSet object
- * @param columnIndex the first column is 1, the second is 2, ...
- * @return the column value; if the value is SQL NULL, the value
+ * @param columnIndex The first column is 1, the second is 2, ...
+ * @return The column value; if the value is SQL NULL, the value
  * returned is NULL
  * @exception SQLException if a database access error occurs or 
  * columnIndex is outside the valid range
@@ -184,8 +185,8 @@ const char *ResultSet_getString(T R, int columnIndex);
  * may only be valid until the next call to ResultSet_next() and if you plan
  * to use the returned value longer, you must make a copy.</i>
  * @param R A ResultSet object
- * @param columnName the SQL name of the column. <i>case-sensitive</i>
- * @return the column value; if the value is SQL NULL, the value
+ * @param columnName The SQL name of the column. <i>case-sensitive</i>
+ * @return The column value; if the value is SQL NULL, the value
  * returned is NULL
  * @exception SQLException if a database access error occurs or 
  * columnName does not exist
@@ -200,8 +201,8 @@ const char *ResultSet_getStringByName(T R, const char *columnName);
  * is outside the range [1..ResultSet_getColumnCount()] this
  * method throws an SQLException.
  * @param R A ResultSet object
- * @param columnIndex the first column is 1, the second is 2, ...
- * @return the column value; if the value is SQL NULL, the value
+ * @param columnIndex The first column is 1, the second is 2, ...
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0
  * @exception SQLException if a database access error occurs or 
  * columnIndex is outside the valid range
@@ -215,8 +216,8 @@ int ResultSet_getInt(T R, int columnIndex);
  * this ResultSet object as an int. If <code>columnName</code> is not 
  * found this method throws an SQLException.
  * @param R A ResultSet object
- * @param columnName the SQL name of the column. <i>case-sensitive</i>
- * @return the column value; if the value is SQL NULL, the value
+ * @param columnName The SQL name of the column. <i>case-sensitive</i>
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0
  * @exception SQLException if a database access error occurs or 
  * columnName does not exist
@@ -231,8 +232,8 @@ int ResultSet_getIntByName(T R, const char *columnName);
  * is outside the range [1..ResultSet_getColumnCount()] this
  * method throws an SQLException.
  * @param R A ResultSet object
- * @param columnIndex the first column is 1, the second is 2, ...
- * @return the column value; if the value is SQL NULL, the value
+ * @param columnIndex The first column is 1, the second is 2, ...
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0
  * @exception SQLException if a database access error occurs or 
  * columnIndex is outside the valid range
@@ -246,8 +247,8 @@ long long int ResultSet_getLLong(T R, int columnIndex);
  * this ResultSet object as a long long. If <code>columnName</code>
  * is not found this method throws an SQLException.
  * @param R A ResultSet object
- * @param columnName the SQL name of the column. <i>case-sensitive</i>
- * @return the column value; if the value is SQL NULL, the value
+ * @param columnName The SQL name of the column. <i>case-sensitive</i>
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0
  * @exception SQLException if a database access error occurs or 
  * columnName does not exist
@@ -262,8 +263,8 @@ long long int ResultSet_getLLongByName(T R, const char *columnName);
  * is outside the range [1..ResultSet_getColumnCount()] this
  * method throws an SQLException.
  * @param R A ResultSet object
- * @param columnIndex the first column is 1, the second is 2, ...
- * @return the column value; if the value is SQL NULL, the value
+ * @param columnIndex The first column is 1, the second is 2, ...
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0.0
  * @exception SQLException if a database access error occurs or 
  * columnIndex is outside the valid range
@@ -277,8 +278,8 @@ double ResultSet_getDouble(T R, int columnIndex);
  * this ResultSet object as a double. If <code>columnName</code> is 
  * not found this method throws an SQLException.
  * @param R A ResultSet object
- * @param columnName the SQL name of the column. <i>case-sensitive</i>
- * @return the column value; if the value is SQL NULL, the value
+ * @param columnName The SQL name of the column. <i>case-sensitive</i>
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0.0
  * @exception SQLException if a database access error occurs or 
  * columnName does not exist
@@ -292,15 +293,13 @@ double ResultSet_getDoubleByName(T R, const char *columnName);
  * this ResultSet object as a void pointer. If <code>columnIndex</code>
  * is outside the range [1..ResultSet_getColumnCount()] this method 
  * throws an SQLException. This method allocate <code>size</code> bytes 
- * of memory for the returned blob. If the size of the blob is expected
- * to be "large", consider instead using the method ResultSet_readData() 
- * defined below and read the content of the blob in chunks. <i>The 
- * returned blob may only be valid until the next call to ResultSet_next()
- * and if you plan to use the returned value longer, you must make a copy.</i> 
+ * of memory for the returned blob. <i>The returned blob may only be 
+ * valid until the next call to ResultSet_next() and if you plan to 
+ * use the returned value longer, you must make a copy.</i> 
  * @param R A ResultSet object
- * @param columnIndex the first column is 1, the second is 2, ...
- * @param size the number of bytes in the blob is stored in size 
- * @return the column value; if the value is SQL NULL, the value
+ * @param columnIndex The first column is 1, the second is 2, ...
+ * @param size The number of bytes in the blob is stored in size 
+ * @return The column value; if the value is SQL NULL, the value
  * returned is NULL
  * @exception SQLException if a database access error occurs or 
  * columnIndex is outside the valid range
@@ -313,16 +312,13 @@ const void *ResultSet_getBlob(T R, int columnIndex, int *size);
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a void pointer. If <code>columnName</code>
  * is not found this method throws an SQLException. This method allocate 
- * <code>size</code> bytes of memory for the returned blob. If the size
- * of the blob is expected to be "large", consider instead using the 
- * method ResultSet_readData() defined below and read the content of the
- * blob in chunks. <i>The returned blob may only be valid until the next 
- * call to ResultSet_next() and if you plan to use the returned value 
- * longer, you must make a copy.</i>
+ * <code>size</code> bytes of memory for the returned blob. <i>The returned
+ * blob may only be valid until the next call to ResultSet_next() and if 
+ * you plan to use the returned value longer, you must make a copy.</i>
  * @param R A ResultSet object
- * @param columnName the SQL name of the column. <i>case-sensitive</i>
- * @param size the number of bytes in the blob is stored in size 
- * @return the column value; if the value is SQL NULL, the value
+ * @param columnName The SQL name of the column. <i>case-sensitive</i>
+ * @param size The number of bytes in the blob is stored in size 
+ * @return The column value; if the value is SQL NULL, the value
  * returned is NULL
  * @exception SQLException if a database access error occurs or 
  * columnName does not exist
@@ -352,11 +348,11 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  *</pre>
  * It is a checked runtime error for <code>b</code> to be NULL
  * @param R A ResultSet object
- * @param columnIndex the first column is 1, the second is 2, ...
+ * @param columnIndex The first column is 1, the second is 2, ...
  * @param b A byte buffer
  * @param length The size of the buffer b
  * @param off The offset to start reading data from
- * @return Number of bytes read. 0 is returned when end of data was reached
+ * @return Number of bytes read. 0 is returned when end of data is reached
  * @exception SQLException if a database access error occurs or 
  * columnIndex is outside the valid range
  * @deprecated Use ResultSet_getBlob() or ResultSet_getString() instead 

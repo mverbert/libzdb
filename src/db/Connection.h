@@ -87,7 +87,7 @@ void Connection_setAvailable(T C, int isAvailable);
 /**
  * Get the availablity of this Connection.
  * @param C A Connection object
- * @return true if this Connection is available otherwise false
+ * @return true If this Connection is available otherwise false
  */
 int Connection_isAvailable(T C);
 
@@ -144,7 +144,7 @@ int Connection_getQueryTimeout(T C);
  * object can contain. If the limit is exceeded, the excess rows 
  * are silently dropped.
  * @param C A Connection object
- * @param max the new max rows limit; 0 means there is no limit
+ * @param max The new max rows limit; 0 means there is no limit
  */
 void Connection_setMaxRows(T C, int max);
 
@@ -154,7 +154,7 @@ void Connection_setMaxRows(T C, int max);
  * produced by this Connection object can contain. If this limit is
  * exceeded, the excess rows are silently dropped.
  * @param C A Connection object
- * @return the new max rows limit; 0 means there is no limit
+ * @return The new max rows limit; 0 means there is no limit
  */
 int Connection_getMaxRows(T C);
 
@@ -295,9 +295,9 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...) __attribute__((fo
  * take several statements. A PreparedStatement "lives" until the 
  * Connection is returned to the Connection Pool. 
  * @param C A Connection object
- * @param sql a single SQL statement that may contain one or more '?' 
+ * @param sql A single SQL statement that may contain one or more '?' 
  * IN parameter placeholders
- * @return a new PreparedStatement object containing the pre-compiled
+ * @return A new PreparedStatement object containing the pre-compiled
  * SQL statement.
  * @exception SQLException if a database error occurs. 
  * @see PreparedStatement.h
@@ -324,7 +324,7 @@ const char *Connection_getLastError(T C);
  * supported by this library. Clients may pass a full Connection URL, 
  * for example using URL_toString(), or for convenience only the protocol
  * part of the URL. E.g. "mysql" or "sqlite".
- * @param url a database url string
+ * @param url A database url string
  * @return true if supported otherwise false
  */
 int Connection_isSupported(const char *url);

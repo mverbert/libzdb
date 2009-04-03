@@ -351,7 +351,7 @@ void ConnectionPool_setAbortHandler(T P, void(*abortHandler)(const char *error))
  * is set to low. Use minutes rather than seconds. It is a checked runtime 
  * error for <code>sweepInterval</code> to be less than, or equal to zero.
  * @param P A ConnectionPool object
- * @param sweepInterval number of <code>seconds</code> between sweeps of the 
+ * @param sweepInterval Number of <code>seconds</code> between sweeps of the 
  * reaper thread (value > 0)
  */
 void ConnectionPool_setReaper(T P, int sweepInterval);

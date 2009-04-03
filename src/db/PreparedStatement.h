@@ -115,7 +115,7 @@ void PreparedStatement_free(T *P);
  * Sets the IN parameter at index <code>parameterIndex</code> to the 
  * given string value. 
  * @param P A PreparedStatement object
- * @param parameterIndex the first parameter is 1, the second is 2,..
+ * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The string value to set. Must be a NUL terminated string.
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
@@ -128,7 +128,7 @@ void PreparedStatement_setString(T P, int parameterIndex, const char *x);
  * Sets the IN parameter at index <code>parameterIndex</code> to the 
  * given int value. 
  * @param P A PreparedStatement object
- * @param parameterIndex the first parameter is 1, the second is 2,..
+ * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The int value to set
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
@@ -141,7 +141,7 @@ void PreparedStatement_setInt(T P, int parameterIndex, int x);
  * Sets the IN parameter at index <code>parameterIndex</code> to the 
  * given long long value. 
  * @param P A PreparedStatement object
- * @param parameterIndex the first parameter is 1, the second is 2,..
+ * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The long long value to set
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
@@ -154,7 +154,7 @@ void PreparedStatement_setLLong(T P, int parameterIndex, long long int x);
  * Sets the IN parameter at index <code>parameterIndex</code> to the 
  * given double value. 
  * @param P A PreparedStatement object
- * @param parameterIndex the first parameter is 1, the second is 2,..
+ * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The double value to set
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
@@ -167,9 +167,9 @@ void PreparedStatement_setDouble(T P, int parameterIndex, double x);
  * Sets the IN parameter at index <code>parameterIndex</code> to the 
  * given blob value. 
  * @param P A PreparedStatement object
- * @param parameterIndex the first parameter is 1, the second is 2,..
+ * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The blob value to set
- * @param size the number of bytes in the blob 
+ * @param size The number of bytes in the blob 
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h

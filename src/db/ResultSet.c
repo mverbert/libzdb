@@ -77,9 +77,9 @@ int ResultSet_getColumnCount(T R) {
 }
 
 
-const char *ResultSet_getColumnName(T R, int column) {
+const char *ResultSet_getColumnName(T R, int columnIndex) {
 	assert(R);
-	return R->op->getColumnName(R->I, column);
+	return R->op->getColumnName(R->I, columnIndex);
 }
 
 
