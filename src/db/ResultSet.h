@@ -16,9 +16,11 @@
 
 #ifndef RESULTSET_INCLUDED
 #define RESULTSET_INCLUDED
+/** @cond hide */
 #ifndef __GNUC__
 #define __attribute__(x)
 #endif
+/** @endcond */
 //<< Start filter-out
 #include "ResultSetStrategy.h"
 //>> End filter-out

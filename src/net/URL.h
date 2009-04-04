@@ -16,9 +16,11 @@
 
 #ifndef URL_INCLUDED
 #define URL_INCLUDED
+/** @cond hide */
 #ifndef __GNUC__
 #define __attribute__(x)
 #endif
+/** @endcond */
 
 
 /**
