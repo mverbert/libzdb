@@ -167,11 +167,6 @@
         do { status = (action); } while (((status == SQLITE_BUSY) || (status == SQLITE_LOCKED))\
         && (x++ <= 9) && ((Util_usleep(t))));} while (0)
 
-/* Mask out GCC __attribute__ extension for non-gcc compilers */
-#ifndef __GNUC__
-#define __attribute__(x)
-#endif
-
 
 /* ------------------------------------------------------ Type definitions */
 
