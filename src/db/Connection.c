@@ -83,7 +83,7 @@ struct T {
 static Cop_T getOp(const char *protocol) {
         int i;
         for (i = 0; cops[i]; i++) 
-                if (Str_startsWith(cops[i]->name, protocol)) 
+                if (Str_startsWith(protocol, cops[i]->name)) 
                         return (Cop_T)cops[i];
         return NULL;
 }
