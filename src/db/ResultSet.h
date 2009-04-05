@@ -61,7 +61,7 @@
  * The following examples demonstrate how to obtain a ResultSet and get 
  * values from the set:
  * <pre>
- * ResultSet_T r = Connection_executeQuery(con, "SELECT ssn, name, picture FROM EMPLOYEES");
+ * ResultSet_T r = Connection_executeQuery(con, "SELECT ssn, name, picture FROM employees");
  * while (ResultSet_next(r)) 
  * {
  *      int ssn = ResultSet_getIntByName(r, "ssn");
@@ -73,7 +73,7 @@
  * </pre>
  * Here is another example where a generated result is selected and printed:
  * <pre>
- * ResultSet_T r = Connection_executeQuery(con, "SELECT count(*) FROM USERS");
+ * ResultSet_T r = Connection_executeQuery(con, "SELECT count(*) FROM users");
  * printf("Number of users: %s\n", ResultSet_next(r) ? ResultSet_getString(r, 1) : "no users");
  * </pre>
  *
