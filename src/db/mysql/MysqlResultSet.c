@@ -46,15 +46,7 @@ const struct Rop_T mysqlrops = {
         MysqlResultSet_next,
         MysqlResultSet_getColumnSize,
         MysqlResultSet_getString,
-        MysqlResultSet_getStringByName,
-        MysqlResultSet_getInt,
-        MysqlResultSet_getIntByName,
-        MysqlResultSet_getLLong,
-        MysqlResultSet_getLLongByName,
-        MysqlResultSet_getDouble,
-        MysqlResultSet_getDoubleByName,
         MysqlResultSet_getBlob,
-        MysqlResultSet_getBlobByName,
         MysqlResultSet_readData
 };
 
@@ -86,17 +78,6 @@ struct T {
 
 
 /* ------------------------------------------------------- Private methods */
-
-
-static inline int getIndex(T R, const char *name) {
-        int i;
-        if (name && *name) 
-                for (i = 0; i<R->columnCount; i++)
-                        if (Str_isByteEqual(name, R->columns[i].field->name))
-                                return (i + 1);
-        THROW(SQLException, "Invalid column name [%s]", name ? name : "null");
-        return -1;
-}
 
 
 static inline void ensureCapacity(T R, int i) {
@@ -225,54 +206,11 @@ const char *MysqlResultSet_getString(T R, int columnIndex) {
 }
 
 
-const char *MysqlResultSet_getStringByName(T R, const char *columnName) {
-        return MysqlResultSet_getString(R, getIndex(R, columnName));
-}
-
-
-int MysqlResultSet_getInt(T R, int columnIndex) {
-        TEST_INDEX(0)
-        return Str_parseInt(R->columns[i].buffer);
-}
-
-
-int MysqlResultSet_getIntByName(T R, const char *columnName) {
-        return MysqlResultSet_getInt(R, getIndex(R, columnName));
-}
-
-
-long long int MysqlResultSet_getLLong(T R, int columnIndex) {
-        TEST_INDEX(0)
-        return Str_parseLLong(R->columns[i].buffer);
-}
-
-
-long long int MysqlResultSet_getLLongByName(T R, const char *columnName) {
-        return MysqlResultSet_getLLong(R, getIndex(R, columnName));
-}
-
-
-double MysqlResultSet_getDouble(T R, int columnIndex) {
-        TEST_INDEX(0.0)
-        return Str_parseDouble(R->columns[i].buffer);
-}
-
-
-double MysqlResultSet_getDoubleByName(T R, const char *columnName) {
-        return MysqlResultSet_getDouble(R, getIndex(R, columnName));
-}
-
-
 const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX(NULL)
         ensureCapacity(R, i);
         *size = R->columns[i].real_length;
         return R->columns[i].buffer;
-}
-
-
-const void *MysqlResultSet_getBlobByName(T R, const char *columnName, int *size) {
-        return MysqlResultSet_getBlob(R, getIndex(R, columnName), size);
 }
 
 

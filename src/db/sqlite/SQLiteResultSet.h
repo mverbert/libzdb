@@ -22,15 +22,7 @@ const char *SQLiteResultSet_getColumnName(T R, int column);
 int SQLiteResultSet_next(T R);
 long SQLiteResultSet_getColumnSize(T R, int columnIndex);
 const char *SQLiteResultSet_getString(T R, int columnIndex);
-const char *SQLiteResultSet_getStringByName(T R, const char *columnName);
-int SQLiteResultSet_getInt(T R, int columnIndex);
-int SQLiteResultSet_getIntByName(T R, const char *columnName);
-long long int SQLiteResultSet_getLLong(T R, int columnIndex);
-long long int SQLiteResultSet_getLLongByName(T R, const char *columnName);
-double SQLiteResultSet_getDouble(T R, int columnIndex);
-double SQLiteResultSet_getDoubleByName(T R, const char *columnName);
 const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size);
-const void *SQLiteResultSet_getBlobByName(T R, const char *columnName, int *size);
 int SQLiteResultSet_readData(T R, int columnIndex, void *b, int l, long off);
 #undef T
 #endif

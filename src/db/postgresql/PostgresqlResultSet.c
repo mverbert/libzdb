@@ -44,15 +44,7 @@ const struct Rop_T postgresqlrops = {
         PostgresqlResultSet_next,
         PostgresqlResultSet_getColumnSize,
         PostgresqlResultSet_getString,
-        PostgresqlResultSet_getStringByName,
-        PostgresqlResultSet_getInt,
-        PostgresqlResultSet_getIntByName,
-        PostgresqlResultSet_getLLong,
-        PostgresqlResultSet_getLLongByName,
-        PostgresqlResultSet_getDouble,
-        PostgresqlResultSet_getDoubleByName,
         PostgresqlResultSet_getBlob,
-        PostgresqlResultSet_getBlobByName,
         PostgresqlResultSet_readData
 };
 
@@ -70,17 +62,6 @@ struct T {
         int i; assert(R); i= columnIndex - 1; if (R->columnCount <= 0 || \
         i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); return(RETVAL); } \
         if (PQgetisnull(R->res, R->currentRow, i)) return (RETVAL); 
-
-
-/* ------------------------------------------------------- Private methods */
-
-
-static inline int getIndex(T R, const char *name) {
-        int i = 0;
-        if (! (name && *name) || ((i = PQfnumber(R->res, name)) < 0))
-                THROW(SQLException, "Invalid column name [%s]", name ? name : "null");
-        return i + 1;
-}
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -146,53 +127,10 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
 }
 
 
-const char *PostgresqlResultSet_getStringByName(T R, const char *columnName) {
-        return PostgresqlResultSet_getString(R, getIndex(R, columnName));
-}
-
-
-int PostgresqlResultSet_getInt(T R, int columnIndex) {
-        TEST_INDEX(0)
-        return Str_parseInt(PQgetvalue(R->res, R->currentRow, i));
-}
-
-
-int PostgresqlResultSet_getIntByName(T R, const char *columnName) {
-        return PostgresqlResultSet_getInt(R, getIndex(R, columnName));
-}
-
-
-long long int PostgresqlResultSet_getLLong(T R, int columnIndex) {
-        TEST_INDEX(0)
-        return Str_parseLLong(PQgetvalue(R->res, R->currentRow, i));
-}
-
-
-long long int PostgresqlResultSet_getLLongByName(T R, const char *columnName) {
-        return PostgresqlResultSet_getLLong(R, getIndex(R, columnName));
-}
-
-
-double PostgresqlResultSet_getDouble(T R, int columnIndex) {
-        TEST_INDEX(0.0)
-        return Str_parseDouble(PQgetvalue(R->res, R->currentRow, i));
-}
-
-
-double PostgresqlResultSet_getDoubleByName(T R, const char *columnName) {
-        return PostgresqlResultSet_getDouble(R, getIndex(R, columnName));
-}
-
-
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX(NULL)
         *size = PQgetlength(R->res, R->currentRow, i);
         return PQgetvalue(R->res, R->currentRow, i);
-}
-
-
-const void *PostgresqlResultSet_getBlobByName(T R, const char *columnName, int *size) {
-        return PostgresqlResultSet_getBlob(R, getIndex(R, columnName), size);
 }
 
 

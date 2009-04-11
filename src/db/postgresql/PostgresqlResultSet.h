@@ -22,15 +22,7 @@ const char *PostgresqlResultSet_getColumnName(T R, int column);
 int PostgresqlResultSet_next(T R);
 long PostgresqlResultSet_getColumnSize(T R, int columnIndex);
 const char *PostgresqlResultSet_getString(T R, int columnIndex);
-const char *PostgresqlResultSet_getStringByName(T R, const char *columnName);
-int PostgresqlResultSet_getInt(T R, int columnIndex);
-int PostgresqlResultSet_getIntByName(T R, const char *columnName);
-long long int PostgresqlResultSet_getLLong(T R, int columnIndex);
-long long int PostgresqlResultSet_getLLongByName(T R, const char *columnName);
-double PostgresqlResultSet_getDouble(T R, int columnIndex);
-double PostgresqlResultSet_getDoubleByName(T R, const char *columnName);
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size);
-const void *PostgresqlResultSet_getBlobByName(T R, const char *columnName, int *size);
 int PostgresqlResultSet_readData(T R, int columnIndex, void *b, int l, long off);
 #undef T
 #endif

@@ -36,15 +36,7 @@ typedef struct Rop_T {
         int (*next)(T R);
         long (*getColumnSize)(T R, int columnIndex);
         const char *(*getString)(T R, int columnIndex);
-        const char *(*getStringByName)(T R, const char *columnName);
-        int (*getInt)(T R, int columnIndex);
-        int (*getIntByName)(T R, const char *columnName);
-        long long int (*getLLong)(T R, int columnIndex);
-        long long int (*getLLongByName)(T R, const char *columnName);
-        double (*getDouble)(T R, int columnIndex);
-        double (*getDoubleByName)(T R, const char *columnName);
         const void *(*getBlob)(T R, int columnIndex, int *size);
-        const void *(*getBlobByName)(T R, const char *columnName, int *size);
         int (*readData)(T R, int columnIndex, void *b, int length, long off);
 } *Rop_T;
 

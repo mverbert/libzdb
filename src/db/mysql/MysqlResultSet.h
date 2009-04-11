@@ -22,15 +22,7 @@ const char *MysqlResultSet_getColumnName(T R, int column);
 int MysqlResultSet_next(T R);
 long MysqlResultSet_getColumnSize(T R, int columnIndex);
 const char *MysqlResultSet_getString(T R, int columnIndex);
-const char *MysqlResultSet_getStringByName(T R, const char *columnName);
-int MysqlResultSet_getInt(T R, int columnIndex);
-int MysqlResultSet_getIntByName(T R, const char *columnName);
-long long int MysqlResultSet_getLLong(T R, int columnIndex);
-long long int MysqlResultSet_getLLongByName(T R, const char *columnName);
-double MysqlResultSet_getDouble(T R, int columnIndex);
-double MysqlResultSet_getDoubleByName(T R, const char *columnName);
 const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size);
-const void *MysqlResultSet_getBlobByName(T R, const char *columnName, int *size);
 int MysqlResultSet_readData(T R, int columnIndex, void *b, int l, long off);
 #undef T
 #endif

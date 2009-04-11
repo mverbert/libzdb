@@ -43,15 +43,7 @@ const struct Rop_T sqlite3rops = {
         SQLiteResultSet_next,
         SQLiteResultSet_getColumnSize,
         SQLiteResultSet_getString,
-        SQLiteResultSet_getStringByName,
-        SQLiteResultSet_getInt,
-        SQLiteResultSet_getIntByName,
-        SQLiteResultSet_getLLong,
-        SQLiteResultSet_getLLongByName,
-        SQLiteResultSet_getDouble,
-        SQLiteResultSet_getDoubleByName,
         SQLiteResultSet_getBlob,
-        SQLiteResultSet_getBlobByName,
         SQLiteResultSet_readData
 };
 
@@ -67,20 +59,6 @@ struct T {
 #define TEST_INDEX(RETVAL) \
         int i; assert(R); i= columnIndex - 1; if (R->columnCount <= 0 || \
         i < 0 || i >= R->columnCount) THROW(SQLException, "Column index is out of range");
-
-
-/* ------------------------------------------------------- Private methods */
-
-
-static inline int getIndex(T R, const char *name) {
-        int i;
-        if (name && *name) 
-                for (i = 0; i < R->columnCount; i++)
-                        if (Str_isByteEqual(name, sqlite3_column_name(R->stmt, i)))
-                                return (i + 1);
-        THROW(SQLException, "Invalid column name [%s]", name ? name : "null");
-        return -1;
-}
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -152,55 +130,12 @@ const char *SQLiteResultSet_getString(T R, int columnIndex) {
 }
 
 
-const char *SQLiteResultSet_getStringByName(T R, const char *columnName) {
-        return SQLiteResultSet_getString(R, getIndex(R, columnName));
-}
-
-
-int SQLiteResultSet_getInt(T R, int columnIndex) {
-        TEST_INDEX(0)
-	return sqlite3_column_int(R->stmt, i);
-}
-
-
-int SQLiteResultSet_getIntByName(T R, const char *columnName) {
-        return SQLiteResultSet_getInt(R, getIndex(R, columnName));
-}
-
-
-long long int SQLiteResultSet_getLLong(T R, int columnIndex) {
-        TEST_INDEX(0)
-	return (long long int)sqlite3_column_int64(R->stmt, i);
-}
-
-
-long long int SQLiteResultSet_getLLongByName(T R, const char *columnName) {
-        return SQLiteResultSet_getLLong(R, getIndex(R, columnName));
-}
-
-
-double SQLiteResultSet_getDouble(T R, int columnIndex) {
-        TEST_INDEX(0.0)
-	return sqlite3_column_double(R->stmt, i);
-}
-
-
-double SQLiteResultSet_getDoubleByName(T R, const char *columnName) {
-        return SQLiteResultSet_getDouble(R, getIndex(R, columnName));
-}
-
-
 const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size) {
         const void *blob;
         TEST_INDEX(NULL)
         blob = sqlite3_column_blob(R->stmt, i);
         *size = sqlite3_column_bytes(R->stmt, i);
         return (void*)blob;
-}
-
-
-const void *SQLiteResultSet_getBlobByName(T R, const char *columnName, int *size) {
-        return SQLiteResultSet_getBlob(R, getIndex(R, columnName), size);
 }
 
 
