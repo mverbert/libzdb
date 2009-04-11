@@ -14,6 +14,7 @@
  */
 #ifndef SQLITERESULTSET_INCLUDED
 #define SQLITERESULTSET_INCLUDED
+#include <stdlib.h>
 #define T ResultSetImpl_T
 T SQLiteResultSet_new(void *stmt, int maxRows, int keep);
 void SQLiteResultSet_free(T *R);
