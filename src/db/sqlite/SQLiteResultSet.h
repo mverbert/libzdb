@@ -15,6 +15,11 @@
 #ifndef SQLITERESULTSET_INCLUDED
 #define SQLITERESULTSET_INCLUDED
 #include <stdlib.h>
+/* SQLite timed retry macro */
+#define EXEC_SQLITE(status, action, timeout) \
+        do { long t = (timeout * USEC_PER_MSEC); int x = 0;\
+        do { status = (action); } while (((status == SQLITE_BUSY) || (status == SQLITE_LOCKED))\
+        && (x++ <= 16) && ((Util_usleep(t/(rand() % 10 + 1)))));} while (0)
 #define T ResultSetImpl_T
 T SQLiteResultSet_new(void *stmt, int maxRows, int keep);
 void SQLiteResultSet_free(T *R);

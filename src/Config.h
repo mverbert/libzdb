@@ -161,12 +161,6 @@
 #define IS(a,b) ((a&&b)?Str_isEqual(a, b):0)
 #define STRERROR strerror(errno)
 
-/* SQLite timed retry macro */
-#define EXEC_SQLITE(status, action, timeout) \
-        do { long t = (timeout * USEC_PER_MSEC); int x = 0;\
-        do { status = (action); } while (((status == SQLITE_BUSY) || (status == SQLITE_LOCKED))\
-        && (x++ <= 5) && ((Util_usleep(t/(rand() % 100 + 1)))));} while (0)
-
 
 /* ------------------------------------------------------ Type definitions */
 
