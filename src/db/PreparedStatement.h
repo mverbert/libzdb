@@ -182,12 +182,11 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
  * or DELETE statement or an SQL statement that returns nothing, such
  * as an SQL DDL statement. 
  * @param P A PreparedStatement object
- * @return true
  * Connection_getLastError() can be used to obtain the error string.
  * @exception SQLException if a database error occurs
  * @see SQLException.h
  */
-int PreparedStatement_execute(T P);
+void PreparedStatement_execute(T P);
 
 
 /**
