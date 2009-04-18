@@ -76,7 +76,7 @@ T StringBuffer_new(const char *s) {
         S->used = 0;
         S->length = STRLEN;
         S->buffer = ALLOC(STRLEN + 1);
-        return StringBuffer_append(S, s);
+        return StringBuffer_append(S, "%s", s);
 }
 
 

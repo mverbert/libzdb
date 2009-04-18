@@ -76,7 +76,7 @@ void Util_abort(const char *e, ...) {
 	vsnprintf(buf, ERROR_SIZE, e, ap);
 	va_end(ap);
         if (AbortHandler == NULL) {
-                fprintf(stderr, buf);
+                fprintf(stderr, "%s", buf);
                 abort();
         } 
         AbortHandler(buf); 
