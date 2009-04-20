@@ -253,7 +253,7 @@ static PGconn *doConnect(URL_T url, char **error) {
 #define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
         int port;
         int ssl = false;
-        int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
+        volatile int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
         const char *user, *password, *host, *database, *timeout;
         const char *unix_socket = URL_getParameter(url, "unix-socket");
         char *conninfo;
