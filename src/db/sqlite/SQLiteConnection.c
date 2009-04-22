@@ -244,6 +244,13 @@ static sqlite3 *doConnect(URL_T url, char **error) {
                 }
                 path++;
         }
+#if SQLITE_VERSION_NUMBER >= 3005000
+        if (SQLITE_OK != sqlite3_enable_shared_cache(true)) {
+                *error = Str_cat("cannot set shared cache mode");
+                sqlite3_close(db);
+                return NULL;
+        }
+#endif
         if (SQLITE_OK != sqlite3_open(path, &db)) {
                 *error = Str_cat("cannot open database '%s' -- %s", path, sqlite3_errmsg(db));
                 sqlite3_close(db);
