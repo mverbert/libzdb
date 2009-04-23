@@ -189,7 +189,9 @@ ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
         va_copy(ap_copy, ap);
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
-#if SQLITE_VERSION_NUMBER >= 3004000
+#if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
+        C->lastError = sqlite3_blocking_prepare_v2(C->db, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt, &tail);
+#elif SQLITE_VERSION_NUMBER >= 3004000
         EXEC_SQLITE(C->lastError, sqlite3_prepare_v2(C->db, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt, &tail), C->timeout);
 #else
         EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt, &tail), C->timeout);
@@ -209,7 +211,9 @@ PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_l
         va_copy(ap_copy, ap);
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
-#if SQLITE_VERSION_NUMBER >= 3004000
+#if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
+        C->lastError = sqlite3_blocking_prepare_v2(C->db, StringBuffer_toString(C->sb), -1, &stmt, &tail);
+#elif SQLITE_VERSION_NUMBER >= 3004000
         EXEC_SQLITE(C->lastError, sqlite3_prepare_v2(C->db, StringBuffer_toString(C->sb), -1, &stmt, &tail), C->timeout);
 #else
         EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, StringBuffer_toString(C->sb), -1, &stmt, &tail), C->timeout);
@@ -278,5 +282,10 @@ static int setProperties(T C, char **error) {
 
 
 static inline void executeSQL(T C, const char *sql) {
+#if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
+        C->lastError = sqlite3_blocking_exec(C->db, sql, NULL, NULL, NULL);
+#else
         EXEC_SQLITE(C->lastError, sqlite3_exec(C->db, sql, NULL, NULL, NULL), C->timeout);
+#endif
 }
+

@@ -132,7 +132,11 @@ void SQLitePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int
 
 void SQLitePreparedStatement_execute(T P) {
         assert(P);
+#if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
+        P->lastError = sqlite3_blocking_step(P->stmt);
+#else
         EXEC_SQLITE(P->lastError, sqlite3_step(P->stmt), SQL_DEFAULT_TIMEOUT);
+#endif
         switch (P->lastError)
         {
                 case SQLITE_DONE: 

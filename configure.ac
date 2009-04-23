@@ -129,6 +129,21 @@ AC_ARG_ENABLE([openssl],
         fi
      ],[openssl="false"])
 
+AC_ARG_ENABLE(sqliteunlock,
+	AS_HELP_STRING([--enable-sqliteunlock], 
+        	[Enable sqlite unlock notification API (requires sqlite >= 3.6.12 compiled with SQLITE_ENABLE_UNLOCK_NOTIFY C-preprocessor symbol)]),
+    [
+        if test "x$enableval" = "xyes" ; then
+		SQLITEUNLOCK=1
+	else
+		SQLITEUNLOCK=0
+        fi
+    ],
+    [
+	SQLITEUNLOCK=0
+    ]
+)
+
 if test "xfalse" = "x$protect" -a "xfalse" = "x$zild_protect"; then
         zild_build="false"
         test_build="true"
@@ -375,6 +390,11 @@ if test "xfalse" = "x$zild_protect"; then
 echo "|   Zild:                                         DISABLED   |"
 else
 echo "|   Zild:                                         ENABLED    |"
+fi
+if test "x1" = "x$SQLITEUNLOCK"; then
+echo "|   Sqlite3 unlock notification API:              ENABLED    |"
+else
+echo "|   Sqlite3 unlock notification API:              DISABLED   |"
 fi
 if test "xfalse" = "x$test_build"; then
 echo "|   Unit Tests Build:                             DISABLED   |"

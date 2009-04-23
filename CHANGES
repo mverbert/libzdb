@@ -6,6 +6,10 @@ Version 2.6
 -----------
 * Internal optimizing changes and improvements
 * Enable shared cache mode for sqlite >= 3.5
+* Added new configure option --enable-sqliteunlock which
+  enables sqlite3 unlock notification. The feature requires
+  sqlite >= 3.6.12 compiled with SQLITE_ENABLE_UNLOCK_NOTIFY
+  C-preprocessor symbol.
 
 
 Version 2.5

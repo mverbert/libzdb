@@ -113,8 +113,12 @@ int SQLiteResultSet_next(T R) {
 	assert(R);
         if (R->maxRows && (R->currentRow++ >= R->maxRows))
                 return false;
+#if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
+	status = sqlite3_blocking_step(R->stmt);
+#else
         EXEC_SQLITE(status, sqlite3_step(R->stmt), SQL_DEFAULT_TIMEOUT);
-	return (status == SQLITE_ROW);
+#endif
+        return (status == SQLITE_ROW);
 }
 
 
