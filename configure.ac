@@ -135,6 +135,7 @@ AC_ARG_ENABLE(sqliteunlock,
     [
         if test "x$enableval" = "xyes" ; then
 		SQLITEUNLOCK=1
+                CFLAGS="$CFLAGS -DSQLITEUNLOCK"
 	else
 		SQLITEUNLOCK=0
         fi

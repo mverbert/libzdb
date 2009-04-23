@@ -15,6 +15,8 @@
 #ifndef SQLITERESULTSET_INCLUDED
 #define SQLITERESULTSET_INCLUDED
 #include <stdlib.h>
+#include <string.h>
+#include "Thread.h"
 
 
 #if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
@@ -49,7 +51,7 @@ static inline int wait_for_unlock_notify(sqlite3 *db){
                 Mutex_lock(un.mutex);
                 if (! un.fired)
                         Sem_wait(un.cond, un.mutex);
-                Mutex_unlock(&un.mutex);
+                Mutex_unlock(un.mutex);
         }
 
         Sem_destroy(un.cond);
