@@ -28,9 +28,8 @@
 
 /**
  * A <b>ResultSet</b> represents a database result set. A ResultSet is
- * created by executing a SQL SELECT statement using the
- * Connection_executeQuery() method or by using a prepared statement's
- * PreparedStatement_executeQuery() method.
+ * created by executing a SQL SELECT statement using either 
+ * Connection_executeQuery() or PreparedStatement_executeQuery().
  *
  * A ResultSet maintains a cursor pointing to its current row of data. 
  * Initially the cursor is positioned before the first row. 
@@ -58,8 +57,8 @@
  * to the intended columns.
  *
  * <h3>Example</h3>
- * The following examples demonstrate how to obtain a ResultSet and get 
- * values from the set:
+ * The following examples demonstrate how to obtain a ResultSet and 
+ * how to get values from the set:
  * <pre>
  * ResultSet_T r = Connection_executeQuery(con, "SELECT ssn, name, picture FROM employees");
  * while (ResultSet_next(r)) 
@@ -78,13 +77,13 @@
  * </pre>
  *
  * <h3>Automatic type conversions</h3>
- * A ResultSet represent values internally as bytes and convert values 
+ * A ResultSet store values internally as bytes and convert values 
  * on-the-fly to numeric types when requested, such as when ResultSet_getInt()
  * or one of the other numeric get-methods are called. In the above example, 
  * even if <i>count(*)</i> returns a numeric value, we can use 
- * ResultSet_getString() to get the number as a string or if we choose, use
+ * ResultSet_getString() to get the number as a string or if we choose, we can use
  * ResultSet_getInt() to get the value as an integer. In the latter case, note
- * that if the value cannot be converted to a number a SQLException is thrown.
+ * that if the column value cannot be converted to a number, an SQLException is thrown.
  *
  * @see Connection.h PreparedStatement.h SQLException.h
  * @file

@@ -30,19 +30,19 @@
  * There are three ways to execute a SQL statement: Connection_execute() 
  * is used to execute SQL statements that does not return a result set. 
  * Such statements are INSERT, UPDATE or DELETE.  Connection_executeQuery() 
- * is used to execute a SQL SELECT statement and return the result set. 
+ * is used to execute a SQL SELECT statement and return a result set. 
  * These methods can only handle values which can be expressed as C-strings. 
  * If you need to handle binary data, such as inserting a blob value into the
  * database, use a PreparedStatement object to execute the SQL statement. 
  * The factory method Connection_prepareStatement() is used to obtain a 
  * PreparedStatement object. 
  *
- * If an error occurred during execution, the method
- * Connection_getLastError() can be used to obtain a string describing
- * the error. The method Connection_executeQuery() will return an empty 
- * ResultSet (not NULL) if the SQL statement did not return any values. 
- * A ResultSet lives until the next call to Connection_executeQuery() or
- * until the Connection is returned to the Connection Pool.
+ * If an error occur during execution, the method Connection_getLastError()
+ * can be used to obtain a string describing the error. The method 
+ * Connection_executeQuery() will return an empty ResultSet (not null) if
+ * the SQL statement did not return any values.  A ResultSet lives until the
+ * next call to Connection_executeQuery() or until the Connection is returned
+ * to the Connection Pool.
  *
  * Any SQL statement that changes the database (basically, any SQL
  * command other than SELECT) will automatically start a transaction
@@ -52,7 +52,7 @@
  * Transactions can also be started manually using 
  * Connection_beginTransaction(). Such transactions usually persist
  * until the next call to Connection_commit() or Connection_rollback().
- * A transaction will also ROLLBACK if the database is closed or if an 
+ * A transaction will also rollback if the database is closed or if an 
  * error occurs. Nested transactions are not allowed.
  *
  * @see ResultSet.h PreparedStatement.h SQLException.h

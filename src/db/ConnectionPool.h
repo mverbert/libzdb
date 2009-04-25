@@ -29,7 +29,7 @@
  *  <center><img src="database.png"></center>
  *
  * The method ConnectionPool_getConnection() is used to obtain a new
- * connection from the pool. If no connections are available it will
+ * connection from the pool. If there are no connections available it will
  * create a new connection and return this. If the pool has already
  * handed out <i>maxConnections</i> the next call to 
  * ConnectionPool_getConnection() will return NULL. Use Connection_close() 
@@ -52,8 +52,8 @@
  *
  * <h2>Supported database systems:</h2>
  * This library may be built with support for many different database 
- * systems and to test if this library support a particular system, the 
- * class-method Connection_isSupported() should be used.  
+ * systems. To test if a particular system is supported use the method 
+ * Connection_isSupported().  
  *
  * <h2>Life-cycle methods:</h2>
  * Clients should call ConnectionPool_start() to establish the connection pool 
@@ -197,13 +197,13 @@
  * <h2>Optimizing the pool size:</h2>
  * The pool can be setup to dynamically change the number of active 
  * Connections in the pool depending on the load. A single <code>reaper</code> 
- * thread can be activated at startup to sweep through Connections in the pool 
- * at a regular interval and close those Connections that have been inactive 
- * for a specified time or for some reason no longer respond. Only inactive 
- * Connections may be closed and no more than the initial number of Connections
- * the pool was started with are closed. The method ConnectionPool_setReaper() 
- * is used to setup and activate the reaper thread. If this method was not 
- * called, the pool will not start with a reaper thread.
+ * thread can be activated at startup to sweep through the pool at a regular
+ * interval and close Connections that have been inactive for a specified time
+ * or for some reasons no longer respond. Only inactive Connections will be closed
+ * and no more than the initial number of Connections the pool was started with
+ * are closed. The method ConnectionPool_setReaper() is used to setup and activate
+ * the reaper thread. If this method was not called, the pool will not start with
+ * a reaper thread.
  * 
  * Clients can also call the method, ConnectionPool_reapConnections(), to
  * bonsai the pool directly if the reaper thread is not activated.

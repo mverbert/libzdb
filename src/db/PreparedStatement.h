@@ -24,26 +24,26 @@
 /**
  * A <b>PreparedStatement</b> represent a single SQL statement pre-compiled 
  * into byte code for later execution. The SQL statement may contain 
- * <b>IN</b> parameters of the form "?". Such parameters represent 
+ * <i>in</i> parameters of the form "?". Such parameters represent 
  * unspecified literal values (or "wildcards") to be filled in later by the 
- * various setter methods defined in this interface. Each IN parameter has an
+ * various setter methods defined in this interface. Each <i>in</i> parameter has an
  * associated index number which is its sequence in the statement. The first 
- * IN '?' parameter has index 1, the next has index 2 and so on. A 
+ * <i>in</i> '?' parameter has index 1, the next has index 2 and so on. A 
  * PreparedStatement is created by the Connection_prepareStatement() method.
  * 
  * Consider this statement: 
  * <pre>
  *  INSERT INTO employee(name, picture) VALUES(?, ?)
  * </pre>
- * There are two IN parameters in this statement, the parameter for setting
+ * There are two <i>in</i> parameters in this statement, the parameter for setting
  * the name has index 1 and the one for the picture has index 2. To set the 
- * values for the IN parameters we use a setter method. Assuming name has
+ * values for the <i>in</i> parameters we use a setter method. Assuming name has
  * a string value we use PreparedStatement_setString(). To set the value
  * of the picture we submit a binary value using the 
  * method PreparedStatement_setBlob(). 
  *
- * Please note that string and blob parameter values are set by reference 
- * and <b>must</b> not "disappear" before either PreparedStatement_execute()
+ * Note that string and blob parameter values are set by reference and 
+ * <b>must</b> not "disappear" before either PreparedStatement_execute()
  * or PreparedStatement_executeQuery() is called. 
  * 
  * <h3>Example:</h3>
@@ -51,13 +51,13 @@
  * <pre>
  * PreparedStatement_T p = Connection_prepareStatement(con, "INSERT INTO employee(name, picture) VALUES(?, ?)");
  * PreparedStatement_setString(p, 1, "Kamiya Kaoru");
- * PreparedStatement_setBlob(p, 2, jpeg, size);
+ * PreparedStatement_setBlob(p, 2, jpeg, jpeg_size);
  * PreparedStatement_execute(p);
  * </pre>
  * <h3>Reuse:</h3>
  * A PreparedStatement can be reused. That is, the method 
  * PreparedStatement_execute() can be called one or more times to execute 
- * the same statement. Clients can also set new IN parameter values and
+ * the same statement. Clients can also set new <i>in</i> parameter values and
  * re-execute the statement as shown in this example:
  * <pre>
  * PreparedStatement_T p = Connection_prepareStatement(con, "INSERT INTO employee(name, picture) VALUES(?, ?)");
@@ -112,7 +112,7 @@ void PreparedStatement_free(T *P);
 //>> End filter-out
 
 /**
- * Sets the IN parameter at index <code>parameterIndex</code> to the 
+ * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the 
  * given string value. 
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
@@ -125,7 +125,7 @@ void PreparedStatement_setString(T P, int parameterIndex, const char *x);
 
 
 /**
- * Sets the IN parameter at index <code>parameterIndex</code> to the 
+ * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the 
  * given int value. 
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
@@ -138,7 +138,7 @@ void PreparedStatement_setInt(T P, int parameterIndex, int x);
 
 
 /**
- * Sets the IN parameter at index <code>parameterIndex</code> to the 
+ * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the 
  * given long long value. 
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
@@ -151,7 +151,7 @@ void PreparedStatement_setLLong(T P, int parameterIndex, long long int x);
 
 
 /**
- * Sets the IN parameter at index <code>parameterIndex</code> to the 
+ * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the 
  * given double value. 
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
@@ -164,7 +164,7 @@ void PreparedStatement_setDouble(T P, int parameterIndex, double x);
 
 
 /**
- * Sets the IN parameter at index <code>parameterIndex</code> to the 
+ * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the 
  * given blob value. 
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
