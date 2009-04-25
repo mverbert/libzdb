@@ -68,7 +68,7 @@
  *        PreparedStatement_execute(p);
  * }
  * </pre>
- * <h3>ResultSets:</h3>
+ * <h3>Result Sets:</h3>
  * Here is another example where we use a Prepared Statement to execute a query
  * which returns a Result Set:
  * 
