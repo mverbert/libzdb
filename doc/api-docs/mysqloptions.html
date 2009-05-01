@@ -61,13 +61,14 @@ hashing used in MySQL 4.1.1 and later. Default is false</td>
 <tr>
 <td><code>unix-socket</code></td>
 <td>
-Specifies the socket that should be used. The default is /tmp/mysql.sock. 
-Note that the URL host value determines the type of the connection. If host
-is the string "localhost", a connection to the local host over a unix socket
-is assumed, otherwise TCP/IP is used.
+Connect to the database server over a unix socket on localhost. The
+unix-socket value should be the full path to the socket file. MySQL use
+default the file /tmp/mysql.sock. Note that this is different from the
+PostgreSQL unix-socket parameter which specify the full path to the directory
+where the socket file is located.
 </td>
 <td>String</td>
-<td>unix-socket=/var/tmp/mysql.sock</td>
+<td>unix-socket=/tmp/mysql.sock</td>
 </tr>
 </table>
 <p align="center">&nbsp;</p><br><p align="center"><font

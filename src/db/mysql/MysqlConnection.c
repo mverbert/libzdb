@@ -251,7 +251,9 @@ static MYSQL *doConnect(URL_T url, char **error) {
         if (! (password = URL_getPassword(url)))
                 if (! (password = URL_getParameter(url, "password")))
                         ERROR("no password specified in URL");
-        if (! (host = URL_getHost(url)))
+        if (unix_socket) {
+		host = "localhost"; // Make sure host is localhost if unix socket is to be used
+        } else if (! (host = URL_getHost(url)))
                 ERROR("no host specified in URL");
         if ((port = URL_getPort(url))<=0)
                 ERROR("no port specified in URL");
@@ -260,8 +262,6 @@ static MYSQL *doConnect(URL_T url, char **error) {
         else
                 database++;
         /* Options */
-	if (unix_socket)
-		host = "localhost"; // Make sure host is localhost if unix socket is to be used
         if (IS(URL_getParameter(url, "compress"), "true"))
                 clientFlags |= CLIENT_COMPRESS;
         if (IS(URL_getParameter(url, "use-ssl"), "true"))
