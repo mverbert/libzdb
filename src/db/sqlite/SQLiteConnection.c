@@ -251,7 +251,6 @@ static sqlite3 *doConnect(URL_T url, char **error) {
 #if SQLITE_VERSION_NUMBER >= 3005000
         if (SQLITE_OK != sqlite3_enable_shared_cache(true)) {
                 *error = Str_cat("cannot set shared cache mode");
-                sqlite3_close(db);
                 return NULL;
         }
 #endif
