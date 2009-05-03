@@ -357,7 +357,7 @@ static int reapConnections(T P) {
         int i = 0;
         int n = 0;
         long timedout;
-        Connection_T con;
+        Connection_T con = NULL;
         x = Vector_size(P->pool)-getActive(P)-P->initialConnections;
         timedout = Util_seconds()-P->connectionTimeout;
         while (x-->0) {
@@ -367,7 +367,7 @@ static int reapConnections(T P) {
                                 continue;
                         break;
                 }
-                if ((! Connection_ping(con)) || (Connection_getLastAccessedTime(con) < timedout)) {
+                if (con && (! Connection_ping(con) || Connection_getLastAccessedTime(con) < timedout)) {
                         Vector_remove(P->pool, i);
                         Connection_free(&con);
                         n++;
