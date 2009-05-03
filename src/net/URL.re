@@ -346,8 +346,7 @@ char *URL_normalize(char *path) {
                         } else if (path[i+1]=='/' || path[i+1]==0) {
                                 ++i;
                                 continue;
-                        } else
-                                c=':';
+                        }
                 }
                 if (! (path[j]=path[i])) break; ++j;
 	}
