@@ -231,7 +231,6 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
                                                                              paramCount), 
                                              (Pop_T)&postgresqlpops);
         }
-        FREE(name);
         return NULL;
 }
 
