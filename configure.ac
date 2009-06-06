@@ -62,8 +62,9 @@ AC_ARG_ENABLE(optimized,
 
 AC_ARG_ENABLE([zild],
         AS_HELP_STRING([--enable-zild], 
-                [Reduce visibility of objects for linking with zild. 
-                Require gcc version 4.x]),
+                [Reduce visibility of objects for linking with the zild app server. 
+                Require gcc version 4.x. This is an internal Tildeslash build 
+                option and should NOT be used by a third-party]),
      [
                 if test "x$GCC" = "xyes"; then
                         zild_protect="true"
