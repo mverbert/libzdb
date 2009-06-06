@@ -65,7 +65,6 @@ extern const struct Rop_T sqlite3rops;
 #pragma GCC visibility push(hidden)
 #endif
 
-
 T SQLitePreparedStatement_new(sqlite3 *db, void *stmt, int maxRows) {
         T P;
         assert(stmt);
@@ -161,7 +160,6 @@ ResultSet_T SQLitePreparedStatement_executeQuery(T P) {
         THROW(SQLException, "%s", sqlite3_errmsg(P->db));
         return NULL;
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

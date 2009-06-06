@@ -44,7 +44,6 @@
 #pragma GCC visibility push(hidden)
 #endif
 
-
 long Util_seconds() {
 	struct timeval tv;
 	assert(gettimeofday(&tv, NULL) == 0);
@@ -81,7 +80,6 @@ void Util_abort(const char *e, ...) {
         } 
         AbortHandler(buf); 
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

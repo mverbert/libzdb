@@ -68,7 +68,6 @@ struct T {
 #pragma GCC visibility push(hidden)
 #endif
 
-
 T SQLiteResultSet_new(void *stmt, int maxRows, int keep) {
 	T R;
 	assert(stmt);
@@ -156,7 +155,6 @@ int SQLiteResultSet_readData(T R, int columnIndex, void *b, int l, long off) {
         memcpy(b, blob + off, r);
         return r;
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

@@ -198,7 +198,6 @@ ResultSet_T PostgresqlPreparedStatement_executeQuery(T P) {
         return NULL;
 }
 
-
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif

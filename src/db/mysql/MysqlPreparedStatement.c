@@ -85,7 +85,6 @@ extern const struct Rop_T mysqlrops;
 #pragma GCC visibility push(hidden)
 #endif
 
-
 T MysqlPreparedStatement_new(void *stmt, int maxRows) {
         T P;
         assert(stmt);
@@ -205,7 +204,6 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         return NULL;
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

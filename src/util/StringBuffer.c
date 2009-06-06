@@ -69,7 +69,6 @@ static inline void doAppend(T S, const char *s, va_list ap) {
 #pragma GCC visibility push(hidden)
 #endif
 
-
 T StringBuffer_new(const char *s) {
         T S;
         NEW(S);
@@ -157,7 +156,6 @@ const char *StringBuffer_toString(T S) {
         assert(S);
         return S->buffer;
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

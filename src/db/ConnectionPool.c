@@ -65,15 +65,88 @@ void(*AbortHandler)(const char *error) = NULL;
 #endif
 
 
-/* ------------------------------------------------------------ Prototypes */
+/* ------------------------------------------------------- Private methods */
 
 
-static int fillPool(T P);
-static int getActive(T P);
-static void drainPool(T P);
-static int reapConnections(T P);
-static void *doSweep(void *args);
-        
+static void drainPool(T P) {
+	Connection_T con;
+        while (! Vector_isEmpty(P->pool)) {
+		con = Vector_pop(P->pool);
+		Connection_free(&con);
+	}
+        assert(Vector_isEmpty(P->pool));
+}
+
+
+static int fillPool(T P) {
+	int i;
+	Connection_T con;
+        P->error = NULL;
+	for (i = 0; i < P->initialConnections; i++) {
+		if (! (con = Connection_new(P, &P->error))) {
+                        if (i > 0) {
+                                DEBUG("Failed to fill the pool with initial connections -- %s\n", P->error);
+                                FREE(P->error);
+                                return true;
+                        }
+                        return false;
+                }
+		Vector_push(P->pool, con);
+	}
+	return true;
+}
+
+
+static int getActive(T P){
+        int i, n = 0, size = Vector_size(P->pool);
+        for (i = 0; i < size; i++) { 
+                Connection_T con = Vector_get(P->pool, i);
+                if (! Connection_isAvailable(con )) n++; 
+        }
+        return n; 
+}
+
+
+static int reapConnections(T P) {
+        int x; 
+        int i = 0;
+        int n = 0;
+        long timedout;
+        Connection_T con = NULL;
+        x = Vector_size(P->pool)-getActive(P)-P->initialConnections;
+        timedout = Util_seconds()-P->connectionTimeout;
+        while (x-->0) {
+                for (i = 0; i < Vector_size(P->pool); i++) {
+                        con = Vector_get(P->pool, i);
+                        if (! Connection_isAvailable(con))
+                                continue;
+                        break;
+                }
+                if (con && (! Connection_ping(con) || Connection_getLastAccessedTime(con) < timedout)) {
+                        Vector_remove(P->pool, i);
+                        Connection_free(&con);
+                        n++;
+                }
+        }
+        return n;
+}
+
+
+static void *doSweep(void *args) {
+        T P = args;
+        struct timespec wait = {0, 0};
+        Mutex_lock(P->mutex);
+        while (! P->stopped) {
+                wait.tv_sec = Util_seconds() + P->sweepInterval;
+                Sem_timeWait(P->alarm,  P->mutex, wait);
+                if (P->stopped) break;
+                reapConnections(P);
+        }
+        Mutex_unlock(P->mutex);
+        DEBUG("Reaper thread stopped\n");
+        return NULL;
+}
+
 
 /* ---------------------------------------------------------------- Public */
 
@@ -307,87 +380,4 @@ int ConnectionPool_reapConnections(T P) {
 
 const char *ConnectionPool_version(void) {
         return ABOUT;
-}
-
-
-/* ------------------------------------------------------- Private methods */
-
-
-static void drainPool(T P) {
-	Connection_T con;
-        while (! Vector_isEmpty(P->pool)) {
-		con = Vector_pop(P->pool);
-		Connection_free(&con);
-	}
-        assert(Vector_isEmpty(P->pool));
-}
-
-
-static int fillPool(T P) {
-	int i;
-	Connection_T con;
-        P->error = NULL;
-	for (i = 0; i < P->initialConnections; i++) {
-		if (! (con = Connection_new(P, &P->error))) {
-                        if (i > 0) {
-                                DEBUG("Failed to fill the pool with initial connections -- %s\n", P->error);
-                                FREE(P->error);
-                                return true;
-                        }
-                        return false;
-                }
-		Vector_push(P->pool, con);
-	}
-	return true;
-}
-
-
-static int getActive(T P){
-        int i, n = 0, size = Vector_size(P->pool);
-        for (i = 0; i < size; i++) { 
-                Connection_T con = Vector_get(P->pool, i);
-                if (! Connection_isAvailable(con )) n++; 
-        }
-        return n; 
-}
-
-
-static int reapConnections(T P) {
-        int x; 
-        int i = 0;
-        int n = 0;
-        long timedout;
-        Connection_T con = NULL;
-        x = Vector_size(P->pool)-getActive(P)-P->initialConnections;
-        timedout = Util_seconds()-P->connectionTimeout;
-        while (x-->0) {
-                for (i = 0; i < Vector_size(P->pool); i++) {
-                        con = Vector_get(P->pool, i);
-                        if (! Connection_isAvailable(con))
-                                continue;
-                        break;
-                }
-                if (con && (! Connection_ping(con) || Connection_getLastAccessedTime(con) < timedout)) {
-                        Vector_remove(P->pool, i);
-                        Connection_free(&con);
-                        n++;
-                }
-        }
-        return n;
-}
-
-
-static void *doSweep(void *args) {
-        T P = args;
-        struct timespec wait = {0, 0};
-        Mutex_lock(P->mutex);
-        while (! P->stopped) {
-                wait.tv_sec = Util_seconds() + P->sweepInterval;
-                Sem_timeWait(P->alarm,  P->mutex, wait);
-                if (P->stopped) break;
-                reapConnections(P);
-        }
-        Mutex_unlock(P->mutex);
-        DEBUG("Reaper thread stopped\n");
-        return NULL;
 }

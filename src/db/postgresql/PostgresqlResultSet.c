@@ -71,7 +71,6 @@ struct T {
 #pragma GCC visibility push(hidden)
 #endif
 
-
 T PostgresqlResultSet_new(void *res, int maxRows, int keep) {
         T R;
         assert(res);
@@ -147,7 +146,6 @@ int PostgresqlResultSet_readData(T R, int columnIndex, void *b, int l, long off)
         memcpy(b, blob + off, r);
         return r;
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

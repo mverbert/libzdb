@@ -104,7 +104,6 @@ static inline void ensureCapacity(T R, int i) {
 #pragma GCC visibility push(hidden)
 #endif
 
-
 T MysqlResultSet_new(void *stmt, int maxRows, int keep) {
 	T R;
 	assert(stmt);
@@ -230,7 +229,6 @@ int MysqlResultSet_readData(T R, int columnIndex, void *b, int l, long off) {
         }
         return (R->columns[i].real_length-off)>l?l:(R->columns[i].real_length-off);
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

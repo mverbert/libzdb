@@ -74,10 +74,65 @@ extern const struct Rop_T postgresqlrops;
 extern const struct Pop_T postgresqlpops;
 
 
-/* ------------------------------------------------------------ Prototypes */
+/* ------------------------------------------------------- Private methods */
 
 
-static PGconn *doConnect(URL_T url, char **error);
+static PGconn *doConnect(URL_T url, char **error) {
+#define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
+        int port;
+        int ssl = false;
+        volatile int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
+        const char *user, *password, *host, *database, *timeout;
+        const char *unix_socket = URL_getParameter(url, "unix-socket");
+        char *conninfo;
+        PGconn *db = NULL;
+        if (! (user = URL_getUser(url)))
+                if (! (user = URL_getParameter(url, "user")))
+                        ERROR("no username specified in URL");
+        if (! (password = URL_getPassword(url)))
+                if (! (password = URL_getParameter(url, "password")))
+                        ERROR("no password specified in URL");
+        if (unix_socket) {
+                if (unix_socket[0] != '/') 
+                        ERROR("invalid unix-socket directory");
+                host = unix_socket;
+        } else if (! (host = URL_getHost(url)))
+                ERROR("no host specified in URL");
+        if ((port = URL_getPort(url))<=0)
+                ERROR("no port specified in URL");
+        if (! (database = URL_getPath(url)))
+                ERROR("no database specified in URL");
+        else
+                database++;
+        if (IS(URL_getParameter(url, "use-ssl"), "true"))
+                ssl = true;
+        if ((timeout = URL_getParameter(url, "connect-timeout"))) {
+                TRY connectTimeout = Str_parseInt(timeout); ELSE ERROR("invalid connect timeout value"); END_TRY;
+        }
+        conninfo = Str_cat(" host='%s'"
+                           " port=%d"
+                           " dbname='%s'"
+                           " user='%s'"
+                           " password='%s'"
+                           " connect_timeout=%d"
+                           " sslmode='%s'",
+                           host,
+                           port,
+                           database,
+                           user,
+                           password,
+                           connectTimeout,
+                           ssl?"require":"disable"
+                           );
+        db = PQconnectdb(conninfo);
+        FREE(conninfo);
+        if (PQstatus(db) == CONNECTION_OK)
+                return db;
+        *error = Str_cat("%s", PQerrorMessage(db));
+error:
+        PQfinish(db);
+        return NULL;
+}
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -86,7 +141,6 @@ static PGconn *doConnect(URL_T url, char **error);
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
-
 
 T PostgresqlConnection_new(URL_T url, char **error) {
 	T C;
@@ -240,70 +294,7 @@ const char *PostgresqlConnection_getLastError(T C) {
         return C->res ? PQresultErrorMessage(C->res) : "unknown error";
 }
 
-
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
-
-
-/* ------------------------------------------------------- Private methods */
-
-
-static PGconn *doConnect(URL_T url, char **error) {
-#define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
-        int port;
-        int ssl = false;
-        volatile int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
-        const char *user, *password, *host, *database, *timeout;
-        const char *unix_socket = URL_getParameter(url, "unix-socket");
-        char *conninfo;
-        PGconn *db = NULL;
-        if (! (user = URL_getUser(url)))
-                if (! (user = URL_getParameter(url, "user")))
-                        ERROR("no username specified in URL");
-        if (! (password = URL_getPassword(url)))
-                if (! (password = URL_getParameter(url, "password")))
-                        ERROR("no password specified in URL");
-        if (unix_socket) {
-                if (unix_socket[0] != '/') 
-                        ERROR("invalid unix-socket directory");
-                host = unix_socket;
-        } else if (! (host = URL_getHost(url)))
-                ERROR("no host specified in URL");
-        if ((port = URL_getPort(url))<=0)
-                ERROR("no port specified in URL");
-        if (! (database = URL_getPath(url)))
-                ERROR("no database specified in URL");
-        else
-                database++;
-        if (IS(URL_getParameter(url, "use-ssl"), "true"))
-                ssl = true;
-        if ((timeout = URL_getParameter(url, "connect-timeout"))) {
-                TRY connectTimeout = Str_parseInt(timeout); ELSE ERROR("invalid connect timeout value"); END_TRY;
-        }
-        conninfo = Str_cat(" host='%s'"
-                           " port=%d"
-                           " dbname='%s'"
-                           " user='%s'"
-                           " password='%s'"
-                           " connect_timeout=%d"
-                           " sslmode='%s'",
-                           host,
-                           port,
-                           database,
-                           user,
-                           password,
-                           connectTimeout,
-                           ssl?"require":"disable"
-                           );
-        db = PQconnectdb(conninfo);
-        FREE(conninfo);
-        if (PQstatus(db) == CONNECTION_OK)
-                return db;
-        *error = Str_cat("%s", PQerrorMessage(db));
-error:
-        PQfinish(db);
-        return NULL;
-}
-
 

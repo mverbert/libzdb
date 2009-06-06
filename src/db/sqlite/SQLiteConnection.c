@@ -71,12 +71,58 @@ extern const struct Rop_T sqlite3rops;
 extern const struct Pop_T sqlite3pops;
 
 
-/* ------------------------------------------------------------ Prototypes */
+/* ------------------------------------------------------- Private methods */
 
 
-static int setProperties(T C, char **error);
-static sqlite3 *doConnect(URL_T url, char **error);
-static inline void executeSQL(T C, const char *sql);
+static sqlite3 *doConnect(URL_T url, char **error) {
+	sqlite3 *db;
+        const char *path = URL_getPath(url);
+        if (path[0] == '/' && path[1] == ':') {
+                if (IS(path, "/:memory:")==false) {
+                        *error = Str_cat("unknown database '%s', did you mean '/:memory:'?", path);
+                        return NULL;
+                }
+                path++;
+        }
+#if SQLITE_VERSION_NUMBER >= 3005000
+        if (SQLITE_OK != sqlite3_enable_shared_cache(true)) {
+                *error = Str_cat("cannot set shared cache mode");
+                return NULL;
+        }
+#endif
+        if (SQLITE_OK != sqlite3_open(path, &db)) {
+                *error = Str_cat("cannot open database '%s' -- %s", path, sqlite3_errmsg(db));
+                sqlite3_close(db);
+                return NULL;
+        }
+	return db;
+}
+
+
+static int setProperties(T C, char **error) {
+        int i;
+        const char **properties = URL_getParameterNames(C->url);
+        if (properties) {
+                StringBuffer_clear(C->sb);
+                for (i = 0; properties[i]; i++)
+                        StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));
+                executeSQL(C, StringBuffer_toString(C->sb));
+                if (C->lastError!=SQLITE_OK) {
+                        *error = Str_cat("unable to set database pragmas -- %s", sqlite3_errmsg(C->db));
+                        return false;
+                }
+        }
+        return true;
+}
+
+
+static inline void executeSQL(T C, const char *sql) {
+#if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
+        C->lastError = sqlite3_blocking_exec(C->db, sql, NULL, NULL, NULL);
+#else
+        EXEC_SQLITE(C->lastError, sqlite3_exec(C->db, sql, NULL, NULL, NULL), C->timeout);
+#endif
+}
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -85,7 +131,6 @@ static inline void executeSQL(T C, const char *sql);
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
-
 
 T SQLiteConnection_new(URL_T url, char **error) {
 	T C;
@@ -229,62 +274,6 @@ const char *SQLiteConnection_getLastError(T C) {
 	return sqlite3_errmsg(C->db);
 }
 
-
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
-
-
-/* ------------------------------------------------------- Private methods */
-
-
-static sqlite3 *doConnect(URL_T url, char **error) {
-	sqlite3 *db;
-        const char *path = URL_getPath(url);
-        if (path[0] == '/' && path[1] == ':') {
-                if (IS(path, "/:memory:")==false) {
-                        *error = Str_cat("unknown database '%s', did you mean '/:memory:'?", path);
-                        return NULL;
-                }
-                path++;
-        }
-#if SQLITE_VERSION_NUMBER >= 3005000
-        if (SQLITE_OK != sqlite3_enable_shared_cache(true)) {
-                *error = Str_cat("cannot set shared cache mode");
-                return NULL;
-        }
-#endif
-        if (SQLITE_OK != sqlite3_open(path, &db)) {
-                *error = Str_cat("cannot open database '%s' -- %s", path, sqlite3_errmsg(db));
-                sqlite3_close(db);
-                return NULL;
-        }
-	return db;
-}
-
-
-static int setProperties(T C, char **error) {
-        int i;
-        const char **properties = URL_getParameterNames(C->url);
-        if (properties) {
-                StringBuffer_clear(C->sb);
-                for (i = 0; properties[i]; i++)
-                        StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));
-                executeSQL(C, StringBuffer_toString(C->sb));
-                if (C->lastError!=SQLITE_OK) {
-                        *error = Str_cat("unable to set database pragmas -- %s", sqlite3_errmsg(C->db));
-                        return false;
-                }
-        }
-        return true;
-}
-
-
-static inline void executeSQL(T C, const char *sql) {
-#if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
-        C->lastError = sqlite3_blocking_exec(C->db, sql, NULL, NULL, NULL);
-#else
-        EXEC_SQLITE(C->lastError, sqlite3_exec(C->db, sql, NULL, NULL, NULL), C->timeout);
-#endif
-}
-

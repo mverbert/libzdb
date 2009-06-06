@@ -38,7 +38,6 @@
 #pragma GCC visibility push(hidden)
 #endif
 
-
 int Str_isEqual(const char *a, const char *b) {
 	if (a && b) { 
                 while (*a && *b)
@@ -173,7 +172,6 @@ double Str_parseDouble(const char *s) {
 		THROW(SQLException, "NumberFormatException: For input string %s -- %s", s, STRERROR);
 	return d;
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

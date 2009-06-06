@@ -91,9 +91,7 @@ static void init_once() { ThreadData_create(Exception_stack); }
 #pragma GCC visibility push(hidden)
 #endif
 
-
 void Exception_init(void) { pthread_once(&once_control, init_once); }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

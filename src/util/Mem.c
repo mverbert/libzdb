@@ -37,7 +37,6 @@
 #pragma GCC visibility push(hidden)
 #endif
 
-
 void *Mem_alloc(long size, const char *file, int line){
 	void *p;
 	assert(size > 0);
@@ -73,7 +72,6 @@ void *Mem_resize(void *p, long size, const char *file, int line) {
 		THROW(AssertException, "MemoryException -- %s at %s in line %d\n", STRERROR, file, line);
 	return p;
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
