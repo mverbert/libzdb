@@ -44,7 +44,6 @@ const struct Rop_T sqlite3rops = {
         SQLiteResultSet_getColumnSize,
         SQLiteResultSet_getString,
         SQLiteResultSet_getBlob,
-        SQLiteResultSet_readData
 };
 
 #define T ResultSetImpl_T
@@ -139,21 +138,6 @@ const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size) {
         blob = sqlite3_column_blob(R->stmt, i);
         *size = sqlite3_column_bytes(R->stmt, i);
         return (void*)blob;
-}
-
-
-int SQLiteResultSet_readData(T R, int columnIndex, void *b, int l, long off) {
-        long r;
-        int size;
-        const void *blob;
-        TEST_INDEX(0)
-        blob = sqlite3_column_blob(R->stmt, i);
-        size = sqlite3_column_bytes(R->stmt, i);
-        if (off>size)
-                return 0;
-        r = off+l>size?size-off:l;
-        memcpy(b, blob + off, r);
-        return r;
 }
 
 #ifdef PACKAGE_PROTECTED

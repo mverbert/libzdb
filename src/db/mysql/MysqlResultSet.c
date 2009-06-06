@@ -47,7 +47,6 @@ const struct Rop_T mysqlrops = {
         MysqlResultSet_getColumnSize,
         MysqlResultSet_getString,
         MysqlResultSet_getBlob,
-        MysqlResultSet_readData
 };
 
 typedef struct column_t {
@@ -210,24 +209,6 @@ const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
         ensureCapacity(R, i);
         *size = R->columns[i].real_length;
         return R->columns[i].buffer;
-}
-
-
-int MysqlResultSet_readData(T R, int columnIndex, void *b, int l, long off) {
-        int rc;
-        TEST_INDEX(0)
-        R->bind[i].buffer = b;
-        R->bind[i].buffer_length = l;
-        R->bind[i].length = &R->columns[i].real_length;
-        if (off>R->columns[i].real_length)
-                return 0;
-        if ((rc = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, off))) {
-                if (rc==CR_NO_DATA)
-                        return 0;
-                THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
-                return -1;
-        }
-        return (R->columns[i].real_length-off)>l?l:(R->columns[i].real_length-off);
 }
 
 #ifdef PACKAGE_PROTECTED

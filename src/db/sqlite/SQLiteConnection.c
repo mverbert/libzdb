@@ -99,6 +99,15 @@ static sqlite3 *doConnect(URL_T url, char **error) {
 }
 
 
+static inline void executeSQL(T C, const char *sql) {
+#if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
+        C->lastError = sqlite3_blocking_exec(C->db, sql, NULL, NULL, NULL);
+#else
+        EXEC_SQLITE(C->lastError, sqlite3_exec(C->db, sql, NULL, NULL, NULL), C->timeout);
+#endif
+}
+
+
 static int setProperties(T C, char **error) {
         int i;
         const char **properties = URL_getParameterNames(C->url);
@@ -113,15 +122,6 @@ static int setProperties(T C, char **error) {
                 }
         }
         return true;
-}
-
-
-static inline void executeSQL(T C, const char *sql) {
-#if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
-        C->lastError = sqlite3_blocking_exec(C->db, sql, NULL, NULL, NULL);
-#else
-        EXEC_SQLITE(C->lastError, sqlite3_exec(C->db, sql, NULL, NULL, NULL), C->timeout);
-#endif
 }
 
 

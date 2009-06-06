@@ -23,6 +23,5 @@ int MysqlResultSet_next(T R);
 long MysqlResultSet_getColumnSize(T R, int columnIndex);
 const char *MysqlResultSet_getString(T R, int columnIndex);
 const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size);
-int MysqlResultSet_readData(T R, int columnIndex, void *b, int l, long off);
 #undef T
 #endif

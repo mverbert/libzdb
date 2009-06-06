@@ -182,19 +182,8 @@ void testPool(const char *testURL) {
                 }
                 rset= Connection_executeQuery(con, "select image from zild_t where id=12;");
                 assert(1==ResultSet_getColumnCount(rset));
-                if (ResultSet_next(rset)) {
-                        int n= 0;
-                        long off= 0;
-                        unsigned char buf[8193];
-                        printf("\tResult: reading a large blob of size(%ld)\n", ResultSet_getColumnSize(rset, 1));
-                        while ((n= ResultSet_readData(rset, 1, buf, 8192, off))>0) {
-                                buf[n]= 0;
-                                /* Uncomment for full blob */
-                                //printf("%s", buf);
-                                fprintf(stdout, "\t\tCHUNK SIZE=%d\n", n);
-                                off+= n;
-                        }
-                }
+                while (ResultSet_next(rset))
+                        assert(ResultSet_getStringByName(rset, "image"));
                 printf("\tResult: check max rows..");
                 Connection_setMaxRows(con, 3);
                 rset= Connection_executeQuery(con, "select id from zild_t;");

@@ -10,6 +10,7 @@ Version 2.6
   enables sqlite3 unlock notification. The feature requires
   sqlite >= 3.6.12 compiled with SQLITE_ENABLE_UNLOCK_NOTIFY
   C-preprocessor symbol.
+* Removed deprecated ResultSet_readData() from API
 
 
 Version 2.5

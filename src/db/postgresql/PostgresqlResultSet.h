@@ -23,6 +23,5 @@ int PostgresqlResultSet_next(T R);
 long PostgresqlResultSet_getColumnSize(T R, int columnIndex);
 const char *PostgresqlResultSet_getString(T R, int columnIndex);
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size);
-int PostgresqlResultSet_readData(T R, int columnIndex, void *b, int l, long off);
 #undef T
 #endif

@@ -175,9 +175,3 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
 	return ResultSet_getBlob(R, getIndex(R, columnName), size);
 }
 
-
-int ResultSet_readData(T R, int columnIndex, void *b, int length, long off) {
-        assert(R);
-        assert(b);
-	return R->op->readData(R->I, columnIndex, b, length, off);
-}

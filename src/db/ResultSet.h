@@ -331,39 +331,5 @@ const void *ResultSet_getBlob(T R, int columnIndex, int *size);
 const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
 
 
-/**
- * Reads <code>length</code> bytes from a blob or text field and stores 
- * them into the byte buffer pointed to by <code>b</code>. Reading stops 
- * when <code>length</code> bytes are read or less. The buffer, 
- * <code>b</code>, is <b>not</b> NUL terminated. Example on use;
- * <pre>
- * r = Connection_executeQuery(con, "select text from books;");
- * while (ResultSet_next(r)) {
- *        int n = 0;
- *        long off = 0;
- *        \#define BUFSIZE 8192
- *        unsigned char buf[BUFSIZE + 1];
- *        while ((n = ResultSet_readData(r, 1, buf, BUFSIZE, off)) > 0) {
- *                buf[n] = 0;
- *                puts(buf);
- *                off+= n;
- *        }
- * }
- *</pre>
- * It is a checked runtime error for <code>b</code> to be NULL
- * @param R A ResultSet object
- * @param columnIndex The first column is 1, the second is 2, ...
- * @param b A byte buffer
- * @param length The size of the buffer b
- * @param off The offset to start reading data from
- * @return Number of bytes read. 0 is returned when end of data is reached
- * @exception SQLException if a database access error occurs or 
- * columnIndex is outside the valid range
- * @deprecated Use ResultSet_getBlob() or ResultSet_getString() instead 
- * @see SQLException.h
- */
-int ResultSet_readData(T R, int columnIndex, void *b, int length, long off) __attribute__((deprecated));
-
-
 #undef T
 #endif

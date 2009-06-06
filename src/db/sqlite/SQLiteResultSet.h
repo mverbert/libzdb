@@ -112,6 +112,5 @@ int SQLiteResultSet_next(T R);
 long SQLiteResultSet_getColumnSize(T R, int columnIndex);
 const char *SQLiteResultSet_getString(T R, int columnIndex);
 const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size);
-int SQLiteResultSet_readData(T R, int columnIndex, void *b, int l, long off);
 #undef T
 #endif

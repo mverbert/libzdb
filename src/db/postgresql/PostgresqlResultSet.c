@@ -45,7 +45,6 @@ const struct Rop_T postgresqlrops = {
         PostgresqlResultSet_getColumnSize,
         PostgresqlResultSet_getString,
         PostgresqlResultSet_getBlob,
-        PostgresqlResultSet_readData
 };
 
 #define T ResultSetImpl_T
@@ -130,21 +129,6 @@ const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX(NULL)
         *size = PQgetlength(R->res, R->currentRow, i);
         return PQgetvalue(R->res, R->currentRow, i);
-}
-
-
-int PostgresqlResultSet_readData(T R, int columnIndex, void *b, int l, long off) {
-        long r;
-        int size;
-        const void *blob;
-        TEST_INDEX(0)
-        blob = PQgetvalue(R->res, R->currentRow, i);
-        size = PQgetlength(R->res, R->currentRow, i);
-        if (off > size)
-                return 0;
-        r = off + l > size ? size - off : l;
-        memcpy(b, blob + off, r);
-        return r;
 }
 
 #ifdef PACKAGE_PROTECTED
