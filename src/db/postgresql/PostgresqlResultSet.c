@@ -173,7 +173,7 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
  * Postgres all columns in a result set are either retrieved as binary or 
  * as text and the result format must be specified at SQL command execution 
  * time. This means that Postgres will escape a bytea column since we retrieve 
- * it as text and we must unescape the value again to get the actual binary 
+ * result as text and we must unescape the value again to get the actual binary 
  * value. This escape/unescape operation is unfortunate but necessary as long 
  * as postgres insist on escaping blobs and does not provide means to get a
  * binary value directly via an API call. See also unescape_bytea() above.
