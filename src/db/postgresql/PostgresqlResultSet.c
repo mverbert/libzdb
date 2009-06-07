@@ -179,9 +179,9 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
  * binary value directly via an API call. See also unescape_bytea() above.
  * 
  * As a hack to avoid extra allocation we unescape the buffer retrieved via
- * PQgetvalue 'in-place'. This should be safe as unescape will only shrink 
- * the buffer. That is, as long as Postgres does not change the escaping
- * mechanizm. 
+ * PQgetvalue 'in-place'. This should be safe as unescape will only modify 
+ * internal bytes in the buffer and not change the buffer pointer nor expand
+ * the buffer. That is, as long as Postgres does not change the escaping mechanizm. 
  */
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX(NULL)
