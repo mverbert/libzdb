@@ -62,6 +62,45 @@ struct T {
         i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); return(RETVAL); } \
         if (PQgetisnull(R->res, R->currentRow, i)) return (RETVAL); 
 
+#define ISFIRSTOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '3')
+#define ISOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '7')
+#define OCTVAL(CH) ((CH) - '0')
+
+
+/* ------------------------------------------------------- Private methods */
+
+
+/* Unescape the buffer pointed to by s 'ìn-place' using the (un)escape mechanizm
+ described at http://www.postgresql.org/docs/8.3/interactive/datatype-binary.html
+ The new size of s is assigned to r. Returns s. See PostgresqlResultSet_getBlob()
+ below for usage and further info.
+ */
+static inline const void *unescape_bytea(uchar_t *s, int len, int *r) {
+        int byte;
+        register int i, j;
+        assert(s);
+        for (i = j = 0; j < len; i++, j++) {
+                if (s[j] == '\\') {
+                        if (s[j + 1] == '\\') {
+                                j++;
+                        } else if ((ISFIRSTOCTDIGIT(s[j + 1])) 
+                                   && (ISOCTDIGIT(s[j + 2])) 
+                                   && (ISOCTDIGIT(s[j + 3]))) {
+                                byte = OCTVAL(s[j + 1]);
+                                byte = (byte << 3) + OCTVAL(s[j + 2]);
+                                byte = (byte << 3) + OCTVAL(s[j + 3]);
+                                s[i] = byte;
+                                j += 3;
+                        }
+                } else
+                        s[i] = s[j];
+        }
+        *r = i;
+        if (i < j) 
+                s[i] = 0; // If unescape was performed, terminate the buffer to mirror postgres behavior
+        return s;
+}
+
 
 /* ----------------------------------------------------- Protected methods */
 
@@ -125,10 +164,28 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
 }
 
 
+/*
+ * Nota bene: In libzdb we have standardized throughout to retrieve results
+ * as text/byte, not as binary to avoid platform conversion problems and
+ * to be general. Although for some columns, such as a blob, we would like 
+ * to retrieve the value as binary, unfortunately Postgres does not provide
+ * means to retrieve a certain column as binary while others are text. In 
+ * Postgres all columns in a result set are either retrieved as binary or 
+ * as text and the result format must be specified at SQL command execution 
+ * time. This means that Postgres will escape a bytea column since we retrieve 
+ * it as text and we must unescape the value again to get the actual binary 
+ * value. This escape/unescape operation is unfortunate but necessary as long 
+ * as postgres insist on escaping blobs and does not provide means to get a
+ * binary value directly via an API call. See also unescape_bytea() above.
+ * 
+ * As a hack to avoid extra allocation we unescape the buffer retrieved via
+ * PQgetvalue 'in-place'. This should be safe as unescape will only shrink 
+ * the buffer. That is, as long as Postgres does not change the escaping
+ * mechanizm. 
+ */
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX(NULL)
-        *size = PQgetlength(R->res, R->currentRow, i);
-        return PQgetvalue(R->res, R->currentRow, i);
+        return unescape_bytea((uchar_t*)PQgetvalue(R->res, R->currentRow, i), PQgetlength(R->res, R->currentRow, i), size);
 }
 
 #ifdef PACKAGE_PROTECTED

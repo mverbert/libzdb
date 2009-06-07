@@ -11,6 +11,14 @@ Version 2.6
   sqlite >= 3.6.12 compiled with SQLITE_ENABLE_UNLOCK_NOTIFY
   C-preprocessor symbol.
 * Removed deprecated ResultSet_readData() from API
+Bug fixes:
+* PostgreSQL: Unescape values retrieved via ResultSet_getBlob() and
+  ResultSet_getBlobByName() to get the actual value inserted. Postgres
+  escape bytea values when results are retrieved as text. So to get the
+  actual binary value we need to unescape. This unnecessary escape
+  /unescape operation is required as long as Postgres insist on escaping
+  blobs retrieved as text and does not provide an API to get some column
+  values as binary and some as text.
 
 
 Version 2.5
