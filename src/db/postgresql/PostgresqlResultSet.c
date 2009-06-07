@@ -49,7 +49,6 @@ const struct Rop_T postgresqlrops = {
 
 #define T ResultSetImpl_T
 struct T {
-        int keep;
         int maxRows;
         int currentRow;
         int columnCount;
@@ -109,12 +108,11 @@ static inline const void *unescape_bytea(uchar_t *s, int len, int *r) {
 #pragma GCC visibility push(hidden)
 #endif
 
-T PostgresqlResultSet_new(void *res, int maxRows, int keep) {
+T PostgresqlResultSet_new(void *res, int maxRows) {
         T R;
         assert(res);
         NEW(R);
         R->res = res;
-        R->keep = keep;
         R->maxRows = maxRows;
         R->currentRow = -1;
         R->columnCount = PQnfields(R->res);

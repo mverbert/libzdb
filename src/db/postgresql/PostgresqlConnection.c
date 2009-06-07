@@ -254,7 +254,7 @@ ResultSet_T PostgresqlConnection_executeQuery(T C, const char *sql, va_list ap) 
         C->res = PQexec(C->db, StringBuffer_toString(C->sb));
         C->lastError = PQresultStatus(C->res);
         if (C->lastError == PGRES_TUPLES_OK) {
-                return ResultSet_new(PostgresqlResultSet_new(C->res, C->maxRows, false), (Rop_T)&postgresqlrops);
+                return ResultSet_new(PostgresqlResultSet_new(C->res, C->maxRows), (Rop_T)&postgresqlrops);
         }
         return NULL;
 }
