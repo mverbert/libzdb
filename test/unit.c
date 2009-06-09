@@ -584,7 +584,7 @@ void testStringBuffer() {
         }
         printf("=> Test5: OK\n\n");
         
-        printf("=> Test6: prepare2postgres\n");
+        printf("=> Test6: prepare4postgres\n");
         {
                 // Nothing to replace
                 sb= StringBuffer_new("select * from host;");

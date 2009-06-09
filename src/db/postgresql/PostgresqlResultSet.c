@@ -165,14 +165,15 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
  * as text/byte, not as binary to avoid platform conversion problems and
  * to be general. Although for some columns, such as a blob, we would like 
  * to retrieve the value as binary, unfortunately Postgres does not provide
- * means to retrieve a certain column as binary while others are text. In 
+ * an API to retrieve a certain column as binary and others as text. In 
  * Postgres all columns in a result set are either retrieved as binary or 
  * as text and the result format must be specified at SQL command execution 
- * time. This means that Postgres will escape a bytea column since we retrieve 
- * result as text and we must unescape the value again to get the actual binary 
- * value. This escape/unescape operation is unfortunate but necessary as long 
- * as postgres insist on escaping blobs and does not provide means to get a
- * binary value directly via an API call. See also unescape_bytea() above.
+ * time. This means that Postgres will escape a bytea column since we generally
+ * retrieve result as text and we must unescape the value again to get the actual
+ * binary value we originally stored. This unnecessary escape/unescape operation
+ * is unfortunate but required as long as postgres insist on escaping blobs and
+ * does not provide means to get a binary value directly via an API call. See also
+ * unescape_bytea() above.
  * 
  * As a hack to avoid extra allocation we unescape the buffer retrieved via
  * PQgetvalue 'in-place'. This should be safe as unescape will only modify 
