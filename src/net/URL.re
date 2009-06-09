@@ -305,7 +305,7 @@ char *URL_unescape(char *url) {
                                 y += 2;
                         }
                 }
-                url[x] = '\0';
+                url[x] = 0;
         }
 	return url;
 }
@@ -314,7 +314,10 @@ char *URL_unescape(char *url) {
 char *URL_escape(const char *url) {
         char *escaped = NULL;
         if (url) {
-                char *p = escaped = ALLOC(3 * strlen(url) + 1);
+                char *p;
+                int i, n;
+                for (n = i = 0; url[i]; i++) if (urlunsafe[(unsigned char)(url[i])]) n += 2;
+                p = escaped = ALLOC(i + n + 1);
                 for (; *url; url++) {
                         if (urlunsafe[(unsigned char)(*url)]) {
                                 *p++= '%';
