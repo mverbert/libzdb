@@ -62,7 +62,7 @@
 		52492EED0FDAA1070024B721 /* Exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Exception.h; sourceTree = "<group>"; };
 		52492EEE0FDAA1070024B721 /* SQLException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLException.h; sourceTree = "<group>"; };
 		52492EF10FDAA1070024B721 /* URL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URL.h; sourceTree = "<group>"; };
-		52492EF20FDAA1070024B721 /* URL.re */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = URL.re; sourceTree = "<group>"; };
+		52492EF20FDAA1070024B721 /* URL.re */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = URL.re; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52492EF30FDAA1070024B721 /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thread.h; sourceTree = "<group>"; };
 		52492EF50FDAA1070024B721 /* Mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Mem.c; sourceTree = "<group>"; };
 		52492EF60FDAA1070024B721 /* Mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mem.h; sourceTree = "<group>"; };

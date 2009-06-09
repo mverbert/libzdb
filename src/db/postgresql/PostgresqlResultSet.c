@@ -79,10 +79,10 @@ static inline const void *unescape_bytea(uchar_t *s, int len, int *r) {
         register int i, j;
         assert(s);
         for (i = j = 0; j < len; i++, j++) {
-                if (s[j] == '\\') {
-                        if (s[j + 1] == '\\') {
+                if ((s[i] = s[j]) == '\\') {
+                        if (s[j + 1] == '\\')
                                 j++;
-                        } else if ((ISFIRSTOCTDIGIT(s[j + 1])) 
+                        else if ((ISFIRSTOCTDIGIT(s[j + 1])) 
                                    && (ISOCTDIGIT(s[j + 2])) 
                                    && (ISOCTDIGIT(s[j + 3]))) {
                                 byte = OCTVAL(s[j + 1]);
@@ -91,12 +91,10 @@ static inline const void *unescape_bytea(uchar_t *s, int len, int *r) {
                                 s[i] = byte;
                                 j += 3;
                         }
-                } else
-                        s[i] = s[j];
+                }
         }
         *r = i;
-        if (i < j) 
-                s[i] = 0; // If unescape was performed, terminate the buffer to mirror postgres behavior
+        s[i] = 0; // Terminate the buffer to mirror postgres behavior
         return s;
 }
 
