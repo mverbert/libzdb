@@ -95,7 +95,8 @@ static inline const void *unescape_bytea(uchar_t *s, int len, int *r) {
                 }
         }
         *r = i;
-        s[i] = 0; // Terminate the buffer to mirror postgres behavior
+        if (i < j)
+                s[i] = 0; // If unescape was performed, terminate the buffer to mirror postgres behavior
         return s;
 }
 
