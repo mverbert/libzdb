@@ -316,7 +316,9 @@ char *URL_escape(const char *url) {
         if (url) {
                 char *p;
                 int i, n;
-                for (n = i = 0; url[i]; i++) if (urlunsafe[(unsigned char)(url[i])]) n += 2;
+                for (n = i = 0; url[i]; i++) 
+                        if (urlunsafe[(unsigned char)(url[i])]) 
+                                n += 2;
                 p = escaped = ALLOC(i + n + 1);
                 for (; *url; url++) {
                         if (urlunsafe[(unsigned char)(*url)]) {
