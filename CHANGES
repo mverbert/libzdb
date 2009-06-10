@@ -12,9 +12,9 @@ Version 2.6
   C-preprocessor symbol.
 * Removed deprecated ResultSet_readData() from API
 Bug fixes:
-* PostgreSQL: Unescape blob values retrieved via ResultSet_getBlob()
-  and via ResultSet_getBlobByName(). By an incurie, unescape was left
-  out of libzdb version 2.5, but worked correctly in previous versions.
+* PostgreSQL: Unescape values retrieved via ResultSet_getBlob()
+  and via ResultSet_getBlobByName(). By an incurie, unescape was
+  left out of libzdb version 2.5.
 
 
 Version 2.5
