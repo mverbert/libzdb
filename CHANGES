@@ -21,8 +21,8 @@ Version 2.5
 -----------
 * Removed GPL license exceptions. The library is now licensed under
   the  GPL version 3 only. 
-* Deprecated ResultSet_readData(). This function _is_ useful for MySQL,
-  but not for other drivers where it has some overhead.
+* Deprecated ResultSet_readData(). This function _was_ useful for 
+  MySQL, but not for other drivers where it had some overhead.
 * Added GCC __attribute__ printf checks where applicable
 * PostgreSQL: Blob retrieval optimized
 * PostgreSQL: Added unix-socket parameter to connection URL
