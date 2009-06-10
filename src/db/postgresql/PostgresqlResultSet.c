@@ -69,10 +69,11 @@ struct T {
 /* ------------------------------------------------------- Private methods */
 
 
-/* Unescape the buffer pointed to by s 'ìn-place' using the (un)escape mechanizm
+/* Unescape the buffer pointed to by s 'in-place' using the (un)escape mechanizm
  described at http://www.postgresql.org/docs/8.3/interactive/datatype-binary.html
  The new size of s is assigned to r. Returns s. See PostgresqlResultSet_getBlob()
- below for usage and further info.
+ below for usage and further info. See also Postgres' PQunescapeBytea() function
+ which this function mirrors except it does not allocate a new string.
  */
 static inline const void *unescape_bytea(uchar_t *s, int len, int *r) {
         int byte;
@@ -171,14 +172,16 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
  * time. This means that Postgres will escape a bytea column since we generally
  * retrieve result as text and we must unescape the value again to get the actual
  * binary value we originally stored. This unnecessary escape/unescape operation
- * is unfortunate but required as long as postgres insist on escaping blobs and
- * does not provide means to get a binary value directly via an API call. See also
- * unescape_bytea() above.
+ * is unfortunate but required as long as Postgres insist on escaping blobs and
+ * does not provide an API to get a binary value directly. It's annoying since 
+ * the server protocol actually supports a result-set of mixed binary and text
+ * columns, but not the pq client library. 
  * 
- * As a hack to avoid extra allocation we unescape the buffer retrieved via
- * PQgetvalue 'in-place'. This should be safe as unescape will only modify 
- * internal bytes in the buffer and not change the buffer pointer nor expand
- * the buffer. That is, as long as Postgres does not change the escaping mechanizm. 
+ * As a hack to avoid extra allocation and complications by using PQunescapeBytea()
+ * we instead unescape the buffer retrieved via PQgetvalue 'in-place'. This should 
+ * be safe as unescape will only modify internal bytes in the buffer and not change
+ * the buffer pointer nor expand the buffer. That is, as long as Postgres does not 
+ * change the escaping mechanizm. See also unescape_bytea() above.
  */
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX(NULL)
