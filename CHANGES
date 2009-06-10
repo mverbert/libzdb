@@ -12,14 +12,9 @@ Version 2.6
   C-preprocessor symbol.
 * Removed deprecated ResultSet_readData() from API
 Bug fixes:
-* PostgreSQL: Unescape values retrieved via ResultSet_getBlob() and
-  ResultSet_getBlobByName(). By an incurie, unescape was left out of
-  libzdb version 2.5, but worked correctly in previous versions. 
-  Postgres escape bytea values when results are retrieved as text. 
-  So to get the actual binary value we originally stored we need to
-  unescape. This unnecessary escape/unescape operation is required as
-  long as Postgres does not provide an API to get some column values
-  as binary and some as text from a result set.
+* PostgreSQL: Unescape blob values retrieved via ResultSet_getBlob()
+  and via ResultSet_getBlobByName(). By an incurie, unescape was left
+  out of libzdb version 2.5, but worked correctly in previous versions.
 
 
 Version 2.5
