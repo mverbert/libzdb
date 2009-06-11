@@ -162,6 +162,15 @@
 #define STRERROR strerror(errno)
 
 
+/* ---------------------------------------------------------- Build macros */
+
+
+/* Mask out GCC __attribute__ extension for non-gcc compilers. */
+#ifndef __GNUC__
+#define __attribute__(x)
+#endif
+
+
 /* ------------------------------------------------------ Type definitions */
 
 
