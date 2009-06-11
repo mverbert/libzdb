@@ -201,8 +201,9 @@
  * interval and close Connections that have been inactive for a specified time
  * or for some reasons no longer respond. Only inactive Connections will be closed
  * and no more than the initial number of Connections the pool was started with
- * are closed. The method ConnectionPool_setReaper() is used to setup and activate
- * the reaper thread. If this method was not called, the pool will not start with
+ * are closed. The property method, ConnectionPool_setReaper(), is used to specify
+ * that a reaper thread should be started when the pool is started. If this method
+ * was not called <i>before</i> ConnectionPool_start(), the pool will not start with
  * a reaper thread.
  * 
  * Clients can also call the method, ConnectionPool_reapConnections(), to
@@ -342,17 +343,20 @@ void ConnectionPool_setAbortHandler(T P, void(*abortHandler)(const char *error))
 
 
 /**
- * Activate a reaper thread at startup. This thread will close all inactive 
- * Connections in the pool, down to initial connections. Inactive Connection 
- * are closed if and only if its <code>connectionTimeout</code> has expired 
- * <i>or</i> if the Connection failed the ping test. Active Connections are 
- * <i>never </i> closed by this thread. <b>Note</b>, that activating the 
- * reaper thread can have performance penalties if <code>sweepInterval</code> 
- * is set to low. Use minutes rather than seconds. It is a checked runtime 
- * error for <code>sweepInterval</code> to be less than, or equal to zero.
+ * Specify that a reaper thread should be used by the pool. This thread 
+ * will close all inactive Connections in the pool, down to initial 
+ * connections. An inactive Connection is closed if and only if its 
+ * <code>connectionTimeout</code> has expired <i>or</i> if the Connection
+ * failed the ping test. Active Connections, that is, connections in current
+ * use by your application are <i>never </i> closed by this thread. This 
+ * method sets the reaper thread sweep properties, but does not start the
+ * thread. This is done in ConnectionPool_start(). So, if the pool should 
+ * use a reaper thread, remember to call this method <b>before</b> 
+ * ConnectionPool_start(). It is a checked runtime error for 
+ * <code>sweepInterval</code> to be less than, or equal to zero.
  * @param P A ConnectionPool object
  * @param sweepInterval Number of <code>seconds</code> between sweeps of the 
- * reaper thread (value > 0)
+ * reaper thread (value > 0) 
  */
 void ConnectionPool_setReaper(T P, int sweepInterval);
 
@@ -379,7 +383,8 @@ int ConnectionPool_active(T P);
 /**
  * Prepare for the beginning of active use of this component. This method
  * must be called before the pool is used and will connect to the database
- * server and create the initial connections for the pool
+ * server and create the initial connections for the pool. This method will
+ * also start the reaper thread if specified via ConnectionPool_setReaper().
  * @param P A ConnectionPool object
  */
 void ConnectionPool_start(T P);
@@ -387,9 +392,10 @@ void ConnectionPool_start(T P);
 
 /**
  * Gracefully terminate the active use of the public methods of this
- * component. This method should be the last one called on a given
- * instance of this component. Calling this method close down all connections
- * in the pool and disconnect the pool from the database server
+ * component. This method should be the last one called on a given instance
+ * of this component. Calling this method close down all connections in the 
+ * pool, disconnect the pool from the database server and stop the reaper
+ * thread if it was started.
  * @param P A ConnectionPool object
  */
 void ConnectionPool_stop(T P);
