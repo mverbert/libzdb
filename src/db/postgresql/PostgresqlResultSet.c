@@ -76,7 +76,7 @@ struct T {
  which this function mirrors except it does not allocate a new string.
  */
 static inline const void *unescape_bytea(uchar_t *s, int len, int *r) {
-        int byte;
+        uchar_t byte;
         register int i, j;
         assert(s);
         for (i = j = 0; j < len; i++, j++) {
