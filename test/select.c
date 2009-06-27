@@ -14,7 +14,8 @@
 
 int main(void) {
         Connection_T con;
-        ConnectionPool_T pool = ConnectionPool_new(URL_new("sqlite:///tmp/test.db"));
+        URL_T url = URL_new("sqlite:///tmp/test.db");
+        ConnectionPool_T pool = ConnectionPool_new(url);
         ConnectionPool_start(pool);
         con = ConnectionPool_getConnection(pool);
         TRY
@@ -44,7 +45,6 @@ int main(void) {
         }
         FINALLY
         {
-                URL_T url = ConnectionPool_getURL(pool);
                 Connection_close(con);
                 ConnectionPool_free(&pool);
                 URL_free(&url);
