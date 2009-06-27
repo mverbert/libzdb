@@ -14,8 +14,7 @@
 
 int main(void) {
         Connection_T con;
-        URL_T url = URL_new("sqlite:///tmp/test.db");
-        ConnectionPool_T pool = ConnectionPool_new(url);
+        ConnectionPool_T pool = ConnectionPool_new(URL_new("sqlite:///tmp/test.db"));
         ConnectionPool_start(pool);
         con = ConnectionPool_getConnection(pool);
         TRY
@@ -23,11 +22,9 @@ int main(void) {
                 int i;
                 char *bleach[] = {
                         "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 
-                        "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", NULL
+                        "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", 0
                 };
-                
                 TRY Connection_execute(con, "drop table ztest;"); ELSE END_TRY;
-                
                 Connection_execute(con, "create table ztest(name varchar(255));");
                 PreparedStatement_T p = Connection_prepareStatement(con, "insert into ztest values (?);"); 
                 for (i = 0; bleach[i]; i++) {
@@ -36,7 +33,6 @@ int main(void) {
                 }
                 p = Connection_prepareStatement(con, "select name from ztest where name like ?;"); 
                 PreparedStatement_setString(p, 1, "%Inoue%");
-                
                 ResultSet_T result = PreparedStatement_executeQuery(p);
                 while (ResultSet_next(result))
                         printf("%s\n", ResultSet_getString(result, 1));
@@ -48,6 +44,7 @@ int main(void) {
         }
         FINALLY
         {
+                URL_T url = ConnectionPool_getURL(pool);
                 Connection_close(con);
                 ConnectionPool_free(&pool);
                 URL_free(&url);
