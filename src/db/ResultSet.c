@@ -43,8 +43,8 @@ struct T {
 
 
 static inline int getIndex(T R, const char *name) {
-        int i;
         if (name && *name) {
+                int i;
 		int columns = ResultSet_getColumnCount(R);
                 for (i = 1; i <= columns; i++)
                         if (Str_isByteEqual(name, ResultSet_getColumnName(R, i)))
