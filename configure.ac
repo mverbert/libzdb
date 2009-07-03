@@ -134,7 +134,10 @@ AC_ARG_ENABLE([openssl],
 
 AC_ARG_ENABLE(sqliteunlock,
 	AS_HELP_STRING([--enable-sqliteunlock], 
-        	[Enable sqlite unlock notification API (requires sqlite >= 3.6.12 compiled with SQLITE_ENABLE_UNLOCK_NOTIFY C-preprocessor symbol)]),
+        	[Enable the SQLite unlock notification API (requires SQLite >= 3.6.12 
+                compiled with the SQLITE_ENABLE_UNLOCK_NOTIFY C-preprocessor symbol).
+                Using this option will greatly improve SQLite concurrency when libzdb
+                and SQLite is used from a multi-threaded program.]),
     [
         if test "x$enableval" = "xyes" ; then
 		SQLITEUNLOCK=1
