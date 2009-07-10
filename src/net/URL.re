@@ -26,9 +26,8 @@
 
 
 /**
- * Implementation of the URL interface. URL_create() does not 
- * handle wide character code but URL_new() does. The scanner 
- * handle ISO Latin 1 or UTF-8 encoded url's transparently.
+ * Implementation of the URL interface. The scanner handle 
+ * ISO Latin 1 or UTF-8 encoded url's transparently.
  *
  * @file
  */
