@@ -137,7 +137,7 @@ const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX(NULL)
         blob = sqlite3_column_blob(R->stmt, i);
         *size = sqlite3_column_bytes(R->stmt, i);
-        return (void*)blob;
+        return blob;
 }
 
 #ifdef PACKAGE_PROTECTED
