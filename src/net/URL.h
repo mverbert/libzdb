@@ -137,7 +137,7 @@ int URL_getPort(T U);
 
 
 /**
- * Get the normalized path of the URL.
+ * Get the path of the URL.
  * @param U An URL object
  * @return The path of the URL or NULL if not found
  */
