@@ -306,12 +306,17 @@ void testURL() {
         printf("=> Test9: unescape\n");
         {
                 char s9a[]= "";
+		char s9x[]= "http://www.tildeslash.com/%";
+		char s9y[]= "http://www.tildeslash.com/%0";
                 char s9[]= "http://www.tildeslash.com/zild/%20zild%5B%5D.doc";
                 printf("\tResult: %s\n", URL_unescape(s9));
                 assert(IS(s9, "http://www.tildeslash.com/zild/ zild[].doc"));
                 assert(IS(URL_unescape(s9a), ""));
                 printf("\tTesting for NULL argument\n");
                 assert(! URL_unescape(NULL));
+		// Test guard against invalid url encoding
+                assert(Str_isEqual(URL_unescape(s9x), "http://www.tildeslash.com/"));
+                assert(Str_isEqual(URL_unescape(s9y), "http://www.tildeslash.com/"));
         }
         printf("=> Test9: OK\n\n");
         

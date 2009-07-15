@@ -296,11 +296,13 @@ const char *URL_toString(T U) {
 char *URL_unescape(char *url) {
 	if (url && *url) {
                 register int x, y;
-                for (x=0, y=0; url[y]; ++x, ++y) {
+                for (x=0, y=0; url[y]; x++, y++) {
                         if ((url[x] = url[y]) == '+')
                                 url[x] = ' ';
                         else if (url[x] == '%') {
-                                url[x] = x2b(&url[y+1]);
+                                if (! (url[x + 1] && url[x + 2]))
+                                        break;
+                                url[x] = x2b(url + y + 1);
                                 y += 2;
                         }
                 }
