@@ -50,7 +50,7 @@ static inline int getIndex(T R, const char *name) {
                         if (Str_isByteEqual(name, ResultSet_getColumnName(R, i)))
                                 return i;
 	}
-        THROW(SQLException, "Invalid column name [%s]", name ? name : "null");
+        THROW(SQLException, "Invalid column name '%s'", name ? name : "null");
         return -1;
 }
 

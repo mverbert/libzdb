@@ -103,28 +103,29 @@ void Exception_init(void) { pthread_once(&once_control, init_once); }
 #ifndef ZILD_PACKAGE_PROTECTED
 
 void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...) {
+        va_list ap;
         char message[EXCEPTION_MESSAGE_LENGTH + 1] = "?";
 	Exception_Frame *p = ThreadData_get(Exception_stack);
 	assert(e);
-	assert(e->name);
-        if (cause) {
-                va_list ap;
-                va_start(ap, cause);
-                vsnprintf(message, EXCEPTION_MESSAGE_LENGTH, cause, ap);
-                va_end(ap);
-        }
-	if (p == NULL) {
-                ABORT("%s%s%s\n raised in %s at %s:%d\n", e->name, cause ? ": " : "", cause ? message : "", func ? func : "?", file ? file : "?", line);
-	} else {
+	if (p) {
                 p->exception = e;
                 p->func = func;
                 p->file = file;
                 p->line = line;
-                if (cause)
-                        Str_copy(p->message, message, EXCEPTION_MESSAGE_LENGTH);
+                if (cause) {
+                        va_start(ap, cause);
+                        vsnprintf(p->message, EXCEPTION_MESSAGE_LENGTH, cause, ap);
+                        va_end(ap);
+                }
                 pop_exception_stack;	
                 longjmp(p->env, Exception_thrown);
+	}
+        if (cause) {
+                va_start(ap, cause);
+                vsnprintf(message, EXCEPTION_MESSAGE_LENGTH, cause, ap);
+                va_end(ap);
         }
+        ABORT("%s: %s\n raised in %s at %s:%d\n", e->name, message, func ? func : "?", file ? file : "?", line);
 }
 
 #endif
