@@ -291,10 +291,9 @@ double ResultSet_getDoubleByName(T R, const char *columnName);
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a void pointer. If <code>columnIndex</code>
  * is outside the range [1..ResultSet_getColumnCount()] this method 
- * throws an SQLException. This method allocate <code>size</code> bytes 
- * of memory for the returned blob. <i>The returned blob may only be 
- * valid until the next call to ResultSet_next() and if you plan to 
- * use the returned value longer, you must make a copy.</i> 
+ * throws an SQLException. <i>The returned blob may only be valid until
+ * the next call to ResultSet_next() and if you plan to use the returned
+ * value longer, you must make a copy.</i> 
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @param size The number of bytes in the blob is stored in size 
@@ -310,8 +309,7 @@ const void *ResultSet_getBlob(T R, int columnIndex, int *size);
 /**
  * Retrieves the value of the designated column in the current row of
  * this ResultSet object as a void pointer. If <code>columnName</code>
- * is not found this method throws an SQLException. This method allocate 
- * <code>size</code> bytes of memory for the returned blob. <i>The returned
+ * is not found this method throws an SQLException. <i>The returned
  * blob may only be valid until the next call to ResultSet_next() and if 
  * you plan to use the returned value longer, you must make a copy.</i>
  * @param R A ResultSet object
