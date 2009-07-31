@@ -5,6 +5,10 @@
 Version 2.7
 -----------
 * Internal optimizing changes and improvements
+Bug fixes:
+* SQLite: ensure that database file is specified in
+  connection URL. Thanks to Bogdan Nicula.
+
 
 
 Version 2.6

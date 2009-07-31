@@ -44,8 +44,8 @@
 #pragma GCC visibility push(hidden)
 #endif
 
-long Util_seconds() {
-	struct timeval tv;
+long Util_seconds(void) {
+	struct timeval tv = {0};
 	assert(gettimeofday(&tv, NULL) == 0);
 	return tv.tv_sec;
 }

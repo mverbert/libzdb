@@ -32,7 +32,7 @@
  * @return The current time since the Epoch in seconds
  * @exception AssertException If time could not be obtained
  */
-long Util_seconds();
+long Util_seconds(void);
 
 
 /**

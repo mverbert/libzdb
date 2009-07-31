@@ -77,6 +77,10 @@ extern const struct Pop_T sqlite3pops;
 static sqlite3 *doConnect(URL_T url, char **error) {
 	sqlite3 *db;
         const char *path = URL_getPath(url);
+        if (! path) {
+                *error = Str_cat("no database specified in URL");
+                return NULL;
+        }
         if (path[0] == '/' && path[1] == ':') {
                 if (IS(path, "/:memory:")==false) {
                         *error = Str_cat("unknown database '%s', did you mean '/:memory:'?", path);
