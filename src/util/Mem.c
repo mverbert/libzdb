@@ -21,6 +21,7 @@
 #include <stddef.h>
 
 #include "assert.h"
+#include "MemoryException.h"
 
 
 /**
