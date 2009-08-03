@@ -34,6 +34,7 @@
 #include "Util.h"
 #include "SQLException.h"
 #include "AssertException.h"
+#include "MemoryException.h"
 
 
 /**

@@ -45,6 +45,7 @@ T SQLException = {"SQLException"};
 #pragma GCC visibility push(hidden)
 #endif
 T AssertException = {"AssertException"};
+T MemoryException = {"MemoryException"};
 /* Thread specific Exception stack */
 ThreadData_T Exception_stack;
 #ifdef ZILD_PACKAGE_PROTECTED
@@ -79,7 +80,6 @@ void Exception_init(void) { pthread_once(&once_control, init_once); }
 
 void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...) {
         va_list ap;
-        char message[EXCEPTION_MESSAGE_LENGTH + 1] = "?";
 	Exception_Frame *p = ThreadData_get(Exception_stack);
 	assert(e);
 	if (p) {
@@ -94,13 +94,15 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
                 }
                 pop_exception_stack;	
                 longjmp(p->env, Exception_thrown);
-	}
-        if (cause) {
+	} else if (cause) {
+                char message[EXCEPTION_MESSAGE_LENGTH + 1];
                 va_start(ap, cause);
                 vsnprintf(message, EXCEPTION_MESSAGE_LENGTH, cause, ap);
                 va_end(ap);
+                ABORT("%s: %s\n raised in %s at %s:%d\n", e->name, message, func ? func : "?", file ? file : "?", line);
+        } else {
+                ABORT("%s: 0x%p\n raised in %s at %s:%d\n", e->name, e, func ? func : "?", file ? file : "?", line);
         }
-        ABORT("%s: %s\n raised in %s at %s:%d\n", e->name, message, func ? func : "?", file ? file : "?", line);
 }
 
 #endif

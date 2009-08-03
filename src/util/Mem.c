@@ -42,7 +42,7 @@ void *Mem_alloc(long size, const char *file, int line){
 	assert(size > 0);
 	p = malloc(size);
 	if (p == NULL)
-		THROW(AssertException, "MemoryException -- %s at %s in line %d\n", STRERROR, file, line);
+		THROW(MemoryException, "%s", STRERROR);
 	return p;
 }
 
@@ -53,7 +53,7 @@ void *Mem_calloc(long count, long size, const char *file, int line) {
 	assert(size > 0);
 	p = calloc(count, size);
 	if (p == NULL)
-		THROW(AssertException, "MemoryException -- %s at %s in line %d\n", STRERROR, file, line);
+		THROW(MemoryException, "%s", STRERROR);
 	return p;
 }
 
@@ -69,7 +69,7 @@ void *Mem_resize(void *p, long size, const char *file, int line) {
 	assert(size > 0);
 	p = realloc(p, size);
 	if (p == NULL)
-		THROW(AssertException, "MemoryException -- %s at %s in line %d\n", STRERROR, file, line);
+		THROW(MemoryException, "%s", STRERROR);
 	return p;
 }
 

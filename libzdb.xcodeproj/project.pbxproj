@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		5210C96E102790C1005F0FD4 /* MemoryException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryException.h; sourceTree = "<group>"; };
 		5214355C100EBEF800E05AB5 /* THIRDPARTY-LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "THIRDPARTY-LICENSE"; sourceTree = "<group>"; };
 		52492E950FDAA1070024B721 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		52492E960FDAA1070024B721 /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
@@ -216,10 +217,11 @@
 			children = (
 				52492EE90FDAA1070024B721 /* assert.c */,
 				52492EEA0FDAA1070024B721 /* assert.h */,
-				52492EEB0FDAA1070024B721 /* AssertException.h */,
 				52492EEC0FDAA1070024B721 /* Exception.c */,
 				52492EED0FDAA1070024B721 /* Exception.h */,
 				52492EEE0FDAA1070024B721 /* SQLException.h */,
+				52492EEB0FDAA1070024B721 /* AssertException.h */,
+				5210C96E102790C1005F0FD4 /* MemoryException.h */,
 			);
 			path = exceptions;
 			sourceTree = "<group>";
