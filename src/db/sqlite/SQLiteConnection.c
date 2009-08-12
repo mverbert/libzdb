@@ -80,8 +80,7 @@ static sqlite3 *doConnect(URL_T url, char **error) {
         if (! path) {
                 *error = Str_cat("no database specified in URL");
                 return NULL;
-        }
-        if (path[0] == '/' && path[1] == ':') {
+        } else if (path[0] == '/' && path[1] == ':') {
                 if (IS(path, "/:memory:")==false) {
                         *error = Str_cat("unknown database '%s', did you mean '/:memory:'?", path);
                         return NULL;
@@ -120,7 +119,7 @@ static int setProperties(T C, char **error) {
                 for (i = 0; properties[i]; i++)
                         StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));
                 executeSQL(C, StringBuffer_toString(C->sb));
-                if (C->lastError!=SQLITE_OK) {
+                if (C->lastError != SQLITE_OK) {
                         *error = Str_cat("unable to set database pragmas -- %s", sqlite3_errmsg(C->db));
                         return false;
                 }

@@ -594,13 +594,13 @@ void testStringBuffer() {
                 // Nothing to replace
                 sb= StringBuffer_new("select * from host;");
                 assert(StringBuffer_prepare4postgres(sb) == 0);
-                assert(IS(StringBuffer_toString(sb), "select * from host;"));
+                assert(Str_isEqual(StringBuffer_toString(sb), "select * from host;"));
                 StringBuffer_free(&sb);
                 assert(sb==NULL);
                 // Replace n < 10
                 sb= StringBuffer_new("insert into host values(?, ?, ?);");
                 assert(StringBuffer_prepare4postgres(sb) == 3);
-                assert(IS(StringBuffer_toString(sb), "insert into host values($1, $2, $3);"));
+                assert(Str_isEqual(StringBuffer_toString(sb), "insert into host values($1, $2, $3);"));
                 StringBuffer_free(&sb);
                 assert(sb==NULL);
                 // Replace n > 10

@@ -6,9 +6,9 @@ Version 2.7
 -----------
 * Internal optimizing changes and improvements
 Bug fixes:
-* SQLite: ensure that database file is specified in
+* SQLite: Ensure that the database file is specified in
   connection URL. Thanks to Bogdan Nicula.
-
+* PostgreSQL: Implemented Connection_setQueryTimeout()
 
 
 Version 2.6

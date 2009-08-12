@@ -124,7 +124,7 @@ int StringBuffer_prepare4postgres(T S) {
                         S->length = required;
                         RESIZE(S->buffer, S->length);
                 }
-                for (i = 0, j = 1; (j<=n); i++) {
+                for (i = 0, j = 1; (j <= n); i++) {
                         if (S->buffer[i] == '?') {
                                 if(j<10){xl=2;x[1]=j+'0';}else{xl=3;x[1]=(j/10)+'0';x[2]=(j%10)+'0';}
                                 memmove(S->buffer + i + xl, S->buffer + i + 1, (S->used - (i + 1)));
