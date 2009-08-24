@@ -29,7 +29,7 @@
 typedef struct T *T;
 
 typedef struct Rop_T {
-        char *name;
+        const char *name;
         void (*free)(T *R);
         int (*getColumnCount)(T R);
         const char *(*getColumnName)(T R, int column);

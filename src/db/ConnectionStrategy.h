@@ -29,7 +29,7 @@
 typedef struct T *T;
 
 typedef struct Cop_T {
-        char *name;
+        const char *name;
 	T (*new)(URL_T url, char **error);
 	void (*free)(T *C);
 	void (*setQueryTimeout)(T C, int ms);

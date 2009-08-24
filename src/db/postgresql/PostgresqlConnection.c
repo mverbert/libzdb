@@ -171,7 +171,9 @@ void PostgresqlConnection_free(T *C) {
 void PostgresqlConnection_setQueryTimeout(T C, int ms) {
 	assert(C);
         C->timeout = ms;
-	PostgresqlConnection_execute(C, "SET statement_timeout TO %d;", C->timeout);
+        StringBuffer_clear(C->sb);
+        StringBuffer_append(C->sb, "SET statement_timeout TO %d;", C->timeout);
+        C->res = PQexec(C->db, StringBuffer_toString(C->sb));
 }
 
 

@@ -29,7 +29,7 @@
 typedef struct T *T;
 
 typedef struct Pop_T {
-	char *name;
+	const char *name;
         void (*free)(T *P);
         void (*setString)(T P, int parameterIndex, const char *x);
         void (*setInt)(T P, int parameterIndex, int x);
