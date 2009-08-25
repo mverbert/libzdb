@@ -251,7 +251,7 @@ const char **URL_getParameterNames(T U) {
                 param_t p;
                 int i = 0, len = 0;
                 for (p = U->params; p; p = p->next) len++;
-                U->paramNames = ALLOC((len + 1) * sizeof(*U->paramNames));
+                U->paramNames = ALLOC((len + 1) * sizeof *(U->paramNames));
                 for (p = U->params; p; p = p->next)
                         U->paramNames[i++] = p->name;
                 U->paramNames[i] = NULL;
@@ -262,7 +262,8 @@ const char **URL_getParameterNames(T U) {
 
 const char *URL_getParameter(T U, const char *name) {
 	assert(U);
-        if (U->params && name) {
+        assert(name);
+        if (U->params) {
                 param_t p;
                 for (p = U->params; p; p = p->next) {
                         if (Str_isByteEqual(p->name, name))
@@ -275,7 +276,7 @@ const char *URL_getParameter(T U, const char *name) {
 
 const char *URL_toString(T U) {
 	assert(U);
-	if (U->toString == NULL) {
+	if (! U->toString) {
 		U->toString = Str_cat("%s://%s%s%s%s%s%s%s%s%s%s", 
                                       U->protocol,
                                       U->user?U->user:"",
@@ -313,7 +314,7 @@ char *URL_unescape(char *url) {
 
 
 char *URL_escape(const char *url) {
-        char *escaped = NULL;
+        char *escaped = 0;
         if (url) {
                 char *p;
                 int i, n;
@@ -321,13 +322,11 @@ char *URL_escape(const char *url) {
                         if (urlunsafe[(unsigned char)(url[i])]) 
                                 n += 2;
                 p = escaped = ALLOC(i + n + 1);
-                for (; *url; url++) {
-                        if (urlunsafe[(unsigned char)(*url)]) {
+                for (; *url; url++, p++) {
+                        if (urlunsafe[(unsigned char)(*p = *url)]) {
                                 *p++= '%';
                                 *p++= b2x[(unsigned char)(*url)][0];
-                                *p++= b2x[(unsigned char)(*url)][1];
-                        } else {
-                                *(p++) = *url;
+                                *p = b2x[(unsigned char)(*url)][1];
                         }
                 }
                 *p = 0;
@@ -337,37 +336,37 @@ char *URL_escape(const char *url) {
 
 
 char *URL_normalize(char *path) {
-        char c;
-	int i,j;
-	if (! path)
-		return NULL;
-        for (i=j=0; (c=path[i]); ++i) {
-                if (c=='/') {
-                        while (path[i+1]=='/') ++i;	
-                } else if (c=='.' && j && path[j-1]=='/') {
-                        if (path[i+1]=='.' && (path[i+2]=='/' || path[i+2]==0)) {
-                                if (j>1)
+	if (path) {
+                char c;
+                int i,j;
+                for (i=j=0; (c=path[i]); ++i) {
+                        if (c=='/') {
+                                while (path[i+1]=='/') ++i;	
+                        } else if (c=='.' && j && path[j-1]=='/') {
+                                if (path[i+1]=='.' && (path[i+2]=='/' || path[i+2]==0)) {
+                                        if (j>1)
                                         for (j-=2; path[j]!='/' && j>0; --j);
-                                i+=2;
-                        } else if (path[i+1]=='/' || path[i+1]==0) {
-                                ++i;
-                                continue;
+                                        i+=2;
+                                } else if (path[i+1]=='/' || path[i+1]==0) {
+                                        ++i;
+                                        continue;
+                                }
                         }
+                        if (! (path[j]=path[i])) break; ++j;
                 }
-                if (! (path[j]=path[i])) break; ++j;
-	}
-	if (! j) { path[0]='/'; j=1; }
-	path[j]=0;
-	if (path[0]=='/' && path[1]=='/') {
-		for (i=j=0;(c=path[i]); ++i) {
-			if (c=='/') {
-				while (path[i+1]=='/') ++i;	
-			}
-			if (! (path[j]=path[i])) break; 
-			++j;
-		}
-		path[j]=0;
-	}
+                if (! j) { path[0]='/'; j=1; }
+                path[j]=0;
+                if (path[0]=='/' && path[1]=='/') {
+                        for (i=j=0;(c=path[i]); ++i) {
+                                if (c=='/') {
+                                        while (path[i+1]=='/') ++i;	
+                                }
+                                if (! (path[j]=path[i])) break; 
+                                ++j;
+                        }
+                        path[j]=0;
+                }
+        }
 	return path;
 }
 

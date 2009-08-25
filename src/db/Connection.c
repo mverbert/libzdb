@@ -92,7 +92,7 @@ static Cop_T getOp(const char *protocol) {
 static int setStrategy(T C, char **error) {
         const char *protocol = URL_getProtocol(C->url);
         C->op = getOp(protocol);
-        if (C->op == NULL) {
+        if (! C->op) {
                 *error = Str_cat("database protocol '%s' not supported", protocol);
                 return false;
         }
@@ -300,7 +300,7 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...) {
 	va_start(ap, sql);
         C->resultSet = C->op->executeQuery(C->I, sql, ap);
         va_end(ap);
-        if (C->resultSet == NULL)
+        if (! C->resultSet)
                 THROW(SQLException, Connection_getLastError(C));
         return C->resultSet;
 }

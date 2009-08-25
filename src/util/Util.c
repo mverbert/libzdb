@@ -46,7 +46,7 @@
 
 long Util_seconds(void) {
 	struct timeval tv = {0};
-	int r = gettimeofday(&tv, NULL);
+	int r = gettimeofday(&tv, 0);
         assert(r == 0);
 	return tv.tv_sec;
 }
@@ -56,7 +56,7 @@ long Util_usleep(long u) {
         struct timeval tv;
         tv.tv_sec = u / USEC_PER_SEC;
         tv.tv_usec = u % USEC_PER_SEC;
-        select(0, NULL, NULL, NULL, &tv);
+        select(0, 0, 0, 0, &tv);
         return u;
 }
 
@@ -75,7 +75,7 @@ void Util_abort(const char *e, ...) {
 	va_start(ap, e);
 	vsnprintf(buf, ERROR_SIZE, e, ap);
 	va_end(ap);
-        if (AbortHandler == NULL) {
+        if (! AbortHandler) {
                 fprintf(stderr, "%s", buf);
                 abort();
         } 

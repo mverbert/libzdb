@@ -81,7 +81,7 @@ static void drainPool(T P) {
 static int fillPool(T P) {
 	int i;
 	Connection_T con;
-        P->error = NULL;
+        P->error = 0;
 	for (i = 0; i < P->initialConnections; i++) {
 		if (! (con = Connection_new(P, &P->error))) {
                         if (i > 0) {
@@ -112,7 +112,7 @@ static int reapConnections(T P) {
         int i = 0;
         int n = 0;
         long timedout;
-        Connection_T con = NULL;
+        Connection_T con = 0;
         x = Vector_size(P->pool)-getActive(P)-P->initialConnections;
         timedout = Util_seconds()-P->connectionTimeout;
         while (x-->0) {
@@ -153,7 +153,7 @@ static void *doSweep(void *args) {
 
 T ConnectionPool_new(URL_T url) {
         T P;
-	if (url==NULL)
+	if (! url)
                 return NULL;
 	NEW(P);
         P->url = url;
@@ -318,7 +318,7 @@ void ConnectionPool_stop(T P) {
 
 
 Connection_T ConnectionPool_getConnection(T P) {
-	Connection_T con = NULL;
+	Connection_T con = 0;
 	assert(P);
 	LOCK(P->mutex) 
         {
@@ -342,7 +342,7 @@ Connection_T ConnectionPool_getConnection(T P) {
                                 FREE(P->error);
                         }
                 } else {
-                        con = NULL;
+                        con = 0;
                 }
         }
 done: 

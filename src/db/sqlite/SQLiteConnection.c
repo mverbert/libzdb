@@ -140,7 +140,7 @@ T SQLiteConnection_new(URL_T url, char **error) {
         sqlite3 *db;
 	assert(url);
         assert(error);
-        if ((db = doConnect(url, error))==NULL)
+        if (! (db = doConnect(url, error)))
                 return NULL;
 	NEW(C);
         C->db = db;

@@ -85,7 +85,7 @@ static PGconn *doConnect(URL_T url, char **error) {
         const char *user, *password, *host, *database, *timeout;
         const char *unix_socket = URL_getParameter(url, "unix-socket");
         char *conninfo;
-        PGconn *db = NULL;
+        PGconn *db = 0;
         if (! (user = URL_getUser(url)))
                 if (! (user = URL_getParameter(url, "user")))
                         ERROR("no username specified in URL");
@@ -151,7 +151,6 @@ T PostgresqlConnection_new(URL_T url, char **error) {
                 return NULL;
 	NEW(C);
         C->db = db;
-        C->res = NULL;
         C->url = url;
         C->sb = StringBuffer_new("");
         C->timeout = SQL_DEFAULT_TIMEOUT;

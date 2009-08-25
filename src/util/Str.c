@@ -89,7 +89,7 @@ char *Str_dup(const char *s) {
 
 
 char *Str_ndup(const char *s, int n) {
-        char *t = NULL;
+        char *t = 0;
 	if (s) {
 		t = ALLOC(n + 1);
 		memcpy(t, s, n);
@@ -100,7 +100,7 @@ char *Str_ndup(const char *s, int n) {
 
 
 char *Str_cat(const char *s, ...) {
-	char *t = NULL;
+	char *t = 0;
 	if (s) {
                 va_list ap;
                 va_start(ap, s);
@@ -112,15 +112,15 @@ char *Str_cat(const char *s, ...) {
 
 
 char *Str_vcat(const char *s, va_list ap) {
-	char *buf = NULL;
+	char *t = 0;
 	if (s) {
                 int n = 0;
 		int size = STRLEN;
-		buf = ALLOC(size);
+		t = ALLOC(size);
 		while (true) {
                         va_list ap_copy;
                         va_copy(ap_copy, ap);
-			n = vsnprintf(buf, size, s, ap_copy);
+			n = vsnprintf(t, size, s, ap_copy);
                         va_end(ap_copy);
 			if (n > -1 && n < size)
 				break;
@@ -128,10 +128,10 @@ char *Str_vcat(const char *s, va_list ap) {
 				size = n+1;
 			else
 				size*= 2;
-			RESIZE(buf, size);
+			RESIZE(t, size);
 		}
 	}
-	return buf;
+	return t;
 }
 
 

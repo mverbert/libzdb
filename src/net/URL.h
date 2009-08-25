@@ -161,10 +161,8 @@ const char *URL_getQueryString(T U);
  * <pre>
  *   const char **params= URL_getParameterNames(U);
  *   if (params) 
- *   {
- *           for (i = 0; params[i]; i++)
- *                   printf("%s=%s\n", params[i], URL_getParameter(U, params[i]));
- *   }
+ *           for (int i = 0; params[i]; i++)
+ *                   printf("%s = %s\n", params[i], URL_getParameter(U, params[i]));
  * </pre>
  * @param U An URL object
  * @return An array of string objects, each string containing the name

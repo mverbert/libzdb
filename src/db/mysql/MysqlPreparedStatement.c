@@ -115,7 +115,7 @@ void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
         TEST_INDEX
         P->bind[i].buffer_type = MYSQL_TYPE_STRING;
         P->bind[i].buffer = (char*)x;
-        if (x==NULL) {
+        if (! x) {
                 P->params[i].length = 0;
                 P->bind[i].is_null = &yes;
         } else {
@@ -157,7 +157,7 @@ void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int 
         TEST_INDEX
         P->bind[i].buffer_type = MYSQL_TYPE_BLOB;
         P->bind[i].buffer = (void*)x;
-        if (x==NULL) {
+        if (! x) {
                 P->params[i].length = 0;
                 P->bind[i].is_null = &yes;
         } else {

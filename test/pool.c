@@ -56,7 +56,7 @@ void testPool(const char *testURL) {
                 assert(pool);
                 url= ConnectionPool_getURL(pool);
                 ConnectionPool_free(&pool);
-                assert(pool==NULL);
+                assert(! pool);
                 URL_free(&url);
         }
         printf("=> Test1: OK\n\n");
