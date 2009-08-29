@@ -7,6 +7,7 @@ Version 2.7
 * Internal optimizing changes and improvements
   Thanks to Bogdan Nicula for suggestions.
 Bug fixes:
+* Reset Connection.in-transaction flag on Connection_clear
 * SQLite: Ensure that the database file is specified in
   connection URL. Thanks to Bogdan Nicula.
 * PostgreSQL: Implemented Connection_setQueryTimeout()
