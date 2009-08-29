@@ -229,6 +229,7 @@ void Connection_clear(T C) {
                 Connection_setMaxRows(C, 0);
         if (C->timeout != SQL_DEFAULT_TIMEOUT)
                 Connection_setQueryTimeout(C, SQL_DEFAULT_TIMEOUT);
+        C->isInTransaction = 0;
         freePrepared(C);
 }
 
