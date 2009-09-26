@@ -194,9 +194,8 @@ void PreparedStatement_execute(T P);
  * method or until the Connection is returned to the Connection Pool. 
  * <i>This means that Result Sets cannot be saved between queries</i>.
  * @param P A PreparedStatement object
- * @return A ResultSet object that contains the data produced by the
- * prepared statement. If there was an error NULL is returned and the method
- * Connection_getLastError() can be used to obtain the error string.
+ * @return A ResultSet object that contains the data produced by the prepared
+ * statement.
  * @exception SQLException if a database error occurs
  * @see ResultSet.h
  * @see SQLException.h
