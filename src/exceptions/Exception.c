@@ -47,7 +47,7 @@ T SQLException = {"SQLException"};
 T AssertException = {"AssertException"};
 T MemoryException = {"MemoryException"};
 /* Thread specific Exception stack */
-ThreadData_T Exception_stack;
+ThreadData_T DBException_stack;
 #ifdef ZILD_PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
@@ -57,7 +57,7 @@ static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 /* -------------------------------------------------------- Privat methods */
 
 
-static void init_once(void) { ThreadData_create(Exception_stack); }
+static void init_once(void) { ThreadData_create(DBException_stack); }
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -80,7 +80,7 @@ void Exception_init(void) { pthread_once(&once_control, init_once); }
 
 void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...) {
         va_list ap;
-	Exception_Frame *p = ThreadData_get(Exception_stack);
+	Exception_Frame *p = ThreadData_get(DBException_stack);
 	assert(e);
 	if (p) {
                 p->exception = e;
@@ -92,7 +92,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
                         vsnprintf(p->message, EXCEPTION_MESSAGE_LENGTH, cause, ap);
                         va_end(ap);
                 }
-                pop_exception_stack;	
+                pop_DBException_stack;	
                 longjmp(p->env, Exception_thrown);
 	} else if (cause) {
                 char message[EXCEPTION_MESSAGE_LENGTH + 1];

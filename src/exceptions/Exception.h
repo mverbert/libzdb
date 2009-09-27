@@ -181,10 +181,10 @@ struct Exception_Frame {
         char message[EXCEPTION_MESSAGE_LENGTH + 1];
 };
 enum { Exception_entered=0, Exception_thrown, Exception_handled, Exception_finalized };
-extern ThreadData_T Exception_stack;
+extern ThreadData_T DBException_stack;
 void Exception_init(void);
 void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...);
-#define pop_exception_stack assert(ThreadData_set(Exception_stack, ((Exception_Frame*)ThreadData_get(Exception_stack))->prev)==0)
+#define pop_DBException_stack assert(ThreadData_set(DBException_stack, ((Exception_Frame*)ThreadData_get(DBException_stack))->prev)==0)
 /** @endcond */
 
 
@@ -213,7 +213,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
  * inside a try-block
  * @hideinitializer
  */
-#define RETURN switch((pop_exception_stack,0)) default:return
+#define RETURN switch((pop_DBException_stack,0)) default:return
 
 
 /**
@@ -224,8 +224,8 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
 	volatile int Exception_flag; \
         Exception_Frame Exception_frame; \
         Exception_frame.message[0] = 0; \
-        Exception_frame.prev = ThreadData_get(Exception_stack); \
-        assert(ThreadData_set(Exception_stack, &Exception_frame)==0); \
+        Exception_frame.prev = ThreadData_get(DBException_stack); \
+        assert(ThreadData_set(DBException_stack, &Exception_frame)==0); \
         Exception_flag = setjmp(Exception_frame.env); \
         if (Exception_flag == Exception_entered) {
                 
@@ -237,7 +237,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
  * @hideinitializer
  */
 #define CATCH(e) \
-                if (Exception_flag == Exception_entered) pop_exception_stack; \
+                if (Exception_flag == Exception_entered) pop_DBException_stack; \
         } else if (Exception_frame.exception == &(e)) { \
                 Exception_flag = Exception_handled; 
 
@@ -249,7 +249,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
  * @hideinitializer
  */
 #define ELSE \
-                if (Exception_flag == Exception_entered) pop_exception_stack; \
+                if (Exception_flag == Exception_entered) pop_DBException_stack; \
         } else { \
                 Exception_flag = Exception_handled;
 
@@ -260,7 +260,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
  * @hideinitializer
  */
 #define FINALLY \
-                if (Exception_flag == Exception_entered) pop_exception_stack; \
+                if (Exception_flag == Exception_entered) pop_DBException_stack; \
         } { \
                 if (Exception_flag == Exception_entered) \
                         Exception_flag = Exception_finalized;
@@ -271,7 +271,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
  * @hideinitializer
  */
 #define END_TRY \
-                if (Exception_flag == Exception_entered) pop_exception_stack; \
+                if (Exception_flag == Exception_entered) pop_DBException_stack; \
         } if (Exception_flag == Exception_thrown) RETHROW; \
         } while (0)
 

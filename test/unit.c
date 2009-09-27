@@ -23,7 +23,7 @@ void testStr() {
         {
                 char s3[STRLEN];
                 printf("\tResult: %s\n", Str_copy(s3, "The abc house",7));
-                assert(IS(s3, "The abc"));
+                assert(Str_isEqual(s3, "The abc"));
                 printf("\tTesting for NULL argument\n");
                 assert(! Str_copy(NULL, NULL, 7));
         }
@@ -33,7 +33,7 @@ void testStr() {
         {
                 char *s4= Str_dup("abc123");
                 printf("\tResult: %s\n", s4);
-                assert(IS(s4, "abc123"));
+                assert(Str_isEqual(s4, "abc123"));
                 printf("\tTesting for NULL argument\n");
                 assert(! Str_dup(NULL));
                 FREE(s4);
@@ -44,7 +44,7 @@ void testStr() {
         {
                 char *s5= Str_ndup("abc123", 3);
                 printf("\tResult: %s\n", s5);
-                assert(IS(s5, "abc"));
+                assert(Str_isEqual(s5, "abc"));
                 printf("\tTesting for NULL argument\n");
                 assert(! Str_ndup(NULL, 3));
                 FREE(s5);
@@ -57,7 +57,7 @@ void testStr() {
                 s6= Str_cat("%s://%s%s?%s", "https", "foo.bar", 
                             "/uri", "abc=123");
                 printf("\tResult: %s\n", s6);
-                assert(IS(s6, "https://foo.bar/uri?abc=123"));
+                assert(Str_isEqual(s6, "https://foo.bar/uri?abc=123"));
                 FREE(s6);
                 printf("\tTesting for NULL arguments\n");
                 s6= Str_cat(NULL);
@@ -124,7 +124,7 @@ void testMem() {
         printf("=> Test1: alloc\n");
         {
                 char *s7= ALLOC(2048);
-                assert(IS(strncpy(s7, "123456789", 2048), "123456789"));
+                assert(Str_isEqual(strncpy(s7, "123456789", 2048), "123456789"));
                 FREE(s7);
         }
         printf("=> Test1: OK\n\n");
@@ -141,10 +141,10 @@ void testMem() {
         {
                 char *s9= ALLOC(4);
                 strncpy(s9, "abc", 3);
-                assert(IS(s9, "abc"));
+                assert(Str_isEqual(s9, "abc"));
                 RESIZE(s9, 7);
                 strncpy(s9, "abc123", 6);
-                assert(IS(s9, "abc123"));
+                assert(Str_isEqual(s9, "abc123"));
                 FREE(s9);
         }
         printf("=> Test3: OK\n\n");
@@ -214,23 +214,23 @@ void testURL() {
                 assert(url);
                 printf("\tResult:\n");
                 printf("\tprotocol: %s\n", URL_getProtocol(url));
-                assert(IS("http", URL_getProtocol(url)));
+                assert(Str_isEqual("http", URL_getProtocol(url)));
                 printf("\tuser: %s\n", URL_getUser(url));
-                assert(IS("hauk", URL_getUser(url)));
+                assert(Str_isEqual("hauk", URL_getUser(url)));
                 printf("\tpassword: %s\n", URL_getPassword(url));
-                assert(IS("admin", URL_getPassword(url)));
+                assert(Str_isEqual("admin", URL_getPassword(url)));
                 printf("\thost: %s\n", URL_getHost(url));
-                assert(IS("www.foo.bar", URL_getHost(url)));
+                assert(Str_isEqual("www.foo.bar", URL_getHost(url)));
                 printf("\tport: %d\n", URL_getPort(url));
                 assert(8080==URL_getPort(url));
                 printf("\tpath: %s\n", URL_getPath(url));
-                assert(IS("/document/index.csp", URL_getPath(url)));
+                assert(Str_isEqual("/document/index.csp", URL_getPath(url)));
                 printf("\tquery: %s\n", URL_getQueryString(url));
-                assert(IS("query=string&name=libzdb", URL_getQueryString(url)));
+                assert(Str_isEqual("query=string&name=libzdb", URL_getQueryString(url)));
                 printf("\tparameter name=%s\n", URL_getParameter(url, "name"));
-                assert(IS("libzdb", URL_getParameter(url, "name")));
+                assert(Str_isEqual("libzdb", URL_getParameter(url, "name")));
                 printf("\tparameter query=%s\n", URL_getParameter(url, "query"));
-                assert(IS("string", URL_getParameter(url, "query")));
+                assert(Str_isEqual("string", URL_getParameter(url, "query")));
                 URL_free(&url);
         }
         printf("=> Test5: OK\n\n");
@@ -240,7 +240,7 @@ void testURL() {
                 url= URL_new("http://");
                 assert(url);
                 printf("\tResult: %s\n", URL_toString(url));
-                assert(IS(URL_toString(url), "http://"));
+                assert(Str_isEqual(URL_toString(url), "http://"));
                 URL_free(&url);
         }
         printf("=> Test6: OK\n\n");
@@ -250,9 +250,9 @@ void testURL() {
                 url= URL_new("file:///etc/passwd");
                 assert(url);
                 printf("\tResult: %s\n", URL_toString(url));
-                assert(IS("file:///etc/passwd", URL_toString(url)));
+                assert(Str_isEqual("file:///etc/passwd", URL_toString(url)));
                 printf("\tPath: %s\n", URL_getPath(url));
-                assert(IS("/etc/passwd", URL_getPath(url)));
+                assert(Str_isEqual("/etc/passwd", URL_getPath(url)));
                 URL_free(&url);
         }
         printf("=> Test7: OK\n\n");
@@ -262,43 +262,43 @@ void testURL() {
                 char path[STRLEN];
                 snprintf(path, STRLEN, "/a/../b/../");
                 printf("\tResult: /a/../b/../ -> %s\n", URL_normalize(path));
-                assert(IS("/", path));
+                assert(Str_isEqual("/", path));
                 snprintf(path, STRLEN, "/../../a");
                 printf("\tResult: /../../a -> %s\n", URL_normalize(path));
-                assert(IS("/a", path));
+                assert(Str_isEqual("/a", path));
                 snprintf(path, STRLEN, "/foo//");
                 printf("\tResult: /foo// -> %s\n", URL_normalize(path));
-                assert(IS("/foo/", path));
+                assert(Str_isEqual("/foo/", path));
                 snprintf(path, STRLEN, "//foo/");
                 printf("\tResult: //foo/ -> %s\n", URL_normalize(path));
-                assert(IS("/foo/", path));
+                assert(Str_isEqual("/foo/", path));
                 snprintf(path, STRLEN, "/foo/./");
                 printf("\tResult: /foo/./ -> %s\n", URL_normalize(path));
-                assert(IS("/foo/", path));
+                assert(Str_isEqual("/foo/", path));
                 snprintf(path, STRLEN, "/foo/../bar");
                 printf("\tResult: /foo/../bar -> %s\n", URL_normalize(path));
-                assert(IS("/bar", path));
+                assert(Str_isEqual("/bar", path));
                 snprintf(path, STRLEN, "/foo/../bar/");
                 printf("\tResult: /foo/../bar/ -> %s\n", URL_normalize(path));
-                assert(IS("/bar/", path));
+                assert(Str_isEqual("/bar/", path));
                 snprintf(path, STRLEN, "/../bar/../baz");
                 printf("\tResult: /../bar/../baz -> %s\n", URL_normalize(path));
-                assert(IS("/baz", path));
+                assert(Str_isEqual("/baz", path));
                 snprintf(path, STRLEN, "//foo//./bar");
                 printf("\tResult: //foo//./bar -> %s\n", URL_normalize(path));
-                assert(IS("/foo/bar", path));
+                assert(Str_isEqual("/foo/bar", path));
                 snprintf(path, STRLEN, "/foo/..");
                 printf("\tResult: /foo/.. -> %s\n", URL_normalize(path));
-                assert(IS("/", path));
+                assert(Str_isEqual("/", path));
                 snprintf(path, STRLEN, "/a/../b/../../a");
                 printf("\tResult: /a/../b/../../a -> %s\n", URL_normalize(path));
-                assert(IS("/a", path));
+                assert(Str_isEqual("/a", path));
                 snprintf(path, STRLEN, "/.././../");
                 printf("\tResult: /.././../ -> %s\n", URL_normalize(path));
-                assert(IS("/", path));
+                assert(Str_isEqual("/", path));
                 *path= 0;
                 printf("\tResult: \"\" -> %s\n", URL_normalize(path));
-                assert(IS("/", path));
+                assert(Str_isEqual("/", path));
                 assert(NULL==URL_normalize(NULL));
         }
         printf("=> Test8: OK\n\n");
@@ -310,8 +310,8 @@ void testURL() {
 		char s9y[]= "http://www.tildeslash.com/%0";
                 char s9[]= "http://www.tildeslash.com/zild/%20zild%5B%5D.doc";
                 printf("\tResult: %s\n", URL_unescape(s9));
-                assert(IS(s9, "http://www.tildeslash.com/zild/ zild[].doc"));
-                assert(IS(URL_unescape(s9a), ""));
+                assert(Str_isEqual(s9, "http://www.tildeslash.com/zild/ zild[].doc"));
+                assert(Str_isEqual(URL_unescape(s9a), ""));
                 printf("\tTesting for NULL argument\n");
                 assert(! URL_unescape(NULL));
 		// Test guard against invalid url encoding
@@ -325,7 +325,7 @@ void testURL() {
                 char s10[]= "http://www.tildeslash.com/<>#%{}|\\^~[] `";
                 char *rs10= URL_escape(s10);
                 printf("\tResult: %s -> \n\t%s\n", s10, rs10);
-                assert(IS(rs10, "http://www.tildeslash.com/%3C%3E%23%25%7B%7D%7C%5C%5E~%5B%5D%20%60"));
+                assert(Str_isEqual(rs10, "http://www.tildeslash.com/%3C%3E%23%25%7B%7D%7C%5C%5E~%5B%5D%20%60"));
                 printf("\tTesting for NULL argument\n");
                 assert(! URL_escape(NULL));
                 FREE(rs10);
@@ -568,7 +568,7 @@ void testStringBuffer() {
                 sb= StringBuffer_new("abc");
                 assert(sb);
                 StringBuffer_append(sb, "def");
-                assert(IS(StringBuffer_toString(sb), "abcdef"));
+                assert(Str_isEqual(StringBuffer_toString(sb), "abcdef"));
                 StringBuffer_free(&sb);
                 assert(sb==NULL);
         }
@@ -606,7 +606,7 @@ void testStringBuffer() {
                 // Replace n > 10
                 sb= StringBuffer_new("insert into host values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
                 assert(StringBuffer_prepare4postgres(sb) == 12);
-                assert(IS(StringBuffer_toString(sb), "insert into host values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);"));
+                assert(Str_isEqual(StringBuffer_toString(sb), "insert into host values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);"));
                 StringBuffer_free(&sb);
                 assert(sb==NULL);
                 // Replace n > 99, should throw exception
@@ -626,7 +626,7 @@ void testStringBuffer() {
                 // Just 99 ?'s
                 sb= StringBuffer_new("???????????????????????????????????????????????????????????????????????????????????????????????????");
                 assert(StringBuffer_prepare4postgres(sb) == 99);
-                assert(IS(StringBuffer_toString(sb), "$1$2$3$4$5$6$7$8$9$10$11$12$13$14$15$16$17$18$19$20$21$22$23$24$25$26$27$28$29$30$31$32$33$34$35$36$37$38$39$40$41$42$43$44$45$46$47$48$49$50$51$52$53$54$55$56$57$58$59$60$61$62$63$64$65$66$67$68$69$70$71$72$73$74$75$76$77$78$79$80$81$82$83$84$85$86$87$88$89$90$91$92$93$94$95$96$97$98$99"));
+                assert(Str_isEqual(StringBuffer_toString(sb), "$1$2$3$4$5$6$7$8$9$10$11$12$13$14$15$16$17$18$19$20$21$22$23$24$25$26$27$28$29$30$31$32$33$34$35$36$37$38$39$40$41$42$43$44$45$46$47$48$49$50$51$52$53$54$55$56$57$58$59$60$61$62$63$64$65$66$67$68$69$70$71$72$73$74$75$76$77$78$79$80$81$82$83$84$85$86$87$88$89$90$91$92$93$94$95$96$97$98$99"));
                 StringBuffer_free(&sb);
                 assert(sb==NULL);
         }

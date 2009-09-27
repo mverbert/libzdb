@@ -95,7 +95,7 @@ void testPool(const char *testURL) {
                 con= ConnectionPool_getConnection(pool);
                 assert(con);
                 TRY Connection_execute(con, "drop table zild_t;"); ELSE END_TRY;
-                Connection_execute(con, schema);
+                Connection_execute(con, "%s", schema);
                 Connection_beginTransaction(con);
                 /* Insert values into database and assume that auto increment of id works */
                 for (i= 0; data[i]; i++) 
@@ -285,7 +285,7 @@ void testPool(const char *testURL) {
                  */
                 TRY
                 {
-                        Connection_execute(con, schema);
+                        Connection_execute(con, "%s", schema);
                 }
                 ELSE
                 {
@@ -365,14 +365,14 @@ void testPool(const char *testURL) {
                 TRY
                 {
                         assert((con= ConnectionPool_getConnection(pool)));
-                        Connection_execute(con, schema);
+                        Connection_execute(con, "%s", schema);
                         /* Creating the table again should fail and we 
                         should not come here */
                         assert(false);
                 }
                 CATCH(SQLException)
                 {
-                        printf("\tResult: Ok got SQLException -- %s\n", Exception_frame.message);
+                        printf("\tResult: ok\n");
                         Connection_close(con);
                 }
                 END_TRY;
@@ -385,7 +385,7 @@ void testPool(const char *testURL) {
                 }
                 CATCH(SQLException)
                 {
-                        printf("ok got SQLException -- %s\n", Exception_frame.message);
+                        printf("ok\n");
                         Connection_close(con);
                 }
                 END_TRY;
@@ -400,7 +400,7 @@ void testPool(const char *testURL) {
                 }
                 CATCH(SQLException)
                 {
-                        printf("ok got SQLException -- %s\n", Exception_frame.message);
+                        printf("ok\n");
                         Connection_close(con);
                 }
                 END_TRY;
@@ -421,7 +421,7 @@ void testPool(const char *testURL) {
                 }
                 CATCH(SQLException)
                 {
-                        printf("ok got SQLException -- %s\n", Exception_frame.message);
+                        printf("ok\n");
                         Connection_close(con);
                 }
                 END_TRY;
@@ -438,7 +438,7 @@ void testPool(const char *testURL) {
                 }
                 CATCH(SQLException)
                 {
-                        printf("ok got SQLException -- %s\n", Exception_frame.message);
+                        printf("ok\n");
                         Connection_close(con);
                 }
                 END_TRY;
@@ -452,7 +452,7 @@ void testPool(const char *testURL) {
                 }
                 CATCH(SQLException)
                 {
-                        printf("ok got SQLException -- %s\n", Exception_frame.message);
+                        printf("ok\n");
                 }
                 FINALLY
                 {
