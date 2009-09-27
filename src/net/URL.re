@@ -154,9 +154,7 @@ T URL_new(const char *url) {
 	T U;
 	if (! (url && *url))
 		return NULL;
-#ifndef ZILD_PACKAGE_PROTECTED
         Exception_init();
-#endif
 	NEW(U);
 	U->data = (uchar_t*)Str_dup(url);
 	YYCURSOR = U->data;

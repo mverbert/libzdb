@@ -155,6 +155,9 @@ T ConnectionPool_new(URL_T url) {
         T P;
 	if (! url)
                 return NULL;
+#ifdef ZILD_PACKAGE_PROTECTED
+        Exception_init();
+#endif
 	NEW(P);
         P->url = url;
 	Mutex_init(P->mutex);
