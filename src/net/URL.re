@@ -295,7 +295,7 @@ const char *URL_toString(T U) {
 char *URL_unescape(char *url) {
 	if (url && *url) {
                 register int x, y;
-                for (x=0, y=0; url[y]; x++, y++) {
+                for (x = 0, y = 0; url[y]; x++, y++) {
                         if ((url[x] = url[y]) == '+')
                                 url[x] = ' ';
                         else if (url[x] == '%') {
@@ -337,32 +337,32 @@ char *URL_normalize(char *path) {
 	if (path) {
                 char c;
                 int i,j;
-                for (i=j=0; (c=path[i]); ++i) {
-                        if (c=='/') {
-                                while (path[i+1]=='/') ++i;	
-                        } else if (c=='.' && j && path[j-1]=='/') {
-                                if (path[i+1]=='.' && (path[i+2]=='/' || path[i+2]==0)) {
+                for (i = j = 0; (c = path[i]); ++i) {
+                        if (c == '/') {
+                                while (path[i+1] == '/') ++i;	
+                        } else if (c == '.' && j && path[j-1] == '/') {
+                                if (path[i+1] == '.' && (path[i+2] == '/' || path[i+2] == 0)) {
                                         if (j>1)
-                                        for (j-=2; path[j]!='/' && j>0; --j);
-                                        i+=2;
-                                } else if (path[i+1]=='/' || path[i+1]==0) {
+                                        for (j -= 2; path[j] != '/' && j > 0; --j);
+                                        i += 2;
+                                } else if (path[i+1] == '/' || path[i+1] == 0) {
                                         ++i;
                                         continue;
                                 }
                         }
-                        if (! (path[j]=path[i])) break; ++j;
+                        if (! (path[j] = path[i])) break; ++j;
                 }
-                if (! j) { path[0]='/'; j=1; }
-                path[j]=0;
-                if (path[0]=='/' && path[1]=='/') {
-                        for (i=j=0;(c=path[i]); ++i) {
-                                if (c=='/') {
-                                        while (path[i+1]=='/') ++i;	
+                if (! j) { path[0] = '/'; j = 1; }
+                path[j] = 0;
+                if (path[0] == '/' && path[1] == '/') {
+                        for (i = j = 0; (c = path[i]); ++i) {
+                                if (c == '/') {
+                                        while (path[i+1] == '/') ++i;	
                                 }
-                                if (! (path[j]=path[i])) break; 
+                                if (! (path[j] = path[i])) break; 
                                 ++j;
                         }
-                        path[j]=0;
+                        path[j] = 0;
                 }
         }
 	return path;
@@ -392,7 +392,7 @@ static int parseURL(T U) {
 proto:
 	if (YYCURSOR >= YYLIMIT)
 		return false;
-	YYTOKEN=  YYCURSOR;
+	YYTOKEN = YYCURSOR;
 	/*!re2c
 
         ws         {
@@ -418,7 +418,7 @@ proto:
 parse:
 	if (YYCURSOR >= YYLIMIT)
 		return true;
-	YYTOKEN=  YYCURSOR;
+	YYTOKEN = YYCURSOR;
 	/*!re2c
     
         ws         { 
@@ -526,10 +526,10 @@ start:
                    }
                    
 	[=]parametervalue[&]? {
-                        *YYTOKEN++= 0;
-                        if (*(YYCURSOR-1)=='&')
-                                *(YYCURSOR-1)= 0;
-                        if (param==NULL) /* format error */
+                        *YYTOKEN++ = 0;
+                        if (*(YYCURSOR-1) == '&')
+                                *(YYCURSOR-1) = 0;
+                        if (! param) /* format error */
                                 return; 
                          param->value = YYTOKEN;
 			 goto start;
