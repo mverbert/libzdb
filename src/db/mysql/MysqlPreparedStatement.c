@@ -72,7 +72,7 @@ struct T {
 static my_bool yes = true;
 
 #define TEST_INDEX \
-        int i; assert(P); i= parameterIndex - 1; if (P->paramCount <= 0 || \
+        int i; assert(P); i = parameterIndex - 1; if (P->paramCount <= 0 || \
         i < 0 || i >= P->paramCount) THROW(SQLException, "Parameter index is out of range"); 
 
 extern const struct Rop_T mysqlrops;
@@ -180,7 +180,7 @@ void MysqlPreparedStatement_execute(T P) {
 #endif
         if ((P->lastError = mysql_stmt_execute(P->stmt))) 
                 THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
-        if (P->lastError==MYSQL_OK) {
+        if (P->lastError == MYSQL_OK) {
                 /* Discard prepared param data in client/server */
                 P->lastError = mysql_stmt_reset(P->stmt);
         }
@@ -199,7 +199,7 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
 #endif
         if ((P->lastError = mysql_stmt_execute(P->stmt))) 
                 THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
-        if (P->lastError==MYSQL_OK)
+        if (P->lastError == MYSQL_OK)
                 return ResultSet_new(MysqlResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&mysqlrops);
         THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         return NULL;

@@ -98,7 +98,7 @@ static PGconn *doConnect(URL_T url, char **error) {
                 host = unix_socket;
         } else if (! (host = URL_getHost(url)))
                 ERROR("no host specified in URL");
-        if ((port = URL_getPort(url))<=0)
+        if ((port = URL_getPort(url)) <= 0)
                 ERROR("no port specified in URL");
         if (! (database = URL_getPath(url)))
                 ERROR("no database specified in URL");
@@ -184,7 +184,7 @@ void PostgresqlConnection_setMaxRows(T C, int max) {
 
 int PostgresqlConnection_ping(T C) {
         assert(C);
-        return (PQstatus(C->db)==CONNECTION_OK);
+        return (PQstatus(C->db) == CONNECTION_OK);
 }
 
 

@@ -139,7 +139,7 @@ void *Vector_pop(T V) {
 
 int Vector_isEmpty(T V) {
         assert(V);
-        return (V->length==0);
+        return (V->length == 0);
 }
 
 

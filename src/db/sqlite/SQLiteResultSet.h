@@ -45,7 +45,7 @@ static inline int wait_for_unlock_notify(sqlite3 *db){
         Sem_init(un.cond);
 
         int rc = sqlite3_unlock_notify(db, unlock_notify_cb, (void *)&un);
-        assert(rc==SQLITE_LOCKED || rc==SQLITE_OK);
+        assert(rc == SQLITE_LOCKED || rc == SQLITE_OK);
 
         if(rc == SQLITE_OK) {
                 Mutex_lock(un.mutex);

@@ -108,13 +108,11 @@ static int getActive(T P){
 
 
 static int reapConnections(T P) {
-        int x; 
         int i = 0;
         int n = 0;
-        long timedout;
-        Connection_T con = 0;
-        x = Vector_size(P->pool)-getActive(P)-P->initialConnections;
-        timedout = Util_seconds()-P->connectionTimeout;
+        Connection_T con = NULL;
+        int x = Vector_size(P->pool) - getActive(P) - P->initialConnections;
+        long timedout = Util_seconds() - P->connectionTimeout;
         while (x-->0) {
                 for (i = 0; i < Vector_size(P->pool); i++) {
                         con = Vector_get(P->pool, i);
@@ -325,7 +323,7 @@ Connection_T ConnectionPool_getConnection(T P) {
 	LOCK(P->mutex) 
         {
                 int i, size = Vector_size(P->pool);
-                for (i= 0; i < size; i++) {
+                for (i = 0; i < size; i++) {
                         con = Vector_get(P->pool, i);
                         if (Connection_isAvailable(con) && Connection_ping(con)) {
                                 Connection_setAvailable(con, false);
@@ -344,7 +342,7 @@ Connection_T ConnectionPool_getConnection(T P) {
                                 FREE(P->error);
                         }
                 } else {
-                        con = 0;
+                        con = NULL;
                 }
         }
 done: 

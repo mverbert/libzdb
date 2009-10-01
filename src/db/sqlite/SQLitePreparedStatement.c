@@ -155,7 +155,7 @@ void SQLitePreparedStatement_execute(T P) {
 
 ResultSet_T SQLitePreparedStatement_executeQuery(T P) {
         assert(P);
-        if (P->lastError==SQLITE_OK)
+        if (P->lastError == SQLITE_OK)
                 return ResultSet_new(SQLiteResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&sqlite3rops);
         THROW(SQLException, "%s", sqlite3_errmsg(P->db));
         return NULL;

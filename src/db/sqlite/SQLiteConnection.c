@@ -81,7 +81,7 @@ static sqlite3 *doConnect(URL_T url, char **error) {
                 *error = Str_cat("no database specified in URL");
                 return NULL;
         } else if (path[0] == '/' && path[1] == ':') {
-                if (IS(path, "/:memory:")==false) {
+                if (! IS(path, "/:memory:")) {
                         *error = Str_cat("unknown database '%s', did you mean '/:memory:'?", path);
                         return NULL;
                 }
@@ -157,7 +157,7 @@ T SQLiteConnection_new(URL_T url, char **error) {
 
 void SQLiteConnection_free(T *C) {
 	assert(C && *C);
-        while ((sqlite3_close((*C)->db)==SQLITE_BUSY) && Util_usleep(1000));
+        while ((sqlite3_close((*C)->db) == SQLITE_BUSY) && Util_usleep(1000));
         StringBuffer_free(&(*C)->sb);
 	FREE(*C);
 }
@@ -179,7 +179,7 @@ void SQLiteConnection_setMaxRows(T C, int max) {
 int SQLiteConnection_ping(T C) {
         assert(C);
         executeSQL(C, "select 1;");
-        return (C->lastError==SQLITE_OK);
+        return (C->lastError == SQLITE_OK);
 }
 
 
@@ -244,7 +244,7 @@ ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
 #else
         EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt, &tail), C->timeout);
 #endif
-	if (C->lastError==SQLITE_OK)
+	if (C->lastError == SQLITE_OK)
 		return ResultSet_new(SQLiteResultSet_new(stmt, C->maxRows, false), (Rop_T)&sqlite3rops);
 	return NULL;
 }
@@ -266,7 +266,7 @@ PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_l
 #else
         EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, StringBuffer_toString(C->sb), -1, &stmt, &tail), C->timeout);
 #endif
-        if (C->lastError==SQLITE_OK)
+        if (C->lastError == SQLITE_OK)
 		return PreparedStatement_new(SQLitePreparedStatement_new(C->db, stmt, C->maxRows), (Pop_T)&sqlite3pops);
 	return NULL;
 }

@@ -71,7 +71,7 @@ struct T {
 };
 
 #define TEST_INDEX(RETVAL) \
-        int i; assert(R);i= columnIndex-1; if (R->columnCount <= 0 || \
+        int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
         i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); \
         return(RETVAL); } if (R->columns[i].is_null) return (RETVAL); 
 
@@ -142,7 +142,7 @@ void MysqlResultSet_free(T *R) {
         for (i = 0; i < (*R)->columnCount; i++)
                 FREE((*R)->columns[i].buffer);
         mysql_stmt_free_result((*R)->stmt);
-        if ((*R)->keep==false)
+        if ((*R)->keep == false)
                 mysql_stmt_close((*R)->stmt);
         if ((*R)->meta)
                 mysql_free_result((*R)->meta);
@@ -181,12 +181,12 @@ int MysqlResultSet_next(T R) {
 #else
                 /* Bhaa! Where's my cancel method? 
                    Pencil neck mysql developers! */
-                while (mysql_stmt_fetch(R->stmt)==0); 
+                while (mysql_stmt_fetch(R->stmt) == 0); 
 #endif
                 return false;
         }
         R->lastError = mysql_stmt_fetch(R->stmt);
-        return ((R->lastError==MYSQL_OK) || (R->lastError==MYSQL_DATA_TRUNCATED));
+        return ((R->lastError == MYSQL_OK) || (R->lastError == MYSQL_DATA_TRUNCATED));
 }
 
 
