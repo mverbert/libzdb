@@ -76,6 +76,7 @@ AC_ARG_ENABLE([zild],
                         AC_MSG_ERROR([This option (--enable-zild) require GCC])   
                 fi
      ],[zild_protect="false"])
+AM_CONDITIONAL([WITH_ZILD], test "xtrue" = "x$zild_protect")
 
 AC_ARG_ENABLE([protected],
         AS_HELP_STRING([--enable-protected], 
@@ -137,7 +138,7 @@ AC_ARG_ENABLE(sqliteunlock,
         	[Enable the SQLite unlock notification API (requires SQLite >= 3.6.12 
                 compiled with the SQLITE_ENABLE_UNLOCK_NOTIFY C-preprocessor symbol).
                 Using this option will greatly improve SQLite concurrency when libzdb
-                and SQLite is used from a multi-threaded program.]),
+                and SQLite are used from a multi-threaded program.]),
     [
         if test "x$enableval" = "xyes" ; then
 		SQLITEUNLOCK=1

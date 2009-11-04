@@ -25,7 +25,7 @@ version		^.*"@version".*"\n"
 {version}	;
 
 "//<<"	        	{ BEGIN(CPP); }
-"#<<"	        		{ BEGIN(BPP); }
+"#<<"	        	{ BEGIN(BPP); }
 
 <CPP>{
 	"//>>".*"\n"    { BEGIN(INITIAL); }

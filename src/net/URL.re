@@ -143,12 +143,8 @@ static void setParams(T U);
 static void freeParams(param_t p);
 
 
-/* ----------------------------------------------------- Protected methods */
+/* -------------------------------------------------------- Public methods */
 
-
-#ifdef ZILD_PACKAGE_PROTECTED
-#pragma GCC visibility push(hidden)
-#endif
 
 T URL_new(const char *url) {
 	T U;
@@ -367,10 +363,6 @@ char *URL_normalize(char *path) {
         }
 	return path;
 }
-
-#ifdef ZILD_PACKAGE_PROTECTED
-#pragma GCC visibility pop
-#endif
 
 
 /* ------------------------------------------------------- Private methods */

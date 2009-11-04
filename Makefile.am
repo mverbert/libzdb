@@ -17,10 +17,13 @@ INCLUDES        = -Isrc -Isrc/util -Isrc/net -Isrc/db -Isrc/exceptions
 
 lib_LTLIBRARIES = libzdb.la
 libzdb_la_SOURCES = src/util/Util.c src/util/Str.c src/util/Mem.c \
-                    src/util/Vector.c src/net/URL.c src/db/ConnectionPool.c \
+                    src/util/Vector.c src/db/ConnectionPool.c \
                     src/db/Connection.c src/db/ResultSet.c \
                     src/db/PreparedStatement.c src/util/StringBuffer.c \
                     src/exceptions/assert.c src/exceptions/Exception.c
+if ! WITH_ZILD
+libzdb_la_SOURCES += src/net/URL.c 
+endif
 if WITH_MYSQL
 libzdb_la_SOURCES += src/db/mysql/MysqlConnection.c \
                      src/db/mysql/MysqlResultSet.c \
