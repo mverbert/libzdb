@@ -91,7 +91,7 @@
  *
  * \htmlonly
  * <dt><dd><code>
- * mysql://localhost:3306/zild?user=root&password=swordfish<br/>
+ * mysql://localhost:3306/test?user=root&password=swordfish<br/>
  * </code></dd></dt>
  * \endhtmlonly
  *
@@ -101,7 +101,7 @@
  *
  * \htmlonly
  * <dt><dd><code>
- * mysql://root:swordfish@localhost:3306/zild
+ * mysql://root:swordfish@localhost:3306/test
  * </code></dd></dt>
  * \endhtmlonly
  *
@@ -143,7 +143,7 @@
  *
  * \htmlonly
  * <dt><dd><code>
- * postgresql://localhost:5432/zild?user=root&password=swordfish<br/>
+ * postgresql://localhost:5432/test?user=root&password=swordfish<br/>
  * </code></dd></dt>
  * \endhtmlonly
  *
@@ -153,7 +153,7 @@
  *
  * \htmlonly
  * <dt><dd><code>
- * postgresql://root:swordfish@localhost/zild?use-ssl=true
+ * postgresql://root:swordfish@localhost/test?use-ssl=true
  * </code></dd></dt>
  * \endhtmlonly
  * 
