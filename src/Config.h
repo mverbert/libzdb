@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2009 Tildeslash Ltd. All rights reserved.
+ * Copyright (C) 2004-2010 Tildeslash Ltd. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3.
@@ -44,7 +44,7 @@
 /**
  * Version, copyright and contact information
  */
-#define ABOUT   "Zild Database Library, version " VERSION ". Copyright (C) 2004-2009 Tildeslash Ltd. " LIBZDB_URL
+#define ABOUT   "Zild Database Library, version " VERSION ". Copyright (C) 2004-2010 Tildeslash Ltd. " LIBZDB_URL
 
 
 /* ----------------------------------- Error, Exceptions and report macros */

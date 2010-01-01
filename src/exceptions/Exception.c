@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2009 Tildeslash Ltd. All rights reserved.
+ * Copyright (C) 2004-2010 Tildeslash Ltd. All rights reserved.
  * Copyright (c) 1994,1995,1996,1997 by David R. Hanson.
  *
  * This program is free software: you can redistribute it and/or modify
