@@ -38,13 +38,13 @@
 /**
  * The libzdb URL
  */
-#define LIBZDB_URL	"http://www.tildeslash.com/libzdb/"
+#define LIBZDB_URL	"http://tildeslash.com/libzdb/"
 
 
 /**
  * Version, copyright and contact information
  */
-#define ABOUT   "Zild Database Library, version " VERSION ". Copyright (C) 2004-2010 Tildeslash Ltd. " LIBZDB_URL
+#define ABOUT   "libzdb/" VERSION " Copyright (C) 2004-2010 Tildeslash Ltd. " LIBZDB_URL
 
 
 /* ----------------------------------- Error, Exceptions and report macros */
@@ -157,7 +157,7 @@
 /* ------------------------------------- General Purpose functional macros */
 
 
-#define IS(a,b) ((a&&b)?Str_isEqual(a, b):0)
+#define IS(a,b) Str_isEqual((a), (b))
 #define STRERROR strerror(errno)
 
 
