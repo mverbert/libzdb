@@ -121,7 +121,7 @@
  *
  * \htmlonly
  * <dt><dd><code>
- * sqlite:///var/sqlite/my.database?synchronous=off&show_datatypes=off
+ * sqlite:///var/sqlite/test.db?synchronous=off&show_datatypes=off
  * </code></dd></dt>
  * \endhtmlonly
  *

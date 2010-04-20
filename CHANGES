@@ -210,7 +210,7 @@ Bug fixes:
 Version 1.0.1
 -------------
 * API: Connection_beginTransaction(), Connection_commit() and 
-  Connection_rollback() now returns an int (true of false) instead of void.
+  Connection_rollback() now returns an int (true or false) instead of void.
 Bug fixes:
 * MySQL: Removed a debug statement in MySQL prepare statement so a
   potential error message is not lost - MySQL pops last error messages.
