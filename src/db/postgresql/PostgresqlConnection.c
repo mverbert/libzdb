@@ -168,11 +168,13 @@ void PostgresqlConnection_free(T *C) {
 
 
 void PostgresqlConnection_setQueryTimeout(T C, int ms) {
+        PGresult *res;
 	assert(C);
         C->timeout = ms;
         StringBuffer_clear(C->sb);
         StringBuffer_append(C->sb, "SET statement_timeout TO %d;", C->timeout);
-        C->res = PQexec(C->db, StringBuffer_toString(C->sb));
+        res = PQexec(C->db, StringBuffer_toString(C->sb));
+        PQclear(res);
 }
 
 
