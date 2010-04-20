@@ -86,7 +86,7 @@ T StringBuffer_create(int hint) {
         NEW(S);
         S->used = 0;
         S->length = hint;
-        S->buffer = ALLOC(hint);
+        S->buffer = ALLOC(hint + 1);
         *S->buffer = 0;
         return S;
 }
