@@ -41,6 +41,16 @@ T StringBuffer_new(const char *s);
 
 
 /**
+ * Factory method, create an empty string buffer
+ * @param hint The initial capacity of the buffer in bytes (hint > 0)
+ * @return A new StringBuffer object
+ * @exception AssertException if hint is less than or equal to 0
+ * @exception MemoryException if allocation failed
+ */
+T StringBuffer_create(int hint);
+
+
+/**
  * Destroy a StringBuffer object and free allocated resources
  * @param S a StringBuffer object reference
  */

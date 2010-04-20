@@ -152,7 +152,7 @@ T PostgresqlConnection_new(URL_T url, char **error) {
 	NEW(C);
         C->db = db;
         C->url = url;
-        C->sb = StringBuffer_new("");
+        C->sb = StringBuffer_create(256);
         C->timeout = SQL_DEFAULT_TIMEOUT;
 	return C;
 }

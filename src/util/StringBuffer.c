@@ -79,6 +79,19 @@ T StringBuffer_new(const char *s) {
 }
 
 
+T StringBuffer_create(int hint) {
+        T S;
+        if (hint <= 0)
+                THROW(AssertException, "Illegal hint value");
+        NEW(S);
+        S->used = 0;
+        S->length = hint;
+        S->buffer = ALLOC(hint);
+        *S->buffer = 0;
+        return S;
+}
+
+
 void StringBuffer_free(T *S) {
         assert(S && *S);
 	FREE((*S)->buffer);

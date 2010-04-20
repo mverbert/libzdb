@@ -145,7 +145,7 @@ T SQLiteConnection_new(URL_T url, char **error) {
 	NEW(C);
         C->db = db;
         C->url = url;
-        C->sb = StringBuffer_new("");
+        C->sb = StringBuffer_create(256);
         if (! setProperties(C, error)) {
                 SQLiteConnection_free(&C);
                 return NULL;
