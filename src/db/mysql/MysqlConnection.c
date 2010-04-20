@@ -170,7 +170,7 @@ T MysqlConnection_new(URL_T url, char **error) {
 	NEW(C);
         C->db = db;
         C->url = url;
-        C->sb = StringBuffer_create(256);
+        C->sb = StringBuffer_create(STRLEN);
         C->timeout = SQL_DEFAULT_TIMEOUT;
 	return C;
 }
