@@ -23,7 +23,7 @@
  *
  * A connection pool can be used to get a connection to a database and
  * execute statements. This class opens a number of database
- * connection and allow callers to obtain and use a database connection in
+ * connections and allow callers to obtain and use a database connection in
  * a reentrant manner. This ConnectionPool is thread-safe.
  *
  *  <center><img src="database.png"></center>
