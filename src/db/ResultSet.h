@@ -47,9 +47,7 @@
  * will be returned. The column name option is designed to be used
  * when column names are used in the SQL query that generated the
  * result set. For columns that are NOT explicitly named in the query,
- * it is best to use column indices. If column names are used, there
- * is no way for the programmer to guarantee that they actually refer
- * to the intended columns.
+ * it is best to use column indices.
  *
  * <h3>Example</h3>
  * The following examples demonstrate how to obtain a ResultSet and 

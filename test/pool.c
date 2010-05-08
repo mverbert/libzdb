@@ -26,7 +26,6 @@
 #define SCHEMA_POSTGRESQL "CREATE TABLE zild_t(id SERIAL PRIMARY KEY, name VARCHAR(255), percent REAL, image BYTEA);"
 #define SCHEMA_SQLITE     "CREATE TABLE zild_t(id INTEGER PRIMARY KEY, name VARCHAR(255), percent REAL, image BLOB);"
 
-const char *schema;
 
 static void TabortHandler(const char *error) {
         fprintf(stdout, "Error: %s\n", error);
@@ -35,12 +34,13 @@ static void TabortHandler(const char *error) {
 
 void testPool(const char *testURL) {
         URL_T url;
+        char *schema;
         ConnectionPool_T pool;
         char *data[]= {"Fry", "Leela", "Bender", "Farnsworth",
                 "Zoidberg", "Amy", "Hermes", "Nibbler", "Cubert",
                 "Zapp", "Joey Mousepad", "ЯΣ༆", 0}; 
         
-        if (Str_startsWith(testURL,        "mysql")) {
+        if (Str_startsWith(testURL, "mysql")) {
                 schema = SCHEMA_MYSQL;
         } else if (Str_startsWith(testURL, "postgresql")) {
                 schema = SCHEMA_POSTGRESQL;
