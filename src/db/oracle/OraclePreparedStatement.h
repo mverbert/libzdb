@@ -18,7 +18,7 @@
 #ifndef ORACLE_PREPAREDSTATEMENT_INCLUDED
 #define ORACLE_PREPAREDSTATEMENT_INCLUDED
 #define T PreparedStatementImpl_T
-T OraclePreparedStatement_new(const OraText* stmt, ub4 stmt_len, OCIEnv* env, OCIError* errhp, OCISvcCtx* svc, sword* lastError);
+T OraclePreparedStatement_new(OCIStmt *stmtp, OCIEnv *env, OCIError *errhp, OCISvcCtx *svc);
 void OraclePreparedStatement_free(T *P);
 void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x);
 void OraclePreparedStatement_setInt(T P, int parameterIndex, int x);

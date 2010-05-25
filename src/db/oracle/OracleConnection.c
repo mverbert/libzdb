@@ -324,11 +324,9 @@ ResultSet_T OracleConnection_executeQuery(T C, const char *sql, va_list ap) {
                 return NULL;
         }
         C->lastError = OCIAttrGet(stmthp, OCI_HTYPE_STMT, &C->rowsChanged, 0, OCI_ATTR_ROW_COUNT, C->err);
-        if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
+        if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleConnection_execute: Error in OCIAttrGet %d (%s)\n", C->lastError, OracleConnection_getLastError(C));
-                return NULL;
-        }
-        return ResultSet_new(OracleResultSet_new(stmthp, C->env, C->err, C->svc, 1), (Rop_T)&oraclerops);
+        return ResultSet_new(OracleResultSet_new(stmthp, C->env, C->err, C->svc, true), (Rop_T)&oraclerops);
 }
 
 
@@ -341,8 +339,17 @@ PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_l
         va_end(ap_copy);
         StringBuffer_removeTrailingSemicolon(C->sb);
         StringBuffer_prepare4oracle(C->sb);
-        return PreparedStatement_new(OraclePreparedStatement_new(StringBuffer_toString(C->sb), StringBuffer_length(C->sb), C->env,
-                                                                 C->err, C->svc, &C->lastError), (Pop_T)&oraclepops);
+        /* Build statement */
+        OCIStmt *stmtp;
+        C->lastError = OCIHandleAlloc(C->env, (void **)&stmtp, OCI_HTYPE_STMT, 0, 0);
+        if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
+                THROW(SQLException, "%s", OracleConnection_getLastError(C));
+        C->lastError = OCIStmtPrepare(stmtp, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), OCI_NTV_SYNTAX, OCI_DEFAULT);
+        if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
+                OCIHandleFree(stmtp, OCI_HTYPE_STMT);
+                THROW(SQLException, "%s", OracleConnection_getLastError(C));
+        }
+        return PreparedStatement_new(OraclePreparedStatement_new(stmtp, C->env, C->err, C->svc), (Pop_T)&oraclepops);
 }
 
 
@@ -362,7 +369,7 @@ const char *OracleConnection_getLastError(T C) {
                         return "Error - OCI_NODATA";
                         break;
                 case OCI_ERROR:
-                        (void) OCIErrorGet((dvoid *)C->err, 1, NULL, &errcode, C->erb, (ub4)ERB_SIZE, OCI_HTYPE_ERROR);
+                        (void) OCIErrorGet(C->err, 1, NULL, &errcode, C->erb, (ub4)ERB_SIZE, OCI_HTYPE_ERROR);
                         return C->erb;
                         break;
                 case OCI_INVALID_HANDLE:

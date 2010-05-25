@@ -52,9 +52,9 @@ const struct Pop_T mysqlpops = {
 
 typedef struct param_t {
         union {
-                long i;
-                long long int ll;
-                double d;
+                long integer;
+                long long int longlong;
+                double real;
         };
         long length;
 } *param_t;
@@ -128,27 +128,27 @@ void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
 
 void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
         TEST_INDEX
-        P->params[i].i = x;
+        P->params[i].integer = x;
         P->bind[i].buffer_type = MYSQL_TYPE_LONG;
-        P->bind[i].buffer = (char*)&P->params[i].i;
+        P->bind[i].buffer = (char*)&P->params[i].integer;
         P->bind[i].is_null = 0;
 }
 
 
 void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
         TEST_INDEX
-        P->params[i].ll = x;
+        P->params[i].longlong = x;
         P->bind[i].buffer_type = MYSQL_TYPE_LONGLONG;
-        P->bind[i].buffer = (char*)&P->params[i].ll;
+        P->bind[i].buffer = (char*)&P->params[i].longlong;
         P->bind[i].is_null = 0;
 }
 
 
 void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
         TEST_INDEX
-        P->params[i].d = x;
+        P->params[i].real = x;
         P->bind[i].buffer_type = MYSQL_TYPE_DOUBLE;
-        P->bind[i].buffer = (char*)&P->params[i].d;
+        P->bind[i].buffer = (char*)&P->params[i].real;
         P->bind[i].is_null = 0;
 }
 
