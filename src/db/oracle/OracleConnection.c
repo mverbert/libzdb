@@ -346,6 +346,7 @@ PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_l
                                                                  C->err, C->svc, &C->lastError), (Pop_T)&oraclepops);
 }
 
+
 const char *OracleConnection_getLastError(T C) {
         sb4 errcode;
         switch (C->lastError)
