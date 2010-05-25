@@ -216,7 +216,6 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         return R->dept[columnIndex-1];
 }
 
-
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif

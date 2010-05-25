@@ -158,7 +158,6 @@ error:
 #pragma GCC visibility push(hidden)
 #endif
 
-
 T OracleConnection_new(URL_T url, char **error) {
         T C;
         assert(url);

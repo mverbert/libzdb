@@ -43,6 +43,8 @@
 
 
 /* ----------------------------------------------------------- Definitions */
+
+
 const struct Pop_T oraclepops = {
         "oracle",
         OraclePreparedStatement_free,
@@ -253,7 +255,6 @@ const char *OraclePreparedStatement_getLastError(int err, OCIError*  errhp) {
         }
         return erb;
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
