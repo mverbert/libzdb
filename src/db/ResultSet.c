@@ -120,6 +120,7 @@ const char *ResultSet_getString(T R, int columnIndex) {
 
 
 const char *ResultSet_getStringByName(T R, const char *columnName) {
+	assert(R);
 	return ResultSet_getString(R, getIndex(R, columnName));
 }
 
@@ -132,6 +133,7 @@ int ResultSet_getInt(T R, int columnIndex) {
 
 
 int ResultSet_getIntByName(T R, const char *columnName) {
+	assert(R);
 	return ResultSet_getInt(R, getIndex(R, columnName));
 }
 
@@ -144,6 +146,7 @@ long long int ResultSet_getLLong(T R, int columnIndex) {
 
 
 long long int ResultSet_getLLongByName(T R, const char *columnName) {
+	assert(R);
 	return ResultSet_getLLong(R, getIndex(R, columnName));
 }
 
@@ -156,6 +159,7 @@ double ResultSet_getDouble(T R, int columnIndex) {
 
 
 double ResultSet_getDoubleByName(T R, const char *columnName) {
+	assert(R);
 	return ResultSet_getDouble(R, getIndex(R, columnName));
 }
 
@@ -167,6 +171,7 @@ const void *ResultSet_getBlob(T R, int columnIndex, int *size) {
 
 
 const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
+	assert(R);
 	return ResultSet_getBlob(R, getIndex(R, columnName), size);
 }
 

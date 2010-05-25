@@ -79,7 +79,6 @@ static void initaleDefiningBuffers(T R) {
         int deptlen = 0;
         int sizelen = sizeof(deptlen);
         OCIParam* pard = NULL;
-        assert(R);
         for (i = 1; i <= R->columnCount; i++) {
                 /* The next two statements describe the select-list item, dname, and
                  return its length */
@@ -91,7 +90,7 @@ static void initaleDefiningBuffers(T R) {
                 /* Use the retrieved length of dname to allocate an output buffer, and
                  then define the output variable. 
                  */
-                R->dept[i-1] = (text *) ALLOC((int) deptlen + 1);
+                R->dept[i-1] = ALLOC(deptlen + 1);
                 fldtype = (SQLT_BIN == dtype) ? SQLT_LNG : SQLT_STR;
                 R->lastError = OCIDefineByPos(R->stmt, &R->defnpp[i-1], R->err, i, R->dept[i-1], (deptlen + 1), fldtype, 0, 0, 0, OCI_DEFAULT);
         }
@@ -120,7 +119,7 @@ T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc,
         R->lastError = OCIAttrGet(R->stmt, OCI_HTYPE_STMT, &R->maxRow, NULL, OCI_ATTR_ROWS_FETCHED, R->err);
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
-        /* get the number of columns in the select list */
+        /* Get the number of columns in the select list */
         R->lastError = OCIAttrGet (R->stmt, OCI_HTYPE_STMT, &R->columnCount, NULL, OCI_ATTR_PARAM_COUNT, R->err);
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
@@ -132,9 +131,12 @@ T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc,
 
 
 void OracleResultSet_free(T *R) {
+        int i;
         assert(R && *R);
         if ((*R)->freeStatement)
                 OCIHandleFree((*R)->stmt, OCI_HTYPE_STMT);
+        for (i = 0; i < (*R)->columnCount; i++)
+                FREE((*R)->dept[i]);
         free((*R)->defnpp);
         free((*R)->dept);
         FREE(*R);
