@@ -102,7 +102,7 @@ T OraclePreparedStatement_new(OCIStmt *stmtp, OCIEnv *env, OCIError *errhp, OCIS
         P->svc  = svc;
         P->lastError = OCI_SUCCESS;
         /* paramCount */
-        P->lastError = OCIAttrGet(stmtp, OCI_HTYPE_STMT, &P->paramCount, NULL, OCI_ATTR_BIND_COUNT, errhp);
+        P->lastError = OCIAttrGet(P->stmt, OCI_HTYPE_STMT, &P->paramCount, NULL, OCI_ATTR_BIND_COUNT, errhp);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 P->paramCount = 0; 
         if (P->paramCount) {
@@ -196,7 +196,7 @@ ResultSet_T OraclePreparedStatement_executeQuery(T P) {
         assert(P);
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 0, 0, NULL, NULL, OCI_DEFAULT);
         if (P->lastError == OCI_SUCCESS || P->lastError == OCI_SUCCESS_WITH_INFO)
-                return ResultSet_new(OracleResultSet_new(P->stmt, P->env, P->err, P->svc, 0), (Rop_T)&oraclerops);
+                return ResultSet_new(OracleResultSet_new(P->stmt, P->env, P->err, P->svc, false), (Rop_T)&oraclerops);
         THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
         return NULL;
 }
