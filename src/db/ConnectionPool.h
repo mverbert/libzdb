@@ -167,7 +167,7 @@
  *
  * <b>Oracle:</b>
  *
- * The URL for connecting to a <a href="http://www.oracle.com/">
+ * The URL for connecting to an <a href="http://www.oracle.com/">
  * Oracle</a> database server might look like:
  *
  * \htmlonly
@@ -176,7 +176,7 @@
  * </code></dd></dt>
  * \endhtmlonly
  *
- * The auth-part of the URL can be used instead, to specify the username 
+ * The auth-part of the URL can be used instead to specify the username 
  * and the password. In addition, you may specify a service name in the URL
  * instead if you have setup a <code>tnsnames.ora</code> configuration file.
  *
