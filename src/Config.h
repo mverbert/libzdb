@@ -121,6 +121,12 @@
 #define POSTGRESQL_DEFAULT_PORT 5432
 
 
+/**
+ * Oracle default server port number
+ */
+#define ORACLE_DEFAULT_PORT 1521
+
+
 /* ------------------------------------------ General Purpose value macros */
 
 

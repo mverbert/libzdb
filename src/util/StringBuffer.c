@@ -69,7 +69,7 @@ static int StringBuffer_prepareSQL(T S, char prefix) {
         assert(S);
         for (n = i = 0; S->buffer[i]; i++) if (S->buffer[i] == '?') n++;
         if (n > 99)
-                THROW(SQLException, "Max 99 parameters are allowed in a PostgreSQL prepared statement. Found %d parameters in statement", n);
+                THROW(SQLException, "Max 99 parameters are allowed in a prepared statement. Found %d parameters in statement", n);
         else if (n) {
                 int j, xl;
                 char x[3] = {prefix};

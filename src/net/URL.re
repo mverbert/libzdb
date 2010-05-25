@@ -399,6 +399,10 @@ proto:
                       	SET_PROTOCOL(POSTGRESQL_DEFAULT_PORT);
                    }
 
+        "oracle://" {
+                      	SET_PROTOCOL(ORACLE_DEFAULT_PORT);
+                   }
+
         protocol   {
                       	SET_PROTOCOL(UNKNOWN_PORT);
                    }

@@ -172,14 +172,13 @@
  *
  * \htmlonly
  * <dt><dd><code>
- * oracle://localhost:1526/test?user=scott&password=tiger<br/>
+ * oracle://localhost:1521/test?user=scott&password=tiger<br/>
  * </code></dd></dt>
  * \endhtmlonly
  *
- * As with the MySQL URL, the auth-part of the URL can be used instead, 
- * to specify the username and the password. In addition, you may specify
- * a service name in the URL instead if you have setup a tnsnames.ora
- * configuration file.
+ * The auth-part of the URL can be used instead, to specify the username 
+ * and the password. In addition, you may specify a service name in the URL
+ * instead if you have setup a <code>tnsnames.ora</code> configuration file.
  *
  * \htmlonly
  * <dt><dd><code>
@@ -188,7 +187,7 @@
  * \endhtmlonly
  *  
  * <h2>Example:</h2>
- * To obtain a connection pool for a mysql database, the code below can be
+ * To obtain a connection pool for a MySQL database, the code below can be
  * used. Here we connect to the database test on localhost and start the pool
  * with the default 5 initial connections.
  *
