@@ -603,7 +603,7 @@ void testStringBuffer() {
         }
         printf("=> Test5: OK\n\n");
         
-        printf("=> Test6: prepare4postgres\n");
+        printf("=> Test6: prepare4postgres and prepare4oracle\n");
         {
                 // Nothing to replace
                 sb = StringBuffer_new("select * from host;");
@@ -611,10 +611,16 @@ void testStringBuffer() {
                 assert(Str_isEqual(StringBuffer_toString(sb), "select * from host;"));
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
-                // Replace n < 10
+                // Replace n < 10 using $
                 sb = StringBuffer_new("insert into host values(?, ?, ?);");
                 assert(StringBuffer_prepare4postgres(sb) == 3);
                 assert(Str_isEqual(StringBuffer_toString(sb), "insert into host values($1, $2, $3);"));
+                StringBuffer_free(&sb);
+                assert(sb == NULL);
+                // Replace n < 10 using :
+                sb = StringBuffer_new("insert into host values(?, ?, ?);");
+                assert(StringBuffer_prepare4oracle(sb) == 3);
+                assert(Str_isEqual(StringBuffer_toString(sb), "insert into host values(:1, :2, :3);"));
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
                 // Replace n > 10
@@ -645,6 +651,35 @@ void testStringBuffer() {
                 assert(sb == NULL);
         }
         printf("=> Test6: OK\n\n");
+        
+        printf("=> Test7: removeTrailingSemicolon\n");
+        {
+                // Empty buffer
+                sb = StringBuffer_create(256);
+                StringBuffer_removeTrailingSemicolon(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), ""));
+                StringBuffer_free(&sb);
+                assert(sb == NULL);
+                // Nothing to remove
+                sb = StringBuffer_new("select * from host");
+                StringBuffer_removeTrailingSemicolon(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "select * from host"));
+                StringBuffer_free(&sb);
+                assert(sb == NULL);
+                // Remove last semicolon
+                sb = StringBuffer_new("select * from host;");
+                StringBuffer_removeTrailingSemicolon(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "select * from host"));
+                StringBuffer_free(&sb);
+                assert(sb == NULL);
+                // Remove white space and last semicolon
+                sb = StringBuffer_new("select * from host; ;\t\r \n ");
+                StringBuffer_removeTrailingSemicolon(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "select * from host"));
+                StringBuffer_free(&sb);
+                assert(sb == NULL);
+        }
+        printf("=> Test7: OK\n\n");
         
 
         printf("============> StringBuffer Tests: OK\n\n");

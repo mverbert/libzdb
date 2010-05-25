@@ -83,6 +83,12 @@
 		52492F040FDAA1070024B721 /* unit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unit.c; sourceTree = "<group>"; };
 		52492F080FDAA1070024B721 /* compfilterh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = compfilterh; sourceTree = "<group>"; };
 		52492F090FDAA1070024B721 /* filterh.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; path = filterh.l; sourceTree = "<group>"; };
+		52DA495E11AB21360052D06B /* OracleConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OracleConnection.c; sourceTree = "<group>"; };
+		52DA495F11AB21360052D06B /* OracleConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OracleConnection.h; sourceTree = "<group>"; };
+		52DA496011AB21360052D06B /* OraclePreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OraclePreparedStatement.c; sourceTree = "<group>"; };
+		52DA496111AB21360052D06B /* OraclePreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OraclePreparedStatement.h; sourceTree = "<group>"; };
+		52DA496211AB21360052D06B /* OracleResultSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OracleResultSet.c; sourceTree = "<group>"; };
+		52DA496311AB21360052D06B /* OracleResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OracleResultSet.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -166,6 +172,7 @@
 				52492EDE0FDAA1070024B721 /* ResultSet.c */,
 				52492EDF0FDAA1070024B721 /* ResultSet.h */,
 				52492EE00FDAA1070024B721 /* ResultSetStrategy.h */,
+				52DA495D11AB21360052D06B /* oracle */,
 				52492EE10FDAA1070024B721 /* sqlite */,
 				52492ECD0FDAA1070024B721 /* mysql */,
 				52492ED40FDAA1070024B721 /* postgresql */,
@@ -287,6 +294,19 @@
 				52492F090FDAA1070024B721 /* filterh.l */,
 			);
 			path = filterh;
+			sourceTree = "<group>";
+		};
+		52DA495D11AB21360052D06B /* oracle */ = {
+			isa = PBXGroup;
+			children = (
+				52DA495E11AB21360052D06B /* OracleConnection.c */,
+				52DA495F11AB21360052D06B /* OracleConnection.h */,
+				52DA496011AB21360052D06B /* OraclePreparedStatement.c */,
+				52DA496111AB21360052D06B /* OraclePreparedStatement.h */,
+				52DA496211AB21360052D06B /* OracleResultSet.c */,
+				52DA496311AB21360052D06B /* OracleResultSet.h */,
+			);
+			path = oracle;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

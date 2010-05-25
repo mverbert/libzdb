@@ -164,6 +164,29 @@
  *
  * See <a href="postgresoptions.html">postgresql options</a> for all properties that
  * can be set for a postgresql connection URL.
+ *
+ * <b>Oracle:</b>
+ *
+ * The URL for connecting to a <a href="http://www.oracle.com/">
+ * Oracle</a> database server might look like:
+ *
+ * \htmlonly
+ * <dt><dd><code>
+ * oracle://localhost:1526/test?user=scott&password=tiger<br/>
+ * </code></dd></dt>
+ * \endhtmlonly
+ *
+ * As with the MySQL URL, the auth-part of the URL can be used instead, 
+ * to specify the username and the password. In addition, you may specify
+ * a service name in the URL instead if you have setup a tnsnames.ora
+ * configuration file.
+ *
+ * \htmlonly
+ * <dt><dd><code>
+ * oracle:///service_name?user=scott&password=tiger
+ * </code></dd></dt>
+ * \endhtmlonly
+ *  
  * <h2>Example:</h2>
  * To obtain a connection pool for a mysql database, the code below can be
  * used. Here we connect to the database test on localhost and start the pool

@@ -30,17 +30,17 @@
    recommended. In addition, your PATH must contain basic build tools
    such as make and flex and database configuration scripts for MySQL
    and PostgreSQL, that is, mysql_config and pg_config respectively. 
-
+   
  * Database systems
  
    This Software supports the following database systems, 
      - MySQL         - version 4.1 or above
-     - PostgreSQL    - version 7.4 or above on the server side
-                     - version 8.0 or above on the client side
+     - PostgreSQL    - version 8.0 or above 
      - SQLite        - version 3.0 or above
+     - Oracle        - version 10 or above
    Client libraries for at least one of these database systems must
    be installed on the host on which this Software will be built.
-
+ 
  
  Installation
  ------------

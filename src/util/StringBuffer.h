@@ -81,20 +81,6 @@ T StringBuffer_vappend(T S, const char *s, va_list ap);
 
 
 /**
- * Replace all occurences of <code>?</code> in this string buffer with <code>$n</code>.
- * Example: 
- * <pre>
- * StringBuffer_T b = StringBuffer_new("insert into host values(?, ?, ?);"); 
- * StringBuffer_prepare4postgres(b) -> "insert into host values($1, $2, $3);"
- * </pre>
- * @param S StringBuffer object
- * @return The number of replacements that took place
- * @exception SQLException if there are more than 99 wild card '?' parameters
- */
-int StringBuffer_prepare4postgres(T S);
-
-
-/**
  * Returns the length (character count) of this string buffer.
  * @param S StringBuffer object
  * @return The length of the sequence of characters currently represented 
@@ -116,6 +102,41 @@ void StringBuffer_clear(T S);
  * @return A string representation of the string buffer 
  */
 const char *StringBuffer_toString(T S);
+
+
+/**
+ * Replace all occurences of <code>?</code> in this string buffer with <code>$n</code>.
+ * Example: 
+ * <pre>
+ * StringBuffer_T b = StringBuffer_new("insert into host values(?, ?, ?);"); 
+ * StringBuffer_prepare4sql(b, '$') -> "insert into host values($1, $2, $3);"
+ * </pre>
+ * @param S StringBuffer object
+ * @return The number of replacements that took place
+ * @exception SQLException if there are more than 99 wild card '?' parameters
+ */
+int StringBuffer_prepare4postgres(T S);
+
+
+/**
+ * Replace all occurences of <code>?</code> in this string buffer with <code>:n</code>.
+ * Example: 
+ * <pre>
+ * StringBuffer_T b = StringBuffer_new("insert into host values(?, ?, ?);"); 
+ * StringBuffer_prepare4sql(b, ':') -> "insert into host values(:1, :2, :3);"
+ * </pre>
+ * @param S StringBuffer object
+ * @return The number of replacements that took place
+ * @exception SQLException if there are more than 99 wild card '?' parameters
+ */
+int StringBuffer_prepare4oracle(T S);
+
+
+/**
+ * Remove trailing white space and ';' from the String Buffer
+ * @param S StringBuffer object
+ */
+void StringBuffer_removeTrailingSemicolon(T S);
 
 
 #undef T

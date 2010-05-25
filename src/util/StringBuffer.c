@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "StringBuffer.h"
 
@@ -59,6 +60,36 @@ static inline void doAppend(T S, const char *s, va_list ap) {
                         S->length *= 2;
                 RESIZE(S->buffer, S->length + 1);
         }
+}
+
+
+/* Replace all occurences of ? in this string buffer with prefix[0..99] */
+static int StringBuffer_prepareSQL(T S, char prefix) {
+        int n, i;
+        assert(S);
+        for (n = i = 0; S->buffer[i]; i++) if (S->buffer[i] == '?') n++;
+        if (n > 99)
+                THROW(SQLException, "Max 99 parameters are allowed in a PostgreSQL prepared statement. Found %d parameters in statement", n);
+        else if (n) {
+                int j, xl;
+                char x[3] = {prefix};
+                int required = (n * 2) + S->used;
+                if (required >= S->length) {
+                        S->length = required;
+                        RESIZE(S->buffer, S->length);
+                }
+                for (i = 0, j = 1; (j <= n); i++) {
+                        if (S->buffer[i] == '?') {
+                                if(j<10){xl=2;x[1]=j+'0';}else{xl=3;x[1]=(j/10)+'0';x[2]=(j%10)+'0';}
+                                memmove(S->buffer + i + xl, S->buffer + i + 1, (S->used - (i + 1)));
+                                memmove(S->buffer + i, x, xl);
+                                S->used += xl - 1;
+                                j++;
+                        }
+                }
+                S->buffer[S->used] = 0;
+        }
+        return n;
 }
 
 
@@ -123,35 +154,6 @@ T StringBuffer_vappend(T S, const char *s, va_list ap) {
 }
 
 
-int StringBuffer_prepare4postgres(T S) {
-        int n, i;
-        assert(S);
-        for (n = i = 0; S->buffer[i]; i++) if (S->buffer[i] == '?') n++;
-        if (n > 99)
-                THROW(SQLException, "Max 99 parameters are allowed in a PostgreSQL prepared statement. Found %d parameters in statement", n);
-        else if (n) {
-                int j, xl;
-                char x[3] = {'$'};
-                int required = (n * 2) + S->used;
-                if (required >= S->length) {
-                        S->length = required;
-                        RESIZE(S->buffer, S->length);
-                }
-                for (i = 0, j = 1; (j <= n); i++) {
-                        if (S->buffer[i] == '?') {
-                                if(j<10){xl=2;x[1]=j+'0';}else{xl=3;x[1]=(j/10)+'0';x[2]=(j%10)+'0';}
-                                memmove(S->buffer + i + xl, S->buffer + i + 1, (S->used - (i + 1)));
-                                memmove(S->buffer + i, x, xl);
-                                S->used += xl - 1;
-                                j++;
-                        }
-                }
-                S->buffer[S->used] = 0;
-        }
-        return n;
-}
-
-
 int StringBuffer_length(T S) {
         assert(S);
         return S->used;
@@ -169,6 +171,25 @@ const char *StringBuffer_toString(T S) {
         assert(S);
         return S->buffer;
 }
+
+
+int StringBuffer_prepare4postgres(T S) {
+        return StringBuffer_prepareSQL(S, '$');
+}
+
+
+int StringBuffer_prepare4oracle(T S) {
+        return StringBuffer_prepareSQL(S, ':');
+}
+
+
+void StringBuffer_removeTrailingSemicolon(T S) {
+    assert(S);
+    if (S->used)
+            while ((S->buffer[S->used - 1] == ';') || isspace(S->buffer[S->used - 1]))  
+                        S->buffer[--S->used] = 0;
+}
+
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

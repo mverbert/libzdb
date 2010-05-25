@@ -40,6 +40,12 @@ libzdb_la_SOURCES += src/db/sqlite/SQLiteConnection.c \
                      src/db/sqlite/SQLiteResultSet.c \
                      src/db/sqlite/SQLitePreparedStatement.c
 endif
+if WITH_ORACLE
+libzdb_la_SOURCES += src/db/oracle/OracleConnection.c \
+                     src/db/oracle/OracleResultSet.c \
+                     src/db/oracle/OraclePreparedStatement.c
+endif
+
 
 API_INTERFACES  = src/db/ConnectionPool.h src/db/Connection.h \
                   src/db/ResultSet.h src/net/URL.h src/db/PreparedStatement.h \

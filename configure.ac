@@ -172,7 +172,6 @@ AC_SEARCH_LIBS(crypt, crypt)
 
 # Database Libraries 
 
-
 mysql="yes"
 AC_MSG_CHECKING(for mysql)
 AC_ARG_WITH([mysql], 
@@ -321,7 +320,20 @@ if test "xyes" = "x$sqlite"; then
 fi
 AM_CONDITIONAL([WITH_SQLITE], test "xyes" = "x$sqlite")
 
-if test "xno" = "x$postgresql" -a "xno" = "x$mysql" -a "xno" = "x$sqlite"; then
+oracle="yes"
+AC_MSG_CHECKING(for oracle)
+AX_LIB_ORACLE_OCI
+if test -n "$ORACLE_OCI_CFLAGS" -a -n "$ORACLE_OCI_LDFLAGS"; then
+    DBCPPFLAGS="$DBCPPFLAGS $ORACLE_OCI_CFLAGS"
+    DBLDFLAGS="$DBLDFLAGS $ORACLE_OCI_LDFLAGS"
+    AC_DEFINE([HAVE_ORACLE], 1, [Define to 1 to enable oracle])
+else
+        oracle="no"
+fi
+AM_CONDITIONAL([WITH_ORACLE], test "xyes" = "x$oracle")
+
+# Test if any database system was found
+if test "xno" = "x$postgresql" -a "xno" = "x$mysql" -a "xno" = "x$sqlite" -a "xno" = "x$oracle"; then
         AC_MSG_ERROR([No available database found or selected. Try configure --help])
 fi
 
@@ -427,6 +439,11 @@ if test "xyes" = "x$postgresql"; then
 echo "|   PostgreSQL:                                   ENABLED    |"
 else
 echo "|   PostgreSQL:                                   DISABLED   |"
+fi
+if test "xyes" = "x$oracle"; then
+echo "|   Oracle:                                       ENABLED    |"
+else
+echo "|   Oracle:                                       DISABLED   |"
 fi
 echo "+------------------------------------------------------------+"
 

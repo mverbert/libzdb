@@ -25,6 +25,7 @@
 #define SCHEMA_MYSQL      "CREATE TABLE zild_t(id INTEGER AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), percent REAL, image BLOB);"
 #define SCHEMA_POSTGRESQL "CREATE TABLE zild_t(id SERIAL PRIMARY KEY, name VARCHAR(255), percent REAL, image BYTEA);"
 #define SCHEMA_SQLITE     "CREATE TABLE zild_t(id INTEGER PRIMARY KEY, name VARCHAR(255), percent REAL, image BLOB);"
+#define SCHEMA_ORACLE     "CREATE TABLE zild_t(id NUMBER PRIMARY KEY, name VARCHAR(255), percent REAL, image BLOB);"
 
 
 static void TabortHandler(const char *error) {
@@ -46,7 +47,10 @@ void testPool(const char *testURL) {
                 schema = SCHEMA_POSTGRESQL;
         } else if (Str_startsWith(testURL, "sqlite")) {
                 schema = SCHEMA_SQLITE;
-        } else {
+        } else if (Str_startsWith(testURL, "oracle")) {
+                schema = SCHEMA_ORACLE;
+        }
+        else {
                 exit(1);
         }
 
@@ -102,7 +106,7 @@ void testPool(const char *testURL) {
                         Connection_execute(con, "insert into zild_t (name, percent) values('%s', %d.%d);", data[i], i+1, i);
                 // Assert that the last insert statement added one row
                 assert(Connection_rowsChanged(con) == 1);
-                /* Assert that last row id works for MySQL and SQLite. PostgreSQL does not
+                /* Assert that last row id works for MySQL and SQLite. Neither Oracle nor PostgreSQL
                  support last row id directly. The way to do this in PostgreSQL is to use 
                  currval() or return the id on insert. Its just frakked up */
                 if (IS(URL_getProtocol(url), "sqlite") || IS(URL_getProtocol(url), "mysql")) 
@@ -478,6 +482,7 @@ int main(void) {
                     "E.g. sqlite:///tmp/sqlite.db?synchronous=off&show_datatypes=off\n"
                     "E.g. mysql://localhost:3306/test?user=root&password=root\n"
                     "E.g. postgresql://localhost:5432/test?user=root&password=root\n"
+                    "E.g. oracle://localhost:1526/test?user=oracle&password=root\n"
                     "To exit, enter '.' on a single line\n\nConnection URL> ";
         ZBDEBUG= true;
         Exception_init();
@@ -490,7 +495,7 @@ int main(void) {
 		if (*buf == '\r' || *buf == '\n' || *buf == 0) 
 			goto next;
                 url= URL_new(buf);
-                if (url==NULL) {
+                if (! url) {
                         printf("Please enter a valid database URL or stop by entering '.'\n");
                         goto next;
                 }

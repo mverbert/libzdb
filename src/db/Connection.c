@@ -47,6 +47,9 @@ extern const struct Cop_T postgresqlcops;
 #ifdef HAVE_LIBSQLITE3
 extern const struct Cop_T sqlite3cops;
 #endif
+#ifdef HAVE_ORACLE
+extern const struct Cop_T oraclesqlcops;
+#endif
 
 static const struct Cop_T *cops[] = {
 #ifdef HAVE_LIBMYSQLCLIENT
@@ -57,6 +60,9 @@ static const struct Cop_T *cops[] = {
 #endif
 #ifdef HAVE_LIBSQLITE3
         &sqlite3cops,
+#endif
+#ifdef HAVE_ORACLE
+        &oraclesqlcops,
 #endif
         NULL
 };

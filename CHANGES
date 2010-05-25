@@ -6,12 +6,13 @@ Version 2.7
 -----------
 * Internal optimizing changes and improvements
   Thanks to Bogdan Nicula for suggestions.
+* Added support for Oracle. Thanks to Volodymyr Tarasenko,
+  and Sergey Pavlov for implementating this.
 Bug fixes:
 * Reset Connection.in-transaction flag on Connection_clear
 * SQLite: Ensure that the database file is specified in
   connection URL. Thanks to Bogdan Nicula.
 * PostgreSQL: Implemented Connection_setQueryTimeout()
-
 
 Version 2.6
 -----------
@@ -29,7 +30,6 @@ Bug fixes:
   and via ResultSet_getBlobByName(). By an incurie, unescape was
   left out of libzdb version 2.5.
 
-
 Version 2.5
 -----------
 * Removed GPL license exceptions. The library is now licensed under
@@ -40,7 +40,6 @@ Version 2.5
 * PostgreSQL: Blob retrieval optimized
 * PostgreSQL: Added unix-socket parameter to connection URL
 * Internal optimizing changes and improvements
-
 
 Version 2.4
 -----------
