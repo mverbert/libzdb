@@ -18,7 +18,7 @@
 #ifndef ORACLE_PREPAREDSTATEMENT_INCLUDED
 #define ORACLE_PREPAREDSTATEMENT_INCLUDED
 #define T PreparedStatementImpl_T
-T OraclePreparedStatement_new(OCIStmt *stmtp, OCIEnv *env, OCIError *errhp, OCISvcCtx *svc);
+T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc);
 void OraclePreparedStatement_free(T *P);
 void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x);
 void OraclePreparedStatement_setInt(T P, int parameterIndex, int x);
@@ -27,6 +27,6 @@ void OraclePreparedStatement_setDouble(T P, int parameterIndex, double x);
 void OraclePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
 void OraclePreparedStatement_execute(T P);
 ResultSet_T OraclePreparedStatement_executeQuery(T P);
-const char *OraclePreparedStatement_getLastError(int err, OCIError*  errhp);
+const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp);
 #undef T
 #endif

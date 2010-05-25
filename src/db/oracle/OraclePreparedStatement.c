@@ -93,16 +93,20 @@ extern const struct Rop_T oraclerops;
 #pragma GCC visibility push(hidden)
 #endif
 
-T OraclePreparedStatement_new(OCIStmt *stmtp, OCIEnv *env, OCIError *errhp, OCISvcCtx *svc) {
+T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc) {
         T P;
+        assert(stmt);
+        assert(env);
+        assert(err);
+        assert(svc);
         NEW(P);
-        P->stmt = stmtp;
+        P->stmt = stmt;
         P->env  = env;
-        P->err  = errhp;
+        P->err  = err;
         P->svc  = svc;
         P->lastError = OCI_SUCCESS;
         /* paramCount */
-        P->lastError = OCIAttrGet(P->stmt, OCI_HTYPE_STMT, &P->paramCount, NULL, OCI_ATTR_BIND_COUNT, errhp);
+        P->lastError = OCIAttrGet(P->stmt, OCI_HTYPE_STMT, &P->paramCount, NULL, OCI_ATTR_BIND_COUNT, P->err);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 P->paramCount = 0; 
         if (P->paramCount) {
@@ -203,7 +207,7 @@ ResultSet_T OraclePreparedStatement_executeQuery(T P) {
 
 
 /* This is a general error function also used in OracleResultSet */
-const char *OraclePreparedStatement_getLastError(int err, OCIError*  errhp) {
+const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp) {
         sb4 errcode;
         static char erb[STRLEN]; // FIXME: This is wrong in a multi-threaded environment
         assert(errhp);
