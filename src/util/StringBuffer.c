@@ -185,7 +185,7 @@ int StringBuffer_prepare4oracle(T S) {
 
 void StringBuffer_removeTrailingSemicolon(T S) {
     assert(S);
-    if (S->used)
+    if (S->used) 
             while ((S->buffer[S->used - 1] == ';') || isspace(S->buffer[S->used - 1]))  
                         S->buffer[--S->used] = 0;
 }
