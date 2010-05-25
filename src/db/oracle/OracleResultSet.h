@@ -18,7 +18,7 @@
 #ifndef ORACLE_RESULTSET_INCLUDED
 #define ORACLE_RESULTSET_INCLUDED
 #define T ResultSetImpl_T
-T    OracleResultSet_new(OCIStmt* stmt, OCIEnv* env, OCIError* err, OCISvcCtx* svc, int need_free);
+T OracleResultSet_new(OCIStmt* stmt, OCIEnv* env, OCIError* err, OCISvcCtx* svc, int need_free);
 void OracleResultSet_free(T *R);
 int  OracleResultSet_getColumnCount(T R);
 const char *OracleResultSet_getColumnName(T R, int column);
