@@ -109,7 +109,7 @@ const char *StringBuffer_toString(T S);
  * Example: 
  * <pre>
  * StringBuffer_T b = StringBuffer_new("insert into host values(?, ?, ?);"); 
- * StringBuffer_prepare4sql(b, '$') -> "insert into host values($1, $2, $3);"
+ * StringBuffer_prepare4postgres(b) -> "insert into host values($1, $2, $3);"
  * </pre>
  * @param S StringBuffer object
  * @return The number of replacements that took place
@@ -123,7 +123,7 @@ int StringBuffer_prepare4postgres(T S);
  * Example: 
  * <pre>
  * StringBuffer_T b = StringBuffer_new("insert into host values(?, ?, ?);"); 
- * StringBuffer_prepare4sql(b, ':') -> "insert into host values(:1, :2, :3);"
+ * StringBuffer_prepare4oracle(b) -> "insert into host values(:1, :2, :3);"
  * </pre>
  * @param S StringBuffer object
  * @return The number of replacements that took place

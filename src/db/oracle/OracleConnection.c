@@ -268,7 +268,7 @@ long long int OracleConnection_rowsChanged(T C) {
 
 
 int  OracleConnection_execute(T C, const char *sql, va_list ap) {
-        OCIStmt* stmthp;
+        OCIStmt* stmtp;
         va_list ap_copy;
         assert(C);
         C->rowsChanged = 0;
@@ -277,29 +277,34 @@ int  OracleConnection_execute(T C, const char *sql, va_list ap) {
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
         StringBuffer_removeTrailingSemicolon(C->sb);
-        OCIHandleAlloc(C->env, (void**)&stmthp, OCI_HTYPE_STMT, 0, NULL);
-        C->lastError = OCIStmtPrepare(stmthp, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), OCI_NTV_SYNTAX, OCI_DEFAULT);
+        /* Build statement */
+        C->lastError = OCIHandleAlloc(C->env, (void **)&stmtp, OCI_HTYPE_STMT, 0, NULL);
+        if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
+                return false;
+        C->lastError = OCIStmtPrepare(stmtp, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), OCI_NTV_SYNTAX, OCI_DEFAULT);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
-                OCIHandleFree(stmthp, OCI_HTYPE_STMT);
-                return 0;
+                OCIHandleFree(stmtp, OCI_HTYPE_STMT);
+                return false;
         }
-        /* execute and fetch */
-        C->lastError = OCIStmtExecute(C->svc, stmthp, C->err, 1, 0, NULL, NULL, OCI_DEFAULT);
+        /* Execute */
+        C->lastError = OCIStmtExecute(C->svc, stmtp, C->err, 1, 0, NULL, NULL, OCI_DEFAULT);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
                 ub4 parmcnt = 0;
-                OCIAttrGet(stmthp, OCI_HTYPE_STMT, &parmcnt, NULL, OCI_ATTR_PARSE_ERROR_OFFSET, C->err);
+                OCIAttrGet(stmtp, OCI_HTYPE_STMT, &parmcnt, NULL, OCI_ATTR_PARSE_ERROR_OFFSET, C->err);
                 DEBUG("Error occured in StmtExecute %d (%s), offset is %d\n", C->lastError, OracleConnection_getLastError(C), parmcnt);
+                OCIHandleFree(stmtp, OCI_HTYPE_STMT);
+                return false;
         }
-        C->lastError = OCIAttrGet(stmthp, OCI_HTYPE_STMT, &C->rowsChanged, 0, OCI_ATTR_ROW_COUNT, C->err);
+        C->lastError = OCIAttrGet(stmtp, OCI_HTYPE_STMT, &C->rowsChanged, 0, OCI_ATTR_ROW_COUNT, C->err);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleConnection_execute: Error in OCIAttrGet %d (%s)\n", C->lastError, OracleConnection_getLastError(C));
-        OCIHandleFree(stmthp, OCI_HTYPE_STMT);
+        OCIHandleFree(stmtp, OCI_HTYPE_STMT);
         return C->lastError == OCI_SUCCESS;
 }
 
 
 ResultSet_T OracleConnection_executeQuery(T C, const char *sql, va_list ap) {
-        OCIStmt* stmthp;
+        OCIStmt* stmtp;
         va_list  ap_copy;
         assert(C);
         C->rowsChanged = 0;
@@ -308,31 +313,33 @@ ResultSet_T OracleConnection_executeQuery(T C, const char *sql, va_list ap) {
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
         StringBuffer_removeTrailingSemicolon(C->sb);
-        C->lastError = OCIHandleAlloc(C->env, (void **)&stmthp, OCI_HTYPE_STMT, 0, NULL);
+        /* Build statement */
+        C->lastError = OCIHandleAlloc(C->env, (void **)&stmtp, OCI_HTYPE_STMT, 0, NULL);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
-                THROW(SQLException, "%s", OracleConnection_getLastError(C));
-        C->lastError = OCIStmtPrepare(stmthp, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), OCI_NTV_SYNTAX, OCI_DEFAULT);
+                return NULL;
+        C->lastError = OCIStmtPrepare(stmtp, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), OCI_NTV_SYNTAX, OCI_DEFAULT);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
-                OCIHandleFree(stmthp, OCI_HTYPE_STMT);
+                OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
-        /* execute and fetch */
-        C->lastError = OCIStmtExecute(C->svc, stmthp, C->err, 0, 0, NULL, NULL, OCI_DEFAULT);    
+        /* Execute and create Result Set */
+        C->lastError = OCIStmtExecute(C->svc, stmtp, C->err, 0, 0, NULL, NULL, OCI_DEFAULT);    
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
                 ub4 parmcnt = 0;
-                OCIAttrGet(stmthp, OCI_HTYPE_STMT, &parmcnt, NULL, OCI_ATTR_PARSE_ERROR_OFFSET, C->err);
+                OCIAttrGet(stmtp, OCI_HTYPE_STMT, &parmcnt, NULL, OCI_ATTR_PARSE_ERROR_OFFSET, C->err);
                 DEBUG("Error occured in StmtExecute %d (%s), offset is %d\n", C->lastError, OracleConnection_getLastError(C), parmcnt);
-                OCIHandleFree(stmthp, OCI_HTYPE_STMT);
+                OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
-        C->lastError = OCIAttrGet(stmthp, OCI_HTYPE_STMT, &C->rowsChanged, 0, OCI_ATTR_ROW_COUNT, C->err);
+        C->lastError = OCIAttrGet(stmtp, OCI_HTYPE_STMT, &C->rowsChanged, 0, OCI_ATTR_ROW_COUNT, C->err);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleConnection_execute: Error in OCIAttrGet %d (%s)\n", C->lastError, OracleConnection_getLastError(C));
-        return ResultSet_new(OracleResultSet_new(stmthp, C->env, C->err, C->svc, true), (Rop_T)&oraclerops);
+        return ResultSet_new(OracleResultSet_new(stmtp, C->env, C->err, C->svc, true), (Rop_T)&oraclerops);
 }
 
 
 PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_list ap) {
+        OCIStmt *stmtp;
         va_list ap_copy;
         assert(C);
         StringBuffer_clear(C->sb);
@@ -342,14 +349,13 @@ PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_l
         StringBuffer_removeTrailingSemicolon(C->sb);
         StringBuffer_prepare4oracle(C->sb);
         /* Build statement */
-        OCIStmt *stmtp;
         C->lastError = OCIHandleAlloc(C->env, (void **)&stmtp, OCI_HTYPE_STMT, 0, 0);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
-                THROW(SQLException, "%s", OracleConnection_getLastError(C));
+                return NULL;
         C->lastError = OCIStmtPrepare(stmtp, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), OCI_NTV_SYNTAX, OCI_DEFAULT);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
-                THROW(SQLException, "%s", OracleConnection_getLastError(C));
+                return NULL;
         }
         return PreparedStatement_new(OraclePreparedStatement_new(stmtp, C->env, C->err, C->svc), (Pop_T)&oraclepops);
 }

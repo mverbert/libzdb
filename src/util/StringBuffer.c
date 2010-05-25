@@ -66,7 +66,6 @@ static inline void doAppend(T S, const char *s, va_list ap) {
 /* Replace all occurences of ? in this string buffer with prefix[0..99] */
 static int StringBuffer_prepareSQL(T S, char prefix) {
         int n, i;
-        assert(S);
         for (n = i = 0; S->buffer[i]; i++) if (S->buffer[i] == '?') n++;
         if (n > 99)
                 THROW(SQLException, "Max 99 parameters are allowed in a prepared statement. Found %d parameters in statement", n);
@@ -174,20 +173,21 @@ const char *StringBuffer_toString(T S) {
 
 
 int StringBuffer_prepare4postgres(T S) {
+        assert(S);
         return StringBuffer_prepareSQL(S, '$');
 }
 
 
 int StringBuffer_prepare4oracle(T S) {
+        assert(S);
         return StringBuffer_prepareSQL(S, ':');
 }
 
 
 void StringBuffer_removeTrailingSemicolon(T S) {
-    assert(S);
-    if (S->used) 
-            while ((S->buffer[S->used - 1] == ';') || isspace(S->buffer[S->used - 1]))  
-                        S->buffer[--S->used] = 0;
+        assert(S);
+        while (S->used && ((S->buffer[S->used - 1] == ';') || isspace(S->buffer[S->used - 1]))) 
+                S->buffer[--S->used] = 0;
 }
 
 

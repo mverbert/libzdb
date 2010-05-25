@@ -660,6 +660,12 @@ void testStringBuffer() {
                 assert(Str_isEqual(StringBuffer_toString(sb), ""));
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
+                // White space filled buffer
+                sb = StringBuffer_new("     ");
+                StringBuffer_removeTrailingSemicolon(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), ""));
+                StringBuffer_free(&sb);
+                assert(sb == NULL);
                 // Nothing to remove
                 sb = StringBuffer_new("select * from host");
                 StringBuffer_removeTrailingSemicolon(sb);
@@ -672,7 +678,7 @@ void testStringBuffer() {
                 assert(Str_isEqual(StringBuffer_toString(sb), "select * from host"));
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
-                // Remove white space and last semicolon
+                // Remove trailing white space and last semicolons
                 sb = StringBuffer_new("select * from host; ;\t\r \n ");
                 StringBuffer_removeTrailingSemicolon(sb);
                 assert(Str_isEqual(StringBuffer_toString(sb), "select * from host"));
