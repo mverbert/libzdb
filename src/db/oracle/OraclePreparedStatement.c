@@ -62,7 +62,7 @@ typedef struct param_t {
                 long integer;
                 const void *blob;
                 const char *string;
-                long long int longlong;
+                long long int llong;
         };
         long length;
 } *param_t;
@@ -157,9 +157,9 @@ void OraclePreparedStatement_setInt(T P, int parameterIndex, int x) {
 
 void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
         TEST_INDEX
-        P->params[i].longlong = x;
+        P->params[i].llong = x;
         P->params[i].length = sizeof(x);
-        P->lastError = OCIBindByPos(P->stmt, &P->bindpp[i], P->err, i, &P->params[i].longlong, 
+        P->lastError = OCIBindByPos(P->stmt, &P->bindpp[i], P->err, i, &P->params[i].llong, 
                                     P->params[i].length, SQLT_LVB, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));

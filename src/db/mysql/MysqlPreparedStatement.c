@@ -53,7 +53,7 @@ const struct Pop_T mysqlpops = {
 typedef struct param_t {
         union {
                 long integer;
-                long long int longlong;
+                long long int llong;
                 double real;
         };
         long length;
@@ -137,9 +137,9 @@ void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
 
 void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
         TEST_INDEX
-        P->params[i].longlong = x;
+        P->params[i].llong = x;
         P->bind[i].buffer_type = MYSQL_TYPE_LONGLONG;
-        P->bind[i].buffer = (char*)&P->params[i].longlong;
+        P->bind[i].buffer = (char*)&P->params[i].llong;
         P->bind[i].is_null = 0;
 }
 
