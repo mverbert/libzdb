@@ -88,8 +88,8 @@ extern const struct Pop_T oraclepops;
 
 
 static int doConnect(URL_T url, T C, char**  error) {
-#define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
-#define ORAERROR(e) do{ *error = Str_dup(OracleConnection_getLastError(e)); goto error;} while(0)
+#define ERROR(e) do {*error = Str_dup(e); return false;} while (0)
+#define ORAERROR(e) do{ *error = Str_dup(OracleConnection_getLastError(e)); return false;} while(0)
         const char *database, *username, *password;
         const char *host = URL_getHost(url);
         int port = URL_getPort(url);
@@ -146,8 +146,6 @@ static int doConnect(URL_T url, T C, char**  error) {
                 ORAERROR(C);
         OCIAttrSet(C->svc, OCI_HTYPE_SVCCTX, C->usr, 0, OCI_ATTR_SESSION, C->err);
         return true;
-error:
-        return false;
 }
 
 
