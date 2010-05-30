@@ -43,6 +43,7 @@
 
 /* ----------------------------------------------------------- Definitions */
 
+
 const struct Cop_T oraclesqlcops = {
         "oracle",
         OracleConnection_new,
@@ -115,7 +116,7 @@ static int doConnect(URL_T url, T C, char**  error) {
         if (OCI_SUCCESS != OCIHandleAlloc(C->env, (dvoid**)&C->svc, OCI_HTYPE_SVCCTX, 0, 0))
                 ERROR("Allocating service handle failed");
         StringBuffer_clear(C->sb);
-        /* Oracle connect string is on the form: //host[:port][/service name] */
+        /* Oracle connect string is on the form: //host[:port]/service name */
         if (host) {
                 StringBuffer_append(C->sb, "//%s", host);
                 if (port > 0)
