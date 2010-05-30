@@ -114,14 +114,13 @@ static int doConnect(URL_T url, T C, char**  error) {
         /* allocate a service handle */
         if (OCI_SUCCESS != OCIHandleAlloc(C->env, (dvoid**)&C->svc, OCI_HTYPE_SVCCTX, 0, 0))
                 ERROR("Allocating service handle failed");
-        /* Oracle connect string is on the form: //host[:port][/service name] */
         StringBuffer_clear(C->sb);
+        /* Oracle connect string is on the form: //host[:port][/service name] */
         if (host) {
                 StringBuffer_append(C->sb, "//%s", host);
                 if (port > 0)
                         StringBuffer_append(C->sb, ":%d", port);
-                if (database)
-                        StringBuffer_append(C->sb, "/%s", database);
+                StringBuffer_append(C->sb, "/%s", database);
         } else /* Or just service name */
                 StringBuffer_append(C->sb, "%s", database);
         /* Create a server context */
