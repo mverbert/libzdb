@@ -208,9 +208,13 @@ int  OracleConnection_beginTransaction(T C) {
         OCITrans *txnhp;
         assert(C);
         /* allocate transaction handle and set it in the service handle */
-        OCIHandleAlloc(C->env, (void **)&txnhp, OCI_HTYPE_TRANS, 0, 0);
+        C->lastError = OCIHandleAlloc(C->env, (void **)&txnhp, OCI_HTYPE_TRANS, 0, 0);
+        if (C->lastError != OCI_SUCCESS) 
+                return false;
         OCIAttrSet(C->svc, OCI_HTYPE_SVCCTX, (void *)txnhp, 0, OCI_ATTR_TRANS, C->err);
         C->lastError = OCITransStart (C->svc, C->err, ORACLE_TRANSACTION_PERIOD, OCI_TRANS_NEW);
+        if (C->lastError != OCI_SUCCESS)
+                OCIHandleFree(txnhp, OCI_HTYPE_TRANS);
         return (C->lastError == OCI_SUCCESS);
 }
 
