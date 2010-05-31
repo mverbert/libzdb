@@ -74,9 +74,9 @@ struct T {
 };
 
 #define TEST_INDEX \
-int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
-i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); \
-return NULL; } // FIXME add check for SQL null value and return NULL if SQL null
+        int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
+        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); \
+        return NULL; } // FIXME add check for SQL null value and return NULL if SQL null
 
 
 /* ------------------------------------------------------- Private methods */
@@ -154,7 +154,7 @@ void OracleResultSet_free(T *R) {
 }
 
 
-int  OracleResultSet_getColumnCount(T R) {
+int OracleResultSet_getColumnCount(T R) {
         assert(R);
         return R->columnCount;
 }
@@ -176,7 +176,7 @@ const char *OracleResultSet_getColumnName(T R, int column) {
 }
 
 
-int  OracleResultSet_next(T R) {
+int OracleResultSet_next(T R) {
         assert(R);
         R->lastError = OCIStmtFetch2(R->stmt, R->err, 1, OCI_FETCH_NEXT, 0, OCI_DEFAULT);
         if (R->lastError == OCI_NO_DATA)
