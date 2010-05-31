@@ -104,6 +104,7 @@ static void initaleDefiningBuffers(T R) {
                 R->columns[i-1].buffer = ALLOC(R->columns[i-1].length + 1);
                 fldtype = (SQLT_BIN == dtype) ? SQLT_BLOB : SQLT_STR; // FIXME need checking that SQLT_BLOB can be used here
                 R->lastError = OCIDefineByPos(R->stmt, &R->defnpp[i-1], R->err, i, R->columns[i-1].buffer, (deptlen + 1), fldtype, 0, 0, 0, OCI_DEFAULT);
+                OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
         }
 }
 
@@ -197,8 +198,10 @@ long OracleResultSet_getColumnSize(T R, int columnIndex) {
         if (status != OCI_SUCCESS)
                 return -1;
         status = OCIAttrGet(pard, OCI_DTYPE_PARAM, &char_semantics, NULL, OCI_ATTR_CHAR_USED, R->err);
-        if (status != OCI_SUCCESS)
+        if (status != OCI_SUCCESS) {
+                OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
                 return -1;
+        }
         status = (char_semantics) ?
         /* Retrieve the column width in characters */
         OCIAttrGet(pard, OCI_DTYPE_PARAM, &col_width, NULL, OCI_ATTR_CHAR_SIZE, R->err) :
