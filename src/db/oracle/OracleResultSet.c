@@ -54,6 +54,11 @@ const struct Rop_T oraclerops = {
         OracleResultSet_getString,
         OracleResultSet_getBlob,
 };
+typedef struct column_t {
+        int isnull;
+        char *buffer;
+        unsigned long length;
+} *column_t;
 #define T ResultSetImpl_T
 struct T {
         int         columnCount;
@@ -63,10 +68,15 @@ struct T {
         OCIError*   err;
         OCISvcCtx*  svc;
         OCIDefine** defnpp;
-        void**      dept;
+        column_t    columns;
         sword       lastError;
         int         freeStatement;
 };
+
+#define TEST_INDEX \
+int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
+i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); \
+return NULL; } // FIXME add check for SQL null value and return NULL if SQL null
 
 
 /* ------------------------------------------------------- Private methods */
@@ -90,10 +100,10 @@ static void initaleDefiningBuffers(T R) {
                 /* Use the retrieved length of dname to allocate an output buffer, and
                  then define the output variable. 
                  */
-                R->dept[i-1] = ALLOC(deptlen + 1);
-                fldtype = (SQLT_BIN == dtype) ? SQLT_LNG : SQLT_STR;
-                R->lastError = OCIDefineByPos(R->stmt, &R->defnpp[i-1], R->err, i, R->dept[i-1], (deptlen + 1), fldtype, 0, 0, 0, OCI_DEFAULT);
-                OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
+                R->columns[i-1].length = deptlen;
+                R->columns[i-1].buffer = ALLOC(R->columns[i-1].length + 1);
+                fldtype = (SQLT_BIN == dtype) ? SQLT_BLOB : SQLT_STR; // FIXME need checking that SQLT_BLOB can be used here
+                R->lastError = OCIDefineByPos(R->stmt, &R->defnpp[i-1], R->err, i, R->columns[i-1].buffer, (deptlen + 1), fldtype, 0, 0, 0, OCI_DEFAULT);
         }
 }
 
@@ -125,7 +135,7 @@ T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc,
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
         R->defnpp = CALLOC(R->columnCount, sizeof(OCIDefine*));
-        R->dept = CALLOC(R->columnCount, sizeof(void*));
+        R->columns = CALLOC(R->columnCount, sizeof (struct column_t));
         initaleDefiningBuffers(R);
         return R;
 }
@@ -137,9 +147,9 @@ void OracleResultSet_free(T *R) {
         if ((*R)->freeStatement)
                 OCIHandleFree((*R)->stmt, OCI_HTYPE_STMT);
         for (i = 0; i < (*R)->columnCount; i++)
-                FREE((*R)->dept[i]);
+                FREE((*R)->columns[i].buffer);
         free((*R)->defnpp);
-        free((*R)->dept);
+        free((*R)->columns);
         FREE(*R);
 }
 
@@ -187,38 +197,32 @@ long OracleResultSet_getColumnSize(T R, int columnIndex) {
         if (status != OCI_SUCCESS)
                 return -1;
         status = OCIAttrGet(pard, OCI_DTYPE_PARAM, &char_semantics, NULL, OCI_ATTR_CHAR_USED, R->err);
-        if (status != OCI_SUCCESS) {
-                OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
+        if (status != OCI_SUCCESS)
                 return -1;
-        }
         status = (char_semantics) ?
         /* Retrieve the column width in characters */
         OCIAttrGet(pard, OCI_DTYPE_PARAM, &col_width, NULL, OCI_ATTR_CHAR_SIZE, R->err) :
         /* Retrieve the column width in bytes */
         OCIAttrGet(pard, OCI_DTYPE_PARAM, &col_width, NULL, OCI_ATTR_DATA_SIZE, R->err);
-        OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
         return (status != OCI_SUCCESS) ? -1 : col_width;
 }
 
 
 const char *OracleResultSet_getString(T R, int columnIndex) {
-        assert(R);
-        if (columnIndex <= 0 || columnIndex > R->columnCount)
-                THROW(SQLException, "Column index is out of range");
-        return R->dept[columnIndex-1];
+        TEST_INDEX
+        R->columns[i].buffer[R->columns[i].length] = 0;
+        return R->columns[i].buffer;
 }
 
 
 const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         OCIParam* pard = NULL;
         int sizelen = sizeof(*size);
-        assert(R);
-        if (columnIndex <= 0 || columnIndex > R->columnCount)
-                THROW(SQLException, "Column index is out of range"); 
+        TEST_INDEX
         OCIParamGet(R->stmt, OCI_HTYPE_STMT, R->err, (void **)&pard, columnIndex);
         OCIAttrGet(pard, OCI_DTYPE_PARAM, size, &sizelen, OCI_ATTR_DATA_SIZE, R->err);
         OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
-        return R->dept[columnIndex-1];
+        return R->columns[i].buffer;
 }
 
 #ifdef PACKAGE_PROTECTED
