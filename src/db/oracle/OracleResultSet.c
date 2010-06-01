@@ -55,6 +55,7 @@ const struct Rop_T oraclerops = {
         OracleResultSet_getBlob,
 };
 typedef struct column_t {
+        OCIDefine *def;
         int isnull;
         char *buffer;
         unsigned long length;
@@ -67,7 +68,6 @@ struct T {
         OCIEnv*     env;
         OCIError*   err;
         OCISvcCtx*  svc;
-        OCIDefine** defnpp;
         column_t    columns;
         sword       lastError;
         int         freeStatement;
@@ -95,15 +95,13 @@ static void initaleDefiningBuffers(T R) {
                 OCIParamGet(R->stmt, OCI_HTYPE_STMT, R->err, (void **)&pard, i);
                 OCIAttrGet(pard, OCI_DTYPE_PARAM, &deptlen, &sizelen, OCI_ATTR_DATA_SIZE, R->err);
                 OCIAttrGet(pard, OCI_DTYPE_PARAM, &dtype, 0, OCI_ATTR_DATA_TYPE, R->err);
-                if (R->defnpp[i-1])
-                        FREE(R->defnpp[i-1]);
                 /* Use the retrieved length of dname to allocate an output buffer, and
                  then define the output variable. 
                  */
                 R->columns[i-1].length = deptlen;
                 R->columns[i-1].buffer = ALLOC(R->columns[i-1].length + 1);
                 fldtype = (SQLT_BIN == dtype) ? SQLT_BLOB : SQLT_STR; // FIXME need checking that SQLT_BLOB can be used here
-                R->lastError = OCIDefineByPos(R->stmt, &R->defnpp[i-1], R->err, i, R->columns[i-1].buffer, (deptlen + 1), fldtype, 0, 0, 0, OCI_DEFAULT);
+                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, R->columns[i-1].buffer, (deptlen + 1), fldtype, 0, 0, 0, OCI_DEFAULT);
                 OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
         }
 }
@@ -135,7 +133,6 @@ T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc,
         R->lastError = OCIAttrGet (R->stmt, OCI_HTYPE_STMT, &R->columnCount, NULL, OCI_ATTR_PARAM_COUNT, R->err);
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
-        R->defnpp = CALLOC(R->columnCount, sizeof(OCIDefine*));
         R->columns = CALLOC(R->columnCount, sizeof (struct column_t));
         initaleDefiningBuffers(R);
         return R;
@@ -149,7 +146,6 @@ void OracleResultSet_free(T *R) {
                 OCIHandleFree((*R)->stmt, OCI_HTYPE_STMT);
         for (i = 0; i < (*R)->columnCount; i++)
                 FREE((*R)->columns[i].buffer);
-        free((*R)->defnpp);
         free((*R)->columns);
         FREE(*R);
 }
