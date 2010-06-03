@@ -336,7 +336,7 @@ ResultSet_T OracleConnection_executeQuery(T C, const char *sql, va_list ap) {
         C->lastError = OCIAttrGet(stmtp, OCI_HTYPE_STMT, &C->rowsChanged, 0, OCI_ATTR_ROW_COUNT, C->err);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleConnection_execute: Error in OCIAttrGet %d (%s)\n", C->lastError, OracleConnection_getLastError(C));
-        return ResultSet_new(OracleResultSet_new(stmtp, C->env, C->err, C->svc, true), (Rop_T)&oraclerops);
+        return ResultSet_new(OracleResultSet_new(stmtp, C->env, C->err, C->svc, true, C->maxRows), (Rop_T)&oraclerops);
 }
 
 
@@ -359,7 +359,7 @@ PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_l
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
-        return PreparedStatement_new(OraclePreparedStatement_new(stmtp, C->env, C->err, C->svc), (Pop_T)&oraclepops);
+        return PreparedStatement_new(OraclePreparedStatement_new(stmtp, C->env, C->err, C->svc, C->maxRows), (Pop_T)&oraclepops);
 }
 
 

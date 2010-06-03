@@ -56,13 +56,14 @@ const struct Rop_T oraclerops = {
 };
 typedef struct column_t {
         OCIDefine *def;
-        int isnull;
+        int isNull;
         char *buffer;
         unsigned long length;
 } *column_t;
 #define T ResultSetImpl_T
 struct T {
         int         columnCount;
+        int         row;
         ub4         maxRow;
         OCIStmt*    stmt;
         OCIEnv*     env;
@@ -98,10 +99,16 @@ static void initaleDefiningBuffers(T R) {
                 /* Use the retrieved length of dname to allocate an output buffer, and
                  then define the output variable. 
                  */
+                deptlen +=1;
                 R->columns[i-1].length = deptlen;
-                R->columns[i-1].buffer = ALLOC(R->columns[i-1].length + 1);
-                fldtype = (SQLT_BIN == dtype) ? SQLT_BLOB : SQLT_STR; // FIXME need checking that SQLT_BLOB can be used here
-                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, R->columns[i-1].buffer, (deptlen + 1), fldtype, 0, 0, 0, OCI_DEFAULT);
+		            switch(dtype) {
+                        case SQLT_BLOB: fldtype = SQLT_BIN;  break;
+                        case SQLT_CLOB: fldtype = SQLT_CHR; break;
+                        default: fldtype = SQLT_CHR;//SQLT_VCS;
+		            }
+                R->columns[i-1].buffer = ALLOC(deptlen + 1);
+                R->columns[i-1].isNull = 0;
+                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, R->columns[i-1].buffer, deptlen, fldtype, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
                 OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
         }
 }
@@ -114,7 +121,7 @@ static void initaleDefiningBuffers(T R) {
 #pragma GCC visibility push(hidden)
 #endif
 
-T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc, int need_free) {
+T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc, int need_free, int max_row) {
         T R;
         assert(stmt);
         assert(env);
@@ -126,7 +133,8 @@ T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc,
         R->err  = err;
         R->svc  = svc;
         R->freeStatement = need_free;
-        R->lastError = OCIAttrGet(R->stmt, OCI_HTYPE_STMT, &R->maxRow, NULL, OCI_ATTR_ROWS_FETCHED, R->err);
+        R->row = 0;
+        R->lastError = OCIAttrGet(R->stmt, OCI_HTYPE_STMT, &R->maxRow, NULL, OCI_ATTR_ROW_COUNT/*OCI_ATTR_ROWS_FETCHED*/, R->err);
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
         /* Get the number of columns in the select list */
@@ -135,6 +143,8 @@ T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc,
                 DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
         R->columns = CALLOC(R->columnCount, sizeof (struct column_t));
         initaleDefiningBuffers(R);
+        if ((max_row != 0) && ((R->maxRow > max_row) ||(R->maxRow == 0))) 
+                R->maxRow = max_row;
         return R;
 }
 
@@ -175,11 +185,14 @@ const char *OracleResultSet_getColumnName(T R, int column) {
 
 int OracleResultSet_next(T R) {
         assert(R);
+        if ((R->maxRow > 0) && (R->row >= R->maxRow))
+                return false;
         R->lastError = OCIStmtFetch2(R->stmt, R->err, 1, OCI_FETCH_NEXT, 0, OCI_DEFAULT);
-        if (R->lastError == OCI_NO_DATA)
+        if (R->lastError == OCI_NO_DATA) 
                 return false;
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
+        R->row++;
         return (R->lastError == OCI_SUCCESS);
 }
 
