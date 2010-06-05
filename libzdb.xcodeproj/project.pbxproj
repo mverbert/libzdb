@@ -89,6 +89,7 @@
 		52DA496111AB21360052D06B /* OraclePreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OraclePreparedStatement.h; sourceTree = "<group>"; };
 		52DA496211AB21360052D06B /* OracleResultSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OracleResultSet.c; sourceTree = "<group>"; };
 		52DA496311AB21360052D06B /* OracleResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OracleResultSet.h; sourceTree = "<group>"; };
+		52E35DAF11BB01F900272194 /* ax_lib_oracle_oci.m4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ax_lib_oracle_oci.m4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -115,6 +116,7 @@
 		52492EA80FDAA1070024B721 /* config */ = {
 			isa = PBXGroup;
 			children = (
+				52E35DAF11BB01F900272194 /* ax_lib_oracle_oci.m4 */,
 				52492EA90FDAA1070024B721 /* doxy_bottom */,
 				52492EAA0FDAA1070024B721 /* doxy_head */,
 				52492EAB0FDAA1070024B721 /* Doxyfile */,

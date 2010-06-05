@@ -77,7 +77,7 @@ struct T {
 #define TEST_INDEX \
         int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
         i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); \
-        return NULL; } // FIXME add check for SQL null value and return NULL if SQL null
+        return NULL; } if (R->columns[i].isNull) return NULL;
 
 
 /* ------------------------------------------------------- Private methods */
@@ -93,19 +93,22 @@ static void initaleDefiningBuffers(T R) {
         for (i = 1; i <= R->columnCount; i++) {
                 /* The next two statements describe the select-list item, dname, and
                  return its length */
+                // FIXME: check return values and if error print debug info and set a flag 
+                // so OracleResultSet_next returns false on first call as we can't throw exception in OracleResultSet_new
+                // Also check if its possible to set column.length persistent
                 OCIParamGet(R->stmt, OCI_HTYPE_STMT, R->err, (void **)&pard, i);
                 OCIAttrGet(pard, OCI_DTYPE_PARAM, &deptlen, &sizelen, OCI_ATTR_DATA_SIZE, R->err);
                 OCIAttrGet(pard, OCI_DTYPE_PARAM, &dtype, 0, OCI_ATTR_DATA_TYPE, R->err);
                 /* Use the retrieved length of dname to allocate an output buffer, and
-                 then define the output variable. 
-                 */
+                 then define the output variable. */
                 deptlen +=1;
                 R->columns[i-1].length = deptlen;
-		            switch(dtype) {
+                switch(dtype) 
+                {
                         case SQLT_BLOB: fldtype = SQLT_BIN;  break;
                         case SQLT_CLOB: fldtype = SQLT_CHR; break;
-                        default: fldtype = SQLT_CHR;//SQLT_VCS;
-		            }
+                        default: fldtype = SQLT_CHR; //SQLT_VCS;
+                }
                 R->columns[i-1].buffer = ALLOC(deptlen + 1);
                 R->columns[i-1].isNull = 0;
                 R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, R->columns[i-1].buffer, deptlen, fldtype, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
@@ -222,6 +225,7 @@ long OracleResultSet_getColumnSize(T R, int columnIndex) {
 
 const char *OracleResultSet_getString(T R, int columnIndex) {
         TEST_INDEX
+        // FIXME Need a way to set R->columns[i].length to the actual length of the current buffer
         R->columns[i].buffer[R->columns[i].length] = 0;
         return R->columns[i].buffer;
 }
