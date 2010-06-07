@@ -83,22 +83,27 @@ struct T {
 /* ------------------------------------------------------- Private methods */
 
 
-static void initaleDefiningBuffers(T R) {
+static int initaleDefiningBuffers(T R) {
         int i;
         ub2 dtype = 0;
         ub2 fldtype;
-        int deptlen = 0;
+        int deptlen;
         int sizelen = sizeof(deptlen);
         OCIParam* pard = NULL;
         for (i = 1; i <= R->columnCount; i++) {
+                 deptlen = 0;
                 /* The next two statements describe the select-list item, dname, and
                  return its length */
-                // FIXME: check return values and if error print debug info and set a flag 
-                // so OracleResultSet_next returns false on first call as we can't throw exception in OracleResultSet_new
-                // Also check if its possible to set column.length persistent
-                OCIParamGet(R->stmt, OCI_HTYPE_STMT, R->err, (void **)&pard, i);
-                OCIAttrGet(pard, OCI_DTYPE_PARAM, &deptlen, &sizelen, OCI_ATTR_DATA_SIZE, R->err);
-                OCIAttrGet(pard, OCI_DTYPE_PARAM, &dtype, 0, OCI_ATTR_DATA_TYPE, R->err);
+                R->lastError = OCIParamGet(R->stmt, OCI_HTYPE_STMT, R->err, (void **)&pard, i);
+                if (R->lastError != OCI_SUCCESS) 
+                        return false;
+                R->lastError = OCIAttrGet(pard, OCI_DTYPE_PARAM, &deptlen, &sizelen, OCI_ATTR_DATA_SIZE, R->err);
+                if (R->lastError != OCI_SUCCESS) { 
+                        // cannot get column's size, cleaning and returning
+                        OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
+                        return false;
+                }
+                OCIAttrGet(pard, OCI_DTYPE_PARAM, &dtype, 0, OCI_ATTR_DATA_TYPE, R->err); 
                 /* Use the retrieved length of dname to allocate an output buffer, and
                  then define the output variable. */
                 deptlen +=1;
@@ -113,7 +118,12 @@ static void initaleDefiningBuffers(T R) {
                 R->columns[i-1].isNull = 0;
                 R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, R->columns[i-1].buffer, deptlen, fldtype, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
                 OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
+                if (R->lastError != OCI_SUCCESS) {
+                        return false;
+                }
         }
+
+        return true;
 }
 
 
@@ -145,7 +155,10 @@ T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc,
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
         R->columns = CALLOC(R->columnCount, sizeof (struct column_t));
-        initaleDefiningBuffers(R);
+        if (!initaleDefiningBuffers(R)) {
+                DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
+                R->row = -1;
+        }
         if ((max_row != 0) && ((R->maxRow > max_row) ||(R->maxRow == 0))) 
                 R->maxRow = max_row;
         return R;
@@ -188,7 +201,7 @@ const char *OracleResultSet_getColumnName(T R, int column) {
 
 int OracleResultSet_next(T R) {
         assert(R);
-        if ((R->maxRow > 0) && (R->row >= R->maxRow))
+        if ((R->row < 0) || ((R->maxRow > 0) && (R->row >= R->maxRow)))
                 return false;
         R->lastError = OCIStmtFetch2(R->stmt, R->err, 1, OCI_FETCH_NEXT, 0, OCI_DEFAULT);
         if (R->lastError == OCI_NO_DATA) 

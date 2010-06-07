@@ -120,11 +120,7 @@ void OraclePreparedStatement_free(T *P) {
         assert(P && *P);
         OCIHandleFree((*P)->stmt, OCI_HTYPE_STMT);
         if ((*P)->params) {
-                int i;
-                for (i = 0; i < (*P)->paramCount; i++) 
-                        // FIXME is this required? And if so it must probably also be called before
-                        // each OraclePreparedStatement_setXXX statement since a statement can be reused
-                        OCIHandleFree((*P)->params[i].bind, OCI_HTYPE_BIND); 
+                // (*P)->params[i].bind is freed implicitly when the statement handle is deallocated
                 FREE((*P)->params);
         }
         FREE(*P);
