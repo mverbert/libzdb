@@ -203,7 +203,7 @@ ResultSet_T OraclePreparedStatement_executeQuery(T P) {
 /* This is a general error function also used in OracleResultSet */
 const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp) {
         sb4 errcode;
-        static char erb[STRLEN]; // TODO: This is wrong in a multi-threaded environment
+        static __thread char erb[STRLEN]; // TODO: it could be non portable...
         assert(errhp);
         switch (err)
         {
