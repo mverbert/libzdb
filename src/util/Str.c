@@ -83,18 +83,29 @@ char *Str_copy(char *dest, const char *src, int n) {
 }
 
 
-char *Str_dup(const char *s) {
-        return (s ? Str_ndup(s, strlen(s)) : NULL);
+// We don't use strdup to support MemoryException on OOM
+char *Str_dup(const char *s) { 
+        char *t = NULL;
+        if (s) {
+                int n = strlen(s); 
+                t = ALLOC(n + 1);
+                memcpy(t, s, n);
+                t[n]= 0;
+        }
+        return t;
 }
 
 
 char *Str_ndup(const char *s, int n) {
-        char *t = 0;
-	if (s) {
-		t = ALLOC(n + 1);
-		memcpy(t, s, n);
-		t[n] = 0;
-	}
+        char *t = NULL;
+        assert(n >= 0);
+        if (s) {
+                int l = strlen(s); 
+                n = l < n ? l : n; // Use the actual length of s if shorter than n
+                t = ALLOC(n + 1);
+                memcpy(t, s, n);
+                t[n]= 0;
+        }
         return t;
 }
 

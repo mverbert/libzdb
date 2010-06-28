@@ -71,18 +71,23 @@ char *Str_copy(char *dest, const char *src, int n);
 
 
 /**
- * Returns a duplicate of <code>s</code>
+ * Returns a copy of <code>s</code>. The caller must free the returned String.
  * @param s A String to duplicate
- * @return A duplicate of string s
+ * @return A pointer to the duplicated string, NULL if s is NULL
+ * @exception MemoryException if allocation failed
  */
 char *Str_dup(const char *s);
 
 
 /**
- * Strdup that duplicates only n char from the given string
+ * Strdup that duplicates only n char from the given string The caller 
+ * must free the returned String. If s is less than n characters long, all 
+ * characters of s are copied. I.e. the same as calling Str_dup(s).
  * @param s A string to duplicate
- * @param n The number of bytes to duplicate
- * @return A n bytes duplicate of string s
+ * @param n The number of bytes to copy from s
+ * @return A pointer to the duplicated string, NULL if s is NULL
+ * @exception MemoryException if allocation failed
+ * @exception AssertException if n is less than 0
  */
 char *Str_ndup(const char *s, int n);
 
