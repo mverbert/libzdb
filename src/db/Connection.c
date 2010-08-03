@@ -229,6 +229,8 @@ int Connection_ping(T C) {
 
 void Connection_clear(T C) {
         assert(C);
+        if (C->op->clear)
+                C->op->clear(C->I);
         if (C->resultSet)
                 ResultSet_free(&C->resultSet);
         if (C->maxRows)

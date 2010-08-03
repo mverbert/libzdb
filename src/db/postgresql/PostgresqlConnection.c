@@ -48,6 +48,7 @@ const struct Cop_T postgresqlcops = {
         PostgresqlConnection_setQueryTimeout,
         PostgresqlConnection_setMaxRows,
         PostgresqlConnection_ping,
+        NULL,
         PostgresqlConnection_beginTransaction,
         PostgresqlConnection_commit,
         PostgresqlConnection_rollback,

@@ -20,6 +20,7 @@ void SQLiteConnection_free(T *C);
 void SQLiteConnection_setQueryTimeout(T C, int ms);
 void SQLiteConnection_setMaxRows(T C, int max);
 int SQLiteConnection_ping(T C);
+void SQLiteConnection_clear(T C);
 int SQLiteConnection_beginTransaction(T C);
 int SQLiteConnection_commit(T C);
 int SQLiteConnection_rollback(T C);

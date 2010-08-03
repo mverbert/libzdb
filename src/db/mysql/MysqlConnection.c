@@ -52,6 +52,7 @@ const struct Cop_T mysqlcops = {
         MysqlConnection_setQueryTimeout,
         MysqlConnection_setMaxRows,
         MysqlConnection_ping,
+        NULL,
         MysqlConnection_beginTransaction,
         MysqlConnection_commit,
         MysqlConnection_rollback,
@@ -200,7 +201,6 @@ int MysqlConnection_ping(T C) {
         assert(C);
         return (mysql_ping(C->db) == 0);
 }
-
 
 
 int MysqlConnection_beginTransaction(T C) {
