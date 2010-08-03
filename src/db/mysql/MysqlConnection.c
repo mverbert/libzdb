@@ -52,7 +52,6 @@ const struct Cop_T mysqlcops = {
         MysqlConnection_setQueryTimeout,
         MysqlConnection_setMaxRows,
         MysqlConnection_ping,
-        NULL,
         MysqlConnection_beginTransaction,
         MysqlConnection_commit,
         MysqlConnection_rollback,

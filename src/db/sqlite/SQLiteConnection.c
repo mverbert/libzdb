@@ -46,7 +46,6 @@ const struct Cop_T sqlite3cops = {
         SQLiteConnection_setQueryTimeout,
         SQLiteConnection_setMaxRows,
         SQLiteConnection_ping,
-        SQLiteConnection_clear,
         SQLiteConnection_beginTransaction,
         SQLiteConnection_commit,
         SQLiteConnection_rollback,
@@ -181,16 +180,6 @@ int SQLiteConnection_ping(T C) {
         assert(C);
         executeSQL(C, "select 1;");
         return (C->lastError == SQLITE_OK);
-}
-
-
-void SQLiteConnection_clear(T C) {
-        int used, hiwat;
-        assert(C);
-#ifdef SQLITE_DBSTATUS_CACHE_USED
-        if (sqlite3_db_status(C->db, SQLITE_DBSTATUS_CACHE_USED, &used, &hiwat, false) == SQLITE_OK)
-                sqlite3_release_memory(used);
-#endif
 }
 
 

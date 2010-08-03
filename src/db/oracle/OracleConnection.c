@@ -51,7 +51,6 @@ const struct Cop_T oraclesqlcops = {
         OracleConnection_setQueryTimeout,
         OracleConnection_setMaxRows,
         OracleConnection_ping,
-        NULL,
         OracleConnection_beginTransaction,
         OracleConnection_commit,
         OracleConnection_rollback,

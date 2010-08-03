@@ -35,7 +35,6 @@ typedef struct Cop_T {
 	void (*setQueryTimeout)(T C, int ms);
         void (*setMaxRows)(T C, int max);
         int (*ping)(T C);
-        void (*clear)(T C);
         int (*beginTransaction)(T C);
         int (*commit)(T C);
 	int (*rollback)(T C);
