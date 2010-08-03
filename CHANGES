@@ -8,10 +8,6 @@ Version 2.7
   Thanks to Bogdan Nicula for suggestions.
 * Added support for Oracle. Thanks to Volodymyr Tarasenko,
   and Sergey Pavlov for implementating this.
-* SQLite: added "heap_limit" connection URL option, which
-  allows to auto-release memory used by sqlite's cache
-  if sqlite is compiled with SQLITE_ENABLE_MEMORY_MANAGEMENT
-  option.
 Bug fixes:
 * Reset Connection.in-transaction flag on Connection_clear
 * SQLite: Ensure that the database file is specified in
