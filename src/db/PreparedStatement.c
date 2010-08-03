@@ -113,11 +113,10 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 }
 
 
-int PreparedStatement_execute(T P) {
+void PreparedStatement_execute(T P) {
 	assert(P);
         clearResultSet(P);
         P->op->execute(P->I);
-	return true;
 }
 
 
