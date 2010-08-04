@@ -87,9 +87,10 @@ static sqlite3 *doConnect(URL_T url, char **error) {
                 }
                 path++;
         }
+        /* Shared cache mode help reduce database lock problems if libzdb is used with many */
 #if SQLITE_VERSION_NUMBER >= 3005000
         if (SQLITE_OK != sqlite3_enable_shared_cache(true)) {
-                *error = Str_cat("cannot set shared cache mode");
+                *error = Str_cat("cannot enable shared cache mode");
                 return NULL;
         }
 #endif
