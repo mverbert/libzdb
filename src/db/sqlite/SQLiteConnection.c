@@ -115,19 +115,20 @@ static inline void executeSQL(T C, const char *sql) {
 static int setProperties(T C, char **error) {
         int i;
         const char **properties = URL_getParameterNames(C->url);
-        const char *heap_limit = URL_getParameter(C->url, "heap_limit");
         if (properties) {
                 StringBuffer_clear(C->sb);
-                for (i = 0; properties[i]; i++)
+                for (i = 0; properties[i]; i++) {
+                        if (IS(properties[i], "heap_limit")) // There is no PRAGMA for heap limit as of sqlite-3.7.0, we make it configurable using "heap_limit" option [kB]
+                                sqlite3_soft_heap_limit(Str_parseInt(URL_getParameter(C->url, properties[i])) * 1024);
+                        else
                                 StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));
+                }
                 executeSQL(C, StringBuffer_toString(C->sb));
                 if (C->lastError != SQLITE_OK) {
                         *error = Str_cat("unable to set database pragmas -- %s", sqlite3_errmsg(C->db));
                         return false;
                 }
         }
-        if (heap_limit) // Place a "soft" limit on the amount of heap memory that may be allocated by SQLite
-                sqlite3_soft_heap_limit(Str_parseInt(heap_limit) * 1024);
         return true;
 }
 
