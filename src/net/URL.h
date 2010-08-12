@@ -63,8 +63,7 @@ typedef struct T *T;
 /**
  * Create a new URL object from the <code>url</code> parameter
  * string. The url string <i>must</i> start with a protocol
- * specifier, such as \htmlonly<code>http://</code>\endhtmlonly or
- * \htmlonly<code>ftp://</code>\endhtmlonly. 
+ * specifier, such as <code>http://</code> or <code>ftp://</code>
  * @param url A string specifying the URL
  * @return A URL object or NULL if the <code>url</code> parameter
  * cannot be parsed as an URL.

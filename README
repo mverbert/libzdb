@@ -59,8 +59,8 @@
  --without-mysql, --without-postgresql or --without-sqlite
   
  To verify the library and run unit tests, do 'make verify'. You may
- also want to take a look at the tests test/select.c and test/pool.c 
- for examples on how to use the library.
+ also want to take a look at test/select.c for an example on how to use
+ the library.
   
  Note that unit tests cannot be built if the --enable-protected
  configure switch where used. This switch is used to package protect

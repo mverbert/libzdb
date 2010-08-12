@@ -334,7 +334,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB919308733D9F0010E9CD /* Build configuration list for PBXProject "libzdb" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* libzdb */;
 			projectDirPath = "";
 			projectRoot = "";

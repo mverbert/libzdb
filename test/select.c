@@ -25,19 +25,16 @@ int main(void) {
                         "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 
                         "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", 0
                 };
-                TRY Connection_execute(con, "drop table ztest;"); ELSE END_TRY;
-                Connection_execute(con, "create table ztest(name varchar(255));");
-                PreparedStatement_T p = Connection_prepareStatement(con, "insert into ztest values (?);"); 
+                Connection_execute(con, "create table bleach(name varchar(255));");
+                PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?);"); 
                 for (i = 0; bleach[i]; i++) {
                         PreparedStatement_setString(p, 1, bleach[i]);
                         PreparedStatement_execute(p);
                 }
-                p = Connection_prepareStatement(con, "select name from ztest where name like ?;"); 
-                PreparedStatement_setString(p, 1, "%Inoue%");
-                ResultSet_T result = PreparedStatement_executeQuery(p);
+                ResultSet_T result = Connection_executeQuery(con, "select name from bleach;");
                 while (ResultSet_next(result))
                         printf("%s\n", ResultSet_getString(result, 1));
-                Connection_execute(con, "drop table ztest;");
+                Connection_execute(con, "drop table bleach;");
         }
         CATCH(SQLException)
         {
