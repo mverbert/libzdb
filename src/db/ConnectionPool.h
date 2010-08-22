@@ -48,7 +48,7 @@
  * ConnectionPool_setMaxConnections(). 
  *
  * Applications can instantiate as many ConnectionPool objects as needed 
- * and against as many different databases as needed.
+ * and against as many different database systems as needed.
  *
  * <h2>Supported database systems:</h2>
  * This library may be built with support for many different database 
@@ -125,16 +125,11 @@
  * </code></dd></dt>
  * \endhtmlonly
  *
- * An in-memory SQLite database can also be created by using the special
- * <code>:memory:</code> database name in the URL. (An in-memory database
- * lives only as long as the program is running and use a small amount of 
- * memory before population). Notice that a preceding '/' path is required:
- *
- * \htmlonly
- * <dt><dd><code>
- * sqlite:///:memory:
- * </code></dd></dt>
- * \endhtmlonly
+ * In addition to pragmas, the following properties can be used:
+ * <ul>
+ * <li><code>heap-limit=value</code> - Make SQLite auto-release unused memory 
+ * if memory usage goes above the specified value [KB].</li> 
+ * </ul>
  *
  * <b>PostgreSQL:</b>
  *
@@ -182,7 +177,7 @@
  *
  * \htmlonly
  * <dt><dd><code>
- * oracle:///service_name?user=scott&password=tiger
+ * oracle:///servicename?user=scott&password=tiger
  * </code></dd></dt>
  * \endhtmlonly
  *  

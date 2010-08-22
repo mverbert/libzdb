@@ -78,14 +78,8 @@ static sqlite3 *doConnect(URL_T url, char **error) {
 	sqlite3 *db;
         const char *path = URL_getPath(url);
         if (! path) {
-                *error = Str_cat("no database specified in URL");
+                *error = Str_dup("no database specified in URL");
                 return NULL;
-        } else if (path[0] == '/' && path[1] == ':') {
-                if (! IS(path, "/:memory:")) {
-                        *error = Str_cat("unknown database '%s', did you mean '/:memory:'?", path);
-                        return NULL;
-                }
-                path++;
         }
         /* Shared cache mode help reduce database lock problems if libzdb is used with many threads */
 #if SQLITE_VERSION_NUMBER >= 3005000
@@ -118,7 +112,7 @@ static int setProperties(T C, char **error) {
         if (properties) {
                 StringBuffer_clear(C->sb);
                 for (i = 0; properties[i]; i++) {
-                        if (IS(properties[i], "heap_limit")) // There is no PRAGMA for heap limit as of sqlite-3.7.0, so we make it configurable using "heap_limit" option [kB]
+                        if (IS(properties[i], "heap-limit")) // There is no PRAGMA for heap limit as of sqlite-3.7.0, so we make it a configurable property using "heap-limit" [kB]
                                 sqlite3_soft_heap_limit(Str_parseInt(URL_getParameter(C->url, properties[i])) * 1024);
                         else
                                 StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));
