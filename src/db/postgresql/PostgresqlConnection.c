@@ -27,12 +27,12 @@
 #include "PreparedStatement.h"
 #include "PostgresqlResultSet.h"
 #include "PostgresqlPreparedStatement.h"
-#include "ConnectionStrategy.h"
+#include "ConnectionDelegate.h"
 #include "PostgresqlConnection.h"
 
 
 /**
- * Implementation of the Connection/Strategy interface for postgresql. 
+ * Implementation of the Connection/Delegate interface for postgresql. 
  * 
  * @file
  */

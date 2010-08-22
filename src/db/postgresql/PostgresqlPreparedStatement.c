@@ -22,12 +22,12 @@
 
 #include "ResultSet.h"
 #include "PostgresqlResultSet.h"
-#include "PreparedStatementStrategy.h"
+#include "PreparedStatementDelegate.h"
 #include "PostgresqlPreparedStatement.h"
 
 
 /**
- * Implementation of the PreparedStatement/Strategy interface for postgresql.
+ * Implementation of the PreparedStatement/Delegate interface for postgresql.
  * All parameter values are sent as text except for blobs. Postgres ignore
  * paramLengths for text parameters and it is therefor set to 0, except for blob.
  *

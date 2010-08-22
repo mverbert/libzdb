@@ -25,7 +25,7 @@
 #include "PreparedStatement.h"
 #include "Connection.h"
 #include "ConnectionPool.h"
-#include "ConnectionStrategy.h"
+#include "ConnectionDelegate.h"
 
 
 /**
@@ -95,7 +95,7 @@ static Cop_T getOp(const char *protocol) {
 }
 
 
-static int setStrategy(T C, char **error) {
+static int setDelegate(T C, char **error) {
         const char *protocol = URL_getProtocol(C->url);
         C->op = getOp(protocol);
         if (! C->op) {
@@ -134,7 +134,7 @@ T Connection_new(void *pool, char **error) {
         C->prepared = Vector_new(4);
         C->timeout = SQL_DEFAULT_TIMEOUT;
         C->url = ConnectionPool_getURL(pool);
-        if (! setStrategy(C, error)) {
+        if (! setDelegate(C, error)) {
                 Connection_free(&C);
                 return NULL;
         }

@@ -30,12 +30,12 @@
 #include "PreparedStatement.h"
 #include "OracleResultSet.h"
 #include "OraclePreparedStatement.h"
-#include "ConnectionStrategy.h"
+#include "ConnectionDelegate.h"
 #include "OracleConnection.h"
 
 
 /**
- * Implementation of the Connection/Strategy interface for oracle. 
+ * Implementation of the Connection/Delegate interface for oracle. 
  * 
  * @file
  */

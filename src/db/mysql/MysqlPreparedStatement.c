@@ -22,12 +22,12 @@
 
 #include "ResultSet.h"
 #include "MysqlResultSet.h"
-#include "PreparedStatementStrategy.h"
+#include "PreparedStatementDelegate.h"
 #include "MysqlPreparedStatement.h"
 
 
 /**
- * Implementation of the PreparedStatement/Strategy interface for mysql.
+ * Implementation of the PreparedStatement/Delegate interface for mysql.
  *
  * @file
  */

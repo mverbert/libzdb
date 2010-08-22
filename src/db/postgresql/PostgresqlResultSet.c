@@ -21,12 +21,12 @@
 #include <sys/types.h>
 #include <libpq-fe.h>
 
-#include "ResultSetStrategy.h"
+#include "ResultSetDelegate.h"
 #include "PostgresqlResultSet.h"
 
 
 /**
- * Implementation of the ResultSet/Strategy interface for postgresql. 
+ * Implementation of the ResultSet/Delegate interface for postgresql. 
  * Accessing columns with index outside range throws SQLException
  *
  * @file

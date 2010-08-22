@@ -14,37 +14,30 @@
  */
 
 
-#ifndef CONNECTIONSTRATEGY_INCLUDED
-#define CONNECTIONSTRATEGY_INCLUDED
+#ifndef RESULTSETDELEGATE_INCLUDED
+#define RESULTSETDELEGATE_INCLUDED
 
 
 /**
  * This interface defines the <b>contract</b> for the concrete database 
- * implementation used for delegation in the Connection class.
+ * implementation used for delegation in the ResultSet class.
  *
  * @file
  */ 
 
-#define T ConnectionImpl_T
+#define T ResultSetImpl_T
 typedef struct T *T;
 
-typedef struct Cop_T {
+typedef struct Rop_T {
         const char *name;
-	T (*new)(URL_T url, char **error);
-	void (*free)(T *C);
-	void (*setQueryTimeout)(T C, int ms);
-        void (*setMaxRows)(T C, int max);
-        int (*ping)(T C);
-        int (*beginTransaction)(T C);
-        int (*commit)(T C);
-	int (*rollback)(T C);
-	long long int (*lastRowId)(T C);
-	long long int (*rowsChanged)(T C);
-	int (*execute)(T C, const char *sql, va_list ap);
-	ResultSet_T (*executeQuery)(T C, const char *sql, va_list ap);
-        PreparedStatement_T (*prepareStatement)(T C, const char *sql, va_list ap);
-        const char *(*getLastError)(T C);
-} *Cop_T;
+        void (*free)(T *R);
+        int (*getColumnCount)(T R);
+        const char *(*getColumnName)(T R, int column);
+        int (*next)(T R);
+        long (*getColumnSize)(T R, int columnIndex);
+        const char *(*getString)(T R, int columnIndex);
+        const void *(*getBlob)(T R, int columnIndex, int *size);
+} *Rop_T;
 
 #undef T
 #endif

@@ -21,12 +21,12 @@
 
 #include "ResultSet.h"
 #include "SQLiteResultSet.h"
-#include "PreparedStatementStrategy.h"
+#include "PreparedStatementDelegate.h"
 #include "SQLitePreparedStatement.h"
 
 
 /**
- * Implementation of the PreparedStatement/Strategy interface for SQLite 
+ * Implementation of the PreparedStatement/Delegate interface for SQLite 
  *
  * @file
  */

@@ -21,12 +21,12 @@
 #include <mysql.h>
 #include <errmsg.h>
 
-#include "ResultSetStrategy.h"
+#include "ResultSetDelegate.h"
 #include "MysqlResultSet.h"
 
 
 /**
- * Implementation of the ResultSet/Strategy interface for mysql. 
+ * Implementation of the ResultSet/Delegate interface for mysql. 
  * Accessing columns with index outside range throws SQLException
  *
  * @file

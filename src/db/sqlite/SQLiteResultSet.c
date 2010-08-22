@@ -20,12 +20,12 @@
 #include <string.h>
 #include <sqlite3.h>
 
-#include "ResultSetStrategy.h"
+#include "ResultSetDelegate.h"
 #include "SQLiteResultSet.h"
 
 
 /**
- * Implementation of the ResultSet/Strategy interface for SQLite. 
+ * Implementation of the ResultSet/Delegate interface for SQLite. 
  * Accessing columns with index outside range throws SQLException
  *
  * @file

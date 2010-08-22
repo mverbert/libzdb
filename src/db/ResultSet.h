@@ -17,7 +17,7 @@
 #ifndef RESULTSET_INCLUDED
 #define RESULTSET_INCLUDED
 //<< Start filter-out
-#include "ResultSetStrategy.h"
+#include "ResultSetDelegate.h"
 //>> End filter-out
 
 

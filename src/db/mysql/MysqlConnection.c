@@ -27,12 +27,12 @@
 #include "PreparedStatement.h"
 #include "MysqlResultSet.h"
 #include "MysqlPreparedStatement.h"
-#include "ConnectionStrategy.h"
+#include "ConnectionDelegate.h"
 #include "MysqlConnection.h"
 
 
 /**
- * Implementation of the Connection/Strategy interface for mysql. 
+ * Implementation of the Connection/Delegate interface for mysql. 
  * Remember the swedish chef from the muppet show? I think he got 
  * a new job at MySQL AB; Hoobi-dubi-doh mysql chicken-soup! 
  * 

@@ -25,12 +25,12 @@
 #include "PreparedStatement.h"
 #include "SQLiteResultSet.h"
 #include "SQLitePreparedStatement.h"
-#include "ConnectionStrategy.h"
+#include "ConnectionDelegate.h"
 #include "SQLiteConnection.h"
 
 
 /**
- * Implementation of the Connection/Strategy interface for SQLite 
+ * Implementation of the Connection/Delegate interface for SQLite 
  *
  * @file
  */

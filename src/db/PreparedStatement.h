@@ -17,7 +17,7 @@
 #ifndef PREPAREDSTATEMENT_INCLUDED
 #define PREPAREDSTATEMENT_INCLUDED
 //<< Start filter-out
-#include "PreparedStatementStrategy.h"
+#include "PreparedStatementDelegate.h"
 //>> End filter-out
 
 
