@@ -63,7 +63,7 @@ const struct Cop_T mysqlcops = {
         MysqlConnection_getLastError
 };
 
-#define T ConnectionImpl_T
+#define T ConnectionDelegate_T
 struct T {
         URL_T url;
 	MYSQL *db;

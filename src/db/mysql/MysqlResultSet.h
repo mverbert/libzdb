@@ -14,7 +14,7 @@
  */
 #ifndef MYSQLRESULTSET_INCLUDED
 #define MYSQLRESULTSET_INCLUDED
-#define T ResultSetImpl_T
+#define T ResultSetDelegate_T
 T MysqlResultSet_new(void *stmt, int maxRows, int keep);
 void MysqlResultSet_free(T *R);
 int MysqlResultSet_getColumnCount(T R);

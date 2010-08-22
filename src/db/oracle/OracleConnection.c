@@ -65,7 +65,7 @@ const struct Cop_T oraclesqlcops = {
 #define ERB_SIZE 152
 #define ORACLE_TRANSACTION_PERIOD 10
 
-#define T ConnectionImpl_T
+#define T ConnectionDelegate_T
 struct T {
         URL_T          url;
         OCIEnv*        env;

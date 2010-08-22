@@ -57,7 +57,7 @@ const struct Cop_T sqlite3cops = {
         SQLiteConnection_getLastError
 };
 
-#define T ConnectionImpl_T
+#define T ConnectionDelegate_T
 struct T {
         URL_T url;
 	sqlite3 *db;

@@ -14,7 +14,7 @@
  */
 #ifndef MYSQLPREPAREDSTATEMENT_INCLUDED
 #define MYSQLPREPAREDSTATEMENT_INCLUDED
-#define T PreparedStatementImpl_T
+#define T PreparedStatementDelegate_T
 T MysqlPreparedStatement_new(void *stmt, int maxRows);
 void MysqlPreparedStatement_free(T *P);
 void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x);

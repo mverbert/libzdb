@@ -47,7 +47,7 @@ const struct Pop_T sqlite3pops = {
         SQLitePreparedStatement_executeQuery
 };
 
-#define T PreparedStatementImpl_T
+#define T PreparedStatementDelegate_T
 struct T {
         sqlite3 *db;
         int maxRows;

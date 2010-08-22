@@ -14,7 +14,7 @@
  */
 #ifndef SQLITEPREPAREDSTATEMENT_INCLUDED
 #define SQLITEPREPAREDSTATEMENT_INCLUDED
-#define T PreparedStatementImpl_T
+#define T PreparedStatementDelegate_T
 T SQLitePreparedStatement_new(sqlite3 *db, void *stmt, int maxRows);
 void SQLitePreparedStatement_free(T *P);
 void SQLitePreparedStatement_setString(T P, int parameterIndex, const char *x);

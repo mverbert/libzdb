@@ -103,7 +103,7 @@ static inline int sqlite3_blocking_exec(sqlite3 *db, const char *zSql, int (*cal
 #endif
 
 
-#define T ResultSetImpl_T
+#define T ResultSetDelegate_T
 T SQLiteResultSet_new(void *stmt, int maxRows, int keep);
 void SQLiteResultSet_free(T *R);
 int SQLiteResultSet_getColumnCount(T R);

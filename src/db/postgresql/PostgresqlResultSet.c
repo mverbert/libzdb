@@ -47,7 +47,7 @@ const struct Rop_T postgresqlrops = {
         PostgresqlResultSet_getBlob,
 };
 
-#define T ResultSetImpl_T
+#define T ResultSetDelegate_T
 struct T {
         int maxRows;
         int currentRow;

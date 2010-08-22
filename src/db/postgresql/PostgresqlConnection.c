@@ -59,7 +59,7 @@ const struct Cop_T postgresqlcops = {
         PostgresqlConnection_getLastError
 };
 
-#define T ConnectionImpl_T
+#define T ConnectionDelegate_T
 struct T {
         URL_T url;
 	PGconn *db;

@@ -35,7 +35,7 @@
 #define T ResultSet_T
 struct T {
         Rop_T op;
-        ResultSetImpl_T I;
+        ResultSetDelegate_T D;
 };
 
 
@@ -62,12 +62,12 @@ static inline int getIndex(T R, const char *name) {
 #pragma GCC visibility push(hidden)
 #endif
 
-T ResultSet_new(ResultSetImpl_T I, Rop_T op) {
+T ResultSet_new(ResultSetDelegate_T D, Rop_T op) {
 	T R;
-	assert(I);
+	assert(D);
 	assert(op);
 	NEW(R);
-	R->I = I;
+	R->D = D;
 	R->op = op;
 	return R;
 }
@@ -75,7 +75,7 @@ T ResultSet_new(ResultSetImpl_T I, Rop_T op) {
 
 void ResultSet_free(T *R) {
 	assert(R && *R);
-        (*R)->op->free(&(*R)->I);
+        (*R)->op->free(&(*R)->D);
 	FREE(*R);
 }
 
@@ -89,19 +89,19 @@ void ResultSet_free(T *R) {
 
 int ResultSet_getColumnCount(T R) {
 	assert(R);
-	return R->op->getColumnCount(R->I);
+	return R->op->getColumnCount(R->D);
 }
 
 
 const char *ResultSet_getColumnName(T R, int columnIndex) {
 	assert(R);
-	return R->op->getColumnName(R->I, columnIndex);
+	return R->op->getColumnName(R->D, columnIndex);
 }
 
 
 long ResultSet_getColumnSize(T R, int columnIndex) {
 	assert(R);
-	return R->op->getColumnSize(R->I, columnIndex);
+	return R->op->getColumnSize(R->D, columnIndex);
 }
 
 
@@ -109,13 +109,13 @@ long ResultSet_getColumnSize(T R, int columnIndex) {
 
 
 int ResultSet_next(T R) {
-        return R ? R->op->next(R->I) : false;
+        return R ? R->op->next(R->D) : false;
 }
 
 
 const char *ResultSet_getString(T R, int columnIndex) {
 	assert(R);
-	return R->op->getString(R->I, columnIndex);
+	return R->op->getString(R->D, columnIndex);
 }
 
 
@@ -127,7 +127,7 @@ const char *ResultSet_getStringByName(T R, const char *columnName) {
 
 int ResultSet_getInt(T R, int columnIndex) {
 	assert(R);
-        const char *s = R->op->getString(R->I, columnIndex);
+        const char *s = R->op->getString(R->D, columnIndex);
 	return s ? Str_parseInt(s) : 0;
 }
 
@@ -140,7 +140,7 @@ int ResultSet_getIntByName(T R, const char *columnName) {
 
 long long int ResultSet_getLLong(T R, int columnIndex) {
 	assert(R);
-        const char *s = R->op->getString(R->I, columnIndex);
+        const char *s = R->op->getString(R->D, columnIndex);
 	return s ? Str_parseLLong(s) : 0;
 }
 
@@ -153,7 +153,7 @@ long long int ResultSet_getLLongByName(T R, const char *columnName) {
 
 double ResultSet_getDouble(T R, int columnIndex) {
 	assert(R);
-        const char *s = R->op->getString(R->I, columnIndex);
+        const char *s = R->op->getString(R->D, columnIndex);
 	return s ? Str_parseDouble(s) : 0.0;
 }
 
@@ -166,7 +166,7 @@ double ResultSet_getDoubleByName(T R, const char *columnName) {
 
 const void *ResultSet_getBlob(T R, int columnIndex, int *size) {
 	assert(R);
-	return R->op->getBlob(R->I, columnIndex, size);
+	return R->op->getBlob(R->D, columnIndex, size);
 }
 
 

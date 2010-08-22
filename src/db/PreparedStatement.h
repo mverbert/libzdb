@@ -96,11 +96,11 @@ typedef struct T *T;
 
 /**
  * Create a new PreparedStatement.
- * @param I the implementation used by this PreparedStatement
+ * @param D the delegate used by this PreparedStatement
  * @param op implementation opcodes
  * @return A new PreparedStatement object
  */
-T PreparedStatement_new(PreparedStatementImpl_T I, Pop_T op);
+T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op);
 
 
 /**

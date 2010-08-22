@@ -17,7 +17,7 @@
  */
 #ifndef ORACLE_CONNECTION_INCLUDED
 #define ORACLE_CONNECTION_INCLUDED
-#define T ConnectionImpl_T
+#define T ConnectionDelegate_T
 T    OracleConnection_new(URL_T url, char **error);
 void OracleConnection_free(T *C);
 void OracleConnection_setQueryTimeout(T C, int ms);

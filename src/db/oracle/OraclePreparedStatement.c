@@ -67,7 +67,7 @@ typedef struct param_t {
         long length;
         OCIBind* bind;
 } *param_t;
-#define T PreparedStatementImpl_T
+#define T PreparedStatementDelegate_T
 struct T {
         int        maxRows;
         ub4        paramCount;

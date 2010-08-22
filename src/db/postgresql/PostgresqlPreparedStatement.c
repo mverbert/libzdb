@@ -53,7 +53,7 @@ const struct Pop_T postgresqlpops = {
 typedef struct param_t {
         char s[65];
 } *param_t;
-#define T PreparedStatementImpl_T
+#define T PreparedStatementDelegate_T
 struct T {
         int maxRows;
         int lastError;

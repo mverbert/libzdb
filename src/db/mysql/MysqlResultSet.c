@@ -56,7 +56,7 @@ typedef struct column_t {
         char *buffer;
 } *column_t;
 
-#define T ResultSetImpl_T
+#define T ResultSetDelegate_T
 struct T {
         int stop;
         int keep;

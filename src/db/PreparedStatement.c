@@ -37,7 +37,7 @@
 struct T {
         Pop_T op;
         ResultSet_T resultSet;
-        PreparedStatementImpl_T I;
+        PreparedStatementDelegate_T D;
 };
 
 
@@ -57,12 +57,12 @@ static void clearResultSet(T P) {
 #pragma GCC visibility push(hidden)
 #endif
 
-T PreparedStatement_new(PreparedStatementImpl_T I, Pop_T op) {
+T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op) {
 	T P;
-	assert(I);
+	assert(D);
 	assert(op);
 	NEW(P);
-	P->I = I;
+	P->D = D;
 	P->op = op;
 	return P;
 }
@@ -71,7 +71,7 @@ T PreparedStatement_new(PreparedStatementImpl_T I, Pop_T op) {
 void PreparedStatement_free(T *P) {
 	assert(P && *P);
         clearResultSet((*P));
-        (*P)->op->free(&(*P)->I);
+        (*P)->op->free(&(*P)->D);
 	FREE(*P);
 }
 
@@ -85,45 +85,45 @@ void PreparedStatement_free(T *P) {
 
 void PreparedStatement_setString(T P, int parameterIndex, const char *x) {
 	assert(P);
-        P->op->setString(P->I, parameterIndex, x);
+        P->op->setString(P->D, parameterIndex, x);
 }
 
 
 void PreparedStatement_setInt(T P, int parameterIndex, int x) {
 	assert(P);
-        P->op->setInt(P->I, parameterIndex, x);
+        P->op->setInt(P->D, parameterIndex, x);
 }
 
 
 void PreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
 	assert(P);
-        P->op->setLLong(P->I, parameterIndex, x);
+        P->op->setLLong(P->D, parameterIndex, x);
 }
 
 
 void PreparedStatement_setDouble(T P, int parameterIndex, double x) {
 	assert(P);
-        P->op->setDouble(P->I, parameterIndex, x);
+        P->op->setDouble(P->D, parameterIndex, x);
 }
 
 
 void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
 	assert(P);
-        P->op->setBlob(P->I, parameterIndex, x, size);
+        P->op->setBlob(P->D, parameterIndex, x, size);
 }
 
 
 void PreparedStatement_execute(T P) {
 	assert(P);
         clearResultSet(P);
-        P->op->execute(P->I);
+        P->op->execute(P->D);
 }
 
 
 ResultSet_T PreparedStatement_executeQuery(T P) {
 	assert(P);
         clearResultSet(P);
-	P->resultSet = P->op->executeQuery(P->I);
+	P->resultSet = P->op->executeQuery(P->D);
         if (! P->resultSet)
                 THROW(SQLException, "PreparedStatement_executeQuery");
         return P->resultSet;

@@ -25,7 +25,7 @@
  * @file
  */ 
 
-#define T ConnectionImpl_T
+#define T ConnectionDelegate_T
 typedef struct T *T;
 
 typedef struct Cop_T {

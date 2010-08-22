@@ -9,6 +9,9 @@
 /* Begin PBXFileReference section */
 		5210C96E102790C1005F0FD4 /* MemoryException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryException.h; sourceTree = "<group>"; };
 		5214355C100EBEF800E05AB5 /* THIRDPARTY-LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "THIRDPARTY-LICENSE"; sourceTree = "<group>"; };
+		522DB0991221716300CD0CE1 /* ConnectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDelegate.h; sourceTree = "<group>"; };
+		522DB09A1221716300CD0CE1 /* PreparedStatementDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreparedStatementDelegate.h; sourceTree = "<group>"; };
+		522DB09B1221716300CD0CE1 /* ResultSetDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultSetDelegate.h; sourceTree = "<group>"; };
 		52492E950FDAA1070024B721 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		52492E960FDAA1070024B721 /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		52492EA70FDAA1070024B721 /* CHANGES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES; sourceTree = "<group>"; };
@@ -24,7 +27,6 @@
 		52492EBE0FDAA1070024B721 /* mysqloptions.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mysqloptions.html; sourceTree = "<group>"; };
 		52492EC00FDAA1070024B721 /* postgresoptions.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postgresoptions.html; sourceTree = "<group>"; };
 		52492EC10FDAA1070024B721 /* LICENSE.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = LICENSE.pdf; sourceTree = "<group>"; };
-		52492EC20FDAA1070024B721 /* HOWTO_NEW_RELEASE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HOWTO_NEW_RELEASE; sourceTree = "<group>"; };
 		52492EC30FDAA1070024B721 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
 		52492EC40FDAA1070024B721 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		52492EC60FDAA1070024B721 /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
@@ -32,7 +34,6 @@
 		52492EC90FDAA1070024B721 /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
 		52492ECA0FDAA1070024B721 /* ConnectionPool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ConnectionPool.c; sourceTree = "<group>"; };
 		52492ECB0FDAA1070024B721 /* ConnectionPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionPool.h; sourceTree = "<group>"; };
-		52492ECC0FDAA1070024B721 /* ConnectionStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionStrategy.h; sourceTree = "<group>"; };
 		52492ECE0FDAA1070024B721 /* MysqlConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MysqlConnection.c; sourceTree = "<group>"; };
 		52492ECF0FDAA1070024B721 /* MysqlConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MysqlConnection.h; sourceTree = "<group>"; };
 		52492ED00FDAA1070024B721 /* MysqlPreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MysqlPreparedStatement.c; sourceTree = "<group>"; };
@@ -47,10 +48,8 @@
 		52492EDA0FDAA1070024B721 /* PostgresqlResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostgresqlResultSet.h; sourceTree = "<group>"; };
 		52492EDB0FDAA1070024B721 /* PreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PreparedStatement.c; sourceTree = "<group>"; };
 		52492EDC0FDAA1070024B721 /* PreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreparedStatement.h; sourceTree = "<group>"; };
-		52492EDD0FDAA1070024B721 /* PreparedStatementStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreparedStatementStrategy.h; sourceTree = "<group>"; };
 		52492EDE0FDAA1070024B721 /* ResultSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ResultSet.c; sourceTree = "<group>"; };
 		52492EDF0FDAA1070024B721 /* ResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultSet.h; sourceTree = "<group>"; };
-		52492EE00FDAA1070024B721 /* ResultSetStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultSetStrategy.h; sourceTree = "<group>"; };
 		52492EE20FDAA1070024B721 /* SQLiteConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SQLiteConnection.c; sourceTree = "<group>"; };
 		52492EE30FDAA1070024B721 /* SQLiteConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteConnection.h; sourceTree = "<group>"; };
 		52492EE40FDAA1070024B721 /* SQLitePreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SQLitePreparedStatement.c; sourceTree = "<group>"; };
@@ -100,7 +99,6 @@
 				52492EC40FDAA1070024B721 /* README */,
 				52492E950FDAA1070024B721 /* AUTHORS */,
 				52492EB10FDAA1070024B721 /* COPYING */,
-				52492EC20FDAA1070024B721 /* HOWTO_NEW_RELEASE */,
 				52492E960FDAA1070024B721 /* bootstrap */,
 				52492EB00FDAA1070024B721 /* configure.ac */,
 				52492EC30FDAA1070024B721 /* Makefile.am */,
@@ -163,17 +161,17 @@
 		52492EC70FDAA1070024B721 /* db */ = {
 			isa = PBXGroup;
 			children = (
+				522DB0991221716300CD0CE1 /* ConnectionDelegate.h */,
+				522DB09A1221716300CD0CE1 /* PreparedStatementDelegate.h */,
+				522DB09B1221716300CD0CE1 /* ResultSetDelegate.h */,
 				52492EC80FDAA1070024B721 /* Connection.c */,
 				52492EC90FDAA1070024B721 /* Connection.h */,
 				52492ECA0FDAA1070024B721 /* ConnectionPool.c */,
 				52492ECB0FDAA1070024B721 /* ConnectionPool.h */,
-				52492ECC0FDAA1070024B721 /* ConnectionStrategy.h */,
 				52492EDB0FDAA1070024B721 /* PreparedStatement.c */,
 				52492EDC0FDAA1070024B721 /* PreparedStatement.h */,
-				52492EDD0FDAA1070024B721 /* PreparedStatementStrategy.h */,
 				52492EDE0FDAA1070024B721 /* ResultSet.c */,
 				52492EDF0FDAA1070024B721 /* ResultSet.h */,
-				52492EE00FDAA1070024B721 /* ResultSetStrategy.h */,
 				52DA495D11AB21360052D06B /* oracle */,
 				52492EE10FDAA1070024B721 /* sqlite */,
 				52492ECD0FDAA1070024B721 /* mysql */,
@@ -386,7 +384,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -397,7 +395,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};

@@ -17,7 +17,7 @@
  */
 #ifndef ORACLE_RESULTSET_INCLUDED
 #define ORACLE_RESULTSET_INCLUDED
-#define T ResultSetImpl_T
+#define T ResultSetDelegate_T
 T OracleResultSet_new(OCIStmt* stmt, OCIEnv* env, OCIError* err, OCISvcCtx* svc, int need_free, int max_row);
 void OracleResultSet_free(T *R);
 int  OracleResultSet_getColumnCount(T R);

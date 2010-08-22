@@ -14,7 +14,7 @@
  */
 #ifndef POSTGRESQLRESULTSET_INCLUDED
 #define POSTGRESQLRESULTSET_INCLUDED
-#define T ResultSetImpl_T
+#define T ResultSetDelegate_T
 T PostgresqlResultSet_new(void *stmt, int maxRows);
 void PostgresqlResultSet_free(T *R);
 int PostgresqlResultSet_getColumnCount(T R);
