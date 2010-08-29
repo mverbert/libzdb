@@ -62,7 +62,7 @@ typedef struct param_t {
                 long integer;
                 const void *blob;
                 const char *string;
-                long long int llong;
+                OCINumber number;
         };
         long length;
         OCIBind* bind;
@@ -151,10 +151,12 @@ void OraclePreparedStatement_setInt(T P, int parameterIndex, int x) {
 
 void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
         TEST_INDEX
-        P->params[i].llong = x;
-        P->params[i].length = sizeof(x);
-        P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].llong, 
-                                    P->params[i].length, SQLT_LVB, 0, 0, 0, 0, 0, OCI_DEFAULT);
+        P->params[i].length = sizeof(P->params[i].number);
+        P->lastError = OCINumberFromInt(P->err, &x, sizeof(x), OCI_NUMBER_SIGNED, &P->params[i].number);
+        if (P->lastError != OCI_SUCCESS)
+                THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
+        P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].number, 
+                                    P->params[i].length, SQLT_VNU, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }
@@ -176,7 +178,7 @@ void OraclePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int
         P->params[i].blob = x;
         P->params[i].length = (x) ? size : 0;
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, (void *)P->params[i].blob, 
-                                    P->params[i].length, SQLT_BIN, 0, 0, 0, 0, 0, OCI_DEFAULT);
+                                    P->params[i].length, SQLT_LNG, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }

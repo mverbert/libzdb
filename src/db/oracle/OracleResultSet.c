@@ -59,6 +59,7 @@ typedef struct column_t {
         int isNull;
         char *buffer;
         unsigned long length;
+        OCILobLocator *lob_loc;
 } *column_t;
 #define T ResultSetDelegate_T
 struct T {
@@ -74,6 +75,7 @@ struct T {
         int         freeStatement;
 };
 
+#define LOB_CHUNK_SIZE  2000
 #define TEST_INDEX \
         int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
         i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); \
@@ -86,10 +88,11 @@ struct T {
 static int initaleDefiningBuffers(T R) {
         int i;
         ub2 dtype = 0;
-        ub2 fldtype;
         int deptlen;
         int sizelen = sizeof(deptlen);
         OCIParam* pard = NULL;
+        sword status;
+
         for (i = 1; i <= R->columnCount; i++) {
                  deptlen = 0;
                 /* The next two statements describe the select-list item, dname, and
@@ -108,15 +111,32 @@ static int initaleDefiningBuffers(T R) {
                  then define the output variable. */
                 deptlen +=1;
                 R->columns[i-1].length = deptlen;
+                R->columns[i-1].isNull = 0;
                 switch(dtype) 
                 {
-                        case SQLT_BLOB: fldtype = SQLT_BIN;  break;
-                        case SQLT_CLOB: fldtype = SQLT_CHR; break;
-                        default: fldtype = SQLT_CHR; //SQLT_VCS;
+                        case SQLT_BLOB:
+                                R->columns[i-1].buffer = NULL;
+                                status = OCIDescriptorAlloc((dvoid *)R->env, (dvoid **) &(R->columns[i-1].lob_loc),
+                                                (ub4) OCI_DTYPE_LOB,
+                                                (size_t) 0, (dvoid **) 0);
+                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, 
+                                        &(R->columns[i-1].lob_loc), deptlen, SQLT_BLOB, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
+                                break;
+
+                        case SQLT_CLOB: 
+                                R->columns[i-1].buffer = NULL;
+                                status = OCIDescriptorAlloc((dvoid *)R->env, (dvoid **) &(R->columns[i-1].lob_loc),
+                                                (ub4) OCI_DTYPE_LOB,
+                                                (size_t) 0, (dvoid **) 0);
+                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, 
+                                        &(R->columns[i-1].lob_loc), deptlen, SQLT_CLOB, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
+                                break;
+                        default:
+                                R->columns[i-1].lob_loc = NULL;
+                                R->columns[i-1].buffer = ALLOC(deptlen + 1);
+                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, 
+                                        R->columns[i-1].buffer, deptlen, SQLT_STR, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
                 }
-                R->columns[i-1].buffer = ALLOC(deptlen + 1);
-                R->columns[i-1].isNull = 0;
-                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, R->columns[i-1].buffer, deptlen, fldtype, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
                 OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
                 if (R->lastError != OCI_SUCCESS) {
                         return false;
@@ -170,8 +190,12 @@ void OracleResultSet_free(T *R) {
         assert(R && *R);
         if ((*R)->freeStatement)
                 OCIHandleFree((*R)->stmt, OCI_HTYPE_STMT);
-        for (i = 0; i < (*R)->columnCount; i++)
-                FREE((*R)->columns[i].buffer);
+        for (i = 0; i < (*R)->columnCount; i++) {
+                if ((*R)->columns[i].lob_loc)
+                        OCIDescriptorFree((*R)->columns[i].lob_loc, OCI_DTYPE_LOB);
+                if ((*R)->columns[i].buffer) 
+                        FREE((*R)->columns[i].buffer);
+        }
         free((*R)->columns);
         FREE(*R);
 }
@@ -238,20 +262,35 @@ long OracleResultSet_getColumnSize(T R, int columnIndex) {
 
 const char *OracleResultSet_getString(T R, int columnIndex) {
         TEST_INDEX
-        // FIXME Need a way to set R->columns[i].length to the actual length of the current buffer
         R->columns[i].buffer[R->columns[i].length] = 0;
         return R->columns[i].buffer;
 }
 
 
 const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
-        OCIParam* pard = NULL;
-        int sizelen = sizeof(*size);
         TEST_INDEX
-        OCIParamGet(R->stmt, OCI_HTYPE_STMT, R->err, (void **)&pard, columnIndex);
-        OCIAttrGet(pard, OCI_DTYPE_PARAM, size, &sizelen, OCI_ATTR_DATA_SIZE, R->err);
-        OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
-        return R->columns[i].buffer;
+        oraub8 read_chars = 0;
+        oraub8 read_bytes = 0;
+        oraub8 total_bytes = 0;
+
+        R->columns[i].buffer = ALLOC(LOB_CHUNK_SIZE);
+        *size = 0;
+        ub1 piece = OCI_FIRST_PIECE;
+        do {
+                read_bytes = 0;
+                read_chars = 0;
+                R->lastError = OCILobRead2(R->svc, R->err, R->columns[i].lob_loc, &read_bytes, &read_chars, 1, 
+                                R->columns[i].buffer + total_bytes, LOB_CHUNK_SIZE, piece, NULL, NULL, 0, SQLCS_IMPLICIT);
+                if (read_bytes) {
+                        total_bytes += read_bytes;
+                        piece = OCI_NEXT_PIECE;
+                        R->columns[i].buffer = RESIZE(R->columns[i].buffer, total_bytes + LOB_CHUNK_SIZE);
+                }
+        } while (R->lastError == OCI_NEED_DATA);
+        if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
+                        THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
+        *size = total_bytes;
+        return (const void *)R->columns[i].buffer;
 }
 
 #ifdef PACKAGE_PROTECTED
