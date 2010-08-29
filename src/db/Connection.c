@@ -318,6 +318,8 @@ PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...) {
         PreparedStatement_T p;
         assert(C);
         assert(sql);
+        if (C->resultSet)
+                ResultSet_free(&C->resultSet);
         va_start(ap, sql);
         p = C->op->prepareStatement(C->D, sql, ap);
         va_end(ap);

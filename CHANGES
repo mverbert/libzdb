@@ -8,10 +8,11 @@ Version 2.7
   Thanks to Bogdan Nicula for suggestions.
 * Added support for Oracle. Thanks to Volodymyr Tarasenko,
   and Sergey Pavlov for implementing this.
-* SQLite: added "heap-limit" connection URL property. Make
-  SQLite auto-release unused memory if memory usage goes 
-  above the specified limit. Require that SQLite is
-  compiled with the SQLITE_ENABLE_MEMORY_MANAGEMENT option.
+* SQLite: added "heap-limit" URL property. Makes SQLite 
+  auto-release unused memory if memory usage goes above 
+  the specified limit [KB]. Require that SQLite is
+  compiled with the SQLITE_ENABLE_MEMORY_MANAGEMENT option
+  to take effect.
 Bug fixes:
 * Reset Connection.in-transaction flag on Connection_clear
 * SQLite: Ensure that the database file is specified in
