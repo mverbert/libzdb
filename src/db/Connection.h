@@ -40,9 +40,9 @@
  * If an error occur during execution, the method Connection_getLastError()
  * can be used to obtain a string describing the error. The method 
  * Connection_executeQuery() will return an empty ResultSet (not null) if
- * the SQL statement did not return any values.  A ResultSet lives until
- * next Connection execute, next Connection prepare statement or until the
- * Connection is returned to the Connection Pool.
+ * the SQL statement did not return any values.  A ResultSet lives until the
+ * next call to Connection execute or until the Connection is returned
+ * to the Connection Pool.
  *
  * Any SQL statement that changes the database (basically, any SQL
  * command other than SELECT) will automatically start a transaction
