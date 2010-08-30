@@ -16,7 +16,7 @@ AC_CONFIG_COMMANDS([libtool_patch],[test `uname` = "OpenBSD" && perl -p -i -e "s
 
 AC_PROG_CC
 AC_PROG_GCC_TRADITIONAL
-AC_PATH_PROG([RE2C], [re2c], [no], [$PATH:/usr/local/bin:/usr/bin])
+AC_PATH_PROG([RE2C], [re2c], [re2c_not_found], [$PATH:/usr/local/bin:/usr/bin])
 AC_PATH_PROG([FLEX], [flex], [no])
 if test "x$FLEX" = "xno"; then
         AC_MSG_ERROR([flex is required. Download from http://www.gnu.org/software/flex/])
