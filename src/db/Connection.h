@@ -226,7 +226,7 @@ void Connection_commit(T C);
  * Undoes all changes made in the current transaction and releases any
  * database locks currently held by this Connection object. This method
  * will first call Connection_clear() before performing the rollback to
- * clear any statements in progress such as a select.
+ * clear any statements in progress such as selects.
  * @param C A Connection object
  * @exception SQLException if a database error occurs
  * @see SQLException.h

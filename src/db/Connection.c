@@ -256,7 +256,7 @@ void Connection_beginTransaction(T C) {
 void Connection_commit(T C) {
         assert(C);
         if (C->isInTransaction)
-                C->isInTransaction--;
+                C->isInTransaction = 0;
         if (! C->op->commit(C->D)) 
                 THROW(SQLException, Connection_getLastError(C));
 }
@@ -267,7 +267,7 @@ void Connection_rollback(T C) {
         if (C->isInTransaction) {
                 // Clear any pending resultset statements first
                 Connection_clear(C);
-                C->isInTransaction--;
+                C->isInTransaction = 0;
         }
         // If we are not in a transaction, call the delegate anyway and propagate any errors
         if (! C->op->rollback(C->D))
