@@ -13,6 +13,9 @@ Version 2.7
   the specified limit [KB]. Require that SQLite is
   compiled with the SQLITE_ENABLE_MEMORY_MANAGEMENT option
   to take effect.
+* SQLite: Clear connection on rollback to prevent SQLite
+  from issuing an SQLITE_BUSY error if there are any pending
+  selects in progress.
 Bug fixes:
 * Reset Connection.in-transaction flag on Connection_clear
 * SQLite: Ensure that the database file is specified in
