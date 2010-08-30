@@ -115,10 +115,9 @@ T MysqlResultSet_new(void *stmt, int maxRows, int keep) {
                 DEBUG("Warning: column error - %s\n", mysql_stmt_error(stmt));
                 R->stop = true;
         } else {
-                int i;
                 R->bind = CALLOC(R->columnCount, sizeof (MYSQL_BIND));
                 R->columns = CALLOC(R->columnCount, sizeof (struct column_t));
-                for (i = 0; i < R->columnCount; i++) {
+                for (int i = 0; i < R->columnCount; i++) {
                         R->columns[i].buffer = ALLOC(STRLEN + 1);
                         R->bind[i].buffer_type = MYSQL_TYPE_STRING;
                         R->bind[i].buffer = R->columns[i].buffer;
@@ -137,9 +136,8 @@ T MysqlResultSet_new(void *stmt, int maxRows, int keep) {
 
 
 void MysqlResultSet_free(T *R) {
-        int i;
 	assert(R && *R);
-        for (i = 0; i < (*R)->columnCount; i++)
+        for (int i = 0; i < (*R)->columnCount; i++)
                 FREE((*R)->columns[i].buffer);
         mysql_stmt_free_result((*R)->stmt);
         if ((*R)->keep == false)

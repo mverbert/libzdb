@@ -86,14 +86,13 @@ struct T {
 
 
 static int initaleDefiningBuffers(T R) {
-        int i;
         ub2 dtype = 0;
         int deptlen;
         int sizelen = sizeof(deptlen);
         OCIParam* pard = NULL;
         sword status;
 
-        for (i = 1; i <= R->columnCount; i++) {
+        for (int i = 1; i <= R->columnCount; i++) {
                  deptlen = 0;
                 /* The next two statements describe the select-list item, dname, and
                  return its length */
@@ -186,11 +185,10 @@ T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc,
 
 
 void OracleResultSet_free(T *R) {
-        int i;
         assert(R && *R);
         if ((*R)->freeStatement)
                 OCIHandleFree((*R)->stmt, OCI_HTYPE_STMT);
-        for (i = 0; i < (*R)->columnCount; i++) {
+        for (int i = 0; i < (*R)->columnCount; i++) {
                 if ((*R)->columns[i].lob_loc)
                         OCIDescriptorFree((*R)->columns[i].lob_loc, OCI_DTYPE_LOB);
                 if ((*R)->columns[i].buffer) 

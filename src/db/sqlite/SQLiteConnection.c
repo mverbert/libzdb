@@ -107,11 +107,10 @@ static inline void executeSQL(T C, const char *sql) {
 
 
 static int setProperties(T C, char **error) {
-        int i;
         const char **properties = URL_getParameterNames(C->url);
         if (properties) {
                 StringBuffer_clear(C->sb);
-                for (i = 0; properties[i]; i++) {
+                for (int i = 0; properties[i]; i++) {
                         if (IS(properties[i], "heap-limit")) // There is no PRAGMA for heap limit as of sqlite-3.7.0, so we make it a configurable property using "heap-limit" [kB]
                                 sqlite3_soft_heap_limit(Str_parseInt(URL_getParameter(C->url, properties[i])) * 1024);
                         else

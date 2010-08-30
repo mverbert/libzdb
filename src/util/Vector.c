@@ -150,12 +150,11 @@ int Vector_size(T V) {
 
 
 void Vector_map(T V, void apply(const void *element, void *ap), void *ap) {
-	int i;
 	uint32_t stamp;
 	assert(V);
 	assert(apply);
 	stamp = V->timestamp;
-	for (i = 0; i < V->length; i++) {
+	for (int i = 0; i < V->length; i++) {
                 apply(V->array[i], ap);
                 assert(V->timestamp == stamp);
         }
@@ -163,10 +162,9 @@ void Vector_map(T V, void apply(const void *element, void *ap), void *ap) {
 
 
 void **Vector_toArray(T V, void *end) {
-	int i;
-        void **array;
+        int i;
         assert(V);
-	array = ALLOC((V->length + 1)*sizeof (*array)); 
+	void **array = ALLOC((V->length + 1)*sizeof (*array)); 
 	for (i = 0; i < V->length; i++)
 		array[i] = V->array[i];
 	array[i] = end;

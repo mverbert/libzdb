@@ -354,12 +354,19 @@ AC_HEADER_STDC
 AC_C_CONST
 AC_C_BIGENDIAN
 
-# If the compiler is gcc, tune warnings and make the char type unsigned
+# If the compiler is gcc, tune warnings and make the char type unsigned 
+# and enable C99 support
 if test "x$GCC" = "xyes"; then
 	CFLAGS="$CFLAGS -Wall -Wunused -Wno-unused-label -funsigned-char";
+        # Add C99 support
+        CFLAGS="$CFLAGS -D_GNU_SOURCE -std=gnu99"
         # does this compiler support -Wno-pointer-sign ?
         svd_CFLAGS="$CFLAGS"
-        CFLAGS="$CFLAGS -Wno-pointer-sign"
+        CFLAGS="-Wno-pointer-sign $CFLAGS"
+        AC_COMPILE_IFELSE([int main(){return 0;}], [], [CFLAGS="$svd_CFLAGS"])        
+        # does this compiler support -Wno-address ?
+        svd_CFLAGS="$CFLAGS"
+        CFLAGS="-Wno-address $CFLAGS"
         AC_COMPILE_IFELSE([int main(){return 0;}], [], [CFLAGS="$svd_CFLAGS"])        
 fi
 

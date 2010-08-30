@@ -8,6 +8,7 @@ Version 2.7
   Thanks to Bogdan Nicula for suggestions.
 * Added support for Oracle. Thanks to Volodymyr Tarasenko,
   and Sergey Pavlov for implementing this.
+* C99 compiler is required to build libzdb
 * SQLite: added "heap-limit" URL property. Makes SQLite 
   auto-release unused memory if memory usage goes above 
   the specified limit [KB]. Require that SQLite is

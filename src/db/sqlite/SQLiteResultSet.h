@@ -28,8 +28,7 @@ typedef struct UnlockNotification {
 } UnlockNotification_T;
 
 static inline void unlock_notify_cb(void **apArg, int nArg) {
-        int i;
-        for (i = 0; i < nArg; i++) {
+        for (int i = 0; i < nArg; i++) {
                 UnlockNotification_T *p = (UnlockNotification_T *)apArg[i];
                 Mutex_lock(p->mutex);
                 p->fired = 1;
@@ -47,7 +46,7 @@ static inline int wait_for_unlock_notify(sqlite3 *db){
         int rc = sqlite3_unlock_notify(db, unlock_notify_cb, (void *)&un);
         assert(rc == SQLITE_LOCKED || rc == SQLITE_OK);
 
-        if(rc == SQLITE_OK) {
+        if (rc == SQLITE_OK) {
                 Mutex_lock(un.mutex);
                 if (! un.fired)
                         Sem_wait(un.cond, un.mutex);

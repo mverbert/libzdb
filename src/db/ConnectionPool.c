@@ -79,10 +79,9 @@ static void drainPool(T P) {
 
 
 static int fillPool(T P) {
-	int i;
 	Connection_T con;
         P->error = 0;
-	for (i = 0; i < P->initialConnections; i++) {
+	for (int i = 0; i < P->initialConnections; i++) {
 		if (! (con = Connection_new(P, &P->error))) {
                         if (i > 0) {
                                 DEBUG("Failed to fill the pool with initial connections -- %s\n", P->error);
