@@ -201,11 +201,40 @@ ResultSet_T OraclePreparedStatement_executeQuery(T P) {
         return NULL;
 }
 
+/* Error handling: Oracle requires a buffer to store
+   error message, to keep error handling thread safe
+   TSD is used
+*/
+
+/* Key for the thread-specific buffer */
+static pthread_key_t error_msg_key;
+
+/* Once-only initialisation of the key */
+static pthread_once_t error_msg_key_once = PTHREAD_ONCE_INIT;
+
+
+/* Return the thread-specific buffer */
+char * get_err_buffer(void) {
+	return (char *) pthread_getspecific(error_msg_key);
+}
+
+/* Allocate the key */
+static void error_msg_key_alloc() {
+	pthread_key_create(&error_msg_key, free);
+	pthread_setspecific(error_msg_key, malloc(STRLEN));
+}
 
 /* This is a general error function also used in OracleResultSet */
 const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp) {
         sb4 errcode;
-        static char erb[STRLEN]; // TODO: not good in a multi-threaded env.
+        char* erb;
+
+	pthread_once(&error_msg_key_once, error_msg_key_alloc);
+
+	erb = get_err_buffer();
+
+	assert(erb);
+
         assert(errhp);
         switch (err)
         {
