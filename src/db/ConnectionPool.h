@@ -116,21 +116,22 @@
  * <a href="http://sqlite.org/pragma.html">pragma commands</a> for 
  * performance tuning and other special purpose database commands. Pragma 
  * syntax on the form, <code>name=value</code> can be added as properties 
- * to the URL and will be set when the Connection is created. An URL for 
+ * to the URL and will be set when the Connection is created. In addition 
+ * to pragmas, the following properties are supported:
+ * <ul>
+ * <li><code>heap_limit=value</code> - Make SQLite auto-release unused memory 
+ * if memory usage goes above the specified value [KB].</li> 
+ * </ul>
+ * An URL for 
  * connecting to a SQLite database might look like:
  *
  * \htmlonly
  * <dt><dd><code>
- * sqlite:///var/sqlite/test.db?synchronous=off&show_datatypes=off
+ * sqlite:///var/sqlite/test.db?synchronous=normal&heap_limit=8000&foreign_keys=on
  * </code></dd></dt>
  * \endhtmlonly
  *
- * In addition to pragmas, the following properties can be used:
- * <ul>
- * <li><code>heap-limit=value</code> - Make SQLite auto-release unused memory 
- * if memory usage goes above the specified value [KB].</li> 
- * </ul>
- *
+ 
  * <b>PostgreSQL:</b>
  *
  * The URL for connecting to a <a href="http://www.postgresql.org/">

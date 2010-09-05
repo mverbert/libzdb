@@ -26,7 +26,7 @@
 /**
  * A <b>Connection</b> represent a connection to a SQL database system.
  *
- * A Connection is used to execute SQL statements and return the result. 
+ * Use a Connection to execute SQL statements and return the result. 
  * There are three ways to execute a SQL statement: Connection_execute() 
  * is used to execute SQL statements that does not return a result set. 
  * Such statements are INSERT, UPDATE or DELETE.  Connection_executeQuery() 
