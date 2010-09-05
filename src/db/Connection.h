@@ -26,23 +26,21 @@
 /**
  * A <b>Connection</b> represent a connection to a SQL database system.
  *
- * Use a Connection to execute SQL statements and return the result. 
- * There are three ways to execute a SQL statement: Connection_execute() 
- * is used to execute SQL statements that does not return a result set. 
- * Such statements are INSERT, UPDATE or DELETE.  Connection_executeQuery() 
- * is used to execute a SQL SELECT statement and return a result set. 
- * These methods can only handle values which can be expressed as C-strings. 
- * If you need to handle binary data, such as inserting a blob value into the
- * database, use a PreparedStatement object to execute the SQL statement. 
- * The factory method Connection_prepareStatement() is used to obtain a 
- * PreparedStatement object. 
+ * Use a Connection to execute SQL statements. There are three ways to
+ * execute a SQL statement: Connection_execute() is used to execute SQL 
+ * statements that does not return a result set. Such statements are INSERT,
+ * UPDATE or DELETE.  Connection_executeQuery() is used to execute a SQL 
+ * SELECT statement and return a result set. These methods can only handle
+ * values which can be expressed as C-strings. If you need to handle binary
+ * data, such as inserting a blob value into the database, use a 
+ * PreparedStatement object to execute the SQL statement. The factory method
+ * Connection_prepareStatement() is used to obtain a PreparedStatement object. 
  *
- * If an error occur during execution, the method Connection_getLastError()
- * can be used to obtain a string describing the error. The method 
- * Connection_executeQuery() will return an empty ResultSet (not null) if
- * the SQL statement did not return any values.  A ResultSet lives until the
+ * The method Connection_executeQuery() will return an empty ResultSet (not null)
+ * if the SQL statement did not return any values.  A ResultSet lives until the
  * next call to Connection execute or until the Connection is returned
- * to the Connection Pool.
+ * to the Connection Pool. If an error occur during execution, an SQLException
+ * is thrown.
  *
  * Any SQL statement that changes the database (basically, any SQL
  * command other than SELECT) will automatically start a transaction
