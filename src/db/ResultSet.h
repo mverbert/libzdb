@@ -91,7 +91,7 @@ typedef struct T *T;
 /**
  * Create a new ResultSet.
  * @param D the delegate used by this ResultSet
- * @param op implementation opcodes
+ * @param op delegate operations
  * @return A new ResultSet object
  */
 T ResultSet_new(ResultSetDelegate_T D, Rop_T op);

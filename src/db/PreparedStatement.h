@@ -97,7 +97,7 @@ typedef struct T *T;
 /**
  * Create a new PreparedStatement.
  * @param D the delegate used by this PreparedStatement
- * @param op implementation opcodes
+ * @param op delegate operations
  * @return A new PreparedStatement object
  */
 T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op);
