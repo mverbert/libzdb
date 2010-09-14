@@ -159,7 +159,6 @@ static int initaleDefiningBuffers(T R) {
                         return false;
                 }
         }
-
         return true;
 }
 

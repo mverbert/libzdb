@@ -228,13 +228,9 @@ static void error_msg_key_alloc() {
 const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp) {
         sb4 errcode;
         char* erb;
-
 	pthread_once(&error_msg_key_once, error_msg_key_alloc);
-
 	erb = get_err_buffer();
-
 	assert(erb);
-
         assert(errhp);
         switch (err)
         {
