@@ -33,9 +33,7 @@
 #include "ConnectionDelegate.h"
 #include "OracleConnection.h"
 
-#ifndef ORACLE_COLLUMN_NAME_LOWERCASE
-#define ORACLE_COLLUMN_NAME_LOWERCASE 2
-#endif
+
 /**
  * Implementation of the ResulSet/Delegate interface for oracle. 
  * 
@@ -78,6 +76,9 @@ struct T {
         int         freeStatement;
 };
 
+#ifndef ORACLE_COLUMN_NAME_LOWERCASE
+#define ORACLE_COLUMN_NAME_LOWERCASE 2
+#endif
 #define LOB_CHUNK_SIZE  2000
 #define TEST_INDEX \
         int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
@@ -94,7 +95,6 @@ static int initaleDefiningBuffers(T R) {
         int sizelen = sizeof(deptlen);
         OCIParam* pard = NULL;
         sword status;
-
         for (int i = 1; i <= R->columnCount; i++) {
                  deptlen = 0;
                 /* The next two statements describe the select-list item, dname, and
@@ -147,7 +147,7 @@ static int initaleDefiningBuffers(T R) {
                         if (R->lastError != OCI_SUCCESS)
                                 continue;
                         R->columns[i-1].name = CALLOC(1, col_name_len);
-#if defined(ORACLE_COLLUMN_NAME_LOWERCASE) && ORACLE_COLLUMN_NAME_LOWERCASE > 1
+#if defined(ORACLE_COLUMN_NAME_LOWERCASE) && ORACLE_COLUMN_NAME_LOWERCASE > 1
                         R->columns[i-1].name = CALLOC(1, col_name_len);
                         OCIMultiByteStrCaseConversion(R->env, R->columns[i-1].name, col_name, OCI_NLS_LOWERCASE);
 #else
@@ -227,10 +227,8 @@ int OracleResultSet_getColumnCount(T R) {
 
 const char *OracleResultSet_getColumnName(T R, int column) {
         assert(R);
-
         if (R->columnCount < column)
                 return NULL;
- 
         return  R->columns[column-1].name;
 }
 
@@ -274,10 +272,8 @@ long OracleResultSet_getColumnSize(T R, int columnIndex) {
 
 const char *OracleResultSet_getString(T R, int columnIndex) {
         TEST_INDEX
-
         if (R->columns[i].buffer)
                 R->columns[i].buffer[R->columns[i].length] = 0;
-
         return R->columns[i].buffer;
 }
 
@@ -287,7 +283,6 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         oraub8 read_chars = 0;
         oraub8 read_bytes = 0;
         oraub8 total_bytes = 0;
-
         R->columns[i].buffer = ALLOC(LOB_CHUNK_SIZE);
         *size = 0;
         ub1 piece = OCI_FIRST_PIECE;
