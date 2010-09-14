@@ -33,7 +33,9 @@
 #include "ConnectionDelegate.h"
 #include "OracleConnection.h"
 
-
+#ifndef ORACLE_COLLUMN_NAME_LOWERCASE
+#define ORACLE_COLLUMN_NAME_LOWERCASE 2
+#endif
 /**
  * Implementation of the ResulSet/Delegate interface for oracle. 
  * 
@@ -58,6 +60,7 @@ typedef struct column_t {
         OCIDefine *def;
         int isNull;
         char *buffer;
+        char *name;
         unsigned long length;
         OCILobLocator *lob_loc;
 } *column_t;
@@ -136,6 +139,21 @@ static int initaleDefiningBuffers(T R) {
                                 R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, 
                                         R->columns[i-1].buffer, deptlen, SQLT_STR, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
                 }
+                {
+                        char *col_name;
+                        ub2   col_name_len;
+
+                        R->lastError = OCIAttrGet(pard, OCI_DTYPE_PARAM, &col_name, &col_name_len, OCI_ATTR_NAME, R->err);
+                        if (R->lastError != OCI_SUCCESS)
+                                continue;
+                        R->columns[i-1].name = CALLOC(1, col_name_len);
+#if defined(ORACLE_COLLUMN_NAME_LOWERCASE) && ORACLE_COLLUMN_NAME_LOWERCASE > 1
+                        R->columns[i-1].name = CALLOC(1, col_name_len);
+                        OCIMultiByteStrCaseConversion(R->env, R->columns[i-1].name, col_name, OCI_NLS_LOWERCASE);
+#else
+                        R->columns[i-1].name = Str_dup(col_name);
+#endif /*COLLUMN_NAME_LOWERCASE*/
+                }
                 OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
                 if (R->lastError != OCI_SUCCESS) {
                         return false;
@@ -193,6 +211,8 @@ void OracleResultSet_free(T *R) {
                         OCIDescriptorFree((*R)->columns[i].lob_loc, OCI_DTYPE_LOB);
                 if ((*R)->columns[i].buffer) 
                         FREE((*R)->columns[i].buffer);
+                if ((*R)->columns[i].name)
+                        FREE((*R)->columns[i].name);
         }
         free((*R)->columns);
         FREE(*R);
@@ -206,18 +226,12 @@ int OracleResultSet_getColumnCount(T R) {
 
 
 const char *OracleResultSet_getColumnName(T R, int column) {
-        OCIParam* pard = NULL;
-        int col_name_len = 0;
-        char* col_name = NULL; 
-        sb4 status;
         assert(R);
+
         if (R->columnCount < column)
                 return NULL;
-        status = OCIParamGet(R->stmt, OCI_HTYPE_STMT, R->err, (void **)&pard, column);
-        if (status != OCI_SUCCESS)
-                return NULL;
-        status = OCIAttrGet(pard, OCI_DTYPE_PARAM, &col_name, &col_name_len, OCI_ATTR_NAME, R->err);
-        return (status != OCI_SUCCESS) ? NULL : col_name;
+ 
+        return  R->columns[column-1].name;
 }
 
 
@@ -260,7 +274,10 @@ long OracleResultSet_getColumnSize(T R, int columnIndex) {
 
 const char *OracleResultSet_getString(T R, int columnIndex) {
         TEST_INDEX
-        R->columns[i].buffer[R->columns[i].length] = 0;
+
+        if (R->columns[i].buffer)
+                R->columns[i].buffer[R->columns[i].length] = 0;
+
         return R->columns[i].buffer;
 }
 
