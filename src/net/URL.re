@@ -175,8 +175,7 @@ T URL_create(const char *url, ...) {
 	va_start(ap, url);
 	n = vsnprintf(buf, BUFFER_SIZE, url, ap);
 	va_end(ap);
-	if (n < 0 || n >= BUFFER_SIZE) 
-		return NULL;
+	assert(n > 0 && n < BUFFER_SIZE);
 	return URL_new(buf);
 }
 

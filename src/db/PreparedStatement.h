@@ -116,7 +116,8 @@ void PreparedStatement_free(T *P);
  * given string value. 
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
- * @param x The string value to set. Must be a NUL terminated string.
+ * @param x The string value to set. Must be a NUL terminated string. NULL
+ * is allowed to indicate a SQL NULL value. 
  * @exception SQLException if a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h

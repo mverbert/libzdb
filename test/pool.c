@@ -138,9 +138,13 @@ void testPool(const char *testURL) {
                         PreparedStatement_setInt(pre, 2, i + 1);
                         PreparedStatement_execute(pre);
                 }
-                /* Add a database null value */
+                /* Add a database null blob value */
                 PreparedStatement_setBlob(pre, 1, NULL, 0);
                 PreparedStatement_setInt(pre, 2, 5);
+                PreparedStatement_execute(pre);
+                /* Add a database null string value */
+                PreparedStatement_setString(pre, 1, NULL);
+                PreparedStatement_setInt(pre, 2, 1);
                 PreparedStatement_execute(pre);
                 /* Add a large blob */
                 for (j= 0; j<65532; j+=4)
