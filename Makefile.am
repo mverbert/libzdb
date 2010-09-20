@@ -53,7 +53,7 @@ API_INTERFACES  = src/db/ConnectionPool.h src/db/Connection.h \
 
 nobase_nodist_include_HEADERS = $(patsubst %, $(LIBRARY_NAME)/%, $(notdir $(API_INTERFACES)))
 
-libzdb_la_LDFLAGS = $(DBLDFLAGS) -version-info 7:0:0
+libzdb_la_LDFLAGS = $(DBLDFLAGS) -version-info 7:1:0
 
 BUILT_SOURCES   = $(nobase_nodist_include_HEADERS)
 
