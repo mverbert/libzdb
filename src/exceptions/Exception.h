@@ -142,14 +142,13 @@
  * END_TRY;
  * </pre>
  *
- * <h3>Volatile and assignment</h3>
+ * <h3>Volatile and assignment inside a try-block</h3>
  * 
  * A variable declared outside a try-block and assigned a value inside said
- * block should be declared <code>volatile</code> if an exception handler 
- * need to access the variable. Otherwise the compiler may optimize away the
- * new value set in the try-block and in the exception handler the original
- * value will wrongly be seen. Example:
- *
+ * block should be declared <code>volatile</code> if the variable will be 
+ * accessed from an exception handler. Otherwise the compiler will/may 
+ * optimize away the value set in the try-block and the handler will not see
+ * the new value. Example:
  * <pre>
  * volatile int i = 0;
  * TRY
@@ -159,7 +158,7 @@
  * }
  * CATCH(SQLException)
  * {
- * 	assert(i == 1); // If i was not declared volatile its value here would be 0
+ * 	assert(i == 1); // Unless declared volatile i would be 0 here (implementation dependent)
  * }
  * END_TRY;
  * </pre>

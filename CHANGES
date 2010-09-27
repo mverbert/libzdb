@@ -6,6 +6,11 @@ Version 2.7
 -----------
 * Added tentative support for Oracle. Thanks to Volodymyr
   Tarasenko, and Sergey Pavlov for implementing this.
+  This implementation does not support BLOB, though CLOB
+  is supported. It will also not run all zdb unit tests,
+  but should be useful for most purposes. It is released
+  with the hope that others may still find it useful and
+  help iron out any remaining issues.
 * Added new convenience zdb.h meta include file which
   can be used to include all required API interfaces
 * Internal optimizing changes and improvements

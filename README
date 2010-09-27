@@ -89,12 +89,12 @@
  Link and include
  ----------------
  
- Clients may use the following convenient meta interface to include
- required libzdb API interfaces;
+ Clients may use the following meta interface to include libzdb API
+ interfaces;
  
  #include <zdb.h>
  
- Alternatively, libzdb API interface files can be included separately
+ Alternatively, libzdb API interfaces can be included separately
  as needed.
 
  Compile and link with libzdb;

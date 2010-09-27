@@ -70,10 +70,9 @@ struct T {
         column_t columns;
 };
 
-#define TEST_INDEX(RETVAL) \
+#define TEST_INDEX \
         int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
-        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); \
-        return(RETVAL); } if (R->columns[i].is_null) return (RETVAL); 
+        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); }  
 
 
 /* ------------------------------------------------------- Private methods */
@@ -189,13 +188,17 @@ int MysqlResultSet_next(T R) {
 
 
 long MysqlResultSet_getColumnSize(T R, int columnIndex) {
-        TEST_INDEX(-1)
+        TEST_INDEX
+        if (R->columns[i].is_null) 
+                return 0;
         return R->columns[i].real_length;
 }
 
 
 const char *MysqlResultSet_getString(T R, int columnIndex) {
-        TEST_INDEX(NULL)
+        TEST_INDEX
+        if (R->columns[i].is_null) 
+                return NULL;
         ensureCapacity(R, i);
         R->columns[i].buffer[R->columns[i].real_length] = 0;
         return R->columns[i].buffer;
@@ -203,7 +206,9 @@ const char *MysqlResultSet_getString(T R, int columnIndex) {
 
 
 const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
-        TEST_INDEX(NULL)
+        TEST_INDEX
+        if (R->columns[i].is_null) 
+                return NULL;
         ensureCapacity(R, i);
         *size = R->columns[i].real_length;
         return R->columns[i].buffer;

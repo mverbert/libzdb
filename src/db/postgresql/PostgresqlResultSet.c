@@ -56,10 +56,9 @@ struct T {
         PGresult *res;
 };
 
-#define TEST_INDEX(RETVAL) \
+#define TEST_INDEX \
         int i; assert(R); i = columnIndex - 1; if (R->columnCount <= 0 || \
-        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); return(RETVAL); } \
-        if (PQgetisnull(R->res, R->currentRow, i)) return (RETVAL); 
+        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range");}
 
 #define ISFIRSTOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '3')
 #define ISOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '7')
@@ -151,13 +150,17 @@ int PostgresqlResultSet_next(T R) {
 
 
 long PostgresqlResultSet_getColumnSize(T R, int columnIndex) {
-        TEST_INDEX(-1)
+        TEST_INDEX
+        if (PQgetisnull(R->res, R->currentRow, i)) 
+                return 0; 
         return PQgetlength(R->res, R->currentRow, i);
 }
 
 
 const char *PostgresqlResultSet_getString(T R, int columnIndex) {
-        TEST_INDEX(NULL)
+        TEST_INDEX
+        if (PQgetisnull(R->res, R->currentRow, i)) 
+                return NULL; 
         return PQgetvalue(R->res, R->currentRow, i);
 }
 
@@ -185,7 +188,9 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
  * change the escaping mechanizm. See also unescape_bytea() above.
  */
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
-        TEST_INDEX(NULL)
+        TEST_INDEX
+        if (PQgetisnull(R->res, R->currentRow, i)) 
+                return NULL; 
         return unescape_bytea((uchar_t*)PQgetvalue(R->res, R->currentRow, i), PQgetlength(R->res, R->currentRow, i), size);
 }
 

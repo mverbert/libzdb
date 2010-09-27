@@ -82,8 +82,7 @@ struct T {
 #define LOB_CHUNK_SIZE  2000
 #define TEST_INDEX \
         int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
-        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); \
-        return NULL; } if (R->columns[i].isNull) return NULL;
+        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); } 
 
 
 /* ------------------------------------------------------- Private methods */
@@ -271,6 +270,8 @@ long OracleResultSet_getColumnSize(T R, int columnIndex) {
 
 const char *OracleResultSet_getString(T R, int columnIndex) {
         TEST_INDEX
+        if (R->columns[i].isNull) 
+                return NULL;
         if (R->columns[i].buffer)
                 R->columns[i].buffer[R->columns[i].length] = 0;
         return R->columns[i].buffer;
@@ -279,6 +280,8 @@ const char *OracleResultSet_getString(T R, int columnIndex) {
 
 const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX
+        if (R->columns[i].isNull) 
+                return NULL;
         oraub8 read_chars = 0;
         oraub8 read_bytes = 0;
         oraub8 total_bytes = 0;

@@ -55,7 +55,7 @@ struct T {
 	sqlite3_stmt *stmt;
 };
 
-#define TEST_INDEX(RETVAL) \
+#define TEST_INDEX \
         int i; assert(R); i = columnIndex - 1; if (R->columnCount <= 0 || \
         i < 0 || i >= R->columnCount) THROW(SQLException, "Column index is out of range");
 
@@ -121,20 +121,20 @@ int SQLiteResultSet_next(T R) {
 
 
 long SQLiteResultSet_getColumnSize(T R, int columnIndex) {
-        TEST_INDEX(-1)
+        TEST_INDEX
         return sqlite3_column_bytes(R->stmt, i);
 }
 
 
 const char *SQLiteResultSet_getString(T R, int columnIndex) {
-        TEST_INDEX(NULL)
+        TEST_INDEX
 	return sqlite3_column_text(R->stmt, i);
 }
 
 
 const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size) {
+        TEST_INDEX
         const void *blob;
-        TEST_INDEX(NULL)
         blob = sqlite3_column_blob(R->stmt, i);
         *size = sqlite3_column_bytes(R->stmt, i);
         return blob;
