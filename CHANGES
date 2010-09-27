@@ -14,16 +14,14 @@ Version 2.7
 * Added new convenience zdb.h meta include file which
   can be used to include all required API interfaces
 * Internal optimizing changes and improvements
-  Thanks to Bogdan Nicula for suggestions.
-* A C99 capable compiler is required to build libzdb
-* SQLite: added "heap_limit" URL property. Makes SQLite 
+* SQLite: Clear connection on rollback to prevent SQLite
+  from issue an SQLITE_BUSY error if there are pending
+  selects in progress.
+* SQLite: added a "heap_limit" URL property. Makes SQLite 
   auto-release unused memory if memory usage goes above 
   the specified limit [KB]. Require that SQLite is
   compiled with the SQLITE_ENABLE_MEMORY_MANAGEMENT option
   to take effect.
-* SQLite: Clear connection on rollback to prevent SQLite
-  from issue an SQLITE_BUSY error if there are pending
-  selects in progress.
 Bug fixes:
 * SQLite: Ensure that the database file is specified in
   connection URL. Thanks to Bogdan Nicula.
