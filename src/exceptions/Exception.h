@@ -120,9 +120,9 @@
  * Inside an exception handler, details about an exception is
  * available in the variable <code>Exception_frame</code>. The following
  * demonstrate usage of this variable to provide detailed logging of an 
- * exception. For SQL errors, Connection_getLastError() can be used instead,
+ * exception. For SQL errors, Connection_getLastError() can also be used,
  * though <code>Exception_frame</code> is recommended since in addition to 
- * SQL errors, it also contains API errors not directly related to SQL.
+ * SQL errors, it also cover API errors not directly related to SQL.
  *
  * <pre>
  * TRY 
