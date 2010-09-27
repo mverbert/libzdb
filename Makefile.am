@@ -4,7 +4,7 @@ ACLOCAL_AMFLAGS  = -I m4
 SUBDIRS         = . $(UNIT_TEST)
 DIST_SUBDIRS    = . test
 
-EXTRA_DIST      = README CHANGES AUTHORS COPYING bootstrap doc test src tools config
+EXTRA_DIST      = README CHANGES COPYING bootstrap doc test src tools config
 
 LIBRARY_NAME    = zdb
 
@@ -47,7 +47,7 @@ libzdb_la_SOURCES += src/db/oracle/OracleConnection.c \
 endif
 
 
-API_INTERFACES  = src/db/ConnectionPool.h src/db/Connection.h \
+API_INTERFACES  = src/zdb.h src/db/ConnectionPool.h src/db/Connection.h \
                   src/db/ResultSet.h src/net/URL.h src/db/PreparedStatement.h \
                   src/exceptions/SQLException.h src/exceptions/Exception.h
 

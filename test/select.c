@@ -1,23 +1,17 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include <URL.h>
-#include <ResultSet.h>
-#include <PreparedStatement.h>
-#include <Connection.h>
-#include <ConnectionPool.h>
-#include <SQLException.h>
+#include <zdb.h>
 
 /*
  gcc -o select select.c -L/<libzdb>/lib -lzdb -lpthread -I/<libzdb>/include/zdb
  */
 
 int main(void) {
-        Connection_T con;
         URL_T url = URL_new("sqlite:///tmp/test.db");
         ConnectionPool_T pool = ConnectionPool_new(url);
         ConnectionPool_start(pool);
-        con = ConnectionPool_getConnection(pool);
+        Connection_T con = ConnectionPool_getConnection(pool);
         TRY
         {
                 int i;

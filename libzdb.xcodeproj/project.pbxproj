@@ -12,7 +12,7 @@
 		522DB0991221716300CD0CE1 /* ConnectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDelegate.h; sourceTree = "<group>"; };
 		522DB09A1221716300CD0CE1 /* PreparedStatementDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreparedStatementDelegate.h; sourceTree = "<group>"; };
 		522DB09B1221716300CD0CE1 /* ResultSetDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultSetDelegate.h; sourceTree = "<group>"; };
-		52492E950FDAA1070024B721 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
+		5233692E12507C4A00291DB6 /* zdb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zdb.h; sourceTree = "<group>"; };
 		52492E960FDAA1070024B721 /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		52492EA70FDAA1070024B721 /* CHANGES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES; sourceTree = "<group>"; };
 		52492EA90FDAA1070024B721 /* doxy_bottom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doxy_bottom; sourceTree = "<group>"; };
@@ -97,7 +97,6 @@
 			children = (
 				52492EA70FDAA1070024B721 /* CHANGES */,
 				52492EC40FDAA1070024B721 /* README */,
-				52492E950FDAA1070024B721 /* AUTHORS */,
 				52492EB10FDAA1070024B721 /* COPYING */,
 				52492E960FDAA1070024B721 /* bootstrap */,
 				52492EB00FDAA1070024B721 /* configure.ac */,
@@ -148,6 +147,7 @@
 		52492EC50FDAA1070024B721 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				5233692E12507C4A00291DB6 /* zdb.h */,
 				52492EC60FDAA1070024B721 /* Config.h */,
 				52492EF30FDAA1070024B721 /* Thread.h */,
 				52492EC70FDAA1070024B721 /* db */,

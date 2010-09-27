@@ -4,18 +4,20 @@
 
 Version 2.7
 -----------
+* Added tentative support for Oracle. Thanks to Volodymyr
+  Tarasenko, and Sergey Pavlov for implementing this.
+* Added new convenience zdb.h meta include file which
+  can be used to include all required API interfaces
 * Internal optimizing changes and improvements
   Thanks to Bogdan Nicula for suggestions.
-* Added support for Oracle. Thanks to Volodymyr Tarasenko,
-  and Sergey Pavlov for implementing this.
-* C99 compiler is required to build libzdb
+* A C99 capable compiler is required to build libzdb
 * SQLite: added "heap_limit" URL property. Makes SQLite 
   auto-release unused memory if memory usage goes above 
   the specified limit [KB]. Require that SQLite is
   compiled with the SQLITE_ENABLE_MEMORY_MANAGEMENT option
   to take effect.
 * SQLite: Clear connection on rollback to prevent SQLite
-  from issue a SQLITE_BUSY error if there are any pending
+  from issue an SQLITE_BUSY error if there are pending
   selects in progress.
 Bug fixes:
 * SQLite: Ensure that the database file is specified in
@@ -29,7 +31,7 @@ Version 2.6
 * Added new configure option --enable-sqliteunlock which
   enables SQLite unlock notification. This feature requires
   SQLite >= 3.6.12 compiled with the SQLITE_ENABLE_UNLOCK_NOTIFY
-  C-preprocessor symbol. This option greately improves upon 
+  C-preprocessor symbol. This option greatly improves upon 
   SQLite concurrency when libzdb and SQLite is used from a 
   multi-threaded program.
 * Removed deprecated ResultSet_readData() from API

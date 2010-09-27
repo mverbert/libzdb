@@ -25,7 +25,7 @@
 
  * ANSI-C Compiler and Build System
 
-   You will need an ANSI-C compiler installed to build the library.
+   You will need an ANSI-C99 compiler installed to build the library.
    The GNU C compiler (GCC) from the Free Software Foundation (FSF) is
    recommended. In addition, your PATH must contain basic build tools
    such as make and flex and database configuration scripts for MySQL
@@ -89,18 +89,17 @@
  Link and include
  ----------------
  
- Clients should include the following interfaces, in this order. 
+ Clients may use the following convenient meta interface to include
+ required libzdb API interfaces;
  
- #include <URL.h>
- #include <ResultSet.h>
- #include <PreparedStatement.h>
- #include <Connection.h>
- #include <ConnectionPool.h>
- #include <SQLException.h>
+ #include <zdb.h>
+ 
+ Alternatively, libzdb API interface files can be included separately
+ as needed.
 
- Compile and link with libzdb,
+ Compile and link with libzdb;
 
- gcc -o sql sql.c -L/<prefix>/lib -lzdb -I/<prefix>/include/zdb
+ gcc -o select select.c -L/<prefix>/lib -lzdb -I/<prefix>/include/zdb
  
  On some systems you may have to explicit link with -lpthread and
  set LD_LIBRARY_PATH if libzdb was installed in a non-standard location

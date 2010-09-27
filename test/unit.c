@@ -9,7 +9,7 @@
 
 
 /**
- * libzdb support classes unity tests. 
+ * libzdb support classes unit tests. 
  */
 
 static void vectorVisitor(const void *element, void *ap) {

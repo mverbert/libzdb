@@ -131,7 +131,7 @@ static MYSQL *doConnect(URL_T url, char **error) {
         /* Connect */
         if (mysql_real_connect(db, host, user, password, database, port, unix_socket, clientFlags))
                 return db;
-        *error = Str_cat("%s", mysql_error(db));
+        *error = Str_dup(mysql_error(db));
 error:
         mysql_close(db);
         return NULL;

@@ -16,11 +16,6 @@
 
 #ifndef CONNECTION_INCLUDED
 #define CONNECTION_INCLUDED
-/** @cond hide */
-#ifndef __GNUC__
-#define __attribute__(x)
-#endif
-/** @endcond */
 
 
 /**

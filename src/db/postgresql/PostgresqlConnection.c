@@ -128,7 +128,7 @@ static PGconn *doConnect(URL_T url, char **error) {
         FREE(conninfo);
         if (PQstatus(db) == CONNECTION_OK)
                 return db;
-        *error = Str_cat("%s", PQerrorMessage(db));
+        *error = Str_dup(PQerrorMessage(db));
 error:
         PQfinish(db);
         return NULL;

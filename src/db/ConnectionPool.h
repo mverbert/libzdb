@@ -24,7 +24,8 @@
  * A connection pool can be used to get a connection to a database and
  * execute statements. This class opens a number of database
  * connections and allow callers to obtain and use a database connection in
- * a reentrant manner. This ConnectionPool is thread-safe.
+ * a reentrant manner. Applications can instantiate as many ConnectionPool
+ * objects as needed and against as many different database systems as needed.
  *
  *  <center><img src="database.png"></center>
  *
@@ -35,20 +36,10 @@
  * ConnectionPool_getConnection() will return NULL. Use Connection_close() 
  * to return a connection to the pool so it can be reused.
  *
- * Clients may set an optional abort handler via ConnectionPool_setAbortHandler() 
- * which the library will call should a fatal error occur. If not provided, 
- * the library will call <code>abort(3)</code> upon encountering a fatal error.
- * This callback method provides clients with means to close down execution 
- * gracefully. It is an unchecked runtime error to continue using the library
- * after the callback method was called by the library.
- *
  * A connection pool is created default with 5 initial connections and 
  * with 20 maximum connections. These values can be changed by the property 
  * methods ConnectionPool_setInitialConnections() and 
  * ConnectionPool_setMaxConnections(). 
- *
- * Applications can instantiate as many ConnectionPool objects as needed 
- * and against as many different database systems as needed.
  *
  * <h2>Supported database systems:</h2>
  * This library may be built with support for many different database 
@@ -237,6 +228,8 @@
  * returns the number of active connections, i.e. those connections in 
  * current use by your application. 
  *
+ * <i>This ConnectionPool is thread-safe.</i>
+ *
  * @see Connection.h ResultSet.h URL.h PreparedStatement.h
  * @file
  */
@@ -352,6 +345,8 @@ int ConnectionPool_getConnectionTimeout(T P);
  * fatal error. This method provide clients with means to close down
  * execution gracefully. It is an unchecked runtime error to continue
  * using the library after the <code>abortHandler</code> was called.
+ * The abort handler function is basically only called for Out-Of-Memory 
+ * errors or for uncatched exceptions. 
  * @param P A ConnectionPool object
  * @param abortHandler The handler function to call should a fatal 
  * error occur during processing. An explanatory error message is passed 
