@@ -339,18 +339,18 @@ int ConnectionPool_getConnectionTimeout(T P);
 
 
 /**
- * Set the function to call if a fatal error occurs in the library. 
+ * Set the function to call if a fatal error occurs in the library. In 
+ * practice this means Out-Of-Memory errors or uncatched exceptions.
  * Clients may optionally provide this function. If not provided
  * the library will call <code>abort(3)</code> upon encountering a 
  * fatal error. This method provide clients with means to close down
  * execution gracefully. It is an unchecked runtime error to continue
  * using the library after the <code>abortHandler</code> was called.
- * The abort handler function is basically only called for Out-Of-Memory 
- * errors or for uncatched exceptions. 
  * @param P A ConnectionPool object
  * @param abortHandler The handler function to call should a fatal 
  * error occur during processing. An explanatory error message is passed 
  * to the handler function in the string <code>error</code>
+ * @see Exception.h
  */
 void ConnectionPool_setAbortHandler(T P, void(*abortHandler)(const char *error));
 

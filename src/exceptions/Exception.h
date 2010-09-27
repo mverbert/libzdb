@@ -141,7 +141,31 @@
  * }
  * END_TRY;
  * </pre>
+ *
+ * <h3>Volatile and assignment</h3>
  * 
+ * A variable declared outside a try-block and assigned a value inside said
+ * block should be declared <code>volatile</code> if an exception handler 
+ * need to access the variable. Otherwise the compiler may optimize away the
+ * new value set in the try-block and in the exception handler the original
+ * value will wrongly be seen. Example:
+ *
+ * <pre>
+ * volatile int i = 0;
+ * TRY
+ * {
+ *	i = 1; 
+ *	&lt;throw SQLException&gt;
+ * }
+ * CATCH(SQLException)
+ * {
+ * 	assert(i == 1); // If i was not declared volatile its value here would be 0
+ * }
+ * END_TRY;
+ * </pre>
+ * 
+ * <h3>Thread-safe</h3>
+ *
  * <p>The Exception stack is stored in a thread-specific variable so Exceptions
  * are made thread-safe. <i>This means that Exceptions are thread local and an
  * Exception thrown in one thread cannot be catched in another thread</i>. 

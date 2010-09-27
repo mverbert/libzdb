@@ -82,6 +82,7 @@
 		52492F040FDAA1070024B721 /* unit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unit.c; sourceTree = "<group>"; };
 		52492F080FDAA1070024B721 /* compfilterh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = compfilterh; sourceTree = "<group>"; };
 		52492F090FDAA1070024B721 /* filterh.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; path = filterh.l; sourceTree = "<group>"; };
+		5264DA3112513802004D833D /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		52DA495E11AB21360052D06B /* OracleConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OracleConnection.c; sourceTree = "<group>"; };
 		52DA495F11AB21360052D06B /* OracleConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OracleConnection.h; sourceTree = "<group>"; };
 		52DA496011AB21360052D06B /* OraclePreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = OraclePreparedStatement.c; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 		08FB7794FE84155DC02AAC07 /* libzdb */ = {
 			isa = PBXGroup;
 			children = (
+				5264DA3112513802004D833D /* AUTHORS */,
 				52492EA70FDAA1070024B721 /* CHANGES */,
 				52492EC40FDAA1070024B721 /* README */,
 				52492EB10FDAA1070024B721 /* COPYING */,

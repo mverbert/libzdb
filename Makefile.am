@@ -1,10 +1,12 @@
+# Copyright (C) 2010 Tildeslash Ltd. All rights reserved.
+
 AUTOMAKE_OPTIONS = foreign no-dependencies
 ACLOCAL_AMFLAGS  = -I m4
 
 SUBDIRS         = . $(UNIT_TEST)
 DIST_SUBDIRS    = . test
 
-EXTRA_DIST      = README CHANGES COPYING bootstrap doc test src tools config
+EXTRA_DIST      = README AUTHORS CHANGES COPYING bootstrap doc test src tools config
 
 LIBRARY_NAME    = zdb
 

@@ -235,13 +235,14 @@ int main(void) {
         }
         printf("=> Test5: OK\n\n");
 
-        printf("=> Test6: TRY-CATCH-FINALLY\n");
+        printf("=> Test6: TRY-CATCH-FINALLY and volatile\n");
         {
                 volatile int i= 0;
                 TRY
                         i++;
                         THROW(C, "C");
                 CATCH(C)
+                        assert(i == 1);
                         i++;
                 FINALLY
                         printf("\tResult: ok\n");
