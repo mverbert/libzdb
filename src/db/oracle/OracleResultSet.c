@@ -141,7 +141,7 @@ static int initaleDefiningBuffers(T R) {
                 }
                 {
                         char *col_name;
-                        ub2   col_name_len;
+                        ub4   col_name_len;
 
                         R->lastError = OCIAttrGet(pard, OCI_DTYPE_PARAM, &col_name, &col_name_len, OCI_ATTR_NAME, R->err);
                         if (R->lastError != OCI_SUCCESS)
