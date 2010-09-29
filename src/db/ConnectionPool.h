@@ -175,8 +175,10 @@
  *  
  * <h2>Example:</h2>
  * To obtain a connection pool for a MySQL database, the code below can be
- * used. Here we connect to the database test on localhost and start the pool
- * with the default 5 initial connections.
+ * used. The exact same code can be used for PostgreSQL, SQLite and Oracle, 
+ * the only change needed is to modify the Connection URL. Here we connect
+ * to the database test on localhost and start the pool with the default 5
+ * initial connections.
  *
  * \htmlonly
  * <dt><dd><code>
