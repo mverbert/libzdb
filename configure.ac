@@ -174,8 +174,6 @@ AC_SUBST(UNIT_TEST)
 # ---------------------------------------------------------------------------
 
 AC_SEARCH_LIBS([pthread_create], [pthread], [], [AC_MSG_ERROR([POSIX thread library is required])])
-AC_SEARCH_LIBS([crypt], [crypt])
-AC_SEARCH_LIBS([dlopen], [dl])
 
 # Database Libraries 
 
