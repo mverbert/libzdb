@@ -116,6 +116,8 @@ static int setProperties(T C, char **error) {
                                 sqlite3_soft_heap_limit64(Str_parseInt(URL_getParameter(C->url, properties[i])) * 1024);
                                 #elif defined(HAVE_SQLITE3_SOFT_HEAP_LIMIT)
                                 sqlite3_soft_heap_limit(Str_parseInt(URL_getParameter(C->url, properties[i])) * 1024);
+                                #else
+                                ;
                                 #endif
                         else
                                 StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));

@@ -307,9 +307,6 @@ AC_ARG_WITH([sqlite],
                                 sqlite="no"
                         fi
                 ], [sqlite="no"])
-                AC_CHECK_FUNCS([sqlite3_soft_heap_limit \
-                                sqlite3_soft_heap_limit64],
-                               [], [])
                 LDFLAGS=$svd_LDFLAGS
                 CPPFLAGS=$svd_CPPFLAGS
         fi
@@ -317,6 +314,8 @@ AC_ARG_WITH([sqlite],
         [
                 AC_MSG_RESULT([yes])
                 AC_CHECK_LIB([sqlite3], [sqlite3_open], [], [sqlite="no"])
+                AC_CHECK_LIB([sqlite3], [sqlite3_soft_heap_limit], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT], [], [sqlite3_soft_heap_limit])])
+                AC_CHECK_LIB([sqlite3], [sqlite3_soft_heap_limit64], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT64], [], [sqlite3_soft_heap_limit64])])
         ])
 if test "xyes" = "x$sqlite"; then
         AC_DEFINE([HAVE_LIBSQLITE3])
