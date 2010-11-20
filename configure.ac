@@ -314,11 +314,11 @@ AC_ARG_WITH([sqlite],
         [
                 AC_MSG_RESULT([yes])
                 AC_CHECK_LIB([sqlite3], [sqlite3_open], [], [sqlite="no"])
-                AC_CHECK_LIB([sqlite3], [sqlite3_soft_heap_limit], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT], [], [sqlite3_soft_heap_limit])])
-                AC_CHECK_LIB([sqlite3], [sqlite3_soft_heap_limit64], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT64], [], [sqlite3_soft_heap_limit64])])
         ])
 if test "xyes" = "x$sqlite"; then
         AC_DEFINE([HAVE_LIBSQLITE3])
+        AC_CHECK_LIB([sqlite3], [sqlite3_soft_heap_limit], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT], [], [sqlite3_soft_heap_limit])])
+        AC_CHECK_LIB([sqlite3], [sqlite3_soft_heap_limit64], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT64], [], [sqlite3_soft_heap_limit64])])
 fi
 AM_CONDITIONAL([WITH_SQLITE], test "xyes" = "x$sqlite")
 
