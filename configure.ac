@@ -307,6 +307,9 @@ AC_ARG_WITH([sqlite],
                                 sqlite="no"
                         fi
                 ], [sqlite="no"])
+                AC_CHECK_FUNCS([sqlite3_soft_heap_limit \
+                                sqlite3_soft_heap_limit64],
+                               [], [])
                 LDFLAGS=$svd_LDFLAGS
                 CPPFLAGS=$svd_CPPFLAGS
         fi

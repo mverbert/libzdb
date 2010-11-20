@@ -112,7 +112,11 @@ static int setProperties(T C, char **error) {
                 StringBuffer_clear(C->sb);
                 for (int i = 0; properties[i]; i++) {
                         if (IS(properties[i], "heap_limit")) // There is no PRAGMA for heap limit as of sqlite-3.7.0, so we make it a configurable property using "heap_limit" [kB]
+                                #if defined(HAVE_SQLITE3_SOFT_HEAP_LIMIT64)
+                                sqlite3_soft_heap_limit64(Str_parseInt(URL_getParameter(C->url, properties[i])) * 1024);
+                                #elif defined(HAVE_SQLITE3_SOFT_HEAP_LIMIT)
                                 sqlite3_soft_heap_limit(Str_parseInt(URL_getParameter(C->url, properties[i])) * 1024);
+                                #endif
                         else
                                 StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));
                 }
