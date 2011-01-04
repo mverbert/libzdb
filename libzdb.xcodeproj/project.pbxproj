@@ -164,8 +164,8 @@
 			isa = PBXGroup;
 			children = (
 				522DB0991221716300CD0CE1 /* ConnectionDelegate.h */,
-				522DB09A1221716300CD0CE1 /* PreparedStatementDelegate.h */,
 				522DB09B1221716300CD0CE1 /* ResultSetDelegate.h */,
+				522DB09A1221716300CD0CE1 /* PreparedStatementDelegate.h */,
 				52492EC80FDAA1070024B721 /* Connection.c */,
 				52492EC90FDAA1070024B721 /* Connection.h */,
 				52492ECA0FDAA1070024B721 /* ConnectionPool.c */,

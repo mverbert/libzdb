@@ -81,7 +81,8 @@ static PGconn *doConnect(URL_T url, char **error) {
 #define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
         int port;
         int ssl = false;
-        volatile int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
+        uchar_t application_name[STRLEN + 1] = {0};
+        int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
         const char *user, *password, *host, *database, *timeout;
         const char *unix_socket = URL_getParameter(url, "unix-socket");
         char *conninfo;
@@ -109,21 +110,24 @@ static PGconn *doConnect(URL_T url, char **error) {
         if ((timeout = URL_getParameter(url, "connect-timeout"))) {
                 TRY connectTimeout = Str_parseInt(timeout); ELSE ERROR("invalid connect timeout value"); END_TRY;
         }
+        if (URL_getParameter(url, "application-name"))
+                snprintf(application_name, STRLEN, " application_name='%s'", URL_getParameter(url, "application-name"));
         conninfo = Str_cat(" host='%s'"
                            " port=%d"
                            " dbname='%s'"
                            " user='%s'"
                            " password='%s'"
                            " connect_timeout=%d"
-                           " sslmode='%s'",
+                           " sslmode='%s'"
+                           "%s", /* application_name */
                            host,
                            port,
                            database,
                            user,
                            password,
                            connectTimeout,
-                           ssl?"require":"disable"
-                           );
+                           ssl?"require":"disable",
+                           application_name);
         db = PQconnectdb(conninfo);
         FREE(conninfo);
         if (PQstatus(db) == CONNECTION_OK)

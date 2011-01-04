@@ -376,9 +376,9 @@ static int parseURL(T U) {
 	host            = ([a-zA-Z0-9\-]+)([.]([a-zA-Z0-9\-]+))*;
 	port            = [:][0-9]+;
 	path            = [/]([\041-\377]\[?#;])*;
-	query           = ([\041-\377]\[#])*;
+	query           = ([\040-\377]\[#])*;
 	parameterkey    = ([\041-\377]\[=])+;
-	parametervalue  = ([\041-\377]\[&])*;
+	parametervalue  = ([\040-\377]\[&])*;
 	*/
 proto:
 	if (YYCURSOR >= YYLIMIT)
