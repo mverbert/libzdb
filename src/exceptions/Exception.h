@@ -98,10 +98,6 @@
  *      [...]
  *      Connection_execute(c, sql);
  * }
- * CATCH(SQLException)
- * {
- *      &lt;exception handler code&gt;
- * }
  * FINALLY
  * {
  *      Connection_close(c);
@@ -109,7 +105,12 @@
  * END_TRY;
  * </pre>
  * closes the database Connection regardless if an exception
- * was thrown or not by the code in the TRY-block. 
+ * was thrown or not by the code in the TRY-block. The above example also 
+ * demonstrate that FINALLY can be used without an exception handler, if an
+ * exception was thrown it will be rethrown after the control reaches the 
+ * end of the finally block. Meaning that we can cleanup even if an exception
+ * was thrown and the exception will automatically propagate up the call stack
+ * afterwards.
  *
  * Finally, the RETURN statement, defined in this interface, must be used
  * instead of C return statements inside a try-block. If any of the
@@ -148,7 +149,8 @@
  * block should be declared <code>volatile</code> if the variable will be 
  * accessed from an exception handler. Otherwise the compiler will/may 
  * optimize away the value set in the try-block and the handler will not see
- * the new value. Example:
+ * the new value. Declaring the variable volatile is only necessary
+ * if the variable is to be used inside a CATCH or ELSE block. Example:
  * <pre>
  * volatile int i = 0;
  * TRY
@@ -161,6 +163,7 @@
  * 	assert(i == 1); // Unless declared volatile i would be 0 here (implementation dependent)
  * }
  * END_TRY;
+ * assert(i == 1); // i will be 1 here regardless if it is declared volatile or not 
  * </pre>
  * 
  * <h3>Thread-safe</h3>
