@@ -4,10 +4,10 @@
               
 Version 2.8
 -----------
-* Allow spaces in URL properties values
+* Allow spaces in URL property values
 * PostgreSQL: Allow sending application name to the server for 
-  logging. Thanks to Chris Mayo. See also the PostgreSQL URL 
-  property, application-name.
+  logging. Thanks to Chris Mayo. See the PostgreSQL URL property,
+  application-name.
 
 Version 2.7
 -----------
