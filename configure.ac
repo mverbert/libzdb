@@ -208,23 +208,7 @@ if test "xyes" = "x$mysql"; then
         CPPFLAGS="`$MYSQLCONFIG --include` $CPPFLAGS"
         LDFLAGS="`$MYSQLCONFIG --libs` $LDFLAGS"
         AC_CHECK_HEADERS([mysql.h])
-        AC_CHECK_LIB([mysqlclient], [mysql_init], 
-        [
-                AC_RUN_IFELSE([AC_LANG_PROGRAM([[#include <mysql.h>]],
-                [[
-                if (MYSQL_VERSION_ID < 40100)
-                        return 1;
-                else
-                        return 0;
-                ]])
-                ],[mysql="yes"],[mysql="no"])
-                if test "$mysql" = "no"
-                then
-                        AC_MSG_RESULT([fail, >= 4.1 required])
-                else
-                        AC_CHECK_LIB([z], [compress],[],[mysql="no"])
-                fi
-        ], [mysql="no"], [-lz])
+        AC_CHECK_LIB([mysqlclient], [mysql_init], [AC_CHECK_LIB([z], [compress],[mysql="yes"],[mysql="no"])], [mysql="no"], [-lz])
         if test "xyes" = "x$mysql"; then
                 DBCPPFLAGS="$DBCPPFLAGS `$MYSQLCONFIG --include`"
                 DBLDFLAGS="$DBLDFLAGS `$MYSQLCONFIG --libs`"
