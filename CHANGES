@@ -8,6 +8,9 @@ Version 2.8
 * PostgreSQL: Allow sending application name to the server for 
   logging. Thanks to Chris Mayo. See the PostgreSQL URL property,
   application-name.
+Bug fixes:
+* ResultSet_getBlob: Ensure that returned blob size is 0 if blob
+  is SQL null.
 
 Version 2.7
 -----------

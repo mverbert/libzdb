@@ -166,7 +166,10 @@ double ResultSet_getDoubleByName(T R, const char *columnName) {
 
 const void *ResultSet_getBlob(T R, int columnIndex, int *size) {
 	assert(R);
-	return R->op->getBlob(R->D, columnIndex, size);
+        const void *b = R->op->getBlob(R->D, columnIndex, size);
+        if (! b)
+                *size = 0;
+	return b;
 }
 
 

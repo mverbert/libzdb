@@ -48,7 +48,7 @@ int Str_isByteEqual(const char *a, const char *b);
 
 
 /**
- * Returns true if the string <i>a</i> starts with the string
+ * Returns true if the string <i>a</i> starts with the sub-string
  * <i>b</i>. The test is <i>case-sensitive</i>.
  * @param a The string to search for b in
  * @param b The <i>sub-string</i> to test a against
