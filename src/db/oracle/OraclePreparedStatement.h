@@ -2,7 +2,7 @@
  * Copyright (C) 2010 Volodymyr Tarasenko <tvntsr@yahoo.com>
  *               2010 Sergey Pavlov <sergey.pavlov@gmail.com>
  *               2010 PortaOne Inc.
- * Copyright (C) 2010 Tildeslash Ltd. All rights reserved.
+ * Copyright (C) 2011 Tildeslash Ltd. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3.

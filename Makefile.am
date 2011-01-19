@@ -1,4 +1,4 @@
-# Copyright (C) 2010 Tildeslash Ltd. All rights reserved.
+# Copyright (C) 2011 Tildeslash Ltd. All rights reserved.
 
 AUTOMAKE_OPTIONS = foreign no-dependencies
 ACLOCAL_AMFLAGS  = -I m4

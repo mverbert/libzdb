@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2010 Tildeslash. All rights reserved.
+ * Copyright (C) 2004-2011 Tildeslash. All rights reserved.
  * Use is subject to license terms.
  */
 
