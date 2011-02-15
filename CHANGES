@@ -11,6 +11,7 @@ Version 2.8
 Bug fixes:
 * ResultSet_getBlob: Ensure that returned blob size is 0 if blob
   is SQL null.
+* Oracle: Fixed ResultSet memory leak.
 
 Version 2.7
 -----------
