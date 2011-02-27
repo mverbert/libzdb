@@ -1,8 +1,12 @@
-                         CHANGES version 2.8.1
+                         CHANGES version 2.9
 
               This file summarizes changes made since 1.0
 
 
+Version 2.9
+-----------
+* 
+              
 Version 2.8.1
 -------------
 * Oracle: Fixed a transaction related memory leak

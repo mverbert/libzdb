@@ -168,13 +168,7 @@ void PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x,
 void PostgresqlPreparedStatement_execute(T P) {
         assert(P);
         PQclear(P->res);
-        P->res = PQexecPrepared(P->db,
-                             P->stmt,
-                             P->paramCount,
-                             (const char **)P->paramValues,
-                             P->paramLengths,
-                             P->paramFormats,
-                             0);
+        P->res = PQexecPrepared(P->db, P->stmt, P->paramCount, (const char **)P->paramValues, P->paramLengths, P->paramFormats, 0);
         P->lastError = PQresultStatus(P->res);
         if (P->lastError != PGRES_COMMAND_OK)
                 THROW(SQLException, "%s", PQresultErrorMessage(P->res));
@@ -184,13 +178,7 @@ void PostgresqlPreparedStatement_execute(T P) {
 ResultSet_T PostgresqlPreparedStatement_executeQuery(T P) {
         assert(P);
         PQclear(P->res);
-        P->res = PQexecPrepared(P->db,
-                             P->stmt,
-                             P->paramCount,
-                             (const char **)P->paramValues,
-                             P->paramLengths,
-                             P->paramFormats,
-                             0);
+        P->res = PQexecPrepared(P->db, P->stmt, P->paramCount, (const char **)P->paramValues, P->paramLengths, P->paramFormats, 0);
         P->lastError = PQresultStatus(P->res);
         if (P->lastError == PGRES_TUPLES_OK)
                 return ResultSet_new(PostgresqlResultSet_new(P->res, P->maxRows), (Rop_T)&postgresqlrops);

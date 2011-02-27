@@ -33,8 +33,6 @@
 
 /**
  * Implementation of the Connection/Delegate interface for mysql. 
- * Remember the swedish chef from the muppet show? I think he got 
- * a new job at MySQL AB; Hoobi-dubi-doh mysql chicken-soup! 
  * 
  * @file
  */

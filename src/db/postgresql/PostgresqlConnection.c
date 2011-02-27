@@ -261,9 +261,8 @@ ResultSet_T PostgresqlConnection_executeQuery(T C, const char *sql, va_list ap) 
         va_end(ap_copy);
         C->res = PQexec(C->db, StringBuffer_toString(C->sb));
         C->lastError = PQresultStatus(C->res);
-        if (C->lastError == PGRES_TUPLES_OK) {
+        if (C->lastError == PGRES_TUPLES_OK)
                 return ResultSet_new(PostgresqlResultSet_new(C->res, C->maxRows), (Rop_T)&postgresqlrops);
-        }
         return NULL;
 }
 
@@ -283,16 +282,8 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
         paramCount = StringBuffer_prepare4postgres(C->sb);
         name = Str_cat("%d", rand());
         C->res = PQprepare(C->db, name, StringBuffer_toString(C->sb), 0, NULL);
-        if (C->res &&
-            (C->lastError == PGRES_EMPTY_QUERY ||
-             C->lastError == PGRES_COMMAND_OK ||
-             C->lastError == PGRES_TUPLES_OK)) {
-		return PreparedStatement_new(PostgresqlPreparedStatement_new(C->db,
-                                                                             C->maxRows,
-                                                                             name,
-                                                                             paramCount), 
-                                             (Pop_T)&postgresqlpops);
-        }
+        if (C->res && (C->lastError == PGRES_EMPTY_QUERY || C->lastError == PGRES_COMMAND_OK || C->lastError == PGRES_TUPLES_OK))
+		return PreparedStatement_new(PostgresqlPreparedStatement_new(C->db, C->maxRows, name, paramCount), (Pop_T)&postgresqlpops);
         return NULL;
 }
 
