@@ -37,6 +37,8 @@
 /**
  * Implementation of the Connection/Delegate interface for oracle. 
  * 
+ * TODO: Query Timeout has no effect as this is not implemented. 
+ *
  * @file
  */
 

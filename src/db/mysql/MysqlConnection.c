@@ -33,7 +33,10 @@
 
 /**
  * Implementation of the Connection/Delegate interface for mysql. 
- * 
+ *
+ * TODO: Query Timeout has no effect as this is not implemented, 
+ * see MysqlConnection_setQueryTimeout() below.
+ *
  * @file
  */
 
@@ -182,6 +185,18 @@ void MysqlConnection_free(T *C) {
 }
 
 
+/* 
+ TODO: Query Timeout has no effect as this is not implemented in MySQL. 
+ MySQL does not provide a general way to do this. The MySQL
+ JDBC driver implements query timeout by running a separate timer
+ thread and then KILL the process in the server if query execution 
+ time exceed timeout. This is a brute force approach with potential
+ resource side-effects which we'd rather not use. 
+ 
+ If you use innodb, setting innodb_lock_wait_timeout in the server
+ can be a possible alternative. Default innodb_lock_wait_timeout is 50 sec.
+ 
+ */
 void MysqlConnection_setQueryTimeout(T C, int ms) {
 	assert(C);
         C->timeout = ms;
