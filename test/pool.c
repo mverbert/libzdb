@@ -108,7 +108,7 @@ void testPool(const char *testURL) {
                 assert(Connection_rowsChanged(con) == 1);
                 /* Assert that last row id works for MySQL and SQLite. Neither Oracle nor PostgreSQL
                  support last row id directly. The way to do this in PostgreSQL is to use 
-                 currval() or return the id on insert. Its just frakked up */
+                 currval() or return the id on insert. */
                 if (IS(URL_getProtocol(url), "sqlite") || IS(URL_getProtocol(url), "mysql")) 
                         assert(Connection_lastRowId(con) == 12);
                 Connection_commit(con);
@@ -222,8 +222,7 @@ void testPool(const char *testURL) {
                 assert(pre);
                 names= PreparedStatement_executeQuery(pre);
                 assert(names);
-                i= 0;
-                while (ResultSet_next(names)) i++;
+                for (i = 0; ResultSet_next(names); i++);
                 assert(i==12);
                 printf("success\n");
                 /* Need to close and release statements before 

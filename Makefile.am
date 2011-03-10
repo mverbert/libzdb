@@ -115,7 +115,7 @@ src/net/URL.c: src/net/URL.re
 	$(RE2C) $(RE2CFLAGS) $< > $@
         
 dist-hook::
-	-rm -rf $(distdir)/src/net/URL.re
+	-rm -f $(distdir)/src/net/URL.re
 	$(FILTERH) < Makefile.am > $(distdir)/Makefile.am
 	$(FILTERH) < Makefile.in > $(distdir)/Makefile.in
 #>> end-filter out
