@@ -77,7 +77,10 @@ void Util_abort(const char *e, ...) {
 	va_end(ap);
         if (! AbortHandler) {
                 fprintf(stderr, "%s", buf);
-                abort();
+                if (ZBDEBUG)
+                        abort();
+                else
+                        exit(1);
         } 
         AbortHandler(buf); 
 }

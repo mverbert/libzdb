@@ -5,7 +5,9 @@
 
 Version 2.9
 -----------
-* 
+* If an abort handler is not set; On a fatal error, libzdb now calls
+  abort() only if the library debug flag is set, otherwise exit(1) 
+  is called
               
 Version 2.8.1
 -------------
