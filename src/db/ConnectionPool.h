@@ -345,9 +345,10 @@ int ConnectionPool_getConnectionTimeout(T P);
  * practice this means Out-Of-Memory errors or uncatched exceptions.
  * Clients may optionally provide this function. If not provided
  * the library will call <code>abort(3)</code> upon encountering a 
- * fatal error. This method provide clients with means to close down
- * execution gracefully. It is an unchecked runtime error to continue
- * using the library after the <code>abortHandler</code> was called.
+ * fatal error if ZBDEBUG is set, otherwise exit(1) is called. This
+ * method provide clients with means to close down execution gracefully.
+ * It is an unchecked runtime error to continue using the library after 
+ * the <code>abortHandler</code> was called.
  * @param P A ConnectionPool object
  * @param abortHandler The handler function to call should a fatal 
  * error occur during processing. An explanatory error message is passed 
