@@ -105,6 +105,7 @@ static PGconn *doConnect(URL_T url, char **error) {
                 ERROR("no database specified in URL");
         else
                 database++;
+        /* Options */
         if (IS(URL_getParameter(url, "use-ssl"), "true"))
                 ssl = true;
         if ((timeout = URL_getParameter(url, "connect-timeout"))) {

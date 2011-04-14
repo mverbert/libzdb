@@ -63,7 +63,7 @@ static inline void doAppend(T S, const char *s, va_list ap) {
 }
 
 
-/* Replace all occurences of ? in this string buffer with prefix[0..99] */
+/* Replace all occurences of ? in this string buffer with prefix[1..99] */
 static int StringBuffer_prepareSQL(T S, char prefix) {
         int n, i;
         for (n = i = 0; S->buffer[i]; i++) if (S->buffer[i] == '?') n++;
