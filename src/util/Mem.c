@@ -38,39 +38,39 @@
 #pragma GCC visibility push(hidden)
 #endif
 
-void *Mem_alloc(long size, const char *file, int line){
+void *Mem_alloc(long size, const char *func, const char *file, int line){
 	void *p;
 	assert(size > 0);
 	p = malloc(size);
 	if (! p)
-		THROW(MemoryException, "%s", STRERROR);
+		Exception_throw(&(MemoryException), func, file, line, "%s", STRERROR);
 	return p;
 }
 
 
-void *Mem_calloc(long count, long size, const char *file, int line) {
+void *Mem_calloc(long count, long size, const char *func, const char *file, int line) {
 	void *p;
 	assert(count > 0);
 	assert(size > 0);
 	p = calloc(count, size);
 	if (! p)
-		THROW(MemoryException, "%s", STRERROR);
+		Exception_throw(&(MemoryException), func, file, line, "%s", STRERROR);
 	return p;
 }
 
 
-void Mem_free(void *p, const char *file, int line) {
+void Mem_free(void *p, const char *func, const char *file, int line) {
 	if (p)
 		free(p);
 }
 
 
-void *Mem_resize(void *p, long size, const char *file, int line) {
+void *Mem_resize(void *p, long size, const char *func, const char *file, int line) {
 	assert(p);
 	assert(size > 0);
 	p = realloc(p, size);
 	if (! p)
-		THROW(MemoryException, "%s", STRERROR);
+		Exception_throw(&(MemoryException), func, file, line, "%s", STRERROR);
 	return p;
 }
 
