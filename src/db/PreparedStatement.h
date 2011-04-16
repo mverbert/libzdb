@@ -29,7 +29,7 @@
  * various setter methods defined in this interface. Each <i>in</i> parameter has an
  * associated index number which is its sequence in the statement. The first 
  * <i>in</i> '?' parameter has index 1, the next has index 2 and so on. A 
- * PreparedStatement is created by the Connection_prepareStatement() method.
+ * PreparedStatement is created by calling Connection_prepareStatement().
  * 
  * Consider this statement: 
  * <pre>

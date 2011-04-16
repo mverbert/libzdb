@@ -365,7 +365,7 @@ void ConnectionPool_setAbortHandler(T P, void(*abortHandler)(const char *error))
  * <code>connectionTimeout</code> has expired <i>or</i> if the Connection
  * failed the ping test. Active Connections, that is, connections in current
  * use by your application are <i>never </i> closed by this thread. This 
- * method sets the reaper thread sweep properties, but does not start the
+ * method sets the reaper thread sweep property, but does not start the
  * thread. This is done in ConnectionPool_start(). So, if the pool should 
  * use a reaper thread, remember to call this method <b>before</b> 
  * ConnectionPool_start(). It is a checked runtime error for 
