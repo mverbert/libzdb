@@ -76,7 +76,7 @@ extern const struct Pop_T sqlite3pops;
 
 static sqlite3 *doConnect(URL_T url, char **error) {
 	sqlite3 *db;
-        const char *path = URL_unescape((char*)URL_getPath(url)); // Note: Unescape will modify URL.path (which is const), but we accept it for SQLite to allow for (white-)space in path
+        const char *path = URL_unescape((char*)URL_getPath(url)); // Note: Unescape will modify URL.path. This is what we want for SQLite as path is a file path and we want to allow for (escaped) spaces in the path
         if (! path) {
                 *error = Str_dup("no database specified in URL");
                 return NULL;
