@@ -345,7 +345,7 @@ AC_C_BIGENDIAN
 if test "x$GCC" = "xyes"; then
 	CFLAGS="$CFLAGS -Wall -Wunused -Wno-unused-label -funsigned-char";
         # Add C99 support
-        CFLAGS="$CFLAGS -D_GNU_SOURCE -std=gnu99"
+        CFLAGS="$CFLAGS -D_GNU_SOURCE -std=c99"
         # does this compiler support -Wno-pointer-sign ?
         svd_CFLAGS="$CFLAGS"
         CFLAGS="-Wno-pointer-sign $CFLAGS"
