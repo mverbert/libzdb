@@ -139,14 +139,6 @@ const char *URL_getPath(T U);
 
 
 /**
- * Get the query string of the URL. 
- * @param U An URL object
- * @return The query string of the URL or NULL if not found
- */
-const char *URL_getQueryString(T U);
-
-
-/**
  * Returns an array of string objects with the names of the
  * parameters contained in this URL. If the URL has no parameters, 
  * the method returns NULL. The last value in the array is NULL.

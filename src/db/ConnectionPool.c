@@ -99,7 +99,7 @@ static int getActive(T P){
         int i, n = 0, size = Vector_size(P->pool);
         for (i = 0; i < size; i++) { 
                 Connection_T con = Vector_get(P->pool, i);
-                if (! Connection_isAvailable(con )) n++; 
+                if (! Connection_isAvailable(con)) n++; 
         }
         return n; 
 }
