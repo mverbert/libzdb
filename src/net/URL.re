@@ -301,7 +301,6 @@ static void freeParams(param_t p) {
 
 static T ctor(uchar_t *data) {
         T U;
-        Exception_init();
 	NEW(U);
 	U->data = data;
 	YYCURSOR = U->data;
@@ -320,6 +319,7 @@ static T ctor(uchar_t *data) {
 T URL_new(const char *url) {
         if (! (url && *url))
                 return NULL;
+        Exception_init();
         return ctor((uchar_t*)Str_dup(url));
 }
 
@@ -327,6 +327,7 @@ T URL_new(const char *url) {
 T URL_create(const char *url, ...) {
         if (! (url && *url))
                 return NULL;
+        Exception_init();
 	va_list ap;
         va_start(ap, url);
 	T U = ctor((uchar_t*)Str_vcat(url, ap));
