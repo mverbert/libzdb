@@ -8,9 +8,6 @@ Version 2.9
 * If an abort handler is not set; On a fatal error, libzdb now calls
   abort() only if the library debug flag is set, otherwise exit(1) 
   is called
-* Removed URL_getQueryString() from URL.h as this is not needed for
-  a database URL. Parameters embeded in the query-string are already 
-  parsed and made available via URL_getParameter().
 * SQLite: Unescape path to allow for (white-)space in database file 
   path. Note that this modify URL.path. Thank to Jonas Schnelli
               

@@ -27,11 +27,7 @@
 
 /**
  * Implementation of the URL interface. The scanner handle 
- * ISO Latin 1 or UTF-8 encoded url's transparently. In this 
- * version, the query string is not stored separately and made
- * available as it is. Instead the query string is chopped up
- * in-place into parameters. Any parameters embedded in the 
- * query can be accessed via URL_getParameter().
+ * ISO Latin 1 or UTF-8 encoded url's transparently. 
  *
  * @file
  */
@@ -131,12 +127,7 @@ static const uchar_t b2x[][256] = {
 #define YYCTXMARKER   U->ctx
 #define YYFILL(n)     ((void)0)
 #define YYTOKEN       U->token
-#define SET_PROTOCOL(PORT) *(YYCURSOR-3)=0; \
-	U->protocol=U->token;U->port=PORT;goto parse
-#define STRDUP(s) (s?Str_dup(s):NULL)
-#define STRNDUP(s, n) (s?Str_ndup(s, n):NULL)
-	
-
+#define SET_PROTOCOL(PORT) *(YYCURSOR-3)=0; U->protocol=U->token;U->port=PORT;goto parse
 
 
 /* ------------------------------------------------------- Private methods */
@@ -209,7 +200,7 @@ parse:
                    }
 
         host       {
-                        U->host = STRNDUP(YYTOKEN, (YYCURSOR - YYTOKEN));
+                        U->host = Str_ndup(YYTOKEN, (YYCURSOR - YYTOKEN));
                         goto parse; 
                    }
 
@@ -243,6 +234,7 @@ query:
 
         query      {
                         *YYCURSOR = 0;
+                        U->query = Str_ndup(YYTOKEN, YYCURSOR - YYTOKEN);
                         YYCURSOR = YYTOKEN; // backtrack to start of query string after terminating it
                         goto params;
                    }
@@ -268,7 +260,7 @@ params:
                 param->name = YYTOKEN;
                 param->next = U->params;
                 U->params = param;
-                goto query;
+                goto params;
         }
 
         [=]parametervalue[&]? {
@@ -278,7 +270,8 @@ params:
                 if (! param) /* format error */
                         return true; 
                 param->value = YYTOKEN;
-                goto query;
+                printf("name: %s value: %s\n", param->name, param->value);
+                goto params;
         }
 
         any { 
@@ -309,6 +302,7 @@ static void freeParams(param_t p) {
 
 static T ctor(uchar_t *data) {
         T U;
+        Exception_init();
 	NEW(U);
 	U->data = data;
 	YYCURSOR = U->data;
@@ -343,9 +337,10 @@ T URL_create(const char *url, ...) {
 
 void URL_free(T *U) {
 	assert(U && *U);
-        if ((*U)->params) freeParams((*U)->params);
+        freeParams((*U)->params);
         FREE((*U)->paramNames);
 	FREE((*U)->toString);
+	FREE((*U)->query);
 	FREE((*U)->data);
 	FREE((*U)->host);
 	FREE(*U);
@@ -391,6 +386,12 @@ const char *URL_getPath(T U) {
 }
 
 
+const char *URL_getQueryString(T U) {
+	assert(U);
+	return U->query;
+}
+
+
 const char **URL_getParameterNames(T U) {
         assert(U);
         if (U->params && (U->paramNames == NULL)) {
@@ -426,7 +427,7 @@ const char *URL_toString(T U) {
                 uchar_t port[7] = {0};
                 if (U->port >= 0)
                         snprintf(port, 6, ":%d", U->port);
-		U->toString = Str_cat("%s://%s%s%s%s%s%s%s", 
+		U->toString = Str_cat("%s://%s%s%s%s%s%s%s%s%s", 
                                       U->protocol,
                                       U->user?U->user:"",
                                       U->password?":":"",
@@ -434,7 +435,9 @@ const char *URL_toString(T U) {
                                       U->user?"@":"",
                                       U->host?U->host:"",
                                       port,
-                                      U->path?U->path:""); 
+                                      U->path?U->path:"",
+                                      U->query ? "?":"",
+                                      U->query ? U->query : ""); 
 	}
 	return U->toString;
 }

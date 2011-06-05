@@ -8,7 +8,7 @@
  */
 
 int main(void) {
-        URL_T url = URL_new("sqlite:///tmp/test.db");
+        URL_T url = URL_new("mysql://localhost:3306/test?user=root&password=root");
         ConnectionPool_T pool = ConnectionPool_new(url);
         ConnectionPool_start(pool);
         Connection_T con = ConnectionPool_getConnection(pool);

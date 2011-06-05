@@ -6,6 +6,41 @@
 	objectVersion = 45;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		523FDAEB139BEF3E00C5BA10 /* Connection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EC80FDAA1070024B721 /* Connection.c */; };
+		523FDAEC139BEF3E00C5BA10 /* ConnectionPool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492ECA0FDAA1070024B721 /* ConnectionPool.c */; };
+		523FDAED139BEF3E00C5BA10 /* PreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EDB0FDAA1070024B721 /* PreparedStatement.c */; };
+		523FDAEE139BEF3E00C5BA10 /* ResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EDE0FDAA1070024B721 /* ResultSet.c */; };
+		523FDAEF139BEF3E00C5BA10 /* SQLiteConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EE20FDAA1070024B721 /* SQLiteConnection.c */; };
+		523FDAF0139BEF3E00C5BA10 /* SQLitePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EE40FDAA1070024B721 /* SQLitePreparedStatement.c */; };
+		523FDAF1139BEF3E00C5BA10 /* SQLiteResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EE60FDAA1070024B721 /* SQLiteResultSet.c */; };
+		523FDAF2139BEF3E00C5BA10 /* MysqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492ECE0FDAA1070024B721 /* MysqlConnection.c */; };
+		523FDAF3139BEF3E00C5BA10 /* MysqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492ED00FDAA1070024B721 /* MysqlPreparedStatement.c */; };
+		523FDAF4139BEF3E00C5BA10 /* MysqlResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492ED20FDAA1070024B721 /* MysqlResultSet.c */; };
+		523FDAF5139BEF3E00C5BA10 /* URL.re in Sources */ = {isa = PBXBuildFile; fileRef = 52492EF20FDAA1070024B721 /* URL.re */; };
+		523FDAF6139BEF3E00C5BA10 /* Mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EF50FDAA1070024B721 /* Mem.c */; };
+		523FDAF7139BEF3E00C5BA10 /* Str.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EF70FDAA1070024B721 /* Str.c */; };
+		523FDAF8139BEF3E00C5BA10 /* StringBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EF90FDAA1070024B721 /* StringBuffer.c */; };
+		523FDAF9139BEF3E00C5BA10 /* Util.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EFB0FDAA1070024B721 /* Util.c */; };
+		523FDAFA139BEF3E00C5BA10 /* Vector.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EFD0FDAA1070024B721 /* Vector.c */; };
+		523FDAFB139BEF3E00C5BA10 /* assert.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EE90FDAA1070024B721 /* assert.c */; };
+		523FDAFC139BEF3E00C5BA10 /* Exception.c in Sources */ = {isa = PBXBuildFile; fileRef = 52492EEC0FDAA1070024B721 /* Exception.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		523FDAFD139BF00300C5BA10 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.re";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILES_DIR)/$(INPUT_FILE_BASE).c",
+			);
+			script = "re2c -bi ${INPUT_FILE_PATH} > ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}.c";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXFileReference section */
 		5210C96E102790C1005F0FD4 /* MemoryException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryException.h; sourceTree = "<group>"; };
 		5214355C100EBEF800E05AB5 /* THIRDPARTY-LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "THIRDPARTY-LICENSE"; sourceTree = "<group>"; };
@@ -13,6 +48,7 @@
 		522DB09A1221716300CD0CE1 /* PreparedStatementDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreparedStatementDelegate.h; sourceTree = "<group>"; };
 		522DB09B1221716300CD0CE1 /* ResultSetDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultSetDelegate.h; sourceTree = "<group>"; };
 		5233692E12507C4A00291DB6 /* zdb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zdb.h; sourceTree = "<group>"; };
+		523FDAE6139BEEE900C5BA10 /* libzdb.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libzdb.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		52492E960FDAA1070024B721 /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		52492EA70FDAA1070024B721 /* CHANGES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES; sourceTree = "<group>"; };
 		52492EA90FDAA1070024B721 /* doxy_bottom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doxy_bottom; sourceTree = "<group>"; };
@@ -92,6 +128,16 @@
 		52E35DAF11BB01F900272194 /* ax_lib_oracle_oci.m4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ax_lib_oracle_oci.m4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		523FDAE3139BEEE900C5BA10 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
 		08FB7794FE84155DC02AAC07 /* libzdb */ = {
 			isa = PBXGroup;
@@ -108,8 +154,17 @@
 				52492EB20FDAA1070024B721 /* doc */,
 				52492F050FDAA1070024B721 /* tools */,
 				52492EFF0FDAA1070024B721 /* test */,
+				523FDAE7139BEEE900C5BA10 /* Products */,
 			);
 			name = libzdb;
+			sourceTree = "<group>";
+		};
+		523FDAE7139BEEE900C5BA10 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				523FDAE6139BEEE900C5BA10 /* libzdb.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		52492EA80FDAA1070024B721 /* config */ = {
@@ -313,6 +368,16 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		523FDAE4139BEEE900C5BA10 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXLegacyTarget section */
 		D28A88AD04BDD90700651E21 /* libzdb */ = {
 			isa = PBXLegacyTarget;
@@ -329,6 +394,27 @@
 		};
 /* End PBXLegacyTarget section */
 
+/* Begin PBXNativeTarget section */
+		523FDAE5139BEEE900C5BA10 /* zdb */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 523FDAEA139BEEE900C5BA10 /* Build configuration list for PBXNativeTarget "zdb" */;
+			buildPhases = (
+				523FDAE2139BEEE900C5BA10 /* Sources */,
+				523FDAE3139BEEE900C5BA10 /* Frameworks */,
+				523FDAE4139BEEE900C5BA10 /* Headers */,
+			);
+			buildRules = (
+				523FDAFD139BF00300C5BA10 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = zdb;
+			productName = zdb;
+			productReference = 523FDAE6139BEEE900C5BA10 /* libzdb.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
 /* Begin PBXProject section */
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
@@ -343,13 +429,43 @@
 				German,
 			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* libzdb */;
+			productRefGroup = 523FDAE7139BEEE900C5BA10 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				D28A88AD04BDD90700651E21 /* libzdb */,
+				523FDAE5139BEEE900C5BA10 /* zdb */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		523FDAE2139BEEE900C5BA10 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				523FDAEB139BEF3E00C5BA10 /* Connection.c in Sources */,
+				523FDAEC139BEF3E00C5BA10 /* ConnectionPool.c in Sources */,
+				523FDAED139BEF3E00C5BA10 /* PreparedStatement.c in Sources */,
+				523FDAEE139BEF3E00C5BA10 /* ResultSet.c in Sources */,
+				523FDAEF139BEF3E00C5BA10 /* SQLiteConnection.c in Sources */,
+				523FDAF0139BEF3E00C5BA10 /* SQLitePreparedStatement.c in Sources */,
+				523FDAF1139BEF3E00C5BA10 /* SQLiteResultSet.c in Sources */,
+				523FDAF2139BEF3E00C5BA10 /* MysqlConnection.c in Sources */,
+				523FDAF3139BEF3E00C5BA10 /* MysqlPreparedStatement.c in Sources */,
+				523FDAF4139BEF3E00C5BA10 /* MysqlResultSet.c in Sources */,
+				523FDAF5139BEF3E00C5BA10 /* URL.re in Sources */,
+				523FDAF6139BEF3E00C5BA10 /* Mem.c in Sources */,
+				523FDAF7139BEF3E00C5BA10 /* Str.c in Sources */,
+				523FDAF8139BEF3E00C5BA10 /* StringBuffer.c in Sources */,
+				523FDAF9139BEF3E00C5BA10 /* Util.c in Sources */,
+				523FDAFA139BEF3E00C5BA10 /* Vector.c in Sources */,
+				523FDAFB139BEF3E00C5BA10 /* assert.c in Sources */,
+				523FDAFC139BEF3E00C5BA10 /* Exception.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
 		1DEB919008733D9F0010E9CD /* Debug */ = {
@@ -401,6 +517,77 @@
 			};
 			name = Release;
 		};
+		523FDAE8139BEEE900C5BA10 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				HEADER_SEARCH_PATHS = (
+					"$SRCROOT/src/**",
+					"/usr/local/mysql/include/**",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-Wall",
+					"-Wunused",
+					"-Wno-unused-label",
+					"-funsigned-char",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
+			};
+			name = Debug;
+		};
+		523FDAE9139BEEE900C5BA10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EXECUTABLE_PREFIX = lib;
+				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = 4.2;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				HEADER_SEARCH_PATHS = (
+					"$SRCROOT/src/**",
+					"/usr/local/mysql/include/**",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-Wall",
+					"-Wunused",
+					"-Wno-unused-label",
+					"-funsigned-char",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				STRINGS_FILE_OUTPUT_ENCODING = "UTF-8";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -421,6 +608,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		523FDAEA139BEEE900C5BA10 /* Build configuration list for PBXNativeTarget "zdb" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				523FDAE8139BEEE900C5BA10 /* Debug */,
+				523FDAE9139BEEE900C5BA10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
