@@ -270,7 +270,6 @@ params:
                 if (! param) /* format error */
                         return true; 
                 param->value = YYTOKEN;
-                printf("name: %s value: %s\n", param->name, param->value);
                 goto params;
         }
 
