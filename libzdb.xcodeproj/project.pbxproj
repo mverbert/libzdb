@@ -616,6 +616,7 @@
 				523FDAE9139BEEE900C5BA10 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
