@@ -79,9 +79,9 @@ void Util_abort(const char *e, ...) {
 	} else {
                 vfprintf(stderr, e, ap);
                 if (ZBDEBUG)
-                        exit(1);
-                else
                         abort();
+                else
+                        exit(1);
 	}
 	va_end(ap);
 }
