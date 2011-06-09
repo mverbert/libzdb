@@ -92,6 +92,17 @@ static int StringBuffer_prepareSQL(T S, char prefix) {
 }
 
 
+static inline T ctor(int hint) {
+        T S;
+        NEW(S);
+        S->used = 0;
+        S->length = hint;
+        S->buffer = ALLOC(hint);
+        *S->buffer = 0;
+        return S;
+}
+
+
 /* ----------------------------------------------------- Protected methods */
 
 
@@ -99,26 +110,16 @@ static int StringBuffer_prepareSQL(T S, char prefix) {
 #pragma GCC visibility push(hidden)
 #endif
 
+
 T StringBuffer_new(const char *s) {
-        T S;
-        NEW(S);
-        S->used = 0;
-        S->length = STRLEN;
-        S->buffer = ALLOC(STRLEN + 1);
-        return StringBuffer_append(S, "%s", s);
+        return StringBuffer_append(ctor(STRLEN), "%s", s);
 }
 
 
 T StringBuffer_create(int hint) {
-        T S;
         if (hint <= 0)
                 THROW(AssertException, "Illegal hint value");
-        NEW(S);
-        S->used = 0;
-        S->length = hint;
-        S->buffer = ALLOC(hint + 1);
-        *S->buffer = 0;
-        return S;
+        return ctor(hint);
 }
 
 
