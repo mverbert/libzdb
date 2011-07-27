@@ -77,16 +77,16 @@ clean-local:
                 -o -name "*~" -o -name ".#*" -o -name "core*"`
 
 distclean-local: 
-		-rm -rf autom4te.cache/ \
-                        build/ \
-                        $(LIBRARY_NAME)
-		-rm -f  doc/api-docs/*h.html \
-                        doc/api-docs/*.css \
-                        doc/api-docs/*.gif \
-                        tools/bin/filterh \
-                        src/xconfig.h.in \
-                        config/config.guess \
-                        config/config.sub
+	-rm -rf autom4te.cache/ \
+                build/ \
+                $(LIBRARY_NAME)
+	-rm -f  doc/api-docs/*h.html \
+                doc/api-docs/*.css \
+                doc/api-docs/*.gif \
+                tools/bin/filterh \
+                src/xconfig.h.in \
+                config/config.guess \
+                config/config.sub
                         
 cleanall: clean distclean
 	-rm -f Makefile.in test/Makefile.in configure aclocal.m4 \

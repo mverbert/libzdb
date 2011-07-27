@@ -62,10 +62,12 @@ long Util_usleep(long u) {
 
 
 void Util_debug(const char *s, ...) {
-	va_list ap;
-	va_start(ap, s);
-	vfprintf(stdout, s, ap);
-	va_end(ap);
+        if (ZBDEBUG) {
+                va_list ap;
+                va_start(ap, s);
+                vfprintf(stdout, s, ap);
+                va_end(ap);
+        }
 }
 
 

@@ -59,7 +59,7 @@
 /**
  * The standard debug routine
  */
-#define DEBUG	if (ZBDEBUG) Util_debug
+#define DEBUG	Util_debug
 
 
 /* --------------------------------------------- SQL standard value macros */

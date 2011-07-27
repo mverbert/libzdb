@@ -75,6 +75,7 @@ extern const struct Pop_T sqlite3pops;
 
 
 static sqlite3 *doConnect(URL_T url, char **error) {
+        int status;
 	sqlite3 *db;
         const char *path = URL_unescape((char*)URL_getPath(url)); // Note: Unescape will modify URL.path. This is what we want for SQLite as path is a file path and we want to allow for (escaped) spaces in the path
         if (! path) {
@@ -83,12 +84,11 @@ static sqlite3 *doConnect(URL_T url, char **error) {
         }
         /* Shared cache mode help reduce database lock problems if libzdb is used with many threads */
 #if SQLITE_VERSION_NUMBER >= 3005000
-        if (SQLITE_OK != sqlite3_enable_shared_cache(true)) {
-                *error = Str_dup("cannot enable shared cache mode");
-                return NULL;
-        }
+        status = sqlite3_open_v2(path, &db,  SQLITE_OPEN_SHAREDCACHE, NULL);
+#else
+        status = sqlite3_open(path, &db);
 #endif
-        if (SQLITE_OK != sqlite3_open(path, &db)) {
+        if (SQLITE_OK != status) {
                 *error = Str_cat("cannot open database '%s' -- %s", path, sqlite3_errmsg(db));
                 sqlite3_close(db);
                 return NULL;
