@@ -55,7 +55,7 @@ static inline void doAppend(T S, const char *s, va_list ap) {
                         break;
                 }
                 S->length += STRLEN + n;
-                RESIZE(S->buffer, S->length + 1);
+                RESIZE(S->buffer, S->length);
         }
 }
 

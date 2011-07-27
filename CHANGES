@@ -5,11 +5,13 @@
 
 Version 2.9
 -----------
-* If an abort handler is not set; On a fatal error, libzdb now calls
-  abort() only if the library debug flag is set, otherwise exit(1) 
-  is called
+* If an abort handler is not set; On a fatal error, libzdb now
+  calls abort() only if the library debug flag is set, otherwise
+  exit(1) is called
 * SQLite: Unescape path to allow for (white-)space in database file 
-  path. Note that this modify URL.path. Thank to Jonas Schnelli
+  path. Thank to Jonas Schnelli
+* SQLite: Use sqlite3_open_v2 instead of sqlite3_enable_shared_cache 
+  which is deprecated in OS X Lion. 
               
 Version 2.8.1
 -------------
