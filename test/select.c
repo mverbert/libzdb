@@ -25,9 +25,9 @@ int main(void) {
                         PreparedStatement_setString(p, 1, bleach[i]);
                         PreparedStatement_execute(p);
                 }
-                ResultSet_T result = Connection_executeQuery(con, "select name from bleach;");
-                while (ResultSet_next(result))
-                        printf("%s\n", ResultSet_getString(result, 1));
+                ResultSet_T r = Connection_executeQuery(con, "select name from bleach;");
+                while (ResultSet_next(r))
+                        printf("%s\n", ResultSet_getString(r, 1));
                 Connection_execute(con, "drop table bleach;");
         }
         CATCH(SQLException)
@@ -37,9 +37,9 @@ int main(void) {
         FINALLY
         {
                 Connection_close(con);
-                ConnectionPool_free(&pool);
-                URL_free(&url);
         }
         END_TRY;
+        ConnectionPool_free(&pool);
+        URL_free(&url);
         return 0;
 }
