@@ -128,7 +128,7 @@ long SQLiteResultSet_getColumnSize(T R, int columnIndex) {
 
 const char *SQLiteResultSet_getString(T R, int columnIndex) {
         TEST_INDEX
-	return sqlite3_column_text(R->stmt, i);
+	return (const char*)sqlite3_column_text(R->stmt, i);
 }
 
 

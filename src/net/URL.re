@@ -200,7 +200,7 @@ parse:
                    }
 
         host       {
-                        U->host = Str_ndup(YYTOKEN, (YYCURSOR - YYTOKEN));
+                        U->host = Str_ndup(YYTOKEN, (int)(YYCURSOR - YYTOKEN));
                         goto parse; 
                    }
 
@@ -234,7 +234,7 @@ query:
 
         query      {
                         *YYCURSOR = 0;
-                        U->query = Str_ndup(YYTOKEN, YYCURSOR - YYTOKEN);
+                        U->query = Str_ndup(YYTOKEN, (int)(YYCURSOR - YYTOKEN));
                         YYCURSOR = YYTOKEN; // backtrack to start of query string after terminating it
                         goto params;
                    }

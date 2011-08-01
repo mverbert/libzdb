@@ -87,7 +87,7 @@ void SQLitePreparedStatement_free(T *P) {
 void SQLitePreparedStatement_setString(T P, int parameterIndex, const char *x) {
         assert(P);
         sqlite3_reset(P->stmt);
-        int size = x ? strlen(x) : 0; 
+        int size = x ? (int)strlen(x) : 0; 
         P->lastError = sqlite3_bind_text(P->stmt, parameterIndex, x, size, SQLITE_STATIC);
         if (P->lastError == SQLITE_RANGE)
                 THROW(SQLException, "Parameter index is out of range");

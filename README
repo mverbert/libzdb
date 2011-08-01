@@ -67,7 +67,20 @@
  non-API objects in the library. It is strongly recommended to build the
  library with --enable-protected as it will be faster and reduce the risk
  for name symbol interposing
-  
+
+
+ Xcode: 
+ ------
+
+ You can use the approach described under 'Installation' above to build
+ and install libzdb on OS X. In fact, this is the only way to install
+ libzdb proper on OS X.
+
+ In addition, we have included an Xcode project file you can use to
+ develop and debug libzdb on OS X. To build libzdb with Xcode you will
+ first need to run configure. Libzdb will be built with support for
+ SQLite and PostgreSQL which are part of OS X Lion.
+
   
  API Documentation
  -----------------

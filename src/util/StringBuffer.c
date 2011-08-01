@@ -166,7 +166,7 @@ void StringBuffer_clear(T S) {
 
 const char *StringBuffer_toString(T S) {
         assert(S);
-        return S->buffer;
+        return (const char*)S->buffer;
 }
 
 
