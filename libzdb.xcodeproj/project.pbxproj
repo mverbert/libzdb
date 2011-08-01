@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		526435FA13E74A610000263E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526435F913E74A610000263E /* libsqlite3.dylib */; };
 		526435FD13E74A690000263E /* libpq.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526435FC13E74A690000263E /* libpq.dylib */; };
+		52B1F2B913E7526E004869F0 /* URL.re in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1013E716A0002F3C7C /* URL.re */; };
 		52F236F013E722DB00D24B82 /* select.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2213E716A0002F3C7C /* select.c */; };
 		52F2370213E7256200D24B82 /* Connection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BDF13E716A0002F3C7C /* Connection.c */; };
 		52F2370313E7256200D24B82 /* ConnectionPool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE213E716A0002F3C7C /* ConnectionPool.c */; };
@@ -22,7 +23,6 @@
 		52F2370B13E7256200D24B82 /* SQLiteResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C0413E716A0002F3C7C /* SQLiteResultSet.c */; };
 		52F2370C13E7256200D24B82 /* assert.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C0713E716A0002F3C7C /* assert.c */; };
 		52F2370D13E7256200D24B82 /* Exception.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C0A13E716A0002F3C7C /* Exception.c */; };
-		52F2370E13E7256200D24B82 /* URL.c in Sources */ = {isa = PBXBuildFile; fileRef = 52F236E013E7228500D24B82 /* URL.c */; };
 		52F2370F13E7256200D24B82 /* Mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1313E716A0002F3C7C /* Mem.c */; };
 		52F2371013E7256200D24B82 /* Str.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1513E716A0002F3C7C /* Str.c */; };
 		52F2371113E7256200D24B82 /* StringBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1713E716A0002F3C7C /* StringBuffer.c */; };
@@ -30,6 +30,20 @@
 		52F2371313E7256200D24B82 /* Vector.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1B13E716A0002F3C7C /* Vector.c */; };
 		52F2371B13E7281000D24B82 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F236FE13E724D600D24B82 /* libzdb.dylib */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		52B1F2BA13E75279004869F0 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.re";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILES_DIR)/$(INPUT_FILE_BASE).c",
+			);
+			script = "re2c -bi ${INPUT_FILE_PATH} > ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}.c";
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		52F2371913E7280300D24B82 /* PBXContainerItemProxy */ = {
@@ -139,7 +153,6 @@
 		52788C2313E716A0002F3C7C /* unit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unit.c; sourceTree = "<group>"; };
 		52788C2713E716A0002F3C7C /* compfilterh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = compfilterh; sourceTree = "<group>"; };
 		52788C2813E716A0002F3C7C /* filterh.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; path = filterh.l; sourceTree = "<group>"; };
-		52F236E013E7228500D24B82 /* URL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = URL.c; sourceTree = "<group>"; };
 		52F236E613E722C200D24B82 /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
 		52F236FE13E724D600D24B82 /* libzdb.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libzdb.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -334,7 +347,6 @@
 		52788C0E13E716A0002F3C7C /* net */ = {
 			isa = PBXGroup;
 			children = (
-				52F236E013E7228500D24B82 /* URL.c */,
 				52788C0F13E716A0002F3C7C /* URL.h */,
 				52788C1013E716A0002F3C7C /* URL.re */,
 			);
@@ -435,6 +447,7 @@
 				52F236FC13E724D600D24B82 /* Headers */,
 			);
 			buildRules = (
+				52B1F2BA13E75279004869F0 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -482,6 +495,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52B1F2B913E7526E004869F0 /* URL.re in Sources */,
 				52F2370213E7256200D24B82 /* Connection.c in Sources */,
 				52F2370313E7256200D24B82 /* ConnectionPool.c in Sources */,
 				52F2370413E7256200D24B82 /* PostgresqlConnection.c in Sources */,
@@ -494,7 +508,6 @@
 				52F2370B13E7256200D24B82 /* SQLiteResultSet.c in Sources */,
 				52F2370C13E7256200D24B82 /* assert.c in Sources */,
 				52F2370D13E7256200D24B82 /* Exception.c in Sources */,
-				52F2370E13E7256200D24B82 /* URL.c in Sources */,
 				52F2370F13E7256200D24B82 /* Mem.c in Sources */,
 				52F2371013E7256200D24B82 /* Str.c in Sources */,
 				52F2371113E7256200D24B82 /* StringBuffer.c in Sources */,
@@ -613,6 +626,10 @@
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				OTHER_CFLAGS = (
+					"-Wno-pointer-sign",
+					"-Wno-address",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -624,6 +641,10 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				OTHER_CFLAGS = (
+					"-Wno-pointer-sign",
+					"-Wno-address",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
