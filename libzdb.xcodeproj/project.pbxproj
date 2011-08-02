@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		526435FA13E74A610000263E /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526435F913E74A610000263E /* libsqlite3.dylib */; };
-		526435FD13E74A690000263E /* libpq.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526435FC13E74A690000263E /* libpq.dylib */; };
+		526B7ABA13E7562B008E2CB1 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526B7AB913E7562B008E2CB1 /* libsqlite3.dylib */; };
+		526B7ABC13E75645008E2CB1 /* libpq.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526B7ABB13E75645008E2CB1 /* libpq.dylib */; };
 		52B1F2B913E7526E004869F0 /* URL.re in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1013E716A0002F3C7C /* URL.re */; };
 		52F236F013E722DB00D24B82 /* select.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2213E716A0002F3C7C /* select.c */; };
 		52F2370213E7256200D24B82 /* Connection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BDF13E716A0002F3C7C /* Connection.c */; };
@@ -68,8 +68,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		526435F913E74A610000263E /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
-		526435FC13E74A690000263E /* libpq.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libpq.dylib; sourceTree = DEVELOPER_DIR; };
+		526B7AB913E7562B008E2CB1 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
+		526B7ABB13E75645008E2CB1 /* libpq.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libpq.dylib; sourceTree = DEVELOPER_DIR; };
 		52788BC613E716A0002F3C7C /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		52788BC713E716A0002F3C7C /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		52788BC813E716A0002F3C7C /* CHANGES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES; sourceTree = "<group>"; };
@@ -170,8 +170,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				526435FD13E74A690000263E /* libpq.dylib in Frameworks */,
-				526435FA13E74A610000263E /* libsqlite3.dylib in Frameworks */,
+				526B7ABC13E75645008E2CB1 /* libpq.dylib in Frameworks */,
+				526B7ABA13E7562B008E2CB1 /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,8 +181,6 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
-				526435FC13E74A690000263E /* libpq.dylib */,
-				526435F913E74A610000263E /* libsqlite3.dylib */,
 				52788BDB13E716A0002F3C7C /* README */,
 				52788BD213E716A0002F3C7C /* COPYING */,
 				52788BC613E716A0002F3C7C /* AUTHORS */,
@@ -195,6 +193,7 @@
 				52788BDC13E716A0002F3C7C /* src */,
 				52788C1E13E716A0002F3C7C /* test */,
 				52788C2413E716A0002F3C7C /* tools */,
+				526B7ABD13E7564B008E2CB1 /* libs */,
 				521CF22113E71619004A7291 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -206,6 +205,15 @@
 				52F236FE13E724D600D24B82 /* libzdb.dylib */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		526B7ABD13E7564B008E2CB1 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				526B7ABB13E75645008E2CB1 /* libpq.dylib */,
+				526B7AB913E7562B008E2CB1 /* libsqlite3.dylib */,
+			);
+			name = libs;
 			sourceTree = "<group>";
 		};
 		52788BC913E716A0002F3C7C /* config */ = {
