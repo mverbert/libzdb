@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5268691F13E9EF9400908031 /* libmysqlclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5268691E13E9EF9400908031 /* libmysqlclient.a */; };
+		5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE513E716A0002F3C7C /* MysqlConnection.c */; };
+		5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */; };
+		5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE913E716A0002F3C7C /* MysqlResultSet.c */; };
 		526B7ABA13E7562B008E2CB1 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526B7AB913E7562B008E2CB1 /* libsqlite3.dylib */; };
 		526B7ABC13E75645008E2CB1 /* libpq.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526B7ABB13E75645008E2CB1 /* libpq.dylib */; };
 		52B1F2B913E7526E004869F0 /* URL.re in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1013E716A0002F3C7C /* URL.re */; };
@@ -68,6 +72,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5268691E13E9EF9400908031 /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysqlclient.a; path = "../../../../usr/local/mysql-5.1.43-osx10.6-x86_64/lib/libmysqlclient.a"; sourceTree = "<group>"; };
+		5268692013E9F02000908031 /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysqlclient.a; path = "../../../../usr/local/mysql-5.1.43-osx10.6-x86_64/lib/libmysqlclient.a"; sourceTree = "<group>"; };
 		526B7AB913E7562B008E2CB1 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
 		526B7ABB13E75645008E2CB1 /* libpq.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libpq.dylib; sourceTree = DEVELOPER_DIR; };
 		52788BC613E716A0002F3C7C /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
@@ -172,6 +178,7 @@
 			files = (
 				526B7ABC13E75645008E2CB1 /* libpq.dylib in Frameworks */,
 				526B7ABA13E7562B008E2CB1 /* libsqlite3.dylib in Frameworks */,
+				5268691F13E9EF9400908031 /* libmysqlclient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +188,7 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
+				5268691E13E9EF9400908031 /* libmysqlclient.a */,
 				52788BDB13E716A0002F3C7C /* README */,
 				52788BD213E716A0002F3C7C /* COPYING */,
 				52788BC613E716A0002F3C7C /* AUTHORS */,
@@ -212,6 +220,7 @@
 			children = (
 				526B7ABB13E75645008E2CB1 /* libpq.dylib */,
 				526B7AB913E7562B008E2CB1 /* libsqlite3.dylib */,
+				5268692013E9F02000908031 /* libmysqlclient.a */,
 			);
 			name = libs;
 			sourceTree = "<group>";
@@ -470,6 +479,7 @@
 		521CF21713E71619004A7291 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = "Tildeslash Ltd.";
 			};
 			buildConfigurationList = 521CF21A13E71619004A7291 /* Build configuration list for PBXProject "libzdb" */;
@@ -503,6 +513,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */,
+				5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */,
+				5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */,
 				52B1F2B913E7526E004869F0 /* URL.re in Sources */,
 				52F2370213E7256200D24B82 /* Connection.c in Sources */,
 				52F2370313E7256200D24B82 /* ConnectionPool.c in Sources */,
@@ -566,6 +579,9 @@
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
 					"-Wno-address",
+					"-Wunused",
+					"-Wno-unused-label",
+					"-funsigned-char",
 				);
 				SDKROOT = "";
 			};
@@ -598,6 +614,9 @@
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
 					"-Wno-address",
+					"-Wunused",
+					"-Wno-unused-label",
+					"-funsigned-char",
 				);
 				SDKROOT = "";
 			};
@@ -634,9 +653,24 @@
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					$SRCROOT/src/,
+					$SRCROOT/src/net,
+					$SRCROOT/src/util,
+					$SRCROOT/src/exceptions,
+					$SRCROOT/src/db,
+					"/usr/local/mysql/include/**",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/usr/local/mysql-5.1.43-osx10.6-x86_64/lib\"",
+				);
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
 					"-Wno-address",
+					"-Wunused",
+					"-Wno-unused-label",
+					"-funsigned-char",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -649,9 +683,24 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				HEADER_SEARCH_PATHS = (
+					$SRCROOT/src/,
+					$SRCROOT/src/net,
+					$SRCROOT/src/util,
+					$SRCROOT/src/exceptions,
+					$SRCROOT/src/db,
+					"/usr/local/mysql/include/**",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/usr/local/mysql-5.1.43-osx10.6-x86_64/lib\"",
+				);
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
 					"-Wno-address",
+					"-Wunused",
+					"-Wno-unused-label",
+					"-funsigned-char",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;

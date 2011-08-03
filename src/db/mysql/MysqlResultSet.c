@@ -210,7 +210,7 @@ const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
         if (R->columns[i].is_null) 
                 return NULL;
         ensureCapacity(R, i);
-        *size = R->columns[i].real_length;
+        *size = (int)R->columns[i].real_length;
         return R->columns[i].buffer;
 }
 
