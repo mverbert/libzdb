@@ -33,7 +33,7 @@ static void TabortHandler(const char *error) {
         exit(1);
 }
 
-void testPool(const char *testURL) {
+static void testPool(const char *testURL) {
         URL_T url;
         char *schema;
         ConnectionPool_T pool;
@@ -134,7 +134,7 @@ void testPool(const char *testURL) {
                 pre= Connection_prepareStatement(con, "update zild_t set image=? where id=?;");
                 assert(pre);
                 for (i= 0; data[i]; i++) {
-                        PreparedStatement_setBlob(pre, 1, data[i], strlen(data[i])+1);
+                        PreparedStatement_setBlob(pre, 1, data[i], (int)strlen(data[i])+1);
                         PreparedStatement_setInt(pre, 2, i + 1);
                         PreparedStatement_execute(pre);
                 }
@@ -151,7 +151,7 @@ void testPool(const char *testURL) {
                         snprintf(&blob[j], 5, "%s", "blob"); 
                 /* Mark start and end */
                 *blob='S'; blob[strlen(blob)-1]= 'E';
-                PreparedStatement_setBlob(pre, 1, blob, strlen(blob)+1);
+                PreparedStatement_setBlob(pre, 1, blob, (int)strlen(blob)+1);
                 PreparedStatement_setInt(pre, 2, i + 1);
                 PreparedStatement_execute(pre);
                 printf("\tResult: prepared statement successfully executed\n");

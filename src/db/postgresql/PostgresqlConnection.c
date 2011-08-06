@@ -77,66 +77,63 @@ extern const struct Pop_T postgresqlpops;
 /* ------------------------------------------------------- Private methods */
 
 
-static PGconn *doConnect(URL_T url, char **error) {
+static int doConnect(T C, char **error) {
 #define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
-        int port;
-        int ssl = false;
-        char application_name[STRLEN + 1] = {0};
-        int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
-        const char *user, *password, *host, *database, *timeout;
-        const char *unix_socket = URL_getParameter(url, "unix-socket");
-        char *conninfo;
-        PGconn *db = 0;
-        if (! (user = URL_getUser(url)))
-                if (! (user = URL_getParameter(url, "user")))
-                        ERROR("no username specified in URL");
-        if (! (password = URL_getPassword(url)))
-                if (! (password = URL_getParameter(url, "password")))
-                        ERROR("no password specified in URL");
-        if (unix_socket) {
-                if (unix_socket[0] != '/') 
-                        ERROR("invalid unix-socket directory");
-                host = unix_socket;
-        } else if (! (host = URL_getHost(url)))
-                ERROR("no host specified in URL");
-        if ((port = URL_getPort(url)) <= 0)
-                ERROR("no port specified in URL");
-        if (! (database = URL_getPath(url)))
-                ERROR("no database specified in URL");
+        /* User */
+        if (URL_getUser(C->url))
+                StringBuffer_append(C->sb, "user='%s' ", URL_getUser(C->url));
+        else if (URL_getParameter(C->url, "user"))
+                StringBuffer_append(C->sb, "user='%s' ", URL_getParameter(C->url, "user"));
         else
-                database++;
+                ERROR("no username specified in URL");
+        /* Password */
+        if (URL_getPassword(C->url))
+                StringBuffer_append(C->sb, "password='%s' ", URL_getPassword(C->url));
+        else if (URL_getParameter(C->url, "password"))
+                StringBuffer_append(C->sb, "password='%s' ", URL_getParameter(C->url, "password"));
+        else
+                ERROR("no password specified in URL");
+        /* Host */
+        if (URL_getParameter(C->url, "unix-socket")) {
+                if (URL_getParameter(C->url, "unix-socket")[0] != '/')
+                        ERROR("invalid unix-socket directory");
+                StringBuffer_append(C->sb, "host='%s' ", URL_getParameter(C->url, "unix-socket"));
+        } else if (URL_getHost(C->url)) {
+                StringBuffer_append(C->sb, "host='%s' ", URL_getHost(C->url));
+                /* Port */
+                if (URL_getPort(C->url) >= 0)
+                        StringBuffer_append(C->sb, "port=%d ", URL_getPort(C->url));
+                else
+                        ERROR("no port specified in URL");
+        } else
+                ERROR("no host specified in URL");
+        /* Database name */
+        if (URL_getPath(C->url))
+                StringBuffer_append(C->sb, "dbname='%s' ", URL_getPath(C->url) + 1);
+        else
+                ERROR("no database specified in URL");
         /* Options */
-        if (IS(URL_getParameter(url, "use-ssl"), "true"))
-                ssl = true;
-        if ((timeout = URL_getParameter(url, "connect-timeout"))) {
-                TRY connectTimeout = Str_parseInt(timeout); ELSE ERROR("invalid connect timeout value"); END_TRY;
-        }
-        if (URL_getParameter(url, "application-name"))
-                snprintf(application_name, STRLEN, " application_name='%s'", URL_getParameter(url, "application-name"));
-        conninfo = Str_cat(" host='%s'"
-                           " port=%d"
-                           " dbname='%s'"
-                           " user='%s'"
-                           " password='%s'"
-                           " connect_timeout=%d"
-                           " sslmode='%s'"
-                           "%s", /* application_name */
-                           host,
-                           port,
-                           database,
-                           user,
-                           password,
-                           connectTimeout,
-                           ssl?"require":"disable",
-                           application_name);
-        db = PQconnectdb(conninfo);
-        FREE(conninfo);
-        if (PQstatus(db) == CONNECTION_OK)
-                return db;
-        *error = Str_dup(PQerrorMessage(db));
+        if (IS(URL_getParameter(C->url, "use-ssl"), "true"))
+                StringBuffer_append(C->sb, "sslmode='require' ");
+        else 
+                StringBuffer_append(C->sb, "sslmode='disable' ");
+        if (URL_getParameter(C->url, "connect-timeout")) {
+                TRY 
+                        StringBuffer_append(C->sb, "connect_timeout=%d ", Str_parseInt(URL_getParameter(C->url, "connect-timeout")));
+                ELSE
+                        ERROR("invalid connect timeout value"); 
+                END_TRY;
+        } else
+                StringBuffer_append(C->sb, "connect_timeout=%d ", SQL_DEFAULT_TCP_TIMEOUT);
+        if (URL_getParameter(C->url, "application-name"))
+                StringBuffer_append(C->sb, "application_name='%s' ", URL_getParameter(C->url, "application-name"));
+        /* Connect */
+        C->db = PQconnectdb(StringBuffer_toString(C->sb));
+        if (PQstatus(C->db) == CONNECTION_OK)
+                return true;
+        *error = Str_dup(PQerrorMessage(C->db));
 error:
-        PQfinish(db);
-        return NULL;
+        return false;
 }
 
 
@@ -149,24 +146,24 @@ error:
 
 T PostgresqlConnection_new(URL_T url, char **error) {
 	T C;
-        PGconn *db;
 	assert(url);
         assert(error);
-        if (! (db = doConnect(url, error)))
-                return NULL;
-	NEW(C);
-        C->db = db;
+        NEW(C);
         C->url = url;
         C->sb = StringBuffer_create(STRLEN);
         C->timeout = SQL_DEFAULT_TIMEOUT;
+        if (! doConnect(C, error))
+                PostgresqlConnection_free(&C);
 	return C;
 }
 
 
 void PostgresqlConnection_free(T *C) {
 	assert(C && *C);
-        PQclear((*C)->res);
-        PQfinish((*C)->db);
+        if ((*C)->res)
+                PQclear((*C)->res);
+        if ((*C)->db)
+                PQfinish((*C)->db);
         StringBuffer_free(&(*C)->sb);
 	FREE(*C);
 }
