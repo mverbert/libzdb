@@ -170,12 +170,11 @@ void PostgresqlConnection_free(T *C) {
 
 
 void PostgresqlConnection_setQueryTimeout(T C, int ms) {
-        PGresult *res;
 	assert(C);
         C->timeout = ms;
         StringBuffer_clear(C->sb);
         StringBuffer_append(C->sb, "SET statement_timeout TO %d;", C->timeout);
-        res = PQexec(C->db, StringBuffer_toString(C->sb));
+        PGresult *res = PQexec(C->db, StringBuffer_toString(C->sb));
         PQclear(res);
 }
 
@@ -194,9 +193,8 @@ int PostgresqlConnection_ping(T C) {
 
 
 int PostgresqlConnection_beginTransaction(T C) {
-        PGresult *res;
 	assert(C);
-        res = PQexec(C->db, "BEGIN TRANSACTION;");
+        PGresult *res = PQexec(C->db, "BEGIN TRANSACTION;");
         C->lastError = PQresultStatus(res);
         PQclear(res);
         return (C->lastError == PGRES_COMMAND_OK);
@@ -204,9 +202,8 @@ int PostgresqlConnection_beginTransaction(T C) {
 
 
 int PostgresqlConnection_commit(T C) {
-        PGresult *res;
 	assert(C);
-        res = PQexec(C->db, "COMMIT TRANSACTION;");
+        PGresult *res = PQexec(C->db, "COMMIT TRANSACTION;");
         C->lastError = PQresultStatus(res);
         PQclear(res);
         return (C->lastError == PGRES_COMMAND_OK);
@@ -214,9 +211,8 @@ int PostgresqlConnection_commit(T C) {
 
 
 int PostgresqlConnection_rollback(T C) {
-        PGresult *res;
 	assert(C);
-        res = PQexec(C->db, "ROLLBACK TRANSACTION;");
+        PGresult *res = PQexec(C->db, "ROLLBACK TRANSACTION;");
         C->lastError = PQresultStatus(res);
         PQclear(res);
         return (C->lastError == PGRES_COMMAND_OK);
@@ -276,7 +272,6 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
         va_copy(ap_copy, ap);
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
-        /* Thanks PostgreSQL for not using '?' as the wildcard marker, but instead $1, $2.. $n */
         paramCount = StringBuffer_prepare4postgres(C->sb);
         name = Str_cat("%d", rand());
         C->res = PQprepare(C->db, name, StringBuffer_toString(C->sb), 0, NULL);
