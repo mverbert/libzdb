@@ -149,19 +149,18 @@ T SQLiteConnection_new(URL_T url, char **error) {
 	NEW(C);
         C->db = db;
         C->url = url;
-        C->sb = StringBuffer_create(STRLEN);
-        if (! setProperties(C, error)) {
-                SQLiteConnection_free(&C);
-                return NULL;
-        }
         C->timeout = SQL_DEFAULT_TIMEOUT;
+        C->sb = StringBuffer_create(STRLEN);
+        if (! setProperties(C, error))
+                SQLiteConnection_free(&C);
 	return C;
 }
 
 
 void SQLiteConnection_free(T *C) {
 	assert(C && *C);
-        while ((sqlite3_close((*C)->db) == SQLITE_BUSY) && Util_usleep(1000));
+        while (sqlite3_close((*C)->db) == SQLITE_BUSY)
+               Util_usleep(10);
         StringBuffer_free(&(*C)->sb);
 	FREE(*C);
 }
