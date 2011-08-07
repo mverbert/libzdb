@@ -239,8 +239,10 @@ int OracleResultSet_next(T R) {
                 return false;
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
+	if (R->lastError == OCI_SUCCESS_WITH_INFO)
+		DEBUG("OracleResultSet_next Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError, R->err));
         R->row++;
-        return (R->lastError == OCI_SUCCESS);
+        return ((R->lastError == OCI_SUCCESS) || (R->lastError == OCI_SUCCESS_WITH_INFO));
 }
 
 
