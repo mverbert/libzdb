@@ -127,7 +127,7 @@ static const uchar_t b2x[][256] = {
 #define YYCTXMARKER   U->ctx
 #define YYFILL(n)     ((void)0)
 #define YYTOKEN       U->token
-#define SET_PROTOCOL(PORT) *(YYCURSOR-3)=0; U->protocol=U->token;U->port=PORT;goto parse
+#define SET_PROTOCOL(PORT) *(YYCURSOR-3)=0; U->protocol=U->token; U->port=PORT; goto parse
 
 
 /* ------------------------------------------------------- Private methods */
@@ -235,7 +235,7 @@ query:
         query      {
                         *YYCURSOR = 0;
                         U->query = Str_ndup(YYTOKEN, (int)(YYCURSOR - YYTOKEN));
-                        YYCURSOR = YYTOKEN; // backtrack to start of query string after terminating it
+                        YYCURSOR = YYTOKEN; // backtrack to start of query string after terminating it and
                         goto params;
                    }
 
@@ -411,8 +411,7 @@ const char *URL_getParameter(T U, const char *name) {
 	assert(U);
         assert(name);
         if (U->params) {
-                param_t p;
-                for (p = U->params; p; p = p->next) {
+                for (param_t p = U->params; p; p = p->next) {
                         if (Str_isByteEqual(p->name, name))
                                 return p->value;
                 }
@@ -441,6 +440,9 @@ const char *URL_toString(T U) {
 	}
 	return U->toString;
 }
+
+
+/* --------------------------------------------------------- Class methods */
 
 
 char *URL_unescape(char *url) {

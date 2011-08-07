@@ -101,7 +101,7 @@ static int doConnect(T C, char **error) {
         } else if (URL_getHost(C->url)) {
                 StringBuffer_append(C->sb, "host='%s' ", URL_getHost(C->url));
                 /* Port */
-                if (URL_getPort(C->url) >= 0)
+                if (URL_getPort(C->url) > 0)
                         StringBuffer_append(C->sb, "port=%d ", URL_getPort(C->url));
                 else
                         ERROR("no port specified in URL");
@@ -113,10 +113,7 @@ static int doConnect(T C, char **error) {
         else
                 ERROR("no database specified in URL");
         /* Options */
-        if (IS(URL_getParameter(C->url, "use-ssl"), "true"))
-                StringBuffer_append(C->sb, "sslmode='require' ");
-        else 
-                StringBuffer_append(C->sb, "sslmode='disable' ");
+        StringBuffer_append(C->sb, "sslmode='%s' ", IS(URL_getParameter(C->url, "use-ssl"), "true") ? "require" : "disable");
         if (URL_getParameter(C->url, "connect-timeout")) {
                 TRY 
                         StringBuffer_append(C->sb, "connect_timeout=%d ", Str_parseInt(URL_getParameter(C->url, "connect-timeout")));
