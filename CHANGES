@@ -9,6 +9,7 @@ Version 2.9
   path. Thanks to Jonas Schnelli
 * SQLite: Use sqlite3_open_v2 instead of sqlite3_enable_shared_cache 
   which is deprecated in OS X Lion. 
+* Oracle: Fixed a problem with ResultSet not returning all data
               
 Version 2.8.1
 -------------
