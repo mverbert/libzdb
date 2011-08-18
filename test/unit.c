@@ -13,10 +13,11 @@
  */
 
 static void vectorVisitor(const void *element, void *ap) {
+        printf("%c", *(char *)element);
         (*((int*)ap))++;
 }
 
-void testStr() {
+static void testStr() {
         printf("============> Start Str Tests\n\n");
         
         printf("=> Test1: copy\n");
@@ -86,11 +87,11 @@ void testStr() {
         
         printf("=> Test6: parseInt, parseLLong, parseDouble\n");
         {
-                char i[STRLEN]= "   -2812 bla";
-                char ll[STRLEN]= "  2147483642 blabla";
-                char d[STRLEN]= "  2.718281828 this is e";
-                char de[STRLEN]= "1.495E+08 kilometer = An Astronomical Unit";
-                char ie[STRLEN]= " 9999999999999999999999999999999999999";
+                char i[STRLEN] = "   -2812 bla";
+                char ll[STRLEN ] = "  2147483642 blabla";
+                char d[STRLEN] = "  2.718281828 this is e";
+                char de[STRLEN] = "1.495E+08 kilometer = An Astronomical Unit";
+                char ie[STRLEN] = " 9999999999999999999999999999999999999";
                 printf("\tResult:\n");
                 printf("\tParsed int = %d\n", Str_parseInt(i));
                 printf("\tParsed long long = %lld\n", Str_parseLLong(ll));
@@ -118,7 +119,7 @@ void testStr() {
 }
 
 
-void testMem() {
+static void testMem() {
         printf("============> Start Mem Tests\n\n");
         
         printf("=> Test1: alloc\n");
@@ -132,7 +133,7 @@ void testMem() {
         printf("=> Test2: calloc\n");
         {
                 char *s8 = CALLOC(2, 1024);
-                assert(s8[2047]=='\0');
+                assert(s8[2047] == '\0');
                 FREE(s8);
         }
         printf("=> Test2: OK\n\n");
@@ -153,7 +154,7 @@ void testMem() {
 }
 
 
-void testUtil() {
+static void testUtil() {
         printf("============> Start Util Tests\n\n");
                 
         printf("=> Test1: time\n");
@@ -164,7 +165,7 @@ void testUtil() {
 
         printf("=> Test2: debug\n");
         {
-                int ZBDEBUG = true;
+                ZBDEBUG = true;
                 DEBUG("\tResult: %s\n", ABOUT);
         }
         printf("=> Test2: OK\n\n");
@@ -173,7 +174,7 @@ void testUtil() {
 }
 
 
-void testURL() {
+static void testURL() {
         URL_T url;
         printf("============> Start URL Tests\n\n");
         
@@ -310,10 +311,10 @@ void testURL() {
         
         printf("=> Test9: unescape\n");
         {
-                char s9a[]= "";
-		char s9x[]= "http://www.tildeslash.com/%";
-		char s9y[]= "http://www.tildeslash.com/%0";
-                char s9[]= "http://www.tildeslash.com/zild/%20zild%5B%5D.doc";
+                char s9a[] = "";
+		char s9x[] = "http://www.tildeslash.com/%";
+		char s9y[] = "http://www.tildeslash.com/%0";
+                char s9[] = "http://www.tildeslash.com/zild/%20zild%5B%5D.doc";
                 printf("\tResult: %s\n", URL_unescape(s9));
                 assert(Str_isEqual(s9, "http://www.tildeslash.com/zild/ zild[].doc"));
                 assert(Str_isEqual(URL_unescape(s9a), ""));
@@ -327,7 +328,7 @@ void testURL() {
         
         printf("=> Test10: escape\n");
         {
-                char s10[]= "http://www.tildeslash.com/<>#%{}|\\^~[] `";
+                char s10[] = "http://www.tildeslash.com/<>#%{}|\\^~[] `";
                 char *rs10 = URL_escape(s10);
                 printf("\tResult: %s -> \n\t%s\n", s10, rs10);
                 assert(Str_isEqual(rs10, "http://www.tildeslash.com/%3C%3E%23%25%7B%7D%7C%5C%5E~%5B%5D%20%60"));
@@ -359,7 +360,7 @@ void testURL() {
 }
 
 
-void testVector() {
+static void testVector() {
         Vector_T vector;
         printf("============> Start Vector Tests\n\n");
         
@@ -376,10 +377,10 @@ void testVector() {
         printf("=> Test1: push & get\n");
         {
                 int i;
-                char b[]= "abcdefghijklmnopqrstuvwxyz";
+                char b[] = "abcdefghijklmnopqrstuvwxyz";
                 vector = Vector_new(1);
                 assert(vector);
-                for (i = 0; i<10; i++)
+                for (i = 0; i < 10; i++)
                         Vector_push(vector, &b[i]);
                 assert(Vector_size(vector) == 10);
                 assert(*(char*)Vector_get(vector, 7) =='h');
@@ -391,10 +392,10 @@ void testVector() {
         printf("=> Test2: insert & get\n");
         {
                 int i;
-                char b[]= "abcdefghijklmnopqrstuvwxyz";
+                char b[] = "abcdefghijklmnopqrstuvwxyz";
                 vector = Vector_new(1);
                 assert(vector);
-                for (i = 0; i<10; i++)
+                for (i = 0; i < 10; i++)
                         Vector_insert(vector, i, &b[i]);
                 assert(Vector_size(vector) == 10);
                 assert(*(char*)Vector_get(vector, 7) =='h');
@@ -415,14 +416,14 @@ void testVector() {
         printf("=> Test3: push & remove\n");
         {
                 int i;
-                char b[]= "abcdefghijklmnopqrstuvwxyz";
+                char b[] = "abcdefghijklmnopqrstuvwxyz";
                 vector = Vector_new(1);
                 assert(vector);
-                for (i = 0; i<11; i++)
+                for (i = 0; i < 11; i++)
                         Vector_push(vector, &b[i]);
                 assert(Vector_size(vector) == 11);
                 for (i = 5; i>=0; i--)
-                        assert(b[i]==*(char*)Vector_remove(vector, i));
+                        assert(b[i] == *(char*)Vector_remove(vector, i));
                 assert(Vector_size(vector) == 5);
                 printf("\tResult: ");
                 for (i = 0; i<Vector_size(vector); i++)
@@ -440,10 +441,10 @@ void testVector() {
         printf("=> Test4: push & set\n");
         {
                 int i,j;
-                char b[]= "abcde";
+                char b[] = "abcde";
                 vector = Vector_new(1);
                 assert(vector);
-                for (i = 0; i<5; i++)
+                for (i = 0; i < 5; i++)
                         Vector_push(vector, &b[i]);
                 assert(Vector_size(vector) == 5);
                 assert('b'==*(char*)Vector_get(vector, 1));
@@ -464,14 +465,16 @@ void testVector() {
         printf("=> Test5: map\n");
         {
                 int i,j;
-                char b[]= "abcdefghijklmnopqrstuvwxyz";
+                char b[] = "abcdefghijklmnopqrstuvwxyz";
                 vector = Vector_new(1);
                 assert(vector);
-                for (i = 0; i<10; i++)
+                for (i = 0; i < 10; i++)
                         Vector_push(vector, &b[i]);
                 assert(Vector_size(vector) == 10);
                 j = 10;
+                printf("\tResult: ");
                 Vector_map(vector, vectorVisitor, &j);
+                printf("\n");
                 assert(j == 20);
                 Vector_free(&vector);
                 assert(vector == NULL);
@@ -482,10 +485,10 @@ void testVector() {
         {
                 int i;
                 void **array;
-                char b[]= "abcdefghijklmnopqrstuvwxyz";
+                char b[] = "abcdefghijklmnopqrstuvwxyz";
                 vector = Vector_new(9);
                 assert(vector);
-                for (i = 0; i<26; i++)
+                for (i = 0; i < 26; i++)
                         Vector_push(vector, &b[i]);
                 assert(Vector_size(vector) == 26);
                 array = Vector_toArray(vector, NULL);
@@ -502,7 +505,7 @@ void testVector() {
         printf("=> Test7: pop & isEmpty\n");
         {
                 int i;
-                char b[]= "abcdefghijklmnopqrstuvwxyz";
+                char b[] = "abcdefghijklmnopqrstuvwxyz";
                 vector = Vector_new(100);
                 assert(vector);
                 for (i = 0; i<26; i++)
@@ -522,7 +525,7 @@ void testVector() {
 }
 
 
-void testStringBuffer() {
+static void testStringBuffer() {
         StringBuffer_T sb;
         printf("============> Start StringBuffer Tests\n\n");
         
@@ -601,8 +604,8 @@ void testStringBuffer() {
                 for (i = 0; i<1024; i++)
                         StringBuffer_append(sb, "a");
                 assert(StringBuffer_length(sb) == 1024);
-                assert(StringBuffer_toString(sb)[1023]=='a');
-                assert(StringBuffer_toString(sb)[1024]== 0);
+                assert(StringBuffer_toString(sb)[1023] == 'a');
+                assert(StringBuffer_toString(sb)[1024] == 0);
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
         }

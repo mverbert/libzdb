@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5216645F13FCDADA00D9B8F7 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F236FE13E724D600D24B82 /* libzdb.dylib */; };
+		5216646713FCDAF200D9B8F7 /* unit.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2313E716A0002F3C7C /* unit.c */; };
 		525D018C13ED6523006C85CF /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F236FE13E724D600D24B82 /* libzdb.dylib */; };
 		525D019313ED6534006C85CF /* pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2113E716A0002F3C7C /* pool.c */; };
 		5268691F13E9EF9400908031 /* libmysqlclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5268691E13E9EF9400908031 /* libmysqlclient.a */; };
@@ -53,6 +55,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		5216645B13FCDADA00D9B8F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 521CF21713E71619004A7291 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52F236FD13E724D600D24B82;
+			remoteInfo = libzdb;
+		};
 		525D018813ED6523006C85CF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 521CF21713E71619004A7291 /* Project object */;
@@ -70,6 +79,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		5216646013FCDADA00D9B8F7 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		525D018D13ED6523006C85CF /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -91,6 +109,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5216646413FCDADA00D9B8F7 /* pool copy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pool copy"; sourceTree = BUILT_PRODUCTS_DIR; };
 		525D019113ED6523006C85CF /* select copy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "select copy"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5268691E13E9EF9400908031 /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysqlclient.a; path = "/usr/local/mysql-5.1.43-osx10.6-x86_64/lib/libmysqlclient.a"; sourceTree = "<absolute>"; };
 		5268692513E9F35400908031 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
@@ -184,6 +203,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5216645E13FCDADA00D9B8F7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5216645F13FCDADA00D9B8F7 /* libzdb.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		525D018B13ED6523006C85CF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -240,6 +267,7 @@
 				52F236E613E722C200D24B82 /* select */,
 				52F236FE13E724D600D24B82 /* libzdb.dylib */,
 				525D019113ED6523006C85CF /* select copy */,
+				5216646413FCDADA00D9B8F7 /* pool copy */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -467,6 +495,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		5216645913FCDADA00D9B8F7 /* unit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5216646113FCDADA00D9B8F7 /* Build configuration list for PBXNativeTarget "unit" */;
+			buildPhases = (
+				5216645C13FCDADA00D9B8F7 /* Sources */,
+				5216645E13FCDADA00D9B8F7 /* Frameworks */,
+				5216646013FCDADA00D9B8F7 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5216645A13FCDADA00D9B8F7 /* PBXTargetDependency */,
+			);
+			name = unit;
+			productName = select;
+			productReference = 5216646413FCDADA00D9B8F7 /* pool copy */;
+			productType = "com.apple.product-type.tool";
+		};
 		525D018613ED6523006C85CF /* pool */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 525D018E13ED6523006C85CF /* Build configuration list for PBXNativeTarget "pool" */;
@@ -545,11 +591,20 @@
 				52F236FD13E724D600D24B82 /* libzdb */,
 				52F236E513E722C200D24B82 /* select */,
 				525D018613ED6523006C85CF /* pool */,
+				5216645913FCDADA00D9B8F7 /* unit */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5216645C13FCDADA00D9B8F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5216646713FCDAF200D9B8F7 /* unit.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		525D018913ED6523006C85CF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -597,6 +652,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5216645A13FCDADA00D9B8F7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52F236FD13E724D600D24B82 /* libzdb */;
+			targetProxy = 5216645B13FCDADA00D9B8F7 /* PBXContainerItemProxy */;
+		};
 		525D018713ED6523006C85CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 52F236FD13E724D600D24B82 /* libzdb */;
@@ -610,6 +670,27 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5216646213FCDADA00D9B8F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				PRODUCT_NAME = "pool copy";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5216646313FCDADA00D9B8F7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				PRODUCT_NAME = "pool copy";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		521CF22213E71619004A7291 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -794,6 +875,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5216646113FCDADA00D9B8F7 /* Build configuration list for PBXNativeTarget "unit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5216646213FCDADA00D9B8F7 /* Debug */,
+				5216646313FCDADA00D9B8F7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		521CF21A13E71619004A7291 /* Build configuration list for PBXProject "libzdb" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
