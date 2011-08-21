@@ -133,11 +133,9 @@ T Connection_new(void *pool, char **error) {
         C->prepared = Vector_new(4);
         C->timeout = SQL_DEFAULT_TIMEOUT;
         C->url = ConnectionPool_getURL(pool);
-        if (! setDelegate(C, error)) {
-                Connection_free(&C);
-                return NULL;
-        }
         C->lastAccessedTime = Util_seconds();
+        if (! setDelegate(C, error))
+                Connection_free(&C);
 	return C;
 }
 

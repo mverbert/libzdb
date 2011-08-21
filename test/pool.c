@@ -51,6 +51,7 @@ static void testPool(const char *testURL) {
                 schema = SCHEMA_ORACLE;
         }
         else {
+                printf("Unsupported database protocol\n");
                 exit(1);
         }
 
