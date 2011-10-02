@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2011 Tildeslash Ltd. All rights reserved.
+ * Copyright (C) Tildeslash Ltd. All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3.
@@ -44,7 +44,7 @@
 /**
  * Version, copyright and contact information
  */
-#define ABOUT   "libzdb/" VERSION " Copyright (C) 2004-2011 Tildeslash Ltd. " LIBZDB_URL
+#define ABOUT   "libzdb/" VERSION " Copyright (C) Tildeslash Ltd. " LIBZDB_URL
 
 
 /* ----------------------------------- Error, Exceptions and report macros */
@@ -145,13 +145,13 @@
 /** 
  * Microseconds per second 
 */
-#define USEC_PER_SEC 1000000L
+#define USEC_PER_SEC 1000000
 
 
 /** 
  * Microseconds per millisecond 
  */
-#define USEC_PER_MSEC 1000L
+#define USEC_PER_MSEC 1000
 
 
 /* ------------------------------------- General Purpose functional macros */
