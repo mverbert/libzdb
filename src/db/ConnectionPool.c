@@ -73,7 +73,6 @@ static void drainPool(T P) {
 		Connection_T con = Vector_pop(P->pool);
 		Connection_free(&con);
 	}
-        assert(Vector_isEmpty(P->pool));
 }
 
 
@@ -110,7 +109,7 @@ static int reapConnections(T P) {
         int n = 0;
         Connection_T con = NULL;
         int x = Vector_size(P->pool) - getActive(P) - P->initialConnections;
-        long timedout = Util_seconds() - P->connectionTimeout;
+        time_t timedout = Util_seconds() - P->connectionTimeout;
         while (x-->0) {
                 for (i = 0; i < Vector_size(P->pool); i++) {
                         con = Vector_get(P->pool, i);
