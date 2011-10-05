@@ -112,7 +112,6 @@ static void freePrepared(T C) {
 		ps = Vector_pop(C->prepared);
 		PreparedStatement_free(&ps);
 	}
-        assert(Vector_isEmpty(C->prepared));
 }
 
 
