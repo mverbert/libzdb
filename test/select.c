@@ -15,7 +15,7 @@ int main(void) {
         TRY
         {
                 int i;
-                char *bleach[] = {
+                const char *bleach[] = {
                         "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 
                         "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", 0
                 };
