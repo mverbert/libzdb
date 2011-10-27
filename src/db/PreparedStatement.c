@@ -34,7 +34,7 @@
 
 
 #define T PreparedStatement_T
-struct T {
+struct PreparedStatement_S {
         Pop_T op;
         ResultSet_T resultSet;
         PreparedStatementDelegate_T D;

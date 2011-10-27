@@ -52,7 +52,7 @@
 
 
 #define T URL_T
-typedef struct T *T;
+typedef struct URL_S *T;
 
 
 /**

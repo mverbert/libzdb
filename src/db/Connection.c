@@ -68,7 +68,7 @@ static const struct Cop_T *cops[] = {
 };
 
 #define T Connection_T
-struct T {
+struct Connection_S {
         Cop_T op;
         URL_T url;
 	int maxRows;

@@ -54,7 +54,7 @@
 
 
 #define T Connection_T
-typedef struct T *T;
+typedef struct Connection_S *T;
 
 //<< Start filter-out
 

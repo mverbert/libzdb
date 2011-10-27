@@ -90,7 +90,7 @@
 
 
 #define T PreparedStatement_T
-typedef struct T *T;
+typedef struct PreparedStatement_S *T;
 
 //<< Start filter-out
 

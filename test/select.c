@@ -4,7 +4,10 @@
 #include <zdb.h>
 
 /*
- gcc -o select select.c -L/<libzdb>/lib -lzdb -lpthread -I/<libzdb>/include/zdb
+ This example demonstrate most of the functionality of libzdb and may be compiled
+ with a C99, OBJ-C or C++ compiler. 
+ C99: gcc -o select select.c -L/<libzdb>/lib -lzdb -lpthread -I/<libzdb>/include/zdb
+ C++: g++ -o select select.c -L/<libzdb>/lib -lzdb -lpthread -I/<libzdb>/include/zdb
  */
 
 int main(void) {

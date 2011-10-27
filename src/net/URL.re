@@ -42,7 +42,7 @@ typedef struct param_t {
 } *param_t;
 
 #define T URL_T
-struct T {
+struct URL_S {
 	int port;
        	char *ref;
 	char *path;

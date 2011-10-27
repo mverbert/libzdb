@@ -39,7 +39,7 @@
 
 
 #define T ConnectionPool_T
-struct T {
+struct ConnectionPool_S {
         URL_T url;
         int filled;
         int doSweep;

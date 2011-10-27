@@ -250,7 +250,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
 	volatile int Exception_flag; \
         Exception_Frame Exception_frame; \
         Exception_frame.message[0] = 0; \
-        Exception_frame.prev = ThreadData_get(Exception_stack); \
+        Exception_frame.prev = (Exception_Frame*)ThreadData_get(Exception_stack); \
         assert(ThreadData_set(Exception_stack, &Exception_frame)==0); \
         Exception_flag = setjmp(Exception_frame.env); \
         if (Exception_flag == Exception_entered) {

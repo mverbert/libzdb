@@ -84,7 +84,7 @@
 
 
 #define T ResultSet_T
-typedef struct T *T;
+typedef struct ResultSet_S *T;
 
 //<< Start filter-out
 

@@ -33,7 +33,7 @@
 
 
 #define T ResultSet_T
-struct T {
+struct ResultSet_S {
         Rop_T op;
         ResultSetDelegate_T D;
 };

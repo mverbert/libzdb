@@ -1,7 +1,15 @@
-                         CHANGES version 2.9
+                         CHANGES version 2.10
 
               This file summarizes changes made since 1.0
 
+Version 2.10
+-----------
+* Make libzdb usable and includable in a C++ or in an 
+  Objective-C(++) project. To use libzdb from a C++ or Obj-C
+  project, simply include zdb.h and link with the libzdb 
+  library, see test/select.c for an example. The zdb.h 
+  interface include the required extern "C" statement to 
+  prevent a C++ compiler from mangling C-function names.
 
 Version 2.9
 -----------
