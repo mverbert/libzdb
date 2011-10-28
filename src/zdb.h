@@ -22,10 +22,10 @@ extern "C" {
 
 
 /**
- * Include this interface in you C code to import the libzdb API.
+ * Include this interface in your C code to import the libzdb API.
  * This meta interface also wraps libzdb API interface files in an
- * 'extern "C"' statement to allow for including libzdb in a C++ or
- * in a Obj-C++ project.
+ * 'extern "C"' block to allow for including libzdb in a C++ or in
+ * a Objective-C++ project.
  *
  * @file
  */
