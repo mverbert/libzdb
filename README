@@ -106,12 +106,11 @@
  On some systems you may have to explicit link with -lpthread and
  set LD_LIBRARY_PATH if libzdb was installed in a non-standard location
  
- Libzdb can be used directly in a C++ or in a Objective-C(++) project. In 
- this case you must include <zdb.h> because this header file contains the 
- 'extern "C"' statement required when importing C declarations in C++ code
- and linking with a C library. (extern "C"' is required so the C++ compiler
- does not mangle C function names and make it impossible to look up library 
- functions in libzdb).
+ Libzdb can be used directly in a C++ or in a Objective-C(++) project. The 
+ <zdb.h> header contains the 'extern "C"' statement required when importing
+ C declarations in C++ code and linking with a C library. (extern "C"' is 
+ required so the C++ compiler does not mangle C function names and make it
+ impossible to look up library functions in libzdb).
  
   
  License Notes

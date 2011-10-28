@@ -40,7 +40,7 @@
 #define Sem_T   pthread_cond_t			  
 #define Mutex_T pthread_mutex_t
 #define ThreadData_T pthread_key_t
-#define wrapper(F) do { int status= F; \
+#define wrapper(F) do { int status=F; \
         if (status!=0 && status!=ETIMEDOUT) \
                 ABORT("Thread: %s\n", strerror(status)); \
         } while (0)
@@ -61,7 +61,7 @@
 #define Mutex_destroy(mutex) wrapper(pthread_mutex_destroy(&mutex))
 #define Mutex_lock(mutex) wrapper(pthread_mutex_lock(&mutex))
 #define Mutex_unlock(mutex) wrapper(pthread_mutex_unlock(&mutex))
-#define LOCK(mutex) do { Mutex_T *_yymutex= &(mutex); \
+#define LOCK(mutex) do { Mutex_T *_yymutex=&(mutex); \
         wrapper(pthread_mutex_lock(_yymutex));
 #define END_LOCK wrapper(pthread_mutex_unlock(_yymutex)); } while (0)
 #define ThreadData_create(key) wrapper(pthread_key_create(&(key), NULL))

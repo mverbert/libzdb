@@ -44,7 +44,7 @@ struct T {
 /* ------------------------------------------------------- Private methods */
 
 
-static inline void doAppend(T S, const char *s, va_list ap) {
+static inline void append(T S, const char *s, va_list ap) {
         va_list ap_copy;
         while (true) {
                 va_copy(ap_copy, ap);
@@ -61,7 +61,7 @@ static inline void doAppend(T S, const char *s, va_list ap) {
 
 
 /* Replace all occurences of ? in this string buffer with prefix[1..99] */
-static int StringBuffer_prepareSQL(T S, char prefix) {
+static int prepare(T S, char prefix) {
         int n, i;
         for (n = i = 0; S->buffer[i]; i++) if (S->buffer[i] == '?') n++;
         if (n > 99)
@@ -132,7 +132,7 @@ T StringBuffer_append(T S, const char *s, ...) {
         if (s && *s) {
                 va_list ap;
                 va_start(ap, s);
-                doAppend(S, s, ap);
+                append(S, s, ap);
                 va_end(ap);
         }
         return S;
@@ -144,7 +144,7 @@ T StringBuffer_vappend(T S, const char *s, va_list ap) {
         if (s && *s) {
                 va_list ap_copy;
                 va_copy(ap_copy, ap);
-                doAppend(S, s, ap_copy);
+                append(S, s, ap_copy);
                 va_end(ap_copy);
         }
         return S;
@@ -172,13 +172,13 @@ const char *StringBuffer_toString(T S) {
 
 int StringBuffer_prepare4postgres(T S) {
         assert(S);
-        return StringBuffer_prepareSQL(S, '$');
+        return prepare(S, '$');
 }
 
 
 int StringBuffer_prepare4oracle(T S) {
         assert(S);
-        return StringBuffer_prepareSQL(S, ':');
+        return prepare(S, ':');
 }
 
 

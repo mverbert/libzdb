@@ -153,7 +153,7 @@ const char *URL_getQueryString(T U);
  * To print all parameter names and their values contained in this 
  * URL, the following code can be used:
  * <pre>
- *   const char **params= URL_getParameterNames(U);
+ *   const char **params = URL_getParameterNames(U);
  *   if (params) 
  *           for (int i = 0; params[i]; i++)
  *                   printf("%s = %s\n", params[i], URL_getParameter(U, params[i]));

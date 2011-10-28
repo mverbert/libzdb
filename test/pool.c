@@ -57,9 +57,9 @@ static void testPool(const char *testURL) {
 
         printf("=> Test1: create/destroy\n");
         {
-                pool= ConnectionPool_new(URL_new(testURL));
+                pool = ConnectionPool_new(URL_new(testURL));
                 assert(pool);
-                url= ConnectionPool_getURL(pool);
+                url = ConnectionPool_getURL(pool);
                 ConnectionPool_free(&pool);
                 assert(! pool);
                 URL_free(&url);
@@ -68,17 +68,17 @@ static void testPool(const char *testURL) {
         
         printf("=> Test2: NULL value\n");
         {
-                url= URL_new(NULL);
+                url = URL_new(NULL);
                 assert(! url);
-                pool= ConnectionPool_new(url);
+                pool = ConnectionPool_new(url);
                 assert(! pool);
         }
         printf("=> Test2: OK\n\n");
         
         printf("=> Test3: start/stop\n");
         {
-                url= URL_new(testURL);
-                pool= ConnectionPool_new(url);
+                url = URL_new(testURL);
+                pool = ConnectionPool_new(url);
                 assert(pool);
                 ConnectionPool_start(pool);
                 ConnectionPool_stop(pool);
@@ -92,18 +92,18 @@ static void testPool(const char *testURL) {
         {
                 int i;
                 Connection_T con;
-                url= URL_new(testURL);
-                pool= ConnectionPool_new(url);
+                url = URL_new(testURL);
+                pool = ConnectionPool_new(url);
                 assert(pool);
                 ConnectionPool_setAbortHandler(pool, TabortHandler);
                 ConnectionPool_start(pool);
-                con= ConnectionPool_getConnection(pool);
+                con = ConnectionPool_getConnection(pool);
                 assert(con);
                 TRY Connection_execute(con, "drop table zild_t;"); ELSE END_TRY;
                 Connection_execute(con, "%s", schema);
                 Connection_beginTransaction(con);
                 /* Insert values into database and assume that auto increment of id works */
-                for (i= 0; data[i]; i++) 
+                for (i = 0; data[i]; i++) 
                         Connection_execute(con, "insert into zild_t (name, percent) values('%s', %d.%d);", data[i], i+1, i);
                 // Assert that the last insert statement added one row
                 assert(Connection_rowsChanged(con) == 1);
@@ -130,11 +130,11 @@ static void testPool(const char *testURL) {
                         "Vampyre", "Balcony", "Cycle", "Day & Night", 
                         "Hand with Reflecting Sphere",
                         "Drawing Hands", "Ascending and Descending", 0}; 
-                con= ConnectionPool_getConnection(pool);
+                con = ConnectionPool_getConnection(pool);
                 assert(con);
-                pre= Connection_prepareStatement(con, "update zild_t set image=? where id=?;");
+                pre = Connection_prepareStatement(con, "update zild_t set image=? where id=?;");
                 assert(pre);
-                for (i= 0; data[i]; i++) {
+                for (i = 0; data[i]; i++) {
                         PreparedStatement_setBlob(pre, 1, data[i], (int)strlen(data[i])+1);
                         PreparedStatement_setInt(pre, 2, i + 1);
                         PreparedStatement_execute(pre);
@@ -148,7 +148,7 @@ static void testPool(const char *testURL) {
                 PreparedStatement_setInt(pre, 2, 1);
                 PreparedStatement_execute(pre);
                 /* Add a large blob */
-                for (j= 0; j<65532; j+=4)
+                for (j = 0; j<65532; j+=4)
                         snprintf(&blob[j], 5, "%s", "blob"); 
                 /* Mark start and end */
                 *blob='S'; blob[strlen(blob)-1]= 'E';
@@ -164,64 +164,64 @@ static void testPool(const char *testURL) {
         printf("=> Test6: Result Sets\n");
         {
                 int i;
-                int imagesize= 0;
+                int imagesize = 0;
                 Connection_T con;
                 ResultSet_T rset;
                 ResultSet_T names;
                 PreparedStatement_T pre;
-                con= ConnectionPool_getConnection(pool);
+                con = ConnectionPool_getConnection(pool);
                 assert(con);
-                rset= Connection_executeQuery(con, "select id, name, percent, image from zild_t where id < %d order by id;", 100);
+                rset = Connection_executeQuery(con, "select id, name, percent, image from zild_t where id < %d order by id;", 100);
                 assert(rset);
                 printf("\tResult:\n");
                 printf("\tNumber of columns in resultset: %d\n\t", ResultSet_getColumnCount(rset));
                 assert(4==ResultSet_getColumnCount(rset));
-                i= 1;
+                i = 1;
                 printf("%-5s", ResultSet_getColumnName(rset, i++));
                 printf("%-16s", ResultSet_getColumnName(rset, i++));
                 printf("%-10s", ResultSet_getColumnName(rset, i++));
                 printf("%-16s", ResultSet_getColumnName(rset, i++));
                 printf("\n\t------------------------------------------------------\n");
                 while (ResultSet_next(rset)) {
-                        int id= ResultSet_getIntByName(rset, "id");
-                        const char *name= ResultSet_getString(rset, 2);
-                        double percent= ResultSet_getDoubleByName(rset, "percent");
-                        const char *blob= (char*)ResultSet_getBlob(rset, 4, &imagesize);
+                        int id = ResultSet_getIntByName(rset, "id");
+                        const char *name = ResultSet_getString(rset, 2);
+                        double percent = ResultSet_getDoubleByName(rset, "percent");
+                        const char *blob = (char*)ResultSet_getBlob(rset, 4, &imagesize);
                         printf("\t%-5d%-16s%-10.2f%-16.38s\n", id, name?name:"null", percent, blob&&imagesize?blob:"");
                 }
-                rset= Connection_executeQuery(con, "select image from zild_t where id=12;");
+                rset = Connection_executeQuery(con, "select image from zild_t where id=12;");
                 assert(1==ResultSet_getColumnCount(rset));
                 while (ResultSet_next(rset))
                         assert(ResultSet_getStringByName(rset, "image"));
                 printf("\tResult: check max rows..");
                 Connection_setMaxRows(con, 3);
-                rset= Connection_executeQuery(con, "select id from zild_t;");
+                rset = Connection_executeQuery(con, "select id from zild_t;");
                 assert(rset);
-                i= 0;
+                i = 0;
                 while (ResultSet_next(rset)) i++;
                 assert((i)==3);
                 printf("success\n");
                 printf("\tResult: check prepared statement resultset..");
                 Connection_setMaxRows(con, 0);
-                pre= Connection_prepareStatement(con, "select name from zild_t where id=?");
+                pre = Connection_prepareStatement(con, "select name from zild_t where id=?");
                 assert(pre);
                 PreparedStatement_setInt(pre, 1, 2);
-                names= PreparedStatement_executeQuery(pre);
+                names = PreparedStatement_executeQuery(pre);
                 assert(names);
                 assert(ResultSet_next(names));
                 assert(Str_isEqual("Leela", ResultSet_getString(names, 1)));
                 printf("success\n");
                 printf("\tResult: check prepared statement re-execute..");
                 PreparedStatement_setInt(pre, 1, 1);
-                names= PreparedStatement_executeQuery(pre);
+                names = PreparedStatement_executeQuery(pre);
                 assert(names);
                 assert(ResultSet_next(names));
                 assert(Str_isEqual("Fry", ResultSet_getString(names, 1)));
                 printf("success\n");
                 printf("\tResult: check prepared statement without in-params..");
-                pre= Connection_prepareStatement(con, "select name from zild_t;");
+                pre = Connection_prepareStatement(con, "select name from zild_t;");
                 assert(pre);
-                names= PreparedStatement_executeQuery(pre);
+                names = PreparedStatement_executeQuery(pre);
                 assert(names);
                 for (i = 0; ResultSet_next(names); i++);
                 assert(i==12);
@@ -241,9 +241,9 @@ static void testPool(const char *testURL) {
         printf("=> Test7: reaper start/stop\n");
         {
                 int i;
-                Vector_T v= Vector_new(20);
-                url= URL_new(testURL);
-                pool= ConnectionPool_new(url);
+                Vector_T v = Vector_new(20);
+                url = URL_new(testURL);
+                pool = ConnectionPool_new(url);
                 assert(pool);
                 ConnectionPool_setInitialConnections(pool, 4);
                 ConnectionPool_setMaxConnections(pool, 20);
@@ -253,7 +253,7 @@ static void testPool(const char *testURL) {
                 ConnectionPool_start(pool);
                 assert(4==ConnectionPool_size(pool));
                 printf("Creating 20 Connections..");
-                for (i= 0; i<20; i++)
+                for (i = 0; i<20; i++)
                         Vector_push(v, ConnectionPool_getConnection(pool));
                 assert(20==ConnectionPool_size(pool));
                 assert(ConnectionPool_active(pool)==20);
@@ -281,12 +281,12 @@ static void testPool(const char *testURL) {
                 int i;
                 Connection_T con;
                 ResultSet_T result;
-                url= URL_new(testURL);
-                pool= ConnectionPool_new(url);
+                url = URL_new(testURL);
+                pool = ConnectionPool_new(url);
                 assert(pool);
                 ConnectionPool_setAbortHandler(pool, TabortHandler);
                 ConnectionPool_start(pool);
-                con= ConnectionPool_getConnection(pool);
+                con = ConnectionPool_getConnection(pool);
                 assert(con);
                 /* 
                  * The following should work without throwing exceptions 
@@ -304,7 +304,7 @@ static void testPool(const char *testURL) {
                 TRY
                 {
                         Connection_beginTransaction(con);
-                        for (i= 0; data[i]; i++) 
+                        for (i = 0; data[i]; i++) 
                                 Connection_execute(con, "insert into zild_t (name, percent) values('%s', %d.%d);", data[i], i+1, i);
                         Connection_commit(con);
                         printf("\tResult: table zild_t successfully created\n");
@@ -319,7 +319,7 @@ static void testPool(const char *testURL) {
                         Connection_close(con);
                 }
                 END_TRY;
-                assert((con= ConnectionPool_getConnection(pool)));
+                assert((con = ConnectionPool_getConnection(pool)));
                 TRY
                 {
                         int i, j;
@@ -335,7 +335,7 @@ static void testPool(const char *testURL) {
                            will throw an SQLException and transfer the control
                            to the exception handler
                         */
-                        for (i= 0, j= 42; bg[i]; i++, j++) {
+                        for (i = 0, j = 42; bg[i]; i++, j++) {
                                 PreparedStatement_setString(p, 1, bg[i]);
                                 PreparedStatement_execute(p);
                         }
@@ -349,7 +349,7 @@ static void testPool(const char *testURL) {
                 TRY
                 {
                         printf("\t\tBattlestar Galactica: \n");
-                        result= Connection_executeQuery(con, "select name from zild_t where id > 12;");
+                        result = Connection_executeQuery(con, "select name from zild_t where id > 12;");
                         while (ResultSet_next(result))
                                 printf("\t\t%s\n", ResultSet_getString(result, 1));
                 }
@@ -372,7 +372,7 @@ static void testPool(const char *testURL) {
                  */
                 TRY
                 {
-                        assert((con= ConnectionPool_getConnection(pool)));
+                        assert((con = ConnectionPool_getConnection(pool)));
                         Connection_execute(con, "%s", schema);
                         /* Creating the table again should fail and we 
                         should not come here */
@@ -385,7 +385,7 @@ static void testPool(const char *testURL) {
                 END_TRY;
                 TRY
                 {
-                        assert((con= ConnectionPool_getConnection(pool)));
+                        assert((con = ConnectionPool_getConnection(pool)));
                         printf("\tTesting: Query with errors.. ");
                         Connection_executeQuery(con, "blablabala;");
                         assert(false);
@@ -399,8 +399,8 @@ static void testPool(const char *testURL) {
                 TRY
                 {
                         printf("\tTesting: Prepared statement query with errors.. ");
-                        assert((con= ConnectionPool_getConnection(pool)));
-                        PreparedStatement_T p= Connection_prepareStatement(con, "blablabala;");
+                        assert((con = ConnectionPool_getConnection(pool)));
+                        PreparedStatement_T p = Connection_prepareStatement(con, "blablabala;");
                         ResultSet_T r = PreparedStatement_executeQuery(p);
                         while(ResultSet_next(r));
                         assert(false);
@@ -413,15 +413,15 @@ static void testPool(const char *testURL) {
                 END_TRY;
                 TRY
                 {
-                        assert((con= ConnectionPool_getConnection(pool)));
+                        assert((con = ConnectionPool_getConnection(pool)));
                         printf("\tTesting: Column index out of range.. ");
-                        result= Connection_executeQuery(con, "select id, name from zild_t;");
+                        result = Connection_executeQuery(con, "select id, name from zild_t;");
                         while (ResultSet_next(result)) {
-                                int id= ResultSet_getInt(result, 1);  
-                                const char *name= ResultSet_getString(result, 2);
+                                int id = ResultSet_getInt(result, 1);  
+                                const char *name = ResultSet_getString(result, 2);
                                 /* So far so good, now, try access an invalid
                                    column, which should throw an SQLException */
-                                int bogus= ResultSet_getInt(result, 3);
+                                int bogus = ResultSet_getInt(result, 3);
                                 assert(false); // Should not come here
                                 printf("%d, %s, %d", id, name, bogus);
                         }
@@ -434,11 +434,11 @@ static void testPool(const char *testURL) {
                 END_TRY;
                 TRY
                 {
-                        assert((con= ConnectionPool_getConnection(pool)));
+                        assert((con = ConnectionPool_getConnection(pool)));
                         printf("\tTesting: Invalid column name.. ");
-                        result= Connection_executeQuery(con, "select name from zild_t;");
+                        result = Connection_executeQuery(con, "select name from zild_t;");
                         while (ResultSet_next(result)) {
-                                const char *name= ResultSet_getStringByName(result, "nonexistingcolumnname");
+                                const char *name = ResultSet_getStringByName(result, "nonexistingcolumnname");
                                 assert(false); // Should not come here
                                 printf("%s", name);
                         }
@@ -451,7 +451,7 @@ static void testPool(const char *testURL) {
                 END_TRY;
                 TRY
                 {
-                        assert((con= ConnectionPool_getConnection(pool)));
+                        assert((con = ConnectionPool_getConnection(pool)));
                         PreparedStatement_T p = Connection_prepareStatement(con, "update zild_t set name = ? where id = ?;");
                         printf("\tTesting: Parameter index out of range.. ");
                         PreparedStatement_setInt(p, 3, 123);
@@ -466,7 +466,7 @@ static void testPool(const char *testURL) {
                         Connection_close(con);
                 }
                 END_TRY;
-                assert((con= ConnectionPool_getConnection(pool)));
+                assert((con = ConnectionPool_getConnection(pool)));
                 Connection_execute(con, "drop table zild_t;");
                 Connection_close(con);
                 ConnectionPool_stop(pool);
@@ -482,13 +482,13 @@ static void testPool(const char *testURL) {
 int main(void) {
         URL_T url;
         char buf[BSIZE];
-        char *help= "Please enter a valid database connection URL and press ENTER\n"
+        char *help = "Please enter a valid database connection URL and press ENTER\n"
                     "E.g. sqlite:///tmp/sqlite.db?synchronous=off&heap_limit=2000\n"
                     "E.g. mysql://localhost:3306/test?user=root&password=root\n"
                     "E.g. postgresql://localhost:5432/test?user=root&password=root\n"
                     "E.g. oracle://localhost:1526/test?user=oracle&password=root\n"
                     "To exit, enter '.' on a single line\n\nConnection URL> ";
-        ZBDEBUG= true;
+        ZBDEBUG = true;
         Exception_init();
         printf("============> Start Connection Pool Tests\n\n");
         printf("This test will create and drop a table called zild_t in the database\n");
@@ -498,7 +498,7 @@ int main(void) {
                         break;
 		if (*buf == '\r' || *buf == '\n' || *buf == 0) 
 			goto next;
-                url= URL_new(buf);
+                url = URL_new(buf);
                 if (! url) {
                         printf("Please enter a valid database URL or stop by entering '.'\n");
                         goto next;
