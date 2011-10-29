@@ -31,7 +31,6 @@
 
 #include "system/Mem.h"
 #include "Str.h"
-#include "Util.h"
 #include "SQLException.h"
 #include "system/System.h"
 
