@@ -16,7 +16,7 @@
 
 #ifndef TIME_INCLUDED
 #define TIME_INCLUDED
-#include <sys/types.h>
+
 
 /**
  * <b>Time</b> is an abstraction of date and time. Time is stored internally 

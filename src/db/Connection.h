@@ -98,7 +98,7 @@ int Connection_isAvailable(T C);
  * @param C A Connection object
  * @return The last time (seconds) this Connection was accessed
  */
-long Connection_getLastAccessedTime(T C);
+time_t Connection_getLastAccessedTime(T C);
 
 
 /**

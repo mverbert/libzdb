@@ -77,7 +77,7 @@ struct Connection_S {
 	int isAvailable;
         Vector_T prepared;
 	int isInTransaction;
-        long lastAccessedTime;
+        time_t lastAccessedTime;
         ResultSet_T resultSet;
         ConnectionDelegate_T D;
         ConnectionPool_T parent;
@@ -163,7 +163,7 @@ int Connection_isAvailable(T C) {
 }
 
 
-long Connection_getLastAccessedTime(T C) {
+time_t Connection_getLastAccessedTime(T C) {
         assert(C);
         return C->lastAccessedTime;
 }
