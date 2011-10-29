@@ -21,6 +21,7 @@
 
 #include "URL.h"
 #include "Thread.h"
+#include "system/Time.h"
 #include "Vector.h"
 #include "ResultSet.h"
 #include "PreparedStatement.h"
@@ -109,7 +110,7 @@ static int reapConnections(T P) {
         int n = 0;
         Connection_T con = NULL;
         int x = Vector_size(P->pool) - getActive(P) - P->initialConnections;
-        time_t timedout = Util_seconds() - P->connectionTimeout;
+        time_t timedout = Time_now() - P->connectionTimeout;
         while (x-->0) {
                 for (i = 0; i < Vector_size(P->pool); i++) {
                         con = Vector_get(P->pool, i);
@@ -131,7 +132,7 @@ static void *doSweep(void *args) {
         struct timespec wait = {0, 0};
         Mutex_lock(P->mutex);
         while (! P->stopped) {
-                wait.tv_sec = Util_seconds() + P->sweepInterval;
+                wait.tv_sec = Time_now() + P->sweepInterval;
                 Sem_timeWait(P->alarm,  P->mutex, wait);
                 if (P->stopped) break;
                 reapConnections(P);

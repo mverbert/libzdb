@@ -161,13 +161,13 @@ void Vector_map(T V, void apply(const void *element, void *ap), void *ap) {
 }
 
 
-void **Vector_toArray(T V, void *end) {
+void **Vector_toArray(T V) {
         int i;
         assert(V);
 	void **array = ALLOC((V->length + 1)*sizeof (*array)); 
 	for (i = 0; i < V->length; i++)
 		array[i] = V->array[i];
-	array[i] = end;
+	array[i] = NULL;
 	return array;
 }
 

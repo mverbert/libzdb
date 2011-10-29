@@ -22,6 +22,7 @@
 #include "URL.h"
 #include "ResultSet.h"
 #include "StringBuffer.h"
+#include "system/Time.h"
 #include "PreparedStatement.h"
 #include "SQLiteResultSet.h"
 #include "SQLitePreparedStatement.h"
@@ -160,7 +161,7 @@ T SQLiteConnection_new(URL_T url, char **error) {
 void SQLiteConnection_free(T *C) {
 	assert(C && *C);
         while (sqlite3_close((*C)->db) == SQLITE_BUSY)
-               Util_usleep(10);
+               Time_usleep(10);
         StringBuffer_free(&(*C)->sb);
 	FREE(*C);
 }

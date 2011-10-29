@@ -17,24 +17,25 @@
 #include "Config.h"
 
 #include <stdio.h>
-#include <strings.h>
+#include <errno.h>
 #include <string.h>
-#include <stdarg.h>
 #include <stdlib.h>
-#include <limits.h>
-#include <ctype.h>
-#include <time.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/select.h>
+
+#include "Str.h"
+#include "system/System.h"
 
 
 /**
- * Implementation of the Util interface
+ * Implementation of the System Facade for UNIX Systems.
  *
  * @file
  */
+ 
+
+/* ----------------------------------------------------------- Definitions */
+
+
+extern void(*AbortHandler)(const char *error);
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -44,34 +45,17 @@
 #pragma GCC visibility push(hidden)
 #endif
 
-long Util_seconds(void) {
-	struct timeval tv = {0};
-	int r = gettimeofday(&tv, 0);
-        assert(r == 0);
-	return tv.tv_sec;
+const char *System_getLastError(void) { 
+        return strerror(errno); 
 }
 
 
-long Util_usleep(long u) {
-        struct timeval tv;
-        tv.tv_sec = u / USEC_PER_SEC;
-        tv.tv_usec = (suseconds_t)(u % USEC_PER_SEC);
-        select(0, 0, 0, 0, &tv);
-        return u;
+const char *System_getError(int error) { 
+        return strerror(error); 
 }
 
 
-void Util_debug(const char *s, ...) {
-        if (ZBDEBUG) {
-                va_list ap;
-                va_start(ap, s);
-                vfprintf(stdout, s, ap);
-                va_end(ap);
-        }
-}
-
-
-void Util_abort(const char *e, ...) {
+void System_abort(const char *e, ...) {
 	va_list ap;
 	va_start(ap, e);
 	if (AbortHandler) {
@@ -88,6 +72,17 @@ void Util_abort(const char *e, ...) {
 	va_end(ap);
 }
 
+
+void System_debug(const char *s, ...) {
+        if (ZBDEBUG) {
+                va_list ap;
+                va_start(ap, s);
+                vfprintf(stdout, s, ap);
+                va_end(ap);
+        }
+}
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
+

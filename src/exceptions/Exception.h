@@ -186,12 +186,10 @@
 #define T Exception_T
 /** @cond hide */
 #include <assert.h>
-#ifndef WIN32
 #include <pthread.h>
 #define ThreadData_T pthread_key_t
 #define ThreadData_set(key, value) pthread_setspecific((key), (value))
 #define ThreadData_get(key) pthread_getspecific((key))
-#endif
 typedef struct T {
         const char *name;
 } T;

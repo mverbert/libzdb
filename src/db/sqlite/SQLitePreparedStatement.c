@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <sqlite3.h>
 
+#include "system/Time.h"
 #include "ResultSet.h"
 #include "SQLiteResultSet.h"
 #include "PreparedStatementDelegate.h"

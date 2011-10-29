@@ -150,11 +150,9 @@ void Vector_map(T V, void apply(const void *element, void *ap), void *ap);
  * in this Vector. The last element in the array is <code>end</code>. The
  * caller is responsible for deallocating the array.
  * @param V A Vector object
- * @param end A pointer marking the end of the array, e.g. NULL
  * @return A pointer to the first element in the array
  */
-void **Vector_toArray(T V, void *end);
+void **Vector_toArray(T V);
         
-
 #undef T
 #endif

@@ -20,6 +20,7 @@
 #include <string.h>
 #include <sqlite3.h>
 
+#include "system/Time.h"
 #include "ResultSetDelegate.h"
 #include "SQLiteResultSet.h"
 

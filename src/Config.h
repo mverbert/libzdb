@@ -29,10 +29,11 @@
 #include <errno.h>
 #include "xconfig.h"
 
-#include "Mem.h"
+#include "system/Mem.h"
 #include "Str.h"
 #include "Util.h"
 #include "SQLException.h"
+#include "system/System.h"
 
 
 /**
@@ -53,13 +54,13 @@
 /**
  * The standard abort routine
  */
-#define ABORT	Util_abort
+#define ABORT	System_abort
 
 
 /**
  * The standard debug routine
  */
-#define DEBUG	Util_debug
+#define DEBUG	System_debug
 
 
 /* --------------------------------------------- SQL standard value macros */
@@ -158,7 +159,6 @@
 
 
 #define IS(a,b) Str_isEqual((a), (b))
-#define STRERROR strerror(errno)
 
 
 /* ---------------------------------------------------------- Build macros */

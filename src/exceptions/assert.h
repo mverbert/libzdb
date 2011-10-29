@@ -21,7 +21,7 @@
 #ifdef NDEBUG
 #define assert(e) ((void)0)
 #else
-#include "AssertException.h"
+#include <AssertException.h>
 extern void assert(int e);
 #define assert(e) ((void)((e)||(Exception_throw(&(AssertException), __func__, __FILE__, __LINE__, #e),0)))
 #endif

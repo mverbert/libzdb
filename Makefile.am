@@ -18,10 +18,10 @@ AM_CPPFLAGS     = $(CPPFLAGS) $(DBCPPFLAGS)
 INCLUDES        = -Isrc -Isrc/util -Isrc/net -Isrc/db -Isrc/exceptions
 
 lib_LTLIBRARIES = libzdb.la
-libzdb_la_SOURCES = src/util/Util.c src/util/Str.c src/util/Mem.c \
-                    src/util/Vector.c src/db/ConnectionPool.c \
-                    src/db/Connection.c src/db/ResultSet.c \
-                    src/db/PreparedStatement.c src/util/StringBuffer.c \
+libzdb_la_SOURCES = src/util/Str.c src/util/Vector.c src/util/StringBuffer.c \
+                    src/system/Mem.c src/system/System.c src/system/Time.c \
+                    src/db/ConnectionPool.c src/db/Connection.c src/db/ResultSet.c \
+                    src/db/PreparedStatement.c  \
                     src/exceptions/assert.c src/exceptions/Exception.c
 
 if ! WITH_ZILD

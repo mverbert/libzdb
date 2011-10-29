@@ -21,6 +21,7 @@
 
 #include "URL.h"
 #include "Vector.h"
+#include "system/Time.h"
 #include "ResultSet.h"
 #include "PreparedStatement.h"
 #include "Connection.h"
@@ -132,7 +133,7 @@ T Connection_new(void *pool, char **error) {
         C->prepared = Vector_new(4);
         C->timeout = SQL_DEFAULT_TIMEOUT;
         C->url = ConnectionPool_getURL(pool);
-        C->lastAccessedTime = Util_seconds();
+        C->lastAccessedTime = Time_now();
         if (! setDelegate(C, error))
                 Connection_free(&C);
 	return C;
@@ -152,7 +153,7 @@ void Connection_free(T *C) {
 void Connection_setAvailable(T C, int isAvailable) {
         assert(C);
         C->isAvailable = isAvailable;
-        C->lastAccessedTime = Util_seconds();
+        C->lastAccessedTime = Time_now();
 }
 
 

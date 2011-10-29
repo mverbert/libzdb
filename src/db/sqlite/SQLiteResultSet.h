@@ -97,7 +97,7 @@ static inline int sqlite3_blocking_exec(sqlite3 *db, const char *zSql, int (*cal
                 int x = 0;\
                 do {\
                         status = (action);\
-                } while (((status == SQLITE_BUSY) || (status == SQLITE_LOCKED)) && (x++ <= 9) && ((Util_usleep(t/(rand() % 10 + 100)))));\
+                } while (((status == SQLITE_BUSY) || (status == SQLITE_LOCKED)) && (x++ <= 9) && ((Time_usleep(t/(rand() % 10 + 100)))));\
         } while (0)
 #endif
 

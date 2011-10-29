@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <fcntl.h>
 
 #include "Config.h"
 #include "URL.h"
 #include "Vector.h"
+#include "system/Time.h"
 #include "StringBuffer.h"
 
 
@@ -16,6 +18,12 @@ static void vectorVisitor(const void *element, void *ap) {
         printf("%c", *(char *)element);
         (*((int*)ap))++;
 }
+
+int abortHandlerCalled = 0;
+static void abortHandler(const char *error) {
+        abortHandlerCalled = 1;
+}
+
 
 static void testStr() {
         printf("============> Start Str Tests\n\n");
@@ -154,23 +162,59 @@ static void testMem() {
 }
 
 
-static void testUtil() {
-        printf("============> Start Util Tests\n\n");
+static void testTime() {
+        printf("============> Start Time Tests\n\n");
                 
-        printf("=> Test1: time\n");
+        printf("=> Test1: now\n");
         {
-                printf("\tResult: %ld\n", Util_seconds());
+                printf("\tResult: %ld\n", Time_now());
         }
         printf("=> Test1: OK\n\n");
 
-        printf("=> Test2: debug\n");
+        printf("=> Test2: milli\n");
+        {
+                printf("\tResult: %lld\n", Time_milli());
+        }
+        printf("=> Test2: OK\n\n");
+        
+        printf("=> Test3: usleep\n");
+        {
+                Time_usleep(1);
+        }
+        printf("=> Test3: OK\n\n");
+        
+        printf("============> Time Tests: OK\n\n");
+}
+
+
+static void testSystem() {
+        printf("============> Start System Tests\n\n");
+        
+        printf("=> Test1: debug\n");
         {
                 ZBDEBUG = true;
                 DEBUG("\tResult: %s\n", ABOUT);
         }
-        printf("=> Test2: OK\n\n");
+        printf("=> Test1: OK\n\n");
         
-        printf("============> Util Tests: OK\n\n");
+        printf("=> Test2: abort\n");
+        {
+                AbortHandler = abortHandler;
+                ABORT("\tResult: %s\n", ABOUT);
+                assert(abortHandlerCalled);
+        }
+        printf("=> Test2: OK\n\n");
+
+        printf("=> Test3: getLastError & getError\n");
+        {
+                int fd = open("l_d$#askfjlsdkfjlskfjdlskfjdlskfjaldkjf", 0);
+                assert(fd <= 0);
+                assert(System_getLastError());
+                assert(System_getError(errno));
+        }
+        printf("=> Test3: OK\n\n");
+        
+        printf("============> System Tests: OK\n\n");
 }
 
 
@@ -491,7 +535,7 @@ static void testVector() {
                 for (i = 0; i < 26; i++)
                         Vector_push(vector, &b[i]);
                 assert(Vector_size(vector) == 26);
-                array = Vector_toArray(vector, NULL);
+                array = Vector_toArray(vector);
                 printf("\tResult: ");
                 for (i = 0; array[i]; i++)
                         printf("%c", *(char*)array[i]);
@@ -704,7 +748,8 @@ int main(void) {
         Exception_init();
 	testStr();
 	testMem();
-	testUtil();
+	testTime();
+	testSystem();
 	testURL();
         testVector();
         testStringBuffer();

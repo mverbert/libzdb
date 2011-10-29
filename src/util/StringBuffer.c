@@ -107,7 +107,6 @@ static inline T ctor(int hint) {
 #pragma GCC visibility push(hidden)
 #endif
 
-
 T StringBuffer_new(const char *s) {
         return StringBuffer_append(ctor(STRLEN), "%s", s);
 }
@@ -187,7 +186,6 @@ void StringBuffer_removeTrailingSemicolon(T S) {
         while (S->used && ((S->buffer[S->used - 1] == ';') || isspace(S->buffer[S->used - 1]))) 
                 S->buffer[--S->used] = 0;
 }
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
