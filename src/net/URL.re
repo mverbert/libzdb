@@ -254,12 +254,12 @@ static inline int x2b(uchar_t *x) {
 }
 
 
-static inline uchar_t *b2x(uint32_t c, uchar_t *b) {
+static inline uchar_t *b2x(uint32_t b, uchar_t *x) {
         static const char b2x_table[] = "0123456789ABCDEF";
-        *b++ = '%';
-        *b++ = b2x_table[c >> 4];
-        *b = b2x_table[c & 0xf];
-        return b;
+        *x++ = '%';
+        *x++ = b2x_table[b >> 4];
+        *x = b2x_table[b & 0xf];
+        return x;
 }
 
 

@@ -202,6 +202,7 @@ static void testSystem() {
                 AbortHandler = abortHandler;
                 ABORT("\tResult: %s\n", ABOUT);
                 assert(abortHandlerCalled);
+                AbortHandler = NULL; // Reset so exceptions are thrown in later tests
         }
         printf("=> Test2: OK\n\n");
 
