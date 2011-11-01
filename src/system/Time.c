@@ -55,7 +55,7 @@ time_t Time_now(void) {
 }
 
 
-long long int Time_milli() {
+long long int Time_milli(void) {
 	struct timeval t;
 	if (gettimeofday(&t, NULL) != 0)
                 THROW(AssertException, "%s", System_getLastError());

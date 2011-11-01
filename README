@@ -1,18 +1,14 @@
 
-                            Zild Database Library
+                            Libzdb
                                        
  Introduction
  ------------
 
- The Zild Database Library implements a small, fast and easy to use
- object oriented database API with the following features: C database
- library - connect to multiple database systems - zero runtime
- configuration, connect using a URL scheme - Thread safe Connection 
- Pooling and exceptions handling.
-
- This database library is part of the Zild Application Server and is
- released as Open Source with the hope that others may find it useful in
- their Open Source Work.
+ Libzdb implements a small, fast and easy to use object oriented 
+ database API with the following features: C database library - 
+ connect to multiple database systems - zero runtime configuration, 
+ connect using a URL scheme - Thread safe Connection Pooling and 
+ exceptions handling.
 
 
  System requirements
@@ -24,10 +20,10 @@
    disk space. You may need more RAM depending on how many Connections
    the library should create.
 
- * ANSI-C Compiler and Build System
+ * C99 Compiler and Build System
 
-   You will need an ANSI-C99 compiler installed to build the library.
-   The GNU C compiler (GCC) from the Free Software Foundation (FSF) is
+   You will need a C99 compiler installed to build the library. The 
+   GNU C compiler (GCC) from the Free Software Foundation (FSF) is
    recommended. In addition, your PATH must contain basic build tools
    such as make and flex and database configuration scripts for MySQL
    and PostgreSQL, that is, mysql_config and pg_config respectively. 

@@ -60,10 +60,10 @@ int Str_isByteEqual(const char *a, const char *b) {
 
 int Str_startsWith(const char *a, const char *b) {
 	if (a && b) {
-                const char *s = a;
-                while (*a && *b)
-                        if (*a++ != *b++) return false;
-                return ((*a == *b) || (a != s && *b==0));
+	        do 
+	                if (*a++ != *b++) return false;
+                while (*b);
+                return true;
         }
         return false;
 }

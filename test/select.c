@@ -6,7 +6,7 @@
 /*
  This example demonstrate most of the functionality of libzdb and can be compiled
  with a C, OBJ-C(++) or a C++ compiler. 
- Compile: [gcc|g++|clang|clang++] -o select select.c -L/<libzdb>/lib -lzdb -lpthread -I/<libzdb>/include/zdb
+ Compile: [gcc|g++|clang|clang++] -o select select.c -L/<libzdb>/lib -lzdb -I/<libzdb>/include/zdb
  */
 
 int main(void) {
@@ -22,12 +22,12 @@ int main(void) {
                         "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", 0
                 };
                 Connection_execute(con, "create table bleach(name varchar(255));");
-                PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?);"); 
+                PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?)"); 
                 for (i = 0; bleach[i]; i++) {
                         PreparedStatement_setString(p, 1, bleach[i]);
                         PreparedStatement_execute(p);
                 }
-                ResultSet_T r = Connection_executeQuery(con, "select name from bleach;");
+                ResultSet_T r = Connection_executeQuery(con, "select name from bleach");
                 while (ResultSet_next(r))
                         printf("%s\n", ResultSet_getString(r, 1));
                 Connection_execute(con, "drop table bleach;");
