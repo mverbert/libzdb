@@ -315,7 +315,7 @@ void ConnectionPool_stop(T P) {
 
 
 Connection_T ConnectionPool_getConnection(T P) {
-	Connection_T con = 0;
+	Connection_T con = NULL;
 	assert(P);
 	LOCK(P->mutex) 
         {
@@ -327,6 +327,7 @@ Connection_T ConnectionPool_getConnection(T P) {
                                 goto done;
                         } 
                 }
+                con = NULL;
                 if (size < P->maxConnections) {
                         con = Connection_new(P, &P->error);
                         if (con) {
@@ -337,8 +338,6 @@ Connection_T ConnectionPool_getConnection(T P) {
                                 DEBUG("Failed to create connection -- %s\n", P->error);
                                 FREE(P->error);
                         }
-                } else {
-                        con = NULL;
                 }
         }
 done: 
