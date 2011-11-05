@@ -78,10 +78,9 @@ static void drainPool(T P) {
 
 
 static int fillPool(T P) {
-	Connection_T con;
-        P->error = 0;
 	for (int i = 0; i < P->initialConnections; i++) {
-		if (! (con = Connection_new(P, &P->error))) {
+                Connection_T con = Connection_new(P, &P->error);
+		if (! con) {
                         if (i > 0) {
                                 DEBUG("Failed to fill the pool with initial connections -- %s\n", P->error);
                                 FREE(P->error);
@@ -325,7 +324,6 @@ Connection_T ConnectionPool_getConnection(T P) {
                         con = Vector_get(P->pool, i);
                         if (Connection_isAvailable(con) && Connection_ping(con)) {
                                 Connection_setAvailable(con, false);
-                                Connection_setQueryTimeout(con, SQL_DEFAULT_TIMEOUT);
                                 goto done;
                         } 
                 }

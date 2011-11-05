@@ -4,11 +4,11 @@
  Introduction
  ------------
 
- Libzdb implements a small, fast and easy to use object oriented 
- database API with the following features: C database library - 
- connect to multiple database systems - zero runtime configuration, 
- connect using a URL scheme - Thread safe Connection Pooling and 
- exceptions handling.
+ Libzdb is a small, fast, and easy to use database library with
+ thread-safe connection pooling. The library can connect transparently
+ to multiple database systems. It has zero runtime configuration and
+ connections are specified via a URL scheme. A modern object oriented
+ API is provided. Supports MySQL, PostgreSQL, SQLite and Oracle.
 
 
  System requirements
