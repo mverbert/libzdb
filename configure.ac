@@ -21,16 +21,12 @@ AC_PATH_PROG([FLEX], [flex], [no])
 if test "x$FLEX" = "xno"; then
         AC_MSG_ERROR([flex is required. Download from http://www.gnu.org/software/flex/])
 else
-        # Build tools in-place
-        myTOP=`pwd`
-        if test ! -d ./tools/bin/
-        then
-                mkdir ./tools/bin || AC_MSG_ERROR([Failed to create ./tools/bin])
-        fi
-        cd ./tools/filterh
-        ($FLEX filterh.l && $CC -c lex.yy.c && $CC lex.yy.o -lfl -o ../bin/filterh) || AC_MSG_ERROR([Failed to build tools])
-        rm -f lex.yy.*
-        cd $myTOP;
+	if test ! -d ./tools/bin/
+	then
+        	mkdir ./tools/bin || AC_MSG_ERROR([Failed to create ./tools/bin])
+	fi
+        # Build tools in-place in a subshell
+        (cd ./tools/filterh && $FLEX filterh.l && $CC -c lex.yy.c && $CC lex.yy.o -lfl -o ../bin/filterh && rm -f lex.yy.*) || AC_MSG_ERROR([Failed to build tools])
         # Assert that we succeded building filterh
         test -f ./tools/bin/filterh || AC_MSG_ERROR([Failed to build tools])
 fi
