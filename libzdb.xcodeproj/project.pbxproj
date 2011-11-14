@@ -13,9 +13,9 @@
 		5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE913E716A0002F3C7C /* MysqlResultSet.c */; };
 		5268692613E9F35400908031 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5268692513E9F35400908031 /* libz.dylib */; };
 		526B7ABA13E7562B008E2CB1 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526B7AB913E7562B008E2CB1 /* libsqlite3.dylib */; };
-		526B7ABC13E75645008E2CB1 /* libpq.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526B7ABB13E75645008E2CB1 /* libpq.dylib */; };
 		528F4D58145A5C8A002CD67D /* select.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2213E716A0002F3C7C /* select.c */; };
 		528F4D5B145A5C95002CD67D /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
+		529265511471494C00859D4F /* libpq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 529265501471494C00859D4F /* libpq.a */; };
 		52B1F2B913E7526E004869F0 /* URL.re in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1013E716A0002F3C7C /* URL.re */; };
 		52C32EEE145BA3FA00C72758 /* System.c in Sources */ = {isa = PBXBuildFile; fileRef = 52C32EEB145BA3F900C72758 /* System.c */; };
 		52C32EF0145BA3FA00C72758 /* Time.c in Sources */ = {isa = PBXBuildFile; fileRef = 52C32EED145BA3FA00C72758 /* Time.c */; };
@@ -95,7 +95,6 @@
 		5268691E13E9EF9400908031 /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysqlclient.a; path = "/usr/local/mysql-5.1.43-osx10.6-x86_64/lib/libmysqlclient.a"; sourceTree = "<absolute>"; };
 		5268692513E9F35400908031 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
 		526B7AB913E7562B008E2CB1 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
-		526B7ABB13E75645008E2CB1 /* libpq.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libpq.dylib; sourceTree = DEVELOPER_DIR; };
 		52788BC613E716A0002F3C7C /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		52788BC713E716A0002F3C7C /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		52788BC813E716A0002F3C7C /* CHANGES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES; sourceTree = "<group>"; };
@@ -175,6 +174,7 @@
 		52788C2313E716A0002F3C7C /* unit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unit.c; sourceTree = "<group>"; };
 		52788C2813E716A0002F3C7C /* filterh.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; lineEnding = 0; path = filterh.l; sourceTree = "<group>"; };
 		528F4D3C145A5AA3002CD67D /* libzdb.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libzdb.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		529265501471494C00859D4F /* libpq.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpq.a; path = SDKs/MacOSX10.7.sdk/usr/lib/libpq.a; sourceTree = DEVELOPER_DIR; };
 		52C32ED0145BA0DE00C72758 /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C32EE9145BA3A500C72758 /* Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
 		52C32EEB145BA3F900C72758 /* System.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = System.c; sourceTree = "<group>"; };
@@ -207,9 +207,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5268692613E9F35400908031 /* libz.dylib in Frameworks */,
-				526B7ABC13E75645008E2CB1 /* libpq.dylib in Frameworks */,
 				526B7ABA13E7562B008E2CB1 /* libsqlite3.dylib in Frameworks */,
 				5268691F13E9EF9400908031 /* libmysqlclient.a in Frameworks */,
+				529265511471494C00859D4F /* libpq.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,7 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				5268692513E9F35400908031 /* libz.dylib */,
-				526B7ABB13E75645008E2CB1 /* libpq.dylib */,
+				529265501471494C00859D4F /* libpq.a */,
 				526B7AB913E7562B008E2CB1 /* libsqlite3.dylib */,
 				5268691E13E9EF9400908031 /* libmysqlclient.a */,
 			);
@@ -301,21 +301,21 @@
 		52788BDE13E716A0002F3C7C /* db */ = {
 			isa = PBXGroup;
 			children = (
+				52788BE413E716A0002F3C7C /* mysql */,
+				52788BEB13E716A0002F3C7C /* oracle */,
+				52788BF213E716A0002F3C7C /* postgresql */,
+				52788BFF13E716A0002F3C7C /* sqlite */,
 				52788BDF13E716A0002F3C7C /* Connection.c */,
 				52788BE013E716A0002F3C7C /* Connection.h */,
 				52788BE113E716A0002F3C7C /* ConnectionDelegate.h */,
 				52788BE213E716A0002F3C7C /* ConnectionPool.c */,
 				52788BE313E716A0002F3C7C /* ConnectionPool.h */,
-				52788BE413E716A0002F3C7C /* mysql */,
-				52788BEB13E716A0002F3C7C /* oracle */,
-				52788BF213E716A0002F3C7C /* postgresql */,
 				52788BF913E716A0002F3C7C /* PreparedStatement.c */,
 				52788BFA13E716A0002F3C7C /* PreparedStatement.h */,
 				52788BFB13E716A0002F3C7C /* PreparedStatementDelegate.h */,
 				52788BFC13E716A0002F3C7C /* ResultSet.c */,
 				52788BFD13E716A0002F3C7C /* ResultSet.h */,
 				52788BFE13E716A0002F3C7C /* ResultSetDelegate.h */,
-				52788BFF13E716A0002F3C7C /* sqlite */,
 			);
 			path = db;
 			sourceTree = "<group>";

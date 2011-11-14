@@ -21,7 +21,7 @@ int main(void) {
                         "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 
                         "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", 0
                 };
-                Connection_execute(con, "create table bleach(name varchar(255));");
+                Connection_execute(con, "create table bleach(name varchar(255))");
                 PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?)"); 
                 for (i = 0; bleach[i]; i++) {
                         PreparedStatement_setString(p, 1, bleach[i]);

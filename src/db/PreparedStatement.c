@@ -18,7 +18,6 @@
 
 #include <stdio.h>
 
-#include "Vector.h"
 #include "ResultSet.h"
 #include "PreparedStatement.h"
 
