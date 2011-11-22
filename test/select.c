@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 
 #include <assert.h>
@@ -16,14 +17,13 @@ int main(void) {
         Connection_T con = ConnectionPool_getConnection(pool);
         TRY
         {
-                int i;
+                Connection_execute(con, "create table bleach(name varchar(255))");
                 const char *bleach[] = {
                         "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 
                         "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", 0
                 };
-                Connection_execute(con, "create table bleach(name varchar(255))");
                 PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?)"); 
-                for (i = 0; bleach[i]; i++) {
+                for (int i = 0; bleach[i]; i++) {
                         PreparedStatement_setString(p, 1, bleach[i]);
                         PreparedStatement_execute(p);
                 }
@@ -45,3 +45,5 @@ int main(void) {
         URL_free(&url);
         return 0;
 }
+
+
