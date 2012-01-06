@@ -127,8 +127,8 @@ T Connection_new(void *pool, char **error) {
         assert(pool);
 	NEW(C);
         C->parent = pool;
-	C->isAvailable = true;
-	C->isInTransaction = false;
+        C->isAvailable = true;
+        C->isInTransaction = false;
         C->prepared = Vector_new(4);
         C->timeout = SQL_DEFAULT_TIMEOUT;
         C->url = ConnectionPool_getURL(pool);

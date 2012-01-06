@@ -21,10 +21,10 @@ AC_PATH_PROG([FLEX], [flex], [no])
 if test "x$FLEX" = "xno"; then
         AC_MSG_ERROR([flex is required. Download from http://www.gnu.org/software/flex/])
 else
-	if test ! -d ./tools/bin/
-	then
-        	mkdir ./tools/bin || AC_MSG_ERROR([Failed to create ./tools/bin])
-	fi
+        if test ! -d ./tools/bin/
+        then
+                mkdir ./tools/bin || AC_MSG_ERROR([Failed to create ./tools/bin])
+        fi
         # Build tools in-place in a subshell
         (cd ./tools/filterh && $FLEX filterh.l && $CC -c lex.yy.c && $CC lex.yy.o -lfl -o ../bin/filterh && rm -f lex.yy.*) || AC_MSG_ERROR([Failed to build tools])
         # Assert that we succeded building filterh
@@ -42,20 +42,20 @@ AC_PROG_LIBTOOL
 # ---------------------------------------------------------------------------
 
 AC_ARG_ENABLE(optimized,
-	AS_HELP_STRING([--enable-optimized], 
-        	[Build software optimized]),
+        AS_HELP_STRING([--enable-optimized], 
+                [Build software optimized]),
     [
         CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
         if test "x$enableval" = "xyes" ; then
-   	    	CFLAGS=`echo $CFLAGS|sed 's/-g//'`
-		CFLAGS="$CFLAGS -O3"
-		OPTIMIZED=1
-	else
-		OPTIMIZED=0
+                CFLAGS=`echo $CFLAGS|sed 's/-g//'`
+                CFLAGS="$CFLAGS -O3"
+                OPTIMIZED=1
+        else
+                OPTIMIZED=0
         fi
     ],
     [
-	OPTIMIZED=0
+        OPTIMIZED=0
     ]
 )
 
@@ -65,16 +65,19 @@ AC_ARG_ENABLE([zild],
                 Require gcc version 4.x. This is an internal Tildeslash build 
                 option and should NOT be used by a third-party]),
      [
+        if test "x$enableval" = "xyes" ; then
                 if test "x$GCC" = "xyes"; then
                         zild_protect="true"
-                        AC_DEFINE([PACKAGE_PROTECTED], 1, 
-                                [Define to 1 to package protect (hide) non-api objects])
-                        AC_DEFINE([ZILD_PACKAGE_PROTECTED], 1, 
-                                [Define to 1 to hide objects for linking with zild])
+                        AC_DEFINE([PACKAGE_PROTECTED], 1, [Define to 1 to package protect (hide) non-api objects])
+                        AC_DEFINE([ZILD_PACKAGE_PROTECTED], 1, [Define to 1 to hide objects for linking with zild])
                 else
                         AC_MSG_ERROR([This option (--enable-zild) require GCC])   
                 fi
-     ],[zild_protect="false"])
+        else
+                zild_protect="false"
+        fi
+     ],[zild_protect="false"]
+)
 AM_CONDITIONAL([WITH_ZILD], test "xtrue" = "x$zild_protect")
 
 AC_ARG_ENABLE([protected],
@@ -85,14 +88,18 @@ AC_ARG_ENABLE([protected],
          non-public methods of the DSO and thereby reduce the potential for 
          namespace conflicts for clients linking with the library. Recommend]),
      [
-        if test "x$GCC" = "xyes"; then
-                protect="true"
-                AC_DEFINE([PACKAGE_PROTECTED], 1, 
-                        [Define to 1 to package protect (hide) non-api objects])
+        if test "x$enableval" = "xyes" ; then
+             if test "x$GCC" = "xyes"; then
+                     protect="true"
+                     AC_DEFINE([PACKAGE_PROTECTED], 1, [Define to 1 to package protect (hide) non-api objects])
+             else
+                     AC_MSG_ERROR([This option (--enable-protected) require GCC])   
+             fi
         else
-             AC_MSG_ERROR([This option (--enable-protected) require GCC])   
+             protect="false"
         fi
-     ],[protect="false"])
+     ],[protect="false"]
+)
 
 AC_ARG_ENABLE(profiling,
         AS_HELP_STRING([--enable-profiling],
@@ -101,6 +108,8 @@ AC_ARG_ENABLE(profiling,
         if test "x$enableval" = "xyes" ; then
                 CFLAGS="$CFLAGS -g -pg"
                 profile="true"
+        else
+                profile="false"
         fi
     ],
     [
@@ -116,38 +125,43 @@ AC_ARG_ENABLE([openssl],
                 be given to specify the top-level directory to search for openssl to
                 link with]),
      [
-        openssl="true"
-        if test "x$enableval" = "xyes"; then
-		AC_CHECK_LIB([ssl], [SSL_library_init], [], [AC_MSG_ERROR([libssl not found])])
-		AC_CHECK_LIB([crypto], [SHA1_Init], [], [AC_MSG_ERROR([libcrypto not found])])
-	else
-                AC_MSG_CHECKING([for openssl in $enableval])
-                LDFLAGS="-L$enableval/lib -lssl -lcrypto $LDFLAGS "
-                CPPFLAGS="-I$enableval/include $CPPFLAGS"
-                if test -r "$enableval/lib/libssl.a" -a -r "$enableval/lib/libcrypto.a"; then
-                        AC_MSG_RESULT([ok])
+        if test "x$enableval" = "xno" ; then
+                openssl="false"
+        else
+                openssl="true"
+                if test "x$enableval" = "xyes"; then
+                        AC_CHECK_LIB([ssl], [SSL_library_init], [], [AC_MSG_ERROR([libssl not found])])
+                        AC_CHECK_LIB([crypto], [SHA1_Init], [], [AC_MSG_ERROR([libcrypto not found])])
                 else
-                       AC_MSG_ERROR([openssl not found in $enableval])
+                        AC_MSG_CHECKING([for openssl in $enableval])
+                        LDFLAGS="-L$enableval/lib -lssl -lcrypto $LDFLAGS "
+                        CPPFLAGS="-I$enableval/include $CPPFLAGS"
+                        if test -r "$enableval/lib/libssl.a" -a -r "$enableval/lib/libcrypto.a"; then
+                                AC_MSG_RESULT([ok])
+                        else
+                                AC_MSG_ERROR([openssl not found in $enableval])
+                        fi
                 fi
         fi
-     ],[openssl="false"])
+     ],[openssl="false"]
+)
 
 AC_ARG_ENABLE(sqliteunlock,
-	AS_HELP_STRING([--enable-sqliteunlock], 
-        	[Enable the SQLite unlock notification API (requires SQLite >= 3.6.12 
+        AS_HELP_STRING([--enable-sqliteunlock], 
+                [Enable the SQLite unlock notification API (requires SQLite >= 3.6.12 
                 compiled with the SQLITE_ENABLE_UNLOCK_NOTIFY C-preprocessor symbol).
                 Using this option will greatly improve SQLite concurrency when libzdb
                 and SQLite are used from a multi-threaded program.]),
     [
         if test "x$enableval" = "xyes" ; then
-		SQLITEUNLOCK=1
+                SQLITEUNLOCK=1
                 CFLAGS="$CFLAGS -DSQLITEUNLOCK"
-	else
-		SQLITEUNLOCK=0
+        else
+                SQLITEUNLOCK=0
         fi
     ],
     [
-	SQLITEUNLOCK=0
+        SQLITEUNLOCK=0
     ]
 )
 
@@ -309,9 +323,9 @@ oracle="yes"
 AC_MSG_CHECKING(for oracle)
 AX_LIB_ORACLE_OCI
 if test -n "$ORACLE_OCI_CFLAGS" -a -n "$ORACLE_OCI_LDFLAGS"; then
-    DBCPPFLAGS="$DBCPPFLAGS $ORACLE_OCI_CFLAGS"
-    DBLDFLAGS="$DBLDFLAGS $ORACLE_OCI_LDFLAGS"
-    AC_DEFINE([HAVE_ORACLE], 1, [Define to 1 to enable oracle])
+        DBCPPFLAGS="$DBCPPFLAGS $ORACLE_OCI_CFLAGS"
+        DBLDFLAGS="$DBLDFLAGS $ORACLE_OCI_LDFLAGS"
+        AC_DEFINE([HAVE_ORACLE], 1, [Define to 1 to enable oracle])
 else
         oracle="no"
 fi
@@ -336,15 +350,21 @@ AC_HEADER_STDC
 # ------------------------------------------------------------------------
 
 # Require a working setjmp
-AC_RUN_IFELSE([AC_LANG_PROGRAM([[#include <setjmp.h>]],
+AC_RUN_IFELSE([AC_LANG_PROGRAM([[
+        #include <setjmp.h>
+        ]],
         [[jmp_buf env; setjmp(env);]])], 
-        [], [AC_MSG_FAILURE([setjmp is required])])
+        [], [AC_MSG_FAILURE([setjmp is required])]
+)
 
 # Require that we have vsnprintf that conforms to c99. I.e. does bounds check
-AC_RUN_IFELSE([AC_LANG_PROGRAM([[#include <stdarg.h> 
-        #include <stdio.h>]],
-[[char t[1]; va_list ap; int n = vsnprintf(t, 1, "hello", ap); if(n == 5) return 0;return 1;]])], 
-[], [AC_MSG_FAILURE([vsnprintf does not conform to c99])])
+AC_RUN_IFELSE([AC_LANG_PROGRAM([[
+        #include <stdarg.h> 
+        #include <stdio.h>
+        ]],
+        [[char t[1]; va_list ap; int n = vsnprintf(t, 1, "hello", ap); if(n == 5) return 0;return 1;]])], 
+        [], [AC_MSG_FAILURE([vsnprintf does not conform to c99])]
+)
 
 # ---------------------------------------------------------------------------
 # Compiler 
@@ -357,7 +377,7 @@ AC_C_BIGENDIAN
 # If the compiler is gcc, tune warnings and make the char type unsigned 
 # and enable C99 support
 if test "x$GCC" = "xyes"; then
-	CFLAGS="$CFLAGS -Wall -Wunused -Wno-unused-label -funsigned-char";
+        CFLAGS="$CFLAGS -Wall -Wunused -Wno-unused-label -funsigned-char";
         # Add C99 support
         CFLAGS="$CFLAGS -D_GNU_SOURCE -std=c99"
         # does this compiler support -Wno-pointer-sign ?
@@ -389,7 +409,7 @@ cat <<EOT
 | with the terms of this license, you must abort the         |
 | installation process at this point.                        |
 +------------------------------------------------------------+
-| The Zild Database Library is configured as follows:        |
+| Libzdb is configured as follows:                           |
 |                                                            |
 EOT
 
@@ -418,13 +438,15 @@ echo "|   Sqlite3 unlock notification API:              ENABLED    |"
 else
 echo "|   Sqlite3 unlock notification API:              DISABLED   |"
 fi
+if test "xtrue" = "x$openssl"; then
+echo "|   Openssl:                                      ENABLED    |"
+else
+echo "|   Openssl:                                      DISABLED   |"
+fi
 if test "xfalse" = "x$test_build"; then
 echo "|   Unit Tests Build:                             DISABLED   |"
 else
 echo "|   Unit Tests Build:                             ENABLED    |"
-fi
-if test "xtrue" = "x$openssl"; then
-echo "|   Openssl:                                      ENABLED    |"
 fi
 echo "|------------------------------------------------------------|"
 if test "xyes" = "x$sqlite"; then
