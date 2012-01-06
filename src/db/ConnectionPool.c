@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) Tildeslash Ltd. All rights reserved.
  *
@@ -104,22 +105,19 @@ static int getActive(T P){
 
 
 static int reapConnections(T P) {
-        int i = 0;
         int n = 0;
-        Connection_T con = NULL;
         int x = Vector_size(P->pool) - getActive(P) - P->initialConnections;
         time_t timedout = Time_now() - P->connectionTimeout;
-        while (x-->0) {
-                for (i = 0; i < Vector_size(P->pool); i++) {
-                        con = Vector_get(P->pool, i);
-                        if (Connection_isAvailable(con))
-                                break;
-                }
-                if ((! Connection_ping(con)) || (Connection_getLastAccessedTime(con) < timedout)) {
-                        Vector_remove(P->pool, i);
-                        Connection_free(&con);
-                        n++;
-                }
+        for (int i = 0; ((n < x) && (i < Vector_size(P->pool))); i++) {
+                Connection_T con = Vector_get(P->pool, i);
+                if (Connection_isAvailable(con)) {
+                        if ((! Connection_ping(con)) || (Connection_getLastAccessedTime(con) < timedout)) {
+                                Vector_remove(P->pool, i);
+                                Connection_free(&con);
+                                n++;
+                                i--;
+                        }
+                } 
         }
         return n;
 }
