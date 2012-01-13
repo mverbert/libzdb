@@ -110,6 +110,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		525CF56D14BFD3C600650C7D /* zdb.pc.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zdb.pc.in; sourceTree = "<group>"; };
 		5268691E13E9EF9400908031 /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysqlclient.a; path = "/usr/local/mysql-5.1.43-osx10.6-x86_64/lib/libmysqlclient.a"; sourceTree = "<absolute>"; };
 		5268692513E9F35400908031 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
 		526B7AB913E7562B008E2CB1 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = SDKs/MacOSX10.7.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
@@ -253,6 +254,7 @@
 				52788BC713E716A0002F3C7C /* bootstrap */,
 				52788BD113E716A0002F3C7C /* configure.ac */,
 				52788BDA13E716A0002F3C7C /* Makefile.am */,
+				525CF56D14BFD3C600650C7D /* zdb.pc.in */,
 				52788BC913E716A0002F3C7C /* config */,
 				52788BD313E716A0002F3C7C /* doc */,
 				52788BDC13E716A0002F3C7C /* src */,
@@ -919,6 +921,7 @@
 				529239BC14B7ACC400DFC3A1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		52C32F4F145BABC300C72758 /* Build configuration list for PBXNativeTarget "unit" */ = {
 			isa = XCConfigurationList;

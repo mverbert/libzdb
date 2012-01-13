@@ -17,6 +17,9 @@ FILTERH         = ./tools/bin/filterh
 AM_CPPFLAGS     = $(CPPFLAGS) $(DBCPPFLAGS)
 INCLUDES        = -Isrc -Isrc/util -Isrc/net -Isrc/db -Isrc/exceptions
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = $(LIBRARY_NAME).pc
+
 lib_LTLIBRARIES = libzdb.la
 libzdb_la_SOURCES = src/util/Str.c src/util/Vector.c src/util/StringBuffer.c \
                     src/system/Mem.c src/system/System.c src/system/Time.c \

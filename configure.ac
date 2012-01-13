@@ -46,7 +46,7 @@ AC_ARG_ENABLE(optimized,
                 [Build software optimized]),
     [
         if test "x$enableval" = "xyes" ; then
-				CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
+		CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
                 CFLAGS=`echo $CFLAGS|sed 's/-g//'`
                 CFLAGS="$CFLAGS -O3"
                 OPTIMIZED=1
@@ -395,7 +395,7 @@ fi
 # ---------------------------------------------------------------------------
 
 AM_CONFIG_HEADER(src/xconfig.h)
-AC_OUTPUT(Makefile test/Makefile)
+AC_OUTPUT(Makefile test/Makefile zdb.pc)
 
 cat <<EOT
 +------------------------------------------------------------+
