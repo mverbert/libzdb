@@ -2,9 +2,9 @@
 
               This file summarizes changes made since 1.0
 
-Version 2.10
+Version 2.11
 -----------
-* A zdb.pc library package description file was added. Thanks to 
+* A zdb.pc library package config file was added. Thanks to 
   Matthieu Verbert
 
 Version 2.10
