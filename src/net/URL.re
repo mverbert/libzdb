@@ -382,11 +382,9 @@ const char **URL_getParameterNames(T U) {
 const char *URL_getParameter(T U, const char *name) {
 	assert(U);
         assert(name);
-        if (U->params) {
-                for (param_t p = U->params; p; p = p->next) {
-                        if (Str_isByteEqual(p->name, name))
-                                return p->value;
-                }
+        for (param_t p = U->params; p; p = p->next) {
+                if (Str_isByteEqual(p->name, name))
+                        return p->value;
         }
         return NULL;
 }

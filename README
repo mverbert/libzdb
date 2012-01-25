@@ -6,7 +6,7 @@
 
  Libzdb is a database library with thread-safe connection pooling. The
  library can connect transparently to multiple database systems. It has
- zero runtime configuration and connections are specified via a URL scheme.
+ zero runtime configuration and connection is specified via a URL scheme.
 
 
  System requirements
@@ -151,7 +151,7 @@
    info@tildeslash.com
 
  Internet:
-   http://www.tildeslash.com/
+   http://www.tildeslash.com/libzdb/
    
 
  Acknowledgments
