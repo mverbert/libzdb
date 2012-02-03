@@ -91,7 +91,7 @@ static const uchar_t urlunsafe[256] = {
 #define YYCTXMARKER   U->ctx
 #define YYFILL(n)     ((void)0)
 #define YYTOKEN       U->token
-#define SET_PROTOCOL(PORT) *(YYCURSOR-3)=0; U->protocol=U->token; U->port=PORT; goto parse
+#define SET_PROTOCOL(PORT) *(YYCURSOR-3)=0; U->protocol=U->token; U->port=PORT; goto authority
 
 
 /* ------------------------------------------------------- Private methods */
@@ -141,14 +141,14 @@ proto:
                       	goto proto;
                    }
 	*/
-parse:
+authority:
 	if (YYCURSOR >= YYLIMIT)
 		return true;
 	YYTOKEN = YYCURSOR;
 	/*!re2c
     
         ws         { 
-                        goto parse; 
+                        goto authority; 
                    }
 
         auth       {
@@ -160,17 +160,17 @@ parse:
                                 *(p++) = 0;
                                 U->password = p;
                         }
-                        goto parse; 
+                        goto authority; 
                    }
 
         host       {
                         U->host = Str_ndup(YYTOKEN, (int)(YYCURSOR - YYTOKEN));
-                        goto parse; 
+                        goto authority; 
                    }
 
         port       {
                         U->port = Str_parseInt(YYTOKEN + 1); // read past ':'
-                        goto parse; 
+                        goto authority; 
                    }
 
         path       {
@@ -264,8 +264,7 @@ static inline uchar_t *b2x(uint32_t b, uchar_t *x) {
 
 
 static void freeParams(param_t p) {
-        param_t q;
-        for (;p; p = q) {
+        for (param_t q = NULL; p; p = q) {
                 q = p->next;
                 FREE(p);
         }
@@ -398,14 +397,14 @@ const char *URL_toString(T U) {
                         snprintf(port, 6, ":%d", U->port);
 		U->toString = Str_cat("%s://%s%s%s%s%s%s%s%s%s", 
                                       U->protocol,
-                                      U->user?U->user:"",
-                                      U->password?":":"",
-                                      U->password?U->password:"",
-                                      U->user?"@":"",
-                                      U->host?U->host:"",
+                                      U->user ? U->user : "",
+                                      U->password ? ":" : "",
+                                      U->password ? U->password : "",
+                                      U->user ? "@" : "",
+                                      U->host ? U->host : "",
                                       port,
-                                      U->path?U->path:"",
-                                      U->query ? "?":"",
+                                      U->path ? U->path : "",
+                                      U->query ? "?" : "",
                                       U->query ? U->query : ""); 
 	}
 	return U->toString;
