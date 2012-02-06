@@ -389,6 +389,9 @@ const char *URL_getParameter(T U, const char *name) {
 }
 
 
+/* ---------------------------------------------------------------- Public */
+
+
 const char *URL_toString(T U) {
 	assert(U);
 	if (! U->toString) {

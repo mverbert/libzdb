@@ -70,16 +70,14 @@ int Str_startsWith(const char *a, const char *b) {
 
 
 char *Str_copy(char *dest, const char *src, int n) {
-	char *p = dest;
-	if (! (src && dest)) { 
-		if (dest) 
-			*dest = 0; 
-		return dest; 
-	}
-	for (; (*src && n--); src++, p++)
-		*p = *src;
-	*p = 0;
-	return dest;
+	if (src && dest && (n > 0)) { 
+        	char *t = dest;
+	        while (*src && n--)
+        		*t++ = *src++;
+        	*t = 0;
+	} else if (dest)
+	        *dest = 0;
+        return dest;
 }
 
 

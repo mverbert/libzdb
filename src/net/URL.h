@@ -87,6 +87,7 @@ T URL_create(const char *url, ...) __attribute__((format (printf, 1, 2)));
  */
 void URL_free(T *U);
 
+
 /** @name Properties */
 //@{
 
@@ -176,15 +177,16 @@ const char **URL_getParameterNames(T U);
  */
 const char *URL_getParameter(T U, const char *name);
 
+//@}
+
 
 /**
- * Return a string representation of this URL object
+ * Returns a string representation of this URL object
  * @param U An URL object
  * @return The URL string
  */
 const char *URL_toString(T U);
 
-//@}
 
 /** @name class methods */
 //@{

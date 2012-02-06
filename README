@@ -103,8 +103,6 @@
  Libzdb can be used directly in a C++ or in a Objective-C(++) project. The 
  <zdb.h> header contains the 'extern "C"' statement which is required when
  importing C declarations into C++ code and linking with a C library. 
- (extern "C"' prevents the C++ compiler from mangling C function names so 
- it is possible to look up library functions in libzdb).
  
   
  License Notes
@@ -141,8 +139,8 @@
  Contact information
  -------------------
 
- The Zild Database Library is a product of Tildeslash Ltd. a company 
- registered in Norway and in United Kingdom.
+ Libzdb is a product of Tildeslash Ltd. a company registered in
+ Norway and in United Kingdom.
  
  For further information about this Software, please use the following 
  contact information.
