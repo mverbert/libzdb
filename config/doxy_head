@@ -8,5 +8,6 @@
     hr:first-child {border:none;}
     .headertitle {text-align:center;}
     .summary {display:none;}
+    dl.section {border:none;}
 </style>
 </head><body>
