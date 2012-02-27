@@ -96,10 +96,9 @@ static Cop_T getOp(const char *protocol) {
 
 
 static int setDelegate(T C, char **error) {
-        const char *protocol = URL_getProtocol(C->url);
-        C->op = getOp(protocol);
+        C->op = getOp(URL_getProtocol(C->url));
         if (! C->op) {
-                *error = Str_cat("database protocol '%s' not supported", protocol);
+                *error = Str_cat("database protocol '%s' not supported", URL_getProtocol(C->url));
                 return false;
         }
         C->D = C->op->new(C->url, error);

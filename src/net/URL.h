@@ -37,7 +37,6 @@
  * http://user:password@www.foo.bar:8080/document/index.csp?querystring#ref
  * </pre>
  *
- * The primary purpose of this class is to wrap database connection URLs. 
  * The URL class does not normalize the path, nor escape or unescape URL 
  * components according to the escaping mechanism defined in RFC 2396. It is 
  * the responsibility of the caller to escape or unescape fields prior to
