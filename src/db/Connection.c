@@ -243,7 +243,7 @@ void Connection_close(T C) {
 void Connection_beginTransaction(T C) {
         assert(C);
         if (! C->op->beginTransaction(C->D)) 
-                THROW(SQLException, Connection_getLastError(C));
+                THROW(SQLException, "%s", Connection_getLastError(C));
         C->isInTransaction++;
 }
 
@@ -254,7 +254,7 @@ void Connection_commit(T C) {
                 C->isInTransaction = 0;
         // Even if we are not in a transaction, call the delegate anyway and propagate any errors
         if (! C->op->commit(C->D)) 
-                THROW(SQLException, Connection_getLastError(C));
+                THROW(SQLException, "%s", Connection_getLastError(C));
 }
 
 
@@ -267,7 +267,7 @@ void Connection_rollback(T C) {
         }
         // Even if we are not in a transaction, call the delegate anyway and propagate any errors
         if (! C->op->rollback(C->D))
-                THROW(SQLException, Connection_getLastError(C));
+                THROW(SQLException, "%s", Connection_getLastError(C));
 }
 
 
@@ -292,7 +292,7 @@ void Connection_execute(T C, const char *sql, ...) {
 	va_start(ap, sql);
         int success = C->op->execute(C->D, sql, ap);
         va_end(ap);
-        if (! success) THROW(SQLException, Connection_getLastError(C));
+        if (! success) THROW(SQLException, "%s", Connection_getLastError(C));
 }
 
 
@@ -306,7 +306,7 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...) {
         C->resultSet = C->op->executeQuery(C->D, sql, ap);
         va_end(ap);
         if (! C->resultSet)
-                THROW(SQLException, Connection_getLastError(C));
+                THROW(SQLException, "%s", Connection_getLastError(C));
         return C->resultSet;
 }
 
@@ -321,7 +321,7 @@ PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...) {
         if (p)
                 Vector_push(C->prepared, p);
         else
-                THROW(SQLException, Connection_getLastError(C));
+                THROW(SQLException, "%s", Connection_getLastError(C));
         return p;
 }
 
