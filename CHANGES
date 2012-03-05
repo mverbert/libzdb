@@ -1,11 +1,12 @@
-                         CHANGES version 2.11
+                         CHANGES version 2.10.1
 
               This file summarizes changes made since 1.0
 
-Version 2.11
------------
+Version 2.10.1
+--------------
 * A zdb.pc library package config file was added. Thanks to 
   Matthieu Verbert
+* Build, configure and minor code improvements
 
 Version 2.10
 -----------
