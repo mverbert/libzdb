@@ -147,8 +147,8 @@ void Vector_map(T V, void apply(const void *element, void *ap), void *ap);
 
 /**
  * Creates a N + 1 length array containing all the elements 
- * in this Vector. The last element in the array is <code>end</code>. The
- * caller is responsible for deallocating the array.
+ * in this Vector. The last element in the array is <code>NULL</code>. 
+ * The caller is responsible for deallocating the array.
  * @param V A Vector object
  * @return A pointer to the first element in the array
  */

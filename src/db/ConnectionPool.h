@@ -232,7 +232,7 @@
  *
  * <i>This ConnectionPool is thread-safe.</i>
  *
- * @see Connection.h ResultSet.h URL.h PreparedStatement.h
+ * @see Connection.h ResultSet.h URL.h PreparedStatement.h SQLException.h
  * @file
  */
 
@@ -447,7 +447,7 @@ void ConnectionPool_returnConnection(T P, Connection_T connection);
 int ConnectionPool_reapConnections(T P);
 
 
-/** @name class methods */
+/** @name Class methods */
 //@{
 
 /**

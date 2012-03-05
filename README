@@ -8,6 +8,9 @@
  library can connect transparently to multiple database systems. It has
  zero runtime configuration and connection is specified via a URL scheme.
 
+ This library is released as Open Source with the hope that others may 
+ find it useful in their own Open Source Work.
+
 
  System requirements
  -------------------

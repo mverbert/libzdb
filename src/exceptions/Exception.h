@@ -185,7 +185,6 @@
 
 #define T Exception_T
 /** @cond hide */
-#include <assert.h>
 #include <pthread.h>
 #define ThreadData_T pthread_key_t
 #define ThreadData_set(key, value) pthread_setspecific((key), (value))
@@ -208,7 +207,7 @@ enum { Exception_entered=0, Exception_thrown, Exception_handled, Exception_final
 extern ThreadData_T Exception_stack;
 void Exception_init(void);
 void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...);
-#define pop_Exception_stack assert(ThreadData_set(Exception_stack, ((Exception_Frame*)ThreadData_get(Exception_stack))->prev)==0)
+#define pop_Exception_stack ThreadData_set(Exception_stack, ((Exception_Frame*)ThreadData_get(Exception_stack))->prev)
 /** @endcond */
 
 
@@ -249,7 +248,7 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
         Exception_Frame Exception_frame; \
         Exception_frame.message[0] = 0; \
         Exception_frame.prev = (Exception_Frame*)ThreadData_get(Exception_stack); \
-        assert(ThreadData_set(Exception_stack, &Exception_frame)==0); \
+        ThreadData_set(Exception_stack, &Exception_frame); \
         Exception_flag = setjmp(Exception_frame.env); \
         if (Exception_flag == Exception_entered) {
                 

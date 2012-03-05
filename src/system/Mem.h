@@ -19,7 +19,7 @@
 
 
 /**
- * General purpose memory allocation <b>class methods</b>.
+ * General purpose memory allocation <b>Class methods</b>.
  *
  * @file
  */

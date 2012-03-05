@@ -27,7 +27,7 @@
  */
 
 
-/** @name class methods */
+/** @name Class methods */
 //@{ 
 
 /**

@@ -187,7 +187,7 @@ const char *URL_getParameter(T U, const char *name);
 const char *URL_toString(T U);
 
 
-/** @name class methods */
+/** @name Class methods */
 //@{
 
 /**

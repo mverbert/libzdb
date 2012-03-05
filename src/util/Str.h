@@ -20,7 +20,7 @@
 
 
 /**
- * General purpose <b>String</b> <b>class methods</b>.
+ * General purpose <b>String</b> <b>Class methods</b>.
  *
  * @file
  */

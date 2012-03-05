@@ -316,7 +316,7 @@ PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...) __att
 const char *Connection_getLastError(T C);
 
 
-/** @name class methods */
+/** @name Class methods */
 //@{
 
 /**
