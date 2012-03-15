@@ -586,7 +586,7 @@
 		521CF21713E71619004A7291 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = "Tildeslash Ltd.";
 			};
 			buildConfigurationList = 521CF21A13E71619004A7291 /* Build configuration list for PBXProject "libzdb" */;

@@ -215,8 +215,7 @@ char *URL_escape(const char *url);
 
 /**
  * <b>Class method</b>, normalize an URL path string. The 
- * <code>path</code> parameter is modified by this method. Passing 
- * a NULL <code>path</code> parameter returns NULL. Examples:
+ * <code>path</code> parameter is modified by this method. Examples:
  * <p><table>
  * <tr><td><b>path</b></td><td><b>normalized path</b></td>
  * <tr><td>/foo//</td><td>/foo/</td>
@@ -231,7 +230,7 @@ char *URL_escape(const char *url);
  * <tr><td>/..</td><td>/</td>
  * </table>
  * @param path The path to normalize
- * @return A pointer to the path parameter
+ * @return A pointer to the normalized <code>path</code> string.
  */
 char *URL_normalize(char *path);
 

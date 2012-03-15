@@ -167,7 +167,7 @@ T OracleConnection_new(URL_T url, char **error) {
         C->url = url;
         C->sb = StringBuffer_create(STRLEN);
         C->timeout = SQL_DEFAULT_TIMEOUT;
-        if (! doConnect(url, C, error)) {
+        if (! doConnect(C, url, error)) {
                 OracleConnection_free(&C);
                 return NULL;
         }
