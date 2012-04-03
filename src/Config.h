@@ -157,7 +157,7 @@
 /* ------------------------------------- General Purpose functional macros */
 
 
-#define IS(a,b) Str_isEqual((a), (b))
+#define IS      Str_isEqual
 
 
 /* ---------------------------------------------------------- Build macros */
