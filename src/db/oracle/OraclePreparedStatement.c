@@ -214,7 +214,7 @@ static pthread_once_t error_msg_key_once = PTHREAD_ONCE_INIT;
 
 
 /* Return the thread-specific buffer */
-char * get_err_buffer(void) {
+static char * get_err_buffer(void) {
 	return (char *) pthread_getspecific(error_msg_key);
 }
 

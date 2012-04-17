@@ -330,7 +330,6 @@ Connection_T ConnectionPool_getConnection(T P) {
                         if (con) {
                                 Connection_setAvailable(con, false);
                                 Vector_push(P->pool, con);
-                                goto done;
                         } else {
                                 DEBUG("Failed to create connection -- %s\n", P->error);
                                 FREE(P->error);
