@@ -942,7 +942,7 @@
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					$SRCROOT/src/,
 					$SRCROOT/src/net,
@@ -976,7 +976,7 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					$SRCROOT/src/,
 					$SRCROOT/src/net,
