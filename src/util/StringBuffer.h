@@ -92,8 +92,9 @@ int StringBuffer_length(T S);
 /**
  * Clear the contents of the string buffer. I.e. set buffer length to 0.
  * @param S StringBuffer object
+ * @return a reference to this StringBuffer
  */
-void StringBuffer_clear(T S);
+T StringBuffer_clear(T S);
 
 
 /**
@@ -133,10 +134,15 @@ int StringBuffer_prepare4oracle(T S);
 
 
 /**
- * Remove trailing white space and ';' from the String Buffer
+ * Remove (any) leading and trailing white space and semicolon [ \\t\\r\\n;]. Example
+ * <pre>
+ * StringBuffer_T b = StringBuffer_new("\t select a from b; \n"); 
+ * StringBuffer_trim(b) -> "select a from b"
+ * </pre>
  * @param S StringBuffer object
+ * @return a reference to this StringBuffer
  */
-void StringBuffer_removeTrailingSemicolon(T S);
+T StringBuffer_trim(T S);
 
 
 #undef T

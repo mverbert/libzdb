@@ -156,10 +156,11 @@ int StringBuffer_length(T S) {
 }
 
 
-void StringBuffer_clear(T S) {
+T StringBuffer_clear(T S) {
         assert(S);
         S->used = 0;
         *S->buffer = 0;
+        return S;
 }
 
 
@@ -181,11 +182,22 @@ int StringBuffer_prepare4oracle(T S) {
 }
 
 
-void StringBuffer_removeTrailingSemicolon(T S) {
+T StringBuffer_trim(T S) {
         assert(S);
+        // Right trim and remove trailing semicolon
         while (S->used && ((S->buffer[S->used - 1] == ';') || isspace(S->buffer[S->used - 1]))) 
                 S->buffer[--S->used] = 0;
+        // Left trim
+        if (isspace(*S->buffer)) {
+                int i;
+                for (i = 0; isspace(S->buffer[i]); i++) ;
+                memmove(S->buffer, S->buffer + i, S->used - i);
+                S->used -= i;
+                S->buffer[S->used] = 0;
+        }
+        return S;
 }
+
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
