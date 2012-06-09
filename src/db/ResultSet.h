@@ -16,9 +16,9 @@
 
 #ifndef RESULTSET_INCLUDED
 #define RESULTSET_INCLUDED
-//<< Start filter-out
+//<< Protected methods
 #include "ResultSetDelegate.h"
-//>> End filter-out
+//>> End Protected methods
 
 
 /**
@@ -86,7 +86,7 @@
 #define T ResultSet_T
 typedef struct ResultSet_S *T;
 
-//<< Start filter-out
+//<< Protected methods
 
 /**
  * Create a new ResultSet.
@@ -103,7 +103,7 @@ T ResultSet_new(ResultSetDelegate_T D, Rop_T op);
  */
 void ResultSet_free(T *R);
 
-//>> End filter-out
+//>> End Protected methods
 
 /** @name Properties */
 //@{

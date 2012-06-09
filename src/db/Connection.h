@@ -56,7 +56,7 @@
 #define T Connection_T
 typedef struct Connection_S *T;
 
-//<< Start filter-out
+//<< Protected methods
 
 /**
  * Create a new Connection.
@@ -109,7 +109,7 @@ time_t Connection_getLastAccessedTime(T C);
  */
 int Connection_isInTransaction(T C);
 
-//>> End filter-out
+//>> End Protected methods
 
 /** @name Properties */
 //@{

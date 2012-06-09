@@ -16,9 +16,9 @@
 
 #ifndef PREPAREDSTATEMENT_INCLUDED
 #define PREPAREDSTATEMENT_INCLUDED
-//<< Start filter-out
+//<< Protected methods
 #include "PreparedStatementDelegate.h"
-//>> End filter-out
+//>> End Protected methods
 
 
 /**
@@ -92,7 +92,7 @@
 #define T PreparedStatement_T
 typedef struct PreparedStatement_S *T;
 
-//<< Start filter-out
+//<< Protected methods
 
 /**
  * Create a new PreparedStatement.
@@ -109,7 +109,7 @@ T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op);
  */
 void PreparedStatement_free(T *P);
 
-//>> End filter-out
+//>> End Protected methods
 
 /**
  * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the 
