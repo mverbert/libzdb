@@ -27,6 +27,24 @@
 
 
 /**
+ * Test if the given string is defined. That is; not NULL nor the empty ("") string
+ * @param s The string to test
+ * @return true if s is defined, otherwise false
+ * @hideinitializer
+ */
+#define STR_DEF(s) ((s) && *(s))
+
+
+/**
+ * Test if the given string is NULL or the empty ("") string
+ * @param s The string to test
+ * @return true if s is NULL or the empty string, otherwise false
+ * @hideinitializer
+ */
+#define STR_UNDEF(s) (! STR_DEF(s))
+
+
+/**
  * Returns true if the string <i>a</i> equals the string <i>b</i>. The
  * test is <i>case-insensitive</i> but depends on that all characters
  * in the two strings can be translated in the current locale.

@@ -1,6 +1,10 @@
-                         CHANGES version 2.10.3
+                         CHANGES version 2.10.4
 
               This file summarizes changes made since 1.0
+
+Version 2.10.4
+--------------
+* MySQL: Improve error reporting for select and prepared statements
 
 Version 2.10.3
 --------------

@@ -139,13 +139,15 @@ error:
 }
 
 
-static int prepareStmt(T C, const char *sql, int len, MYSQL_STMT **stmt) {
+static int prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
         if (! (*stmt = mysql_stmt_init(C->db))) {
                 DEBUG("mysql_stmt_init -- Out of memory\n");
                 C->lastError = CR_OUT_OF_MEMORY;
                 return false;
         }
         if ((C->lastError = mysql_stmt_prepare(*stmt, sql, len))) {
+                StringBuffer_clear(C->sb);
+                StringBuffer_append(C->sb, "%s", mysql_stmt_error(*stmt));
                 mysql_stmt_close(*stmt);
                 *stmt = NULL;
                 return false;
@@ -268,14 +270,16 @@ ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap) {
         va_copy(ap_copy, ap);
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
-        prepareStmt(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt);
-        if (stmt) {
+        if (prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt)) {
 #if MYSQL_VERSION_ID >= 50002
                 unsigned long cursor = CURSOR_TYPE_READ_ONLY;
                 mysql_stmt_attr_set(stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
 #endif
-                if ((C->lastError = mysql_stmt_execute(stmt)))
+                if ((C->lastError = mysql_stmt_execute(stmt))) {
+                        StringBuffer_clear(C->sb);
+                        StringBuffer_append(C->sb, "%s", mysql_stmt_error(stmt));
                         mysql_stmt_close(stmt);
+                }
                 else
                         return ResultSet_new(MysqlResultSet_new(stmt, C->maxRows, false), (Rop_T)&mysqlrops);
         }
@@ -291,7 +295,7 @@ PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_li
         va_copy(ap_copy, ap);
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
-        if (prepareStmt(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt))
+        if (prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt))
 		return PreparedStatement_new(MysqlPreparedStatement_new(stmt, C->maxRows), (Pop_T)&mysqlpops);
         return NULL;
 }
@@ -299,7 +303,9 @@ PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_li
 
 const char *MysqlConnection_getLastError(T C) {
 	assert(C);
-        return mysql_error(C->db);
+        if (mysql_errno(C->db))
+                return mysql_error(C->db);
+        return StringBuffer_toString(C->sb); // Either the statement itself or a statement error
 }
 
 #ifdef PACKAGE_PROTECTED

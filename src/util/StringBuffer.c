@@ -128,7 +128,7 @@ void StringBuffer_free(T *S) {
 
 T StringBuffer_append(T S, const char *s, ...) {
         assert(S);
-        if (s && *s) {
+        if (STR_DEF(s)) {
                 va_list ap;
                 va_start(ap, s);
                 append(S, s, ap);

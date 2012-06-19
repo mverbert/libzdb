@@ -288,7 +288,7 @@ static T ctor(uchar_t *data) {
 
 
 T URL_new(const char *url) {
-        if (! (url && *url))
+        if (STR_UNDEF(url))
                 return NULL;
         Exception_init();
         return ctor((uchar_t*)Str_dup(url));
@@ -296,7 +296,7 @@ T URL_new(const char *url) {
 
 
 T URL_create(const char *url, ...) {
-        if (! (url && *url))
+        if (STR_UNDEF(url))
                 return NULL;
         Exception_init();
 	va_list ap;
@@ -418,7 +418,7 @@ const char *URL_toString(T U) {
 
 
 char *URL_unescape(char *url) {
-	if (url && *url) {
+	if (STR_DEF(url)) {
                 register int x, y;
                 for (x = 0, y = 0; url[y]; x++, y++) {
                         if ((url[x] = url[y]) == '+')

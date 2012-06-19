@@ -327,10 +327,9 @@ PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...) {
 
 
 const char *Connection_getLastError(T C) {
-        const char *s;
 	assert(C);
-	s = C->op->getLastError(C->D);
-        return (s ? s : "?");
+	const char *s = C->op->getLastError(C->D);
+        return STR_DEF(s) ? s : "?";
 }
 
 
