@@ -4,7 +4,7 @@
 
 Version 2.10.4
 --------------
-* MySQL: Improve error reporting for select and prepared statements
+* MySQL: Improved error reporting for select and prepared statements
 
 Version 2.10.3
 --------------
