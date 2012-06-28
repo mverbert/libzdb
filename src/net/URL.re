@@ -87,7 +87,6 @@ static const uchar_t urlunsafe[256] = {
 #define YYCURSOR      U->buffer  
 #define YYLIMIT       U->limit  
 #define YYMARKER      U->marker
-#define YYMARKER      U->marker
 #define YYCTXMARKER   U->ctx
 #define YYFILL(n)     ((void)0)
 #define YYTOKEN       U->token
