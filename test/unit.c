@@ -400,7 +400,20 @@ static void testURL() {
                 URL_free(&url);
         }
         printf("=> Test11: OK\n\n");
-                
+           
+        printf("=> Test12: auto unescape of credentials, path and param values\n");
+        {
+                char a[] = "mysql://r%40ot:p%40ssword@localhost/test%20dir?user=r%26ot&password=pass%3Dword";
+                url = URL_new(a);
+                assert(IS(URL_getUser(url), "r@ot"));
+                assert(IS(URL_getPassword(url), "p@ssword"));
+                assert(IS(URL_getPath(url), "/test dir"));
+                assert(IS(URL_getParameter(url, "user"), "r&ot"));
+                assert(IS(URL_getParameter(url, "password"), "pass=word"));
+                URL_free(&url);
+        }
+        printf("=> Test12: OK\n\n");
+
         printf("============> URL Tests: OK\n\n");
 }
 

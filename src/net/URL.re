@@ -157,8 +157,9 @@ authority:
                         p = strchr(U->user, ':');
                         if (p) {
                                 *(p++) = 0;
-                                U->password = p;
+                                U->password = URL_unescape(p);
                         }
+                        URL_unescape(U->user);
                         goto authority; 
                    }
 
@@ -174,13 +175,13 @@ authority:
 
         path       {
                         *YYCURSOR = 0;
-                        U->path = YYTOKEN;
+                        U->path = URL_unescape(YYTOKEN);
                         return true;
                    }
                    
         path[?]    {
                         *(YYCURSOR-1) = 0;
-                        U->path = YYTOKEN;
+                        U->path = URL_unescape(YYTOKEN);
                         goto query; 
                    }
                    
@@ -228,11 +229,11 @@ params:
 
         [=]parametervalue[&]? {
                 *YYTOKEN++ = 0;
-                if (*(YYCURSOR-1) == '&')
-                        *(YYCURSOR-1) = 0;
+                if (*(YYCURSOR - 1) == '&')
+                        *(YYCURSOR - 1) = 0;
                 if (! param) /* format error */
                         return true; 
-                param->value = YYTOKEN;
+                param->value = URL_unescape(YYTOKEN);
                 goto params;
         }
 

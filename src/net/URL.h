@@ -37,11 +37,10 @@
  * http://user:password@www.foo.bar:8080/document/index.csp?querystring#ref
  * </pre>
  *
- * The URL class does not normalize the path, nor escape or unescape URL 
- * components according to the escaping mechanism defined in RFC 2396. It is 
- * the responsibility of the caller to escape or unescape fields prior to
- * calling URL. 
- * 
+ * The following URL components are automatically unescaped according to the escaping
+ * mechanism defined in RFC 2396; <code>credentials</code>, <code>path</code> and parameter
+ * <code>values</code>.
+ *
  * For more information about the URL syntax and specification, see,
  * <a href="ftp://ftp.rfc-editor.org/in-notes/rfc2396.txt">RFC2396 -
  * Uniform Resource Identifiers (URI): Generic Syntax</a>

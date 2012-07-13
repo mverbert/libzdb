@@ -1,6 +1,11 @@
-                         CHANGES version 2.10.4
+                         CHANGES version 2.10.5
 
               This file summarizes changes made since 1.0
+
+Version 2.10.5
+--------------
+* New: Automatically unescape the following URL components:
+  credentials, path and parameter values.
 
 Version 2.10.4
 --------------
