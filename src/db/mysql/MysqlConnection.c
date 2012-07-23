@@ -105,7 +105,7 @@ static MYSQL *doConnect(URL_T url, char **error) {
 		host = "localhost"; // Make sure host is localhost if unix socket is to be used
         } else if (! (host = URL_getHost(url)))
                 ERROR("no host specified in URL");
-        if ((port = URL_getPort(url))<=0)
+        if ((port = URL_getPort(url)) <= 0)
                 ERROR("no port specified in URL");
         if (! (database = URL_getPath(url)))
                 ERROR("no database specified in URL");

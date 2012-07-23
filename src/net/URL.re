@@ -151,10 +151,9 @@ authority:
                    }
 
         auth       {
-                        char *p;
-                        *(YYCURSOR-1) = 0;
+                        *(YYCURSOR - 1) = 0;
                         U->user = YYTOKEN;
-                        p = strchr(U->user, ':');
+                        char *p = strchr(U->user, ':');
                         if (p) {
                                 *(p++) = 0;
                                 U->password = URL_unescape(p);

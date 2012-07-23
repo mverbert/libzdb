@@ -403,8 +403,7 @@ static void testURL() {
            
         printf("=> Test12: auto unescape of credentials, path and param values\n");
         {
-                char a[] = "mysql://r%40ot:p%40ssword@localhost/test%20dir?user=r%26ot&password=pass%3Dword";
-                url = URL_new(a);
+                url = URL_new("mysql://r%40ot:p%40ssword@localhost/test%20dir?user=r%26ot&password=pass%3Dword");
                 assert(IS(URL_getUser(url), "r@ot"));
                 assert(IS(URL_getPassword(url), "p@ssword"));
                 assert(IS(URL_getPath(url), "/test dir"));

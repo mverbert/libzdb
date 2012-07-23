@@ -298,12 +298,10 @@ AC_ARG_WITH([sqlite],
                 CPPFLAGS="-I$with_sqlite/include $CPPFLAGS"
                 AC_CHECK_HEADERS([sqlite3.h], [
                         sqlite="yes"
-                        if test -r "$with_sqlite/lib/libsqlite3.a"; then
+                        AC_CHECK_LIB(sqlite3, main,[
                                 DBCPPFLAGS="$DBCPPFLAGS -I$with_sqlite/include"
                                 DBLDFLAGS="$DBLDFLAGS -L$with_sqlite/lib/ -lsqlite3"
-                        else
-                                sqlite="no"
-                        fi
+                        ],[sqlite="no"])
                 ], [sqlite="no"])
                 LDFLAGS=$svd_LDFLAGS
                 CPPFLAGS=$svd_CPPFLAGS

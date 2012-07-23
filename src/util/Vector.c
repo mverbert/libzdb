@@ -78,23 +78,21 @@ void Vector_free(T *V) {
 
 
 void Vector_insert(T V, int i, void *e) {
-        int j;
 	assert(V);
 	assert(i >= 0 && i <= V->length);
 	V->timestamp++;
         ensureCapacity(V);
-        for (j = V->length++; j > i; j--)
+        for (int j = V->length++; j > i; j--)
                 V->array[j] = V->array[j-1];
         V->array[i] = e;
 }
 
 
 void *Vector_set(T V, int i, void *e) {
-	void *prev;
 	assert(V);
 	assert(i >= 0 && i < V->length);
 	V->timestamp++;
-	prev = V->array[i];
+	void *prev = V->array[i];
         V->array[i] = e;
 	return prev;
 }
@@ -108,14 +106,12 @@ void *Vector_get(T V, int i) {
 
 
 void *Vector_remove(T V, int i) {
-        int j;
-        void *x;
 	assert(V);
 	assert(i >= 0 && i < V->length);
 	V->timestamp++;
- 	x = V->array[i];
+ 	void *x = V->array[i];
         V->length--;
-        for (j = i; j < V->length; j++)
+        for (int j = i; j < V->length; j++)
                 V->array[j] = V->array[j+1];
         return x;
 }
@@ -150,10 +146,9 @@ int Vector_size(T V) {
 
 
 void Vector_map(T V, void apply(const void *element, void *ap), void *ap) {
-	uint32_t stamp;
 	assert(V);
 	assert(apply);
-	stamp = V->timestamp;
+	uint32_t stamp = V->timestamp;
 	for (int i = 0; i < V->length; i++) {
                 apply(V->array[i], ap);
                 assert(V->timestamp == stamp);

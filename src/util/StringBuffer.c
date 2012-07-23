@@ -92,10 +92,8 @@ static int prepare(T S, char prefix) {
 static inline T ctor(int hint) {
         T S;
         NEW(S);
-        S->used = 0;
         S->length = hint;
         S->buffer = ALLOC(hint);
-        *S->buffer = 0;
         return S;
 }
 
@@ -140,7 +138,7 @@ T StringBuffer_append(T S, const char *s, ...) {
 
 T StringBuffer_vappend(T S, const char *s, va_list ap) {
         assert(S);
-        if (s && *s) {
+        if (STR_DEF(s)) {
                 va_list ap_copy;
                 va_copy(ap_copy, ap);
                 append(S, s, ap_copy);
