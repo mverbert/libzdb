@@ -26,7 +26,7 @@ else
                 mkdir ./tools/bin || AC_MSG_ERROR([Failed to create ./tools/bin])
         fi
         # Build tools in-place in a subshell
-        (cd ./tools/filterh && $FLEX filterh.l && $CC -c lex.yy.c && $CC lex.yy.o -lfl -o ../bin/filterh && rm -f lex.yy.*) || AC_MSG_ERROR([Failed to build tools])
+        (cd ./tools/filterh && $FLEX filterh.l && $CC -c lex.yy.c && $CC lex.yy.o -L/opt/local/lib -lfl -o ../bin/filterh && rm -f lex.yy.*) || AC_MSG_ERROR([Failed to build tools])
         # Assert that we succeded building filterh
         test -f ./tools/bin/filterh || AC_MSG_ERROR([Failed to build tools])
 fi
