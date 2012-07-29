@@ -17,16 +17,16 @@ AC_CONFIG_COMMANDS([libtool_patch],[test `uname` = "OpenBSD" && perl -p -i -e "s
 AC_PROG_CC
 AC_PROG_GCC_TRADITIONAL
 AC_PATH_PROG([RE2C], [re2c], [re2c_not_found], [$PATH:/usr/local/bin:/usr/bin])
-AC_PATH_PROG([FLEX], [flex], [no])
-if test "x$FLEX" = "xno"; then
-        AC_MSG_ERROR([flex is required. Download from http://www.gnu.org/software/flex/])
+AM_PROG_LEX
+if test -z "${LEXLIB+set}"; then
+       AC_MSG_ERROR([flex is required. Download from http://www.gnu.org/software/flex/])
 else
         if test ! -d ./tools/bin/
         then
                 mkdir ./tools/bin || AC_MSG_ERROR([Failed to create ./tools/bin])
         fi
         # Build tools in-place in a subshell
-        (cd ./tools/filterh && $FLEX filterh.l && $CC -c lex.yy.c && $CC lex.yy.o -ll -o ../bin/filterh && rm -f lex.yy.*) || AC_MSG_ERROR([Failed to build tools])
+        (cd ./tools/filterh && $LEX filterh.l && $CC -c lex.yy.c && $CC lex.yy.o $LEXLIB -o ../bin/filterh && rm -f lex.yy.*) || AC_MSG_ERROR([Failed to build tools])
         # Assert that we succeded building filterh
         test -f ./tools/bin/filterh || AC_MSG_ERROR([Failed to build tools])
 fi
