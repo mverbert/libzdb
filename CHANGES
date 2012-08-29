@@ -1,6 +1,12 @@
-                         CHANGES version 2.10.5
+                         CHANGES version 2.10.6
 
               This file summarizes changes made since 1.0
+
+Version 2.10.6
+--------------
+* New: ConnectionPool_start() now throws an SQLException instead
+  of calling ABORT if starting the pool failed. Thanks to Christopher
+  O'Hara for suggestion.
 
 Version 2.10.5
 --------------

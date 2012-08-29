@@ -85,6 +85,25 @@ static void testPool(const char *testURL) {
                 ConnectionPool_free(&pool);
                 assert(pool==NULL);
                 URL_free(&url);
+                // Test that exception is thrown on error
+                TRY
+                {
+                        url = URL_new("not://a/database");
+                        pool = ConnectionPool_new(url);
+                        assert(pool);
+                        ConnectionPool_start(pool);
+                        printf("\tResult: Test failed -- exception not thrown\n");
+                        exit(1);
+                }
+                CATCH(SQLException) {
+                        // OK
+                }
+                FINALLY {
+                        ConnectionPool_free(&pool);
+                        assert(pool==NULL);
+                        URL_free(&url);
+                }
+                END_TRY;
         }
         printf("=> Test3: OK\n\n");
         

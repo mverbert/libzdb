@@ -283,9 +283,8 @@ void ConnectionPool_start(T P) {
                 }
         }
         END_LOCK;
-        if (! P->filled) {
-               ABORT("Failed to start connection pool -- %s\n", P->error);
-        }
+        if (! P->filled)
+                THROW(SQLException, "Failed to start connection pool -- %s\n", P->error);
 }
 
 

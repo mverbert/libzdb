@@ -402,6 +402,8 @@ int ConnectionPool_active(T P);
  * server and create the initial connections for the pool. This method will
  * also start the reaper thread if specified via ConnectionPool_setReaper().
  * @param P A ConnectionPool object
+ * @exception SQLException if a database error occurs.
+ * @see SQLException.h
  */
 void ConnectionPool_start(T P);
 
