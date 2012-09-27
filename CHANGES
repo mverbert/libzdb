@@ -5,8 +5,11 @@
 Version 2.10.6
 --------------
 * New: ConnectionPool_start() now throws an SQLException instead
-  of calling ABORT if starting the pool failed. Thanks to Christopher
-  O'Hara for suggestion.
+  of calling ABORT if starting the pool failed. Thanks to
+  Christopher O'Hara for suggestion.
+* Fixes: MySQL: Using a stored procedure which returned a
+  result set would freeze the connection until it was reaped.
+  Thanks to Jesse White for patch.
 
 Version 2.10.5
 --------------
