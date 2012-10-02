@@ -269,7 +269,7 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
         paramCount = StringBuffer_prepare4postgres(C->sb);
-        uint32_t t = statementid++; // increment is atomic
+        uint32_t t = ++statementid; // increment is atomic
         name = Str_cat("%d", t);
         C->res = PQprepare(C->db, name, StringBuffer_toString(C->sb), 0, NULL);
         if (C->res && (C->lastError == PGRES_EMPTY_QUERY || C->lastError == PGRES_COMMAND_OK || C->lastError == PGRES_TUPLES_OK))
