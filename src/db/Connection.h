@@ -59,6 +59,14 @@ typedef struct Connection_S *T;
 //<< Protected methods
 
 /**
+ * On stop event handler called once by ConnectionPool_stop(). Can be used to 
+ * gracefully finalise and release underlying libraries allocated resources.
+ * @param pool The parent connection pool
+ */
+void Connection_onstop(void *pool);
+
+
+/**
  * Create a new Connection.
  * @param pool The parent connection pool
  * @param error Connection error or NULL if no error was found

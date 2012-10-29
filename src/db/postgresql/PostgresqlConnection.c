@@ -40,24 +40,6 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct Cop_T postgresqlcops = {
-        "postgresql",
-        PostgresqlConnection_new,
-        PostgresqlConnection_free,
-        PostgresqlConnection_setQueryTimeout,
-        PostgresqlConnection_setMaxRows,
-        PostgresqlConnection_ping,
-        PostgresqlConnection_beginTransaction,
-        PostgresqlConnection_commit,
-        PostgresqlConnection_rollback,
-        PostgresqlConnection_lastRowId,
-        PostgresqlConnection_rowsChanged,
-        PostgresqlConnection_execute,
-        PostgresqlConnection_executeQuery,
-        PostgresqlConnection_prepareStatement,
-        PostgresqlConnection_getLastError
-};
-
 #define T ConnectionDelegate_T
 struct T {
         URL_T url;
@@ -74,6 +56,12 @@ extern const struct Pop_T postgresqlpops;
 
 
 /* ------------------------------------------------------- Private methods */
+
+
+/* Postgres client library finalization */
+static void onstop(void) {
+        // Not needed, PostgresqlConnection_free below handle finalization
+}
 
 
 static int doConnect(T C, char **error) {
@@ -114,10 +102,10 @@ static int doConnect(T C, char **error) {
         /* Options */
         StringBuffer_append(C->sb, "sslmode='%s' ", IS(URL_getParameter(C->url, "use-ssl"), "true") ? "require" : "disable");
         if (URL_getParameter(C->url, "connect-timeout")) {
-                TRY 
-                        StringBuffer_append(C->sb, "connect_timeout=%d ", Str_parseInt(URL_getParameter(C->url, "connect-timeout")));
+                TRY
+                StringBuffer_append(C->sb, "connect_timeout=%d ", Str_parseInt(URL_getParameter(C->url, "connect-timeout")));
                 ELSE
-                        ERROR("invalid connect timeout value"); 
+                ERROR("invalid connect timeout value");
                 END_TRY;
         } else
                 StringBuffer_append(C->sb, "connect_timeout=%d ", SQL_DEFAULT_TCP_TIMEOUT);
@@ -131,6 +119,29 @@ static int doConnect(T C, char **error) {
 error:
         return false;
 }
+
+
+/* -------------------------------------------------------- API Operations */
+
+
+const struct Cop_T postgresqlcops = {
+        "postgresql",
+        onstop,
+        PostgresqlConnection_new,
+        PostgresqlConnection_free,
+        PostgresqlConnection_setQueryTimeout,
+        PostgresqlConnection_setMaxRows,
+        PostgresqlConnection_ping,
+        PostgresqlConnection_beginTransaction,
+        PostgresqlConnection_commit,
+        PostgresqlConnection_rollback,
+        PostgresqlConnection_lastRowId,
+        PostgresqlConnection_rowsChanged,
+        PostgresqlConnection_execute,
+        PostgresqlConnection_executeQuery,
+        PostgresqlConnection_prepareStatement,
+        PostgresqlConnection_getLastError
+};
 
 
 /* ----------------------------------------------------- Protected methods */

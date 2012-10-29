@@ -40,24 +40,6 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct Cop_T sqlite3cops = {
-        "sqlite",
-        SQLiteConnection_new,
-        SQLiteConnection_free,
-        SQLiteConnection_setQueryTimeout,
-        SQLiteConnection_setMaxRows,
-        SQLiteConnection_ping,
-        SQLiteConnection_beginTransaction,
-        SQLiteConnection_commit,
-        SQLiteConnection_rollback,
-        SQLiteConnection_lastRowId,
-        SQLiteConnection_rowsChanged,
-        SQLiteConnection_execute,
-        SQLiteConnection_executeQuery,
-        SQLiteConnection_prepareStatement,
-        SQLiteConnection_getLastError
-};
-
 #define T ConnectionDelegate_T
 struct T {
         URL_T url;
@@ -73,6 +55,12 @@ extern const struct Pop_T sqlite3pops;
 
 
 /* ------------------------------------------------------- Private methods */
+
+
+/* SQLite3 client library finalization */
+static void onstop(void) {
+        sqlite3_shutdown();
+}
 
 
 static sqlite3 *doConnect(URL_T url, char **error) {
@@ -131,6 +119,29 @@ static int setProperties(T C, char **error) {
         }
         return true;
 }
+
+
+/* ------------------------------------------------------------ Operations */
+
+
+const struct Cop_T sqlite3cops = {
+        "sqlite",
+        onstop,
+        SQLiteConnection_new,
+        SQLiteConnection_free,
+        SQLiteConnection_setQueryTimeout,
+        SQLiteConnection_setMaxRows,
+        SQLiteConnection_ping,
+        SQLiteConnection_beginTransaction,
+        SQLiteConnection_commit,
+        SQLiteConnection_rollback,
+        SQLiteConnection_lastRowId,
+        SQLiteConnection_rowsChanged,
+        SQLiteConnection_execute,
+        SQLiteConnection_executeQuery,
+        SQLiteConnection_prepareStatement,
+        SQLiteConnection_getLastError
+};
 
 
 /* ----------------------------------------------------- Protected methods */

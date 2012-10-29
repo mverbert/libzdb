@@ -114,12 +114,21 @@ static void freePrepared(T C) {
 }
 
 
-/* ----------------------------------------------------- Protected methods */
-
-
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
+
+
+/* -------------------------------------------------------- event handlers */
+
+
+void Connection_onstop(void *pool) {
+        (getOp(URL_getProtocol(ConnectionPool_getURL(pool))))->onstop();
+}
+
+
+/* ----------------------------------------------------- Protected methods */
+
 
 T Connection_new(void *pool, char **error) {
         T C;

@@ -298,6 +298,7 @@ void ConnectionPool_stop(T P) {
                         drainPool(P);
                         P->filled = false;
                         stopSweep = (P->doSweep && P->reaper);
+                        Connection_onstop(P);
                 }
         }
         END_LOCK;
