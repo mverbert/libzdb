@@ -10,6 +10,10 @@ Version 2.10.6
 * Fixes: MySQL: Using a stored procedure which returned a
   result set would freeze the connection until it was reaped.
   Thanks to Jesse White for patch.
+* Fixes: Ensure that the library can be restarted after it was 
+  stopped without leaking resources. Only applicable for MySQL
+  which could leak memory on runtime restart. Thanks to Axel 
+  Steiner for initial patch and suggestion.
 
 Version 2.10.5
 --------------
