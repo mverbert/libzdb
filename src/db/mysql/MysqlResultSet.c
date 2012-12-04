@@ -62,6 +62,7 @@ struct T {
         int keep;
         int maxRows;
         int lastError;
+        int needRebind;
 	int currentRow;
 	int columnCount;
         MYSQL_RES *meta;
@@ -86,12 +87,9 @@ static inline void ensureCapacity(T R, int i) {
                 R->bind[i].buffer_length = R->columns[i].real_length;
                 if ((R->lastError = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0)))
                         THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
-                /* Need to rebind as the buffer address has changed. If we do this 
-                 before calling mysql_stmt_fetch_column the buffer is not updated, 
-                 but doing this afterwards works */
-                if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind)))
-                        THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
-        }
+                R->needRebind = true;
+        } else
+                R->needRebind = false;
 }
 
 
@@ -181,6 +179,10 @@ int MysqlResultSet_next(T R) {
                 while (mysql_stmt_fetch(R->stmt) == 0); 
 #endif
                 return false;
+        }
+        if (R->needRebind) {
+                if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind)))
+                        THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
         }
         R->lastError = mysql_stmt_fetch(R->stmt);
         return ((R->lastError == MYSQL_OK) || (R->lastError == MYSQL_DATA_TRUNCATED));

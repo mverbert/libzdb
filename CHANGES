@@ -4,9 +4,14 @@
               
 Version 2.10.7
 --------------
+* New: Postgres added support for the new bytea hex encoding 
+  format introduced in PostgreSQL 9.0.
+* Fixes: MySQL: A table with two or more columns larger than 256
+  bytes would cause libzdb to truncate the second column to 256 
+  bytes in the first row. Thanks to Me from China for bug report
+  and patch.
 * Fixes: Using the configure flag --with-sqlite without aruguments
   now works as expected. Thanks to Johan Bergström for bug report
-  
 * Fixes: --enable-profiling removes any optimization compiler
   flags that might have been set apriori. Thanks to Johan Bergström 
   for bug report

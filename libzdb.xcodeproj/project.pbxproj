@@ -39,6 +39,7 @@
 		52F2371013E7256200D24B82 /* Str.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1513E716A0002F3C7C /* Str.c */; };
 		52F2371113E7256200D24B82 /* StringBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1713E716A0002F3C7C /* StringBuffer.c */; };
 		52F2371313E7256200D24B82 /* Vector.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1B13E716A0002F3C7C /* Vector.c */; };
+		52FAA531166E734C00299743 /* libm.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52FAA530166E734C00299743 /* libm.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -238,6 +239,7 @@
 		52C32EED145BA3FA00C72758 /* Time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Time.c; sourceTree = "<group>"; };
 		52C32F56145BD12800C72758 /* Mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Mem.c; sourceTree = "<group>"; };
 		52C32F57145BD12800C72758 /* Mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mem.h; sourceTree = "<group>"; };
+		52FAA530166E734C00299743 /* libm.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libm.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libm.dylib; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,6 +255,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52FAA531166E734C00299743 /* libm.dylib in Frameworks */,
 				529239C214B7AD2100DFC3A1 /* libzdb.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +285,7 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
+				52FAA530166E734C00299743 /* libm.dylib */,
 				52788BDB13E716A0002F3C7C /* README */,
 				52788BD213E716A0002F3C7C /* COPYING */,
 				52788BC613E716A0002F3C7C /* AUTHORS */,

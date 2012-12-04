@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "URL.h"
 #include "Thread.h"
@@ -140,8 +141,8 @@ static void testPool(const char *testURL) {
         
         printf("=> Test5: Prepared Statement\n");
         {
-                int i,j;
-                char blob[65533];
+                int i;
+                char blob[8192];
                 Connection_T con;
                 PreparedStatement_T pre;
                 char *data[]= {"Ceci n'est pas une pipe", "Mona Lisa", 
@@ -167,11 +168,11 @@ static void testPool(const char *testURL) {
                 PreparedStatement_setInt(pre, 2, 1);
                 PreparedStatement_execute(pre);
                 /* Add a large blob */
-                for (j = 0; j<65532; j+=4)
-                        snprintf(&blob[j], 5, "%s", "blob"); 
+                memset(blob, 'x', 8192);
+                blob[8191] = 0;
                 /* Mark start and end */
-                *blob='S'; blob[strlen(blob)-1]= 'E';
-                PreparedStatement_setBlob(pre, 1, blob, (int)strlen(blob)+1);
+                *blob='S'; blob[8190] = 'E';
+                PreparedStatement_setBlob(pre, 1, blob, 8192);
                 PreparedStatement_setInt(pre, 2, i + 1);
                 PreparedStatement_execute(pre);
                 printf("\tResult: prepared statement successfully executed\n");
@@ -206,12 +207,18 @@ static void testPool(const char *testURL) {
                         const char *name = ResultSet_getString(rset, 2);
                         double percent = ResultSet_getDoubleByName(rset, "percent");
                         const char *blob = (char*)ResultSet_getBlob(rset, 4, &imagesize);
-                        printf("\t%-5d%-16s%-10.2f%-16.38s\n", id, name?name:"null", percent, blob&&imagesize?blob:"");
+                        printf("\t%-5d%-16s%-10.2f%-16.38s\n", id, name ? name : "null", percent, imagesize ? blob : "");
                 }
                 rset = Connection_executeQuery(con, "select image from zild_t where id=12;");
                 assert(1==ResultSet_getColumnCount(rset));
-                while (ResultSet_next(rset))
-                        assert(ResultSet_getStringByName(rset, "image"));
+                // Assert that types are interchangeable (to some degree) and that all data is returned
+                while (ResultSet_next(rset)) {
+                        const char *image = ResultSet_getStringByName(rset, "image");
+                        const void *blob = ResultSet_getBlobByName(rset, "image", &imagesize);
+                        assert(image && blob);
+                        assert(strlen(image) + 1 == 8192);
+                        assert(imagesize == 8192);
+                }
                 printf("\tResult: check max rows..");
                 Connection_setMaxRows(con, 3);
                 rset = Connection_executeQuery(con, "select id from zild_t;");
@@ -245,7 +252,7 @@ static void testPool(const char *testURL) {
                 for (i = 0; ResultSet_next(names); i++);
                 assert(i==12);
                 printf("success\n");
-                /* Need to close and release statements before 
+                /* Need to close and release statements before
                    we can drop the table, sqlite need this */
                 Connection_clear(con);
                 Connection_execute(con, "drop table zild_t;");
@@ -255,8 +262,9 @@ static void testPool(const char *testURL) {
                 assert(pool==NULL);
                 URL_free(&url);
         }
-        printf("=> Test6: OK\n\n");     
-
+        printf("=> Test6: OK\n\n");
+        
+        
         printf("=> Test7: reaper start/stop\n");
         {
                 int i;
@@ -497,8 +505,45 @@ static void testPool(const char *testURL) {
                 assert(pool==NULL);
                 URL_free(&url);
         }
-        printf("=> Test8: OK\n\n");    
+        printf("=> Test8: OK\n\n");
         
+        printf("=> Test9: Ensure Capacity\n");
+        {
+                /* Check that MySQL ensureCapacity works for columns that exceed the preallocated buffer and that no truncation is done */
+                if ( Str_startsWith(testURL, "mysql")) {
+                        int imagesize1, imagesize2;
+                        url = URL_new(testURL);
+                        pool = ConnectionPool_new(url);
+                        assert(pool);
+                        ConnectionPool_start(pool);
+                        Connection_T con = ConnectionPool_getConnection(pool);
+                        assert(con);
+                        Connection_execute(con, "CREATE TABLE zild_t(id INTEGER AUTO_INCREMENT PRIMARY KEY, image1 BLOB, image2 BLOB);");
+                        PreparedStatement_T p = Connection_prepareStatement(con, "insert into zild_t (image1, image2) values(?, ?);");
+                        char t[4096];
+                        memset(t, 'x', 4096);
+                        t[4095] = 0;
+                        for (int i = 0; i < 4; i++) {
+                                PreparedStatement_setBlob(p, 1, t, 4096);
+                                PreparedStatement_setBlob(p, 2, t, 4096);
+                                PreparedStatement_execute(p);
+                        }
+                        ResultSet_T r = Connection_executeQuery(con, "select image1, image2 from zild_t;");
+                        while (ResultSet_next(r)) {
+                                const char *image1 = (char*)ResultSet_getBlobByName(r, "image1", &imagesize1);
+                                const char *image2 = (char*)ResultSet_getBlobByName(r, "image2", &imagesize2);
+                                assert(strlen(image1) == 4095);
+                                assert(strlen(image2) == 4095);
+                        }
+                        Connection_execute(con, "drop table zild_t;");
+                        Connection_close(con);
+                        ConnectionPool_stop(pool);
+                        ConnectionPool_free(&pool);
+                        URL_free(&url);
+                }
+        }
+        printf("=> Test9: OK\n\n");
+
         printf("============> Connection Pool Tests: OK\n\n");
 }
 
