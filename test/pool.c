@@ -533,7 +533,9 @@ static void testPool(const char *testURL) {
                                 const char *image1 = (char*)ResultSet_getBlobByName(r, "image1", &imagesize1);
                                 const char *image2 = (char*)ResultSet_getBlobByName(r, "image2", &imagesize2);
                                 assert(strlen(image1) == 4095);
+                                assert(imagesize1 == 4096);
                                 assert(strlen(image2) == 4095);
+                                assert(imagesize2 == 4096);
                         }
                         Connection_execute(con, "drop table zild_t;");
                         Connection_close(con);
