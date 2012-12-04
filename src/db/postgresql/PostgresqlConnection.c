@@ -103,9 +103,9 @@ static int doConnect(T C, char **error) {
         StringBuffer_append(C->sb, "sslmode='%s' ", IS(URL_getParameter(C->url, "use-ssl"), "true") ? "require" : "disable");
         if (URL_getParameter(C->url, "connect-timeout")) {
                 TRY
-                StringBuffer_append(C->sb, "connect_timeout=%d ", Str_parseInt(URL_getParameter(C->url, "connect-timeout")));
+                        StringBuffer_append(C->sb, "connect_timeout=%d ", Str_parseInt(URL_getParameter(C->url, "connect-timeout")));
                 ELSE
-                ERROR("invalid connect timeout value");
+                        ERROR("invalid connect timeout value");
                 END_TRY;
         } else
                 StringBuffer_append(C->sb, "connect_timeout=%d ", SQL_DEFAULT_TCP_TIMEOUT);

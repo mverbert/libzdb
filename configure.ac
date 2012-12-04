@@ -2,7 +2,7 @@
 
 AC_PREREQ([2.53])
 
-AC_INIT([libzdb], [2.10.6], [bugs-libzdb@tildeslash.com])
+AC_INIT([libzdb], [2.10.7], [bugs-libzdb@tildeslash.com])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
@@ -106,6 +106,7 @@ AC_ARG_ENABLE(profiling,
                 [Build with debug and profiling options]),
     [
         if test "x$enableval" = "xyes" ; then
+                CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
                 CFLAGS="$CFLAGS -g -pg"
                 profile="true"
         else
@@ -180,8 +181,8 @@ AC_SUBST(UNIT_TEST)
 # Libraries 
 # ---------------------------------------------------------------------------
 
-AC_CHECK_LIB([pthread], [pthread_create], [], [AC_MSG_ERROR([POSIX thread library is required])])
-AC_SEARCH_LIBS(crypt, crypt)
+AC_SEARCH_LIBS([pthread_create], [pthread], [], [AC_MSG_ERROR([POSIX thread library is required])])
+AC_SEARCH_LIBS([crypt], [crypt])
 
 # Database Libraries 
 
@@ -280,6 +281,7 @@ if test "xyes" = "x$postgresql"; then
 fi
 AM_CONDITIONAL([WITH_POSTGRESQL], test "xyes" = "x$postgresql")
 
+
 sqlite="yes"
 AC_MSG_CHECKING(for SQLite3)
 AC_ARG_WITH([sqlite], 
@@ -287,34 +289,37 @@ AC_ARG_WITH([sqlite],
                 [Path is optional and if given should specify the full path to the SQLite installation. 
                  E.g. /usr/local/sqlite3]), 
         [
-        if test "xno" = "x$with_sqlite"; then
-                AC_MSG_RESULT([no])
-                sqlite="no"
-        else
-                AC_MSG_RESULT([yes])
-                svd_LDFLAGS=$LDFLAGS
-                svd_CPPFLAGS=$CPPFLAGS
-                LDFLAGS="-L$with_sqlite/lib $LDFLAGS"
-                CPPFLAGS="-I$with_sqlite/include $CPPFLAGS"
-                AC_CHECK_HEADERS([sqlite3.h], [
-                        sqlite="yes"
-                        AC_CHECK_LIB(sqlite3, main,[
-                                DBCPPFLAGS="$DBCPPFLAGS -I$with_sqlite/include"
-                                DBLDFLAGS="$DBLDFLAGS -L$with_sqlite/lib/ -lsqlite3"
-                        ],[sqlite="no"])
-                ], [sqlite="no"])
-                LDFLAGS=$svd_LDFLAGS
-                CPPFLAGS=$svd_CPPFLAGS
-        fi
+                if test "xno" = "x$with_sqlite"; then
+                        AC_MSG_RESULT([no])
+                        sqlite="no"
+                else
+                        AC_MSG_RESULT([yes])
+                        AC_CHECK_FILE([$with_sqlite],
+                        [
+                                svd_LDFLAGS=$LDFLAGS
+                                svd_CPPFLAGS=$CPPFLAGS
+                                LDFLAGS="-L$with_sqlite/lib $LDFLAGS"
+                                CPPFLAGS="-I$with_sqlite/include $CPPFLAGS"
+                                AC_SEARCH_LIBS([sqlite3_open], [sqlite3],
+                                [
+                                        DBCPPFLAGS="$DBCPPFLAGS -I$with_sqlite/include"
+                                        DBLDFLAGS="$DBLDFLAGS -L$with_sqlite/lib/ -lsqlite3"
+                                ],[sqlite="no"])
+                                LDFLAGS=$svd_LDFLAGS
+                                CPPFLAGS=$svd_CPPFLAGS
+   
+                        ],
+                        AC_SEARCH_LIBS([sqlite3_open], [sqlite3], [], [sqlite="no"]))
+                fi
         ], 
         [
                 AC_MSG_RESULT([yes])
-                AC_CHECK_LIB([sqlite3], [sqlite3_open], [], [sqlite="no"])
+                AC_SEARCH_LIBS([sqlite3_open], [sqlite3], [], [sqlite="no"])
         ])
 if test "xyes" = "x$sqlite"; then
-        AC_DEFINE([HAVE_LIBSQLITE3])
-        AC_CHECK_LIB([sqlite3], [sqlite3_soft_heap_limit], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT], [], [sqlite3_soft_heap_limit])], [], [-ldl])
-        AC_CHECK_LIB([sqlite3], [sqlite3_soft_heap_limit64], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT64], [], [sqlite3_soft_heap_limit64])], [], [-ldl])
+        AC_DEFINE([HAVE_LIBSQLITE3], 1, [Define to 1 to enable sqlite3])
+        AC_SEARCH_LIBS([sqlite3_soft_heap_limit], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT], [1], [sqlite3_soft_heap_limit])], [], [-ldl])
+        AC_SEARCH_LIBS([sqlite3_soft_heap_limit64], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT64], [1], [sqlite3_soft_heap_limit64])], [], [-ldl])
 fi
 AM_CONDITIONAL([WITH_SQLITE], test "xyes" = "x$sqlite")
 
