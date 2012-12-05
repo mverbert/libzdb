@@ -145,7 +145,7 @@ static void testPool(const char *testURL) {
                 char blob[8192];
                 Connection_T con;
                 PreparedStatement_T pre;
-                char *data[]= {"Ceci n'est pas une pipe", "Mona Lisa", 
+                char *images[]= {"Ceci n'est pas une pipe", "Mona Lisa",
                         "Bryllup i Hardanger", "The Scream",
                         "Vampyre", "Balcony", "Cycle", "Day & Night", 
                         "Hand with Reflecting Sphere",
@@ -154,8 +154,8 @@ static void testPool(const char *testURL) {
                 assert(con);
                 pre = Connection_prepareStatement(con, "update zild_t set image=? where id=?;");
                 assert(pre);
-                for (i = 0; data[i]; i++) {
-                        PreparedStatement_setBlob(pre, 1, data[i], (int)strlen(data[i])+1);
+                for (i = 0; images[i]; i++) {
+                        PreparedStatement_setBlob(pre, 1, images[i], (int)strlen(images[i])+1);
                         PreparedStatement_setInt(pre, 2, i + 1);
                         PreparedStatement_execute(pre);
                 }

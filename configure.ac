@@ -2,7 +2,7 @@
 
 AC_PREREQ([2.53])
 
-AC_INIT([libzdb], [2.10.7], [bugs-libzdb@tildeslash.com])
+AC_INIT([libzdb], [2.11], [bugs-libzdb@tildeslash.com])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
@@ -40,6 +40,23 @@ AC_PROG_LIBTOOL
 # ---------------------------------------------------------------------------
 # Build options
 # ---------------------------------------------------------------------------
+
+AC_ARG_ENABLE(profiling,
+        AS_HELP_STRING([--enable-profiling],
+                [Build with debug and profiling options]),
+    [
+        if test "x$enableval" = "xyes" ; then
+                CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
+                CFLAGS="$CFLAGS -g -pg"
+                profile="true"
+        else
+                profile="false"
+        fi
+    ],
+    [
+        profile="false"
+    ]
+)
 
 AC_ARG_ENABLE(optimized,
         AS_HELP_STRING([--enable-optimized], 
@@ -99,23 +116,6 @@ AC_ARG_ENABLE([protected],
              protect="false"
         fi
      ],[protect="false"]
-)
-
-AC_ARG_ENABLE(profiling,
-        AS_HELP_STRING([--enable-profiling],
-                [Build with debug and profiling options]),
-    [
-        if test "x$enableval" = "xyes" ; then
-                CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
-                CFLAGS="$CFLAGS -g -pg"
-                profile="true"
-        else
-                profile="false"
-        fi
-    ],
-    [
-        profile="false"
-    ]
 )
 
 AC_ARG_ENABLE([openssl],
@@ -187,6 +187,15 @@ AC_SEARCH_LIBS([crypt], [crypt])
 # Database Libraries 
 
 mysql="yes"
+check_mysql_config() 
+{
+        AC_PATH_PROG([MYSQLCONFIG], [mysql_config], [no], [$PATH:/usr/local/bin:/usr/local/mysql/bin])
+        if test "x$MYSQLCONFIG" = "xno" 
+        then
+                AC_MSG_WARN([mysql_config is required to build libzdb with mysql])
+                mysql="no"
+        fi
+}
 AC_MSG_CHECKING(for mysql)
 AC_ARG_WITH([mysql], 
         AS_HELP_STRING([--with-mysql(=<path>)], 
@@ -198,23 +207,12 @@ AC_ARG_WITH([mysql],
                         mysql="no"
                 else
                         AC_MSG_RESULT([yes])
-                        AC_CHECK_FILE([$with_mysql], 
-                        [
-                                MYSQLCONFIG=$with_mysql
-                        ], 
-                        [
-                                AC_MSG_WARN([mysql_config given as $with_mysql not found])
-                                mysql="no"
-                        ])        
+                        AC_CHECK_FILE([$with_mysql], [MYSQLCONFIG=$with_mysql], [check_mysql_config])        
                 fi
         ],
         [
                 AC_MSG_RESULT([yes])
-                AC_PATH_PROG([MYSQLCONFIG], [mysql_config], [no], [$PATH:/usr/local/bin:/usr/local/mysql/bin])
-                if test "x$MYSQLCONFIG" = "xno"; then
-                        AC_MSG_WARN([mysql_config is required to build libzdb with mysql])
-                        mysql="no"
-                fi
+                check_mysql_config
         ])
 if test "xyes" = "x$mysql"; then
         svd_CPPFLAGS=$CPPFLAGS
@@ -235,6 +233,15 @@ fi
 AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
 
 postgresql="yes"
+check_postgres_config() 
+{
+        AC_PATH_PROG([PGCONFIG], [pg_config], [no], [$PATH:/usr/local/bin:/usr/local/pgsql/bin])
+        if test "x$PGCONFIG" = "xno"
+        then
+                AC_MSG_WARN([pg_config is required to build libzdb with postgresql])
+                postgresql="no"
+        fi
+}
 AC_MSG_CHECKING(for postgresql)
 AC_ARG_WITH([postgresql], 
         AS_HELP_STRING([--with-postgresql(=<path>)], 
@@ -246,23 +253,12 @@ AC_ARG_WITH([postgresql],
                         postgresql="no"
                 else
                         AC_MSG_RESULT([yes])
-                        AC_CHECK_FILE([$with_postgresql], 
-                        [
-                                PGCONFIG=$with_postgresql
-                        ], 
-                        [
-                                AC_MSG_WARN([pg_config given as $with_postgresql not found])
-                                postgresql="no"
-                        ])        
+                        AC_CHECK_FILE([$with_postgresql], [PGCONFIG=$with_postgresql],[check_postgres_config])
                 fi
         ],
         [
                 AC_MSG_RESULT([yes])
-                AC_PATH_PROG([PGCONFIG], [pg_config], [no], [$PATH:/usr/local/bin:/usr/local/pgsql/bin])
-                if test "x$PGCONFIG" = "xno"; then
-                        AC_MSG_WARN([pg_config is required to build libzdb with postgresql])
-                        postgresql="no"
-                fi
+                check_postgres_config
         ])
 if test "xyes" = "x$postgresql"; then
         svd_CPPFLAGS=$CPPFLAGS

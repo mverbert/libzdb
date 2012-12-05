@@ -91,7 +91,7 @@ static inline const void *unescape_bytea(uchar_t *s, int len, int *r) {
                 };
                 for (i = 0, j = 2; j < len; j++) {
                         /*
-                         According to the doc, whitespace between hex pairs are allowed. Spoils the whole point of fast en/decoding.
+                         According to the doc, whitespace between hex pairs are allowed. Blarg!!
                          */
                         if (isxdigit(s[j])) {
                                 s[i] = hex[s[j]] << 4;
@@ -100,7 +100,7 @@ static inline const void *unescape_bytea(uchar_t *s, int len, int *r) {
                                 j++;
                         }
                 }
-        } else { // bytea escaped string
+        } else { // bytea escaped format
                 uchar_t byte;
                 for (i = j = 0; j < len; i++, j++) {
                         if ((s[i] = s[j]) == '\\') {
@@ -209,8 +209,7 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
  * As a hack to avoid extra allocation and complications by using PQunescapeBytea()
  * we instead unescape the buffer retrieved via PQgetvalue 'in-place'. This should 
  * be safe as unescape will only modify internal bytes in the buffer and not change
- * the buffer pointer nor expand the buffer. That is, as long as Postgres does not 
- * change the escaping mechanizm. See also unescape_bytea() above.
+ * the buffer pointer. See also unescape_bytea() above.
  */
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX

@@ -1,21 +1,17 @@
-                         CHANGES version 2.10.7
+                         CHANGES version 2.11
 
               This file summarizes changes made since 1.0
               
-Version 2.10.7
---------------
+Version 2.11
+------------
 * New: Added support for the new bytea hex encoding format
   introduced in PostgreSQL 9.0.
 * Fixes: MySQL: A table with two or more columns larger than 256
   bytes would cause libzdb to truncate the second column to 256 
   bytes in the first row. Thanks to Me from China for bug report
   and patch.
-* Fixes: Using the configure flag --with-sqlite without aruguments
-  now works as expected. Thanks to Johan Bergström for bug report
-* Fixes: --enable-profiling removes any optimization compiler
-  flags that might have been set apriori. Thanks to Johan Bergström 
-  for bug report
-
+* Fixes: Using configure flags --with-xxx without arguments
+  now works as expected. Thanks to Johan Bergström for report
 
 Version 2.10.6
 --------------
@@ -59,7 +55,7 @@ Version 2.10
 -----------
 * Libzdb is now compatible with and can be included in C++ or 
   Objective-C(++) projects.
-* Internal optimizing changes and improvements
+* Internal optimising changes and improvements
 
 Version 2.9
 -----------

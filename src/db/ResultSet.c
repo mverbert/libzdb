@@ -42,13 +42,11 @@ struct ResultSet_S {
 
 
 static inline int getIndex(T R, const char *name) {
-        if (name && *name) {
-                int i;
-		int columns = ResultSet_getColumnCount(R);
-                for (i = 1; i <= columns; i++)
-                        if (Str_isByteEqual(name, ResultSet_getColumnName(R, i)))
-                                return i;
-	}
+        int i;
+        int columns = ResultSet_getColumnCount(R);
+        for (i = 1; i <= columns; i++)
+                if (Str_isByteEqual(name, ResultSet_getColumnName(R, i)))
+                        return i;
         THROW(SQLException, "Invalid column name '%s'", name ? name : "null");
         return -1;
 }
