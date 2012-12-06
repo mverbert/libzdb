@@ -59,7 +59,9 @@ extern const struct Pop_T sqlite3pops;
 
 /* SQLite3 client library finalization */
 static void onstop(void) {
+#if SQLITE_VERSION_NUMBER >= 3006000
         sqlite3_shutdown();
+#endif
 }
 
 

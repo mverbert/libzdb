@@ -94,6 +94,7 @@ static inline T ctor(int hint) {
         NEW(S);
         S->length = hint;
         S->buffer = ALLOC(hint);
+        *S->buffer = 0;
         return S;
 }
 

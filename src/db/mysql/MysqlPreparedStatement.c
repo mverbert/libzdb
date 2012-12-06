@@ -104,12 +104,12 @@ T MysqlPreparedStatement_new(void *stmt, int maxRows) {
 void MysqlPreparedStatement_free(T *P) {
 	assert(P && *P);
         FREE((*P)->bind);
+        mysql_stmt_free_result((*P)->stmt);
 #if MYSQL_VERSION_ID >= 50503
         /* In case the statement returns multiple result sets or in a stored procedure case, 
          think it does, we need to run them down. mysql_stmt_reset does not seem to work here. */
         while (mysql_stmt_next_result((*P)->stmt) == 0);
 #endif
-        mysql_stmt_free_result((*P)->stmt);
         mysql_stmt_close((*P)->stmt);
         FREE((*P)->params);
 	FREE(*P);
