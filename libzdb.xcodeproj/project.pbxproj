@@ -39,7 +39,6 @@
 		52F2371013E7256200D24B82 /* Str.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1513E716A0002F3C7C /* Str.c */; };
 		52F2371113E7256200D24B82 /* StringBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1713E716A0002F3C7C /* StringBuffer.c */; };
 		52F2371313E7256200D24B82 /* Vector.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1B13E716A0002F3C7C /* Vector.c */; };
-		52FAA531166E734C00299743 /* libm.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52FAA530166E734C00299743 /* libm.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -255,7 +254,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52FAA531166E734C00299743 /* libm.dylib in Frameworks */,
 				529239C214B7AD2100DFC3A1 /* libzdb.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
