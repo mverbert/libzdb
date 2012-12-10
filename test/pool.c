@@ -510,31 +510,39 @@ static void testPool(const char *testURL) {
         {
                 /* Check that MySQL ensureCapacity works for columns that exceed the preallocated buffer and that no truncation is done */
                 if ( Str_startsWith(testURL, "mysql")) {
-                        int imagesize1, imagesize2;
+                        int myimagesize;
                         url = URL_new(testURL);
                         pool = ConnectionPool_new(url);
                         assert(pool);
                         ConnectionPool_start(pool);
                         Connection_T con = ConnectionPool_getConnection(pool);
                         assert(con);
-                        Connection_execute(con, "CREATE TABLE zild_t(id INTEGER AUTO_INCREMENT PRIMARY KEY, image1 BLOB, image2 BLOB);");
-                        PreparedStatement_T p = Connection_prepareStatement(con, "insert into zild_t (image1, image2) values(?, ?);");
+                        Connection_execute(con, "CREATE TABLE zild_t(id INTEGER AUTO_INCREMENT PRIMARY KEY, image BLOB, string TEXT);");
+                        PreparedStatement_T p = Connection_prepareStatement(con, "insert into zild_t (image, string) values(?, ?);");
                         char t[4096];
                         memset(t, 'x', 4096);
                         t[4095] = 0;
                         for (int i = 0; i < 4; i++) {
                                 PreparedStatement_setBlob(p, 1, t, 4096);
-                                PreparedStatement_setBlob(p, 2, t, 4096);
+                                PreparedStatement_setString(p, 2, t);
                                 PreparedStatement_execute(p);
                         }
-                        ResultSet_T r = Connection_executeQuery(con, "select image1, image2 from zild_t;");
+                        ResultSet_T r = Connection_executeQuery(con, "select image, string from zild_t;");
                         while (ResultSet_next(r)) {
-                                const char *image1 = (char*)ResultSet_getBlobByName(r, "image1", &imagesize1);
-                                const char *image2 = (char*)ResultSet_getBlobByName(r, "image2", &imagesize2);
-                                assert(strlen(image1) == 4095);
-                                assert(imagesize1 == 4096);
-                                assert(strlen(image2) == 4095);
-                                assert(imagesize2 == 4096);
+                                const char *image = (char*)ResultSet_getBlobByName(r, "image", &myimagesize);
+                                const char *string = ResultSet_getStringByName(r, "string");
+                                assert(strlen(image) == 4095);
+                                assert(myimagesize == 4096);
+                                assert(strlen(string) == 4095);
+                        }
+                        p = Connection_prepareStatement(con, "select image, string from zild_t;");
+                        r = PreparedStatement_executeQuery(p);
+                        while (ResultSet_next(r)) {
+                                const char *image = (char*)ResultSet_getBlobByName(r, "image", &myimagesize);
+                                const char *string = (char*)ResultSet_getStringByName(r, "string");
+                                assert(strlen(image) == 4095);
+                                assert(myimagesize == 4096);
+                                assert(strlen(string) == 4095);
                         }
                         Connection_execute(con, "drop table zild_t;");
                         Connection_close(con);

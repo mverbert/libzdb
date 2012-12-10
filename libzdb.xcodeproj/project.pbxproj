@@ -51,7 +51,7 @@
 			outputFiles = (
 				"$(DERIVED_FILES_DIR)/$(INPUT_FILE_BASE).c",
 			);
-			script = "re2c -bi ${INPUT_FILE_PATH} > ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}.c";
+			script = "/opt/local/bin/re2c -bi ${INPUT_FILE_PATH} > ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}.c";
 		};
 /* End PBXBuildRule section */
 
@@ -114,9 +114,6 @@
 		5200E02C1504F550005B4D2A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
 		5200E02E1504F584005B4D2A /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "/usr/local/mysql-5.5.19-osx10.6-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<absolute>"; };
 		5200E0301504F596005B4D2A /* libpq.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libpq.dylib; sourceTree = DEVELOPER_DIR; };
-		523F7E77163F00BB004A4731 /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
-		523F7E79163F00BB004A4731 /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
-		523F7E7B163F00BB004A4731 /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
 		523F7E83163F13CA004A4731 /* nzerror.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nzerror.h; sourceTree = "<group>"; };
 		523F7E84163F13CA004A4731 /* nzt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nzt.h; sourceTree = "<group>"; };
 		523F7E85163F13CA004A4731 /* occi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = occi.h; sourceTree = "<group>"; };
@@ -153,6 +150,9 @@
 		523F7EA6163F13CA004A4731 /* libocijdbc10.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libocijdbc10.dylib; sourceTree = "<group>"; };
 		523F7EA7163F13CA004A4731 /* libocijdbc10.jnilib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libocijdbc10.jnilib; sourceTree = "<group>"; };
 		525CF56D14BFD3C600650C7D /* zdb.pc.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zdb.pc.in; sourceTree = "<group>"; };
+		526EEF5516767B260050EBFF /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
+		526EEF5716767B260050EBFF /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
+		526EEF5916767B260050EBFF /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
 		52788BC613E716A0002F3C7C /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		52788BC713E716A0002F3C7C /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		52788BC813E716A0002F3C7C /* CHANGES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES; sourceTree = "<group>"; };
@@ -299,9 +299,9 @@
 				52788C2413E716A0002F3C7C /* tools */,
 				526B7ABD13E7564B008E2CB1 /* libs */,
 				528F4D43145A5AB9002CD67D /* Products */,
-				523F7E77163F00BB004A4731 /* select */,
-				523F7E79163F00BB004A4731 /* unit */,
-				523F7E7B163F00BB004A4731 /* pool */,
+				526EEF5516767B260050EBFF /* select */,
+				526EEF5716767B260050EBFF /* unit */,
+				526EEF5916767B260050EBFF /* pool */,
 			);
 			sourceTree = "<group>";
 		};
@@ -627,7 +627,7 @@
 			);
 			name = select;
 			productName = select;
-			productReference = 523F7E77163F00BB004A4731 /* select */;
+			productReference = 526EEF5516767B260050EBFF /* select */;
 			productType = "com.apple.product-type.tool";
 		};
 		529239B314B7ACC400DFC3A1 /* pool */ = {
@@ -645,7 +645,7 @@
 			);
 			name = pool;
 			productName = pool;
-			productReference = 523F7E7B163F00BB004A4731 /* pool */;
+			productReference = 526EEF5916767B260050EBFF /* pool */;
 			productType = "com.apple.product-type.tool";
 		};
 		52C32F47145BABC300C72758 /* unit */ = {
@@ -663,7 +663,7 @@
 			);
 			name = unit;
 			productName = unit;
-			productReference = 523F7E79163F00BB004A4731 /* unit */;
+			productReference = 526EEF5716767B260050EBFF /* unit */;
 			productType = "com.apple.product-type.tool";
 		};
 		52F236FD13E724D600D24B82 /* libzdb */ = {
@@ -959,13 +959,11 @@
 					$SRCROOT/src/exceptions,
 					$SRCROOT/src/db,
 					"/usr/local/mysql/include/**",
-					$SRCROOT/oci/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"/usr/local/mysql/lib\"",
 					"\"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib\"",
-					"\"$(SRCROOT)/oci/lib\"",
 				);
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
@@ -993,13 +991,11 @@
 					$SRCROOT/src/exceptions,
 					$SRCROOT/src/db,
 					"/usr/local/mysql/include/**",
-					$SRCROOT/oci/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"/usr/local/mysql/lib\"",
 					"\"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib\"",
-					"\"$(SRCROOT)/oci/lib\"",
 				);
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
