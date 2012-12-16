@@ -88,8 +88,7 @@ static inline void ensureCapacity(T R, int i) {
                 if ((R->lastError = mysql_stmt_fetch_column(R->stmt, &R->bind[i], i, 0)))
                         THROW(SQLException, "mysql_stmt_fetch_column -- %s", mysql_stmt_error(R->stmt));
                 R->needRebind = true;
-        } else
-                R->needRebind = false;
+        }
 }
 
 
@@ -183,6 +182,7 @@ int MysqlResultSet_next(T R) {
         if (R->needRebind) {
                 if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind)))
                         THROW(SQLException, "mysql_stmt_bind_result -- %s", mysql_stmt_error(R->stmt));
+                R->needRebind = false;
         }
         R->lastError = mysql_stmt_fetch(R->stmt);
         return ((R->lastError == MYSQL_OK) || (R->lastError == MYSQL_DATA_TRUNCATED));

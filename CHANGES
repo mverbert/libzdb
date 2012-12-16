@@ -1,7 +1,13 @@
-                         CHANGES version 2.11
+                         CHANGES version 2.11.1
 
               This file summarizes changes made since 1.0
-              
+
+Version 2.11
+------------
+* Fixes: MySQL: Fixed a ResultSet bind memory error which could occur
+  if string or blob columns of different size caused successive buffer
+  reallocation. Thanks to Ryan Addams for discovering the problem.
+
 Version 2.11
 ------------
 * New: Added support for the new bytea hex encoding format

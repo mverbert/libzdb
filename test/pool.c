@@ -523,25 +523,27 @@ static void testPool(const char *testURL) {
                         memset(t, 'x', 4096);
                         t[4095] = 0;
                         for (int i = 0; i < 4; i++) {
-                                PreparedStatement_setBlob(p, 1, t, 4096);
+                                PreparedStatement_setBlob(p, 1, t, (i+1)*512); // store successive larger string-blobs to trigger realloc on ResultSet_getBlobByName
                                 PreparedStatement_setString(p, 2, t);
                                 PreparedStatement_execute(p);
                         }
                         ResultSet_T r = Connection_executeQuery(con, "select image, string from zild_t;");
-                        while (ResultSet_next(r)) {
-                                const char *image = (char*)ResultSet_getBlobByName(r, "image", &myimagesize);
+                        for (int i = 0; ResultSet_next(r); i++) {
+                                ResultSet_getBlobByName(r, "image", &myimagesize);
+                                const char *image = ResultSet_getStringByName(r, "image"); // Blob as image should be terminated
                                 const char *string = ResultSet_getStringByName(r, "string");
-                                assert(strlen(image) == 4095);
-                                assert(myimagesize == 4096);
+                                assert(myimagesize == (i+1)*512);
+                                assert(strlen(image) == ((i+1)*512));
                                 assert(strlen(string) == 4095);
                         }
                         p = Connection_prepareStatement(con, "select image, string from zild_t;");
                         r = PreparedStatement_executeQuery(p);
-                        while (ResultSet_next(r)) {
-                                const char *image = (char*)ResultSet_getBlobByName(r, "image", &myimagesize);
+                        for (int i = 0; ResultSet_next(r); i++) {
+                                ResultSet_getBlobByName(r, "image", &myimagesize);
+                                const char *image = ResultSet_getStringByName(r, "image");
                                 const char *string = (char*)ResultSet_getStringByName(r, "string");
-                                assert(strlen(image) == 4095);
-                                assert(myimagesize == 4096);
+                                assert(myimagesize == (i+1)*512);
+                                assert(strlen(image) == ((i+1)*512));
                                 assert(strlen(string) == 4095);
                         }
                         Connection_execute(con, "drop table zild_t;");
