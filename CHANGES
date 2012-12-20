@@ -2,8 +2,8 @@
 
               This file summarizes changes made since 1.0
 
-Version 2.11
-------------
+Version 2.11.1
+--------------
 * Fixes: MySQL: Fixed a ResultSet bind memory error which could occur
   if string or blob columns of different size caused successive buffer
   reallocation. Thanks to Ryan Addams for discovering the problem.
