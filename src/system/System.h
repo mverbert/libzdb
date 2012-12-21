@@ -51,8 +51,8 @@ void System_abort(const char *e, ...) __attribute__((format (printf, 1, 2)));
 
 
 /**
- * Prints the given error message to <code>stderr</code>. If an ErrorHandler
- * callback function is defined for the library, this function is called instead.
+ * Prints the given message to <code>stdout</code> if the <code>ZBDEBUG</code>
+ * flag is set to true, otherwise this function does nothing.
  * @param s A formated (printf-style) message string
  */
 void System_debug(const char *s, ...) __attribute__((format (printf, 1, 2)));
