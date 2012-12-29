@@ -48,6 +48,8 @@
  * A transaction will also rollback if the database is closed or if an 
  * error occurs. Nested transactions are not allowed.
  *
+ * <i>A Connection is reentrant, but not thread-safe and should only be used by one thread (at the time).</i>
+ *
  * @see ResultSet.h PreparedStatement.h SQLException.h
  * @file
  */

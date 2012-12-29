@@ -238,6 +238,7 @@
 		52C32EED145BA3FA00C72758 /* Time.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Time.c; sourceTree = "<group>"; };
 		52C32F56145BD12800C72758 /* Mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Mem.c; sourceTree = "<group>"; };
 		52C32F57145BD12800C72758 /* Mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mem.h; sourceTree = "<group>"; };
+		52E79D72168EA4FC00E510BF /* libzdb.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = libzdb.css; sourceTree = "<group>"; };
 		52FAA530166E734C00299743 /* libm.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libm.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libm.dylib; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -411,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				52788BD513E716A0002F3C7C /* database.png */,
+				52E79D72168EA4FC00E510BF /* libzdb.css */,
 				52788BD613E716A0002F3C7C /* mysqloptions.html */,
 				52788BD713E716A0002F3C7C /* postgresoptions.html */,
 			);

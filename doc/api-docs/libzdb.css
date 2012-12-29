@@ -1,0 +1,22 @@
+body { 
+    background-color:#fbfbfb;
+    width: 960px; 
+    margin:0 auto;
+    font-family: "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 16px;
+    color:#333;
+}
+h1 {  color: #333;
+    line-height: 64px;
+    font-size: 48px;
+    letter-spacing: -0.03em;
+    text-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px;
+    padding-top:30px;
+}
+.example {color:#555;}
+table {border-collapse:collapse;margin-bottom:20px;}
+table, th, td {border: 1px solid #ccc; padding:5px;}
+th {text-align:left;}
+td:first-child {white-space:nowrap;color:maroon;}

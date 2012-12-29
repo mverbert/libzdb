@@ -78,6 +78,8 @@
  * ResultSet_getInt() to get the value as an integer. In the latter case, note
  * that if the column value cannot be converted to a number, an SQLException is thrown.
  *
+ * <i>A ResultSet is reentrant, but not thread-safe and should only be used by one thread (at the time).</i>
+ *
  * @see Connection.h PreparedStatement.h SQLException.h
  * @file
  */

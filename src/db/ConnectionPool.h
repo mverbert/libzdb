@@ -48,14 +48,14 @@
  *
  * <h2>Life-cycle methods:</h2>
  * Clients should call ConnectionPool_start() to establish the connection pool 
- * against the database server and before using the pool. To shutdown 
- * connections from the database server use ConnectionPool_stop(). Set 
- * preferred properties before calling ConnectionPool_start(). Some properties
- * can also be changed dynamically after the pool was started such as changing
- * the maximum number of connections or redefine the number of initial 
- * connections. Changing and tuning these properties at runtime is most useful 
- * if the pool was started with a reaper-thread (see below) since the reaper
- * dynamically change the size of the pool 
+ * against the database server before using the pool. To shutdown 
+ * connections from the database server use ConnectionPool_stop(). Set
+ * preferred properties <em>before</em> calling ConnectionPool_start(). Some 
+ * properties can also be changed dynamically after the pool was started such as
+ * changing the maximum number of connections or the number of initial connections. 
+ * Changing and tuning these properties at runtime is most useful if the pool was 
+ * started with a reaper-thread (see below) since the reaper dynamically change the
+ * size of the pool
  
  *
  * <h2>Connection URL:</h2>
@@ -78,7 +78,7 @@
  * <b>MySQL:</b>
  *
  * Here is an example on how to connect to a <a href="http://www.mysql.org/">
- * mysql</a> database server:
+ * MySQL</a> database server:
  *
  * \htmlonly
  * <dt><dd><code>
@@ -87,7 +87,7 @@
  * \endhtmlonly
  *
  * In this case the username, <code>root</code> and password, <code>swordfish
- * </code> are specified as properties to the URL. Another alternative is to 
+ * </code> are specified as properties to the URL. An alternative is to 
  * use the auth-part of the URL to specify authentication information:
  *
  * \htmlonly
@@ -102,7 +102,7 @@
  * <b>SQLite:</b>
  *
  * For a <a href="http://www.sqlite.org/">SQLite</a> database the connection 
- * URL should simply specify the database file, since a SQLite database 
+ * URL should simply specify a database file, since a SQLite database 
  * is just a file in the filesystem. SQLite uses 
  * <a href="http://sqlite.org/pragma.html">pragma commands</a> for 
  * performance tuning and other special purpose database commands. Pragma 
@@ -122,7 +122,6 @@
  * </code></dd></dt>
  * \endhtmlonly
  *
- 
  * <b>PostgreSQL:</b>
  *
  * The URL for connecting to a <a href="http://www.postgresql.org/">
@@ -213,9 +212,9 @@
  * or for some reasons no longer respond. Only inactive Connections will be closed
  * and no more than the initial number of Connections the pool was started with
  * are closed. The property method, ConnectionPool_setReaper(), is used to specify
- * that a reaper thread should be started when the pool is started. If this method
- * was not called <i>before</i> ConnectionPool_start(), the pool will not start with
- * a reaper thread.
+ * that a reaper thread should be started when the pool is started. This method 
+ * <strong>must</strong> be called <i>before</i> ConnectionPool_start(), otherwise 
+ * the pool will not start with a reaper thread.
  * 
  * Clients can also call the method, ConnectionPool_reapConnections(), to
  * bonsai the pool directly if the reaper thread is not activated.

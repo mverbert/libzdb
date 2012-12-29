@@ -4,7 +4,8 @@
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 <style type="text/css" media="screen">
-    body,div,p,dl {font: normal normal normal 14px/18px "Helvetica-Neue",Helvetica,Arial,sans-serif;}
+    body {background-color:white;}
+    body,div,p,dl,.memname, .params, .exception {font: normal normal normal 15px/20px "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;}
     hr:first-child {border:none;}
     .headertitle {text-align:center;}
     .summary {display:none;}

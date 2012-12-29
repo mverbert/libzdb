@@ -83,6 +83,8 @@
  * A ResultSet returned from PreparedStatement_executeQuery() "lives" until
  * the Prepared Statement is executed again or until the Connection is
  * returned to the Connection Pool. 
+ *
+ * <i>A PreparedStatement is reentrant, but not thread-safe and should only be used by one thread (at the time).</i>
  * 
  * @see Connection.h ResultSet.h SQLException.h
  * @file
