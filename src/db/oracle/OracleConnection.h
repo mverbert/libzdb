@@ -32,5 +32,7 @@ int  OracleConnection_execute(T C, const char *sql, va_list ap);
 ResultSet_T OracleConnection_executeQuery(T C, const char *sql, va_list ap);
 PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_list ap);
 const char *OracleConnection_getLastError(T C);
+/* Event handlers */
+void OracleConnection_onstop(void);
 #undef T
 #endif

@@ -24,6 +24,10 @@
 		52C32F54145BABE200C72758 /* unit.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2313E716A0002F3C7C /* unit.c */; };
 		52C32F55145BABEC00C72758 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		52C32F58145BD12800C72758 /* Mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 52C32F56145BD12800C72758 /* Mem.c */; };
+		52E1C8A6169129240011464B /* libclntsh.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 523F7EA1163F13CA004A4731 /* libclntsh.dylib */; };
+		52E1C8A81691295F0011464B /* OracleConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEC13E716A0002F3C7C /* OracleConnection.c */; };
+		52E1C8A9169129640011464B /* OraclePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */; };
+		52E1C8AA169129670011464B /* OracleResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF013E716A0002F3C7C /* OracleResultSet.c */; };
 		52F2370213E7256200D24B82 /* Connection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BDF13E716A0002F3C7C /* Connection.c */; };
 		52F2370313E7256200D24B82 /* ConnectionPool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE213E716A0002F3C7C /* ConnectionPool.c */; };
 		52F2370413E7256200D24B82 /* PostgresqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF313E716A0002F3C7C /* PostgresqlConnection.c */; };
@@ -271,6 +275,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52E1C8A6169129240011464B /* libclntsh.dylib in Frameworks */,
 				5200E0311504F596005B4D2A /* libpq.dylib in Frameworks */,
 				5200E02F1504F584005B4D2A /* libmysqlclient.18.dylib in Frameworks */,
 				5200E02D1504F550005B4D2A /* libz.dylib in Frameworks */,
@@ -758,6 +763,9 @@
 				52F2370913E7256200D24B82 /* SQLiteConnection.c in Sources */,
 				52F2370A13E7256200D24B82 /* SQLitePreparedStatement.c in Sources */,
 				52F2370B13E7256200D24B82 /* SQLiteResultSet.c in Sources */,
+				52E1C8A81691295F0011464B /* OracleConnection.c in Sources */,
+				52E1C8AA169129670011464B /* OracleResultSet.c in Sources */,
+				52E1C8A9169129640011464B /* OraclePreparedStatement.c in Sources */,
 				52F2370C13E7256200D24B82 /* assert.c in Sources */,
 				52F2370D13E7256200D24B82 /* Exception.c in Sources */,
 				52F2371013E7256200D24B82 /* Str.c in Sources */,
@@ -963,11 +971,13 @@
 					$SRCROOT/src/exceptions,
 					$SRCROOT/src/db,
 					"/usr/local/mysql/include/**",
+					$SRCROOT/oci/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"/usr/local/mysql/lib\"",
 					"\"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib\"",
+					"\"$(SRCROOT)/oci/lib\"",
 				);
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
@@ -996,11 +1006,13 @@
 					$SRCROOT/src/exceptions,
 					$SRCROOT/src/db,
 					"/usr/local/mysql/include/**",
+					$SRCROOT/oci/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"/usr/local/mysql/lib\"",
 					"\"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib\"",
+					"\"$(SRCROOT)/oci/lib\"",
 				);
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",

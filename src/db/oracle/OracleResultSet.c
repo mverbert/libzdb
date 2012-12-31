@@ -302,7 +302,7 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         } while (R->lastError == OCI_NEED_DATA);
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                         THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
-        *size = total_bytes;
+        *size = (int)total_bytes;
         return (const void *)R->columns[i].buffer;
 }
 

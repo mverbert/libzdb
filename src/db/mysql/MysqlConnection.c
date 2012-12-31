@@ -44,6 +44,25 @@
 /* ----------------------------------------------------------- Definitions */
 
 
+const struct Cop_T mysqlcops = {
+        "mysql",
+        MysqlConnection_onstop,
+        MysqlConnection_new,
+        MysqlConnection_free,
+        MysqlConnection_setQueryTimeout,
+        MysqlConnection_setMaxRows,
+        MysqlConnection_ping,
+        MysqlConnection_beginTransaction,
+        MysqlConnection_commit,
+        MysqlConnection_rollback,
+        MysqlConnection_lastRowId,
+        MysqlConnection_rowsChanged,
+        MysqlConnection_execute,
+        MysqlConnection_executeQuery,
+        MysqlConnection_prepareStatement,
+        MysqlConnection_getLastError
+};
+
 #define T ConnectionDelegate_T
 struct T {
         URL_T url;
@@ -60,15 +79,6 @@ extern const struct Pop_T mysqlpops;
 
 
 /* ------------------------------------------------------- Private methods */
-
-
-/* MySQL client library finalization */
-static void onstop(void) {
-        if (mysql_get_client_version() >= 50003)
-                mysql_library_end();
-        else
-                mysql_server_end();
-}
 
 
 static MYSQL *doConnect(URL_T url, char **error) {
@@ -144,29 +154,6 @@ static int prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
         }
         return true;
 }
-
-
-/* ------------------------------------------------------------ Operations */
-
-
-const struct Cop_T mysqlcops = {
-        "mysql",
-        onstop,
-        MysqlConnection_new,
-        MysqlConnection_free,
-        MysqlConnection_setQueryTimeout,
-        MysqlConnection_setMaxRows,
-        MysqlConnection_ping,
-        MysqlConnection_beginTransaction,
-        MysqlConnection_commit,
-        MysqlConnection_rollback,
-        MysqlConnection_lastRowId,
-        MysqlConnection_rowsChanged,
-        MysqlConnection_execute,
-        MysqlConnection_executeQuery,
-        MysqlConnection_prepareStatement,
-        MysqlConnection_getLastError
-};
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -319,6 +306,15 @@ const char *MysqlConnection_getLastError(T C) {
         if (mysql_errno(C->db))
                 return mysql_error(C->db);
         return StringBuffer_toString(C->sb); // Either the statement itself or a statement error
+}
+
+
+/* Class method: MySQL client library finalization */
+void MysqlConnection_onstop(void) {
+        if (mysql_get_client_version() >= 50003)
+                mysql_library_end();
+        else
+                mysql_server_end();
 }
 
 #ifdef PACKAGE_PROTECTED

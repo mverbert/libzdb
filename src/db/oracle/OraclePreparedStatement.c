@@ -132,7 +132,7 @@ void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x) {
         P->params[i].type.string = x;
         P->params[i].length = x ? strlen(x) : 0;
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, (char *)P->params[i].type.string, 
-                                    P->params[i].length, SQLT_CHR, 0, 0, 0, 0, 0, OCI_DEFAULT);
+                                    (int)P->params[i].length, SQLT_CHR, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }
@@ -143,7 +143,7 @@ void OraclePreparedStatement_setInt(T P, int parameterIndex, int x) {
         P->params[i].type.integer = x;
         P->params[i].length = sizeof(x);
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].type.integer, 
-                                    P->params[i].length, SQLT_INT, 0, 0, 0, 0, 0, OCI_DEFAULT);
+                                    (int)P->params[i].length, SQLT_INT, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }
@@ -156,7 +156,7 @@ void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long int x) 
         if (P->lastError != OCI_SUCCESS)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].type.number, 
-                                    P->params[i].length, SQLT_VNU, 0, 0, 0, 0, 0, OCI_DEFAULT);
+                                    (int)P->params[i].length, SQLT_VNU, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }
@@ -167,7 +167,7 @@ void OraclePreparedStatement_setDouble(T P, int parameterIndex, double x) {
         P->params[i].type.real = x;
         P->params[i].length = sizeof(x);
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].type.real, 
-                                    P->params[i].length, SQLT_FLT, 0, 0, 0, 0, 0, OCI_DEFAULT);
+                                    (int)P->params[i].length, SQLT_FLT, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }
@@ -178,7 +178,7 @@ void OraclePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int
         P->params[i].type.blob = x;
         P->params[i].length = (x) ? size : 0;
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, (void *)P->params[i].type.blob, 
-                                    P->params[i].length, SQLT_LNG, 0, 0, 0, 0, 0, OCI_DEFAULT);
+                                    (int)P->params[i].length, SQLT_LNG, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }
