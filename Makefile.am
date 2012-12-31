@@ -83,7 +83,8 @@ distclean-local:
                 build/ \
                 $(LIBRARY_NAME)
 	-rm -f  doc/api-docs/*h.html \
-                doc/api-docs/*.css \
+                doc/api-docs/doxygen.css \
+                doc/api-docs/tabs.css \
                 doc/api-docs/*.gif \
                 tools/bin/filterh \
                 src/xconfig.h.in \
