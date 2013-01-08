@@ -395,7 +395,7 @@ fi
 # Outputs
 # ---------------------------------------------------------------------------
 
-AM_CONFIG_HEADER(src/xconfig.h)
+AC_CONFIG_HEADERS(src/xconfig.h)
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_CONFIG_FILES([zdb.pc])
 AC_OUTPUT
