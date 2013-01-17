@@ -283,6 +283,10 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX
         if (R->columns[i].isNull) 
                 return NULL;
+        if (R->columns[i].buffer) {
+                *size = R->columns[i].length;
+                return (const void *)R->columns[i].buffer;
+        }
         oraub8 read_chars = 0;
         oraub8 read_bytes = 0;
         oraub8 total_bytes = 0;
@@ -300,9 +304,12 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
                         R->columns[i].buffer = RESIZE(R->columns[i].buffer, total_bytes + LOB_CHUNK_SIZE);
                 }
         } while (R->lastError == OCI_NEED_DATA);
-        if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
-                        THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
-        *size = (int)total_bytes;
+        if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO) {
+                FREE(R->columns[i].buffer);
+                R->columns[i].buffer = NULL;
+                THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
+        }
+        *size = R->columns[i].length = (int)total_bytes;
         return (const void *)R->columns[i].buffer;
 }
 
