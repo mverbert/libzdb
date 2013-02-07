@@ -85,7 +85,7 @@ static void testPool(const char *testURL) {
                 ConnectionPool_free(&pool);
                 assert(pool==NULL);
                 URL_free(&url);
-                // Test that exception is thrown on error
+                // Test that exception is thrown on start error
                 TRY
                 {
                         url = URL_new("not://a/database");
@@ -406,7 +406,8 @@ static void testPool(const char *testURL) {
                         Connection_execute(con, "%s", schema);
                         /* Creating the table again should fail and we 
                         should not come here */
-                        assert(false);
+                        printf("\tResult: Test failed -- exception not thrown\n");
+                        exit(1);
                 }
                 CATCH(SQLException)
                 {
@@ -418,7 +419,8 @@ static void testPool(const char *testURL) {
                         assert((con = ConnectionPool_getConnection(pool)));
                         printf("\tTesting: Query with errors.. ");
                         Connection_executeQuery(con, "blablabala;");
-                        assert(false);
+                        printf("\tResult: Test failed -- exception not thrown\n");
+                        exit(1);
                 }
                 CATCH(SQLException)
                 {
@@ -433,7 +435,8 @@ static void testPool(const char *testURL) {
                         PreparedStatement_T p = Connection_prepareStatement(con, "blablabala;");
                         ResultSet_T r = PreparedStatement_executeQuery(p);
                         while(ResultSet_next(r));
-                        assert(false);
+                        printf("\tResult: Test failed -- exception not thrown\n");
+                        exit(1);
                 }
                 CATCH(SQLException)
                 {
@@ -452,8 +455,9 @@ static void testPool(const char *testURL) {
                                 /* So far so good, now, try access an invalid
                                    column, which should throw an SQLException */
                                 int bogus = ResultSet_getInt(result, 3);
-                                assert(false); // Should not come here
+                                printf("\tResult: Test failed -- exception not thrown\n");
                                 printf("%d, %s, %d", id, name, bogus);
+                                exit(1);
                         }
                 }
                 CATCH(SQLException)
@@ -469,8 +473,9 @@ static void testPool(const char *testURL) {
                         result = Connection_executeQuery(con, "select name from zild_t;");
                         while (ResultSet_next(result)) {
                                 const char *name = ResultSet_getStringByName(result, "nonexistingcolumnname");
-                                assert(false); // Should not come here
                                 printf("%s", name);
+                                printf("\tResult: Test failed -- exception not thrown\n");
+                                exit(1);
                         }
                 }
                 CATCH(SQLException)
@@ -485,7 +490,8 @@ static void testPool(const char *testURL) {
                         PreparedStatement_T p = Connection_prepareStatement(con, "update zild_t set name = ? where id = ?;");
                         printf("\tTesting: Parameter index out of range.. ");
                         PreparedStatement_setInt(p, 3, 123);
-                        assert(false);
+                        printf("\tResult: Test failed -- exception not thrown\n");
+                        exit(1);
                 }
                 CATCH(SQLException)
                 {

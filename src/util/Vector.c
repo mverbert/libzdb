@@ -45,7 +45,7 @@ struct T {
 
 static inline void ensureCapacity(T V) {
         if (V->length >= V->capacity) {
-                V->capacity = 2*V->length;
+                V->capacity = 2 * V->length;
 		RESIZE(V->array, V->capacity * sizeof (void *));
         }
 }
@@ -60,9 +60,9 @@ static inline void ensureCapacity(T V) {
 
 T Vector_new(int hint) {
 	T V;
-        assert(hint>=0);
+        assert(hint >= 0);
 	NEW(V);
-        if (hint==0) 
+        if (hint == 0)
                 hint = 16;
         V->capacity = hint;
         V->array = CALLOC(V->capacity, sizeof (void *));
@@ -159,7 +159,7 @@ void Vector_map(T V, void apply(const void *element, void *ap), void *ap) {
 void **Vector_toArray(T V) {
         int i;
         assert(V);
-	void **array = ALLOC((V->length + 1)*sizeof (*array)); 
+	void **array = ALLOC((V->length + 1) * sizeof (*array)); 
 	for (i = 0; i < V->length; i++)
 		array[i] = V->array[i];
 	array[i] = NULL;

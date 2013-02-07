@@ -319,7 +319,10 @@ PreparedStatement_T Connection_prepareStatement(T C, const char *sql, ...) __att
 /**
  * This method can be used to obtain a string describing the last
  * error that occurred. Inside a CATCH-block you can also find
- * the error message directly in the variable Exception_frame.message
+ * the error message directly in the variable Exception_frame.message.
+ * It is recommended to use this variable instead since it contains both
+ * SQL errors and API errors such as parameter index out of range etc, 
+ * while Connection_getLastError() might only show SQL errors
  * @param C A Connection object
  * @return A string explaining the last error
  */
