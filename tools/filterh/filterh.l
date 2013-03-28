@@ -15,14 +15,9 @@
 #include <string.h>
 %}
 
-author		^.*"@author".*"\n"
-version		^.*"@version".*"\n"
 %x CPP BPP
 
 %%
-
-{author}	;
-{version}	;
 
 "//<<"	        	{ BEGIN(CPP); }
 "#<<"	        	{ BEGIN(BPP); }
