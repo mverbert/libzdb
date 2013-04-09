@@ -317,6 +317,7 @@ if test "xyes" = "x$sqlite"; then
         AC_DEFINE([HAVE_LIBSQLITE3], 1, [Define to 1 to enable sqlite3])
         AC_SEARCH_LIBS([sqlite3_soft_heap_limit], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT], [1], [sqlite3_soft_heap_limit])], [], [-ldl])
         AC_SEARCH_LIBS([sqlite3_soft_heap_limit64], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT64], [1], [sqlite3_soft_heap_limit64])], [], [-ldl])
+        AC_SEARCH_LIBS([sqlite3_errstr], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_ERRSTR], [1], [sqlite3_errstr])], [], [-ldl])
 fi
 AM_CONDITIONAL([WITH_SQLITE], test "xyes" = "x$sqlite")
 

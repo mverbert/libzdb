@@ -155,6 +155,7 @@ long ResultSet_getColumnSize(T R, int columnIndex);
  * @param R A ResultSet object
  * @return true if the new current row is valid; false if there are no
  * more rows
+ * @exception SQLException if a database access error occurs
  */
 int ResultSet_next(T R);
 

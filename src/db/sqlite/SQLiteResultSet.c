@@ -117,6 +117,14 @@ int SQLiteResultSet_next(T R) {
 #else
         EXEC_SQLITE(status, sqlite3_step(R->stmt), SQL_DEFAULT_TIMEOUT);
 #endif
+        if (status != SQLITE_ROW && status != SQLITE_DONE) {
+#ifdef HAVE_SQLITE3_ERRSTR
+                THROW(SQLException, "sqlite3_step -- %s", sqlite3_errstr(status));
+#else
+
+                THROW(SQLException, "sqlite3_step -- error code: %d", status);
+#endif
+        }
         return (status == SQLITE_ROW);
 }
 

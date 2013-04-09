@@ -243,7 +243,6 @@
 		52C32F56145BD12800C72758 /* Mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Mem.c; sourceTree = "<group>"; };
 		52C32F57145BD12800C72758 /* Mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mem.h; sourceTree = "<group>"; };
 		52E79D72168EA4FC00E510BF /* libzdb.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = libzdb.css; sourceTree = "<group>"; };
-		52FAA530166E734C00299743 /* libm.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libm.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libm.dylib; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,7 +288,6 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
-				52FAA530166E734C00299743 /* libm.dylib */,
 				52788BDB13E716A0002F3C7C /* README */,
 				52788BD213E716A0002F3C7C /* COPYING */,
 				52788BC613E716A0002F3C7C /* AUTHORS */,

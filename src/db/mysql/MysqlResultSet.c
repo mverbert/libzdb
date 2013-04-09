@@ -185,6 +185,8 @@ int MysqlResultSet_next(T R) {
                 R->needRebind = false;
         }
         R->lastError = mysql_stmt_fetch(R->stmt);
+        if (R->lastError == 1)
+                THROW(SQLException, "mysql_stmt_fetch -- %s", mysql_stmt_error(R->stmt));
         return ((R->lastError == MYSQL_OK) || (R->lastError == MYSQL_DATA_TRUNCATED));
 }
 

@@ -1,6 +1,14 @@
-                         CHANGES version 2.11.1
+                         CHANGES version 2.11.2
 
               This file summarizes changes made since 1.0
+              
+Version 2.11.2
+--------------
+* New: Throw SQLException if a database access error occurs
+  when ResultSet_next() is called. Previously, operational errors
+  could be masked as end of result set. Thanks to JiaQiang Xu.
+* Fixes: Possible mem leak in Oracle's blob operation fixed.
+
 
 Version 2.11.1
 --------------
