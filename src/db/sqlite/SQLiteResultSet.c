@@ -121,7 +121,6 @@ int SQLiteResultSet_next(T R) {
 #ifdef HAVE_SQLITE3_ERRSTR
                 THROW(SQLException, "sqlite3_step -- %s", sqlite3_errstr(status));
 #else
-
                 THROW(SQLException, "sqlite3_step -- error code: %d", status);
 #endif
         }
