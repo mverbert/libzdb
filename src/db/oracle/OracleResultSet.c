@@ -284,8 +284,8 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         if (R->columns[i].isNull) 
                 return NULL;
         if (R->columns[i].buffer) {
-                *size = (int)R->columns[i].length;
-                return (const void *)R->columns[i].buffer;
+                FREE(R->columns[i].buffer);
+                R->columns[i].buffer = NULL;
         }
         oraub8 read_chars = 0;
         oraub8 read_bytes = 0;
