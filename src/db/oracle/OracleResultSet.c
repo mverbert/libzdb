@@ -206,12 +206,10 @@ void OracleResultSet_free(T *R) {
         for (int i = 0; i < (*R)->columnCount; i++) {
                 if ((*R)->columns[i].lob_loc)
                         OCIDescriptorFree((*R)->columns[i].lob_loc, OCI_DTYPE_LOB);
-                if ((*R)->columns[i].buffer) 
-                        FREE((*R)->columns[i].buffer);
-                if ((*R)->columns[i].name)
-                        FREE((*R)->columns[i].name);
+                FREE((*R)->columns[i].buffer);
+                FREE((*R)->columns[i].name);
         }
-        free((*R)->columns);
+        FREE((*R)->columns);
         FREE(*R);
 }
 
@@ -283,10 +281,8 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         TEST_INDEX
         if (R->columns[i].isNull) 
                 return NULL;
-        if (R->columns[i].buffer) {
+        if (R->columns[i].buffer)
                 FREE(R->columns[i].buffer);
-                R->columns[i].buffer = NULL;
-        }
         oraub8 read_chars = 0;
         oraub8 read_bytes = 0;
         oraub8 total_bytes = 0;
