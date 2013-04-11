@@ -5,10 +5,10 @@
 Version 2.11.2
 --------------
 * New: Throw SQLException if a database access error occurs
-  when ResultSet_next() is called. Previously, operational errors
+  when ResultSet_next() is called. Previously, access errors
   could be masked as end of result set. Thanks to JiaQiang Xu.
-* Fixes: Possible mem leak in Oracle's blob operation fixed.
-
+* Fixes: Possible mem leak in Oracle's blob operation fixed 
+  (Volodymyr Tarasenko)
 
 Version 2.11.1
 --------------
