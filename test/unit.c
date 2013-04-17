@@ -133,7 +133,7 @@ static void testMem() {
         printf("=> Test1: alloc\n");
         {
                 char *s7 = ALLOC(2048);
-                assert(Str_isEqual(strncpy(s7, "123456789", 2048), "123456789"));
+                assert(Str_isEqual(Str_copy(s7, "123456789", 2048), "123456789"));
                 FREE(s7);
         }
         printf("=> Test1: OK\n\n");
@@ -149,10 +149,10 @@ static void testMem() {
         printf("=> Test3: resize\n");
         {
                 char *s9 = ALLOC(4);
-                strncpy(s9, "abc", 3);
+                Str_copy(s9, "abc", 3);
                 assert(Str_isEqual(s9, "abc"));
                 RESIZE(s9, 7);
-                strncpy(s9, "abc123", 6);
+                Str_copy(s9, "abc123", 6);
                 assert(Str_isEqual(s9, "abc123"));
                 FREE(s9);
         }
