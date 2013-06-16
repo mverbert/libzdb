@@ -200,22 +200,7 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
 
 
 /*
- * Nota bene: In libzdb we have standardized throughout to retrieve results
- * as text/byte, not as binary to avoid platform conversion problems and
- * to be general. Although for some columns, such as a blob, we would like 
- * to retrieve the value as binary, unfortunately Postgres does not provide
- * an API to retrieve a certain column as binary and others as text. In 
- * Postgres all columns in a result set are either retrieved as binary or 
- * as text and the result format must be specified at SQL command execution 
- * time. This means that Postgres will escape a bytea column since we generally
- * retrieve result as text and we must unescape the value again to get the actual
- * binary value we originally stored. This unnecessary escape/unescape operation
- * is unfortunate but required as long as Postgres insist on escaping blobs and
- * does not provide an API to get a binary value directly. It's annoying since 
- * the server protocol actually supports a result-set of mixed binary and text
- * columns, but not the pq client library. 
- * 
- * As a hack to avoid extra allocation and complications by using PQunescapeBytea()
+ * As a "hack" to avoid extra allocation and complications by using PQunescapeBytea()
  * we instead unescape the buffer retrieved via PQgetvalue 'in-place'. This should 
  * be safe as unescape will only modify internal bytes in the buffer and not change
  * the buffer pointer. See also unescape_bytea() above.
