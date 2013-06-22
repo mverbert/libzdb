@@ -119,7 +119,7 @@ static int reapConnections(T P) {
         for (int i = 0; ((n < x) && (i < Vector_size(P->pool))); i++) {
                 Connection_T con = Vector_get(P->pool, i);
                 if (Connection_isAvailable(con)) {
-                        if ((! Connection_ping(con)) || (Connection_getLastAccessedTime(con) < timedout)) {
+                        if ((Connection_getLastAccessedTime(con) < timedout) || (! Connection_ping(con))) {
                                 Vector_remove(P->pool, i);
                                 Connection_free(&con);
                                 n++;
