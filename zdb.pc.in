@@ -4,7 +4,7 @@ libdir=@libdir@
 includedir=@includedir@
 
 Name: libzdb
-Description: Database Connection Pool Library
+Description: A thread-safe high level multi database connection pool library
 Version: @VERSION@
 
 Requires: 
