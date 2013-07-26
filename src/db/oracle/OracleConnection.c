@@ -211,9 +211,9 @@ void OracleConnection_setMaxRows(T C, int max) {
 
 
 int  OracleConnection_ping(T C) {
-        ub4 serverStatus = 0;
-        C->lastError = OCIAttrGet(C->srv, OCI_HTYPE_SERVER, &serverStatus, NULL, OCI_ATTR_SERVER_STATUS, C->err);
-        return serverStatus == OCI_SERVER_NORMAL;
+        assert(C);
+        C->lastError = OCIPing(C->svc, C->err, OCI_DEFAULT);
+        return (C->lastError == OCI_SUCCESS);
 }
 
 
