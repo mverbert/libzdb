@@ -1,7 +1,13 @@
-                         CHANGES version 2.11.3
+                         CHANGES version 2.11.4
 
               This file summarizes changes made since 1.0
-              
+
+Version 2.11.4
+--------------
+* Fixes: Oracle: OCIPing is used to check oracle connection and
+  ensure that the Pool returns connected connections. Thanks to
+  Pavlo Lavrenenko.
+
 Version 2.11.3
 --------------
 * New: License exception added to allow for linking and 
