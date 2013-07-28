@@ -51,7 +51,7 @@
 			outputFiles = (
 				"$(DERIVED_FILES_DIR)/$(INPUT_FILE_BASE).c",
 			);
-			script = "/opt/local/bin/re2c -bi ${INPUT_FILE_PATH} > ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}.c";
+			script = "re2c -bi ${INPUT_FILE_PATH} > ${DERIVED_FILES_DIR}/${INPUT_FILE_BASE}.c";
 		};
 /* End PBXBuildRule section */
 
@@ -892,75 +892,100 @@
 		528F4D54145A5BFC002CD67D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/oci/lib\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		528F4D55145A5BFC002CD67D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/oci/lib\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		529239BB14B7ACC400DFC3A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		529239BC14B7ACC400DFC3A1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		52C32F50145BABC300C72758 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		52C32F51145BABC300C72758 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
 		52F2370013E724D600D24B82 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -983,6 +1008,8 @@
 					"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib",
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/MacOS/lib",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
 					"-Wno-address",
@@ -991,13 +1018,15 @@
 					"-funsigned-char",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		52F2370113E724D600D24B82 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -1018,6 +1047,8 @@
 					"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib",
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/MacOS/lib",
 				);
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
 					"-Wno-address",
@@ -1026,7 +1057,8 @@
 					"-funsigned-char",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
