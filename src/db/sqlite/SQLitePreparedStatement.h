@@ -33,5 +33,6 @@ void SQLitePreparedStatement_setDouble(T P, int parameterIndex, double x);
 void SQLitePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
 void SQLitePreparedStatement_execute(T P);
 ResultSet_T SQLitePreparedStatement_executeQuery(T P);
+long long int SQLitePreparedStatement_rowsChanged(T P);
 #undef T
 #endif

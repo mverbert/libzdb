@@ -47,6 +47,7 @@ typedef struct Pop_T {
         void (*setBlob)(T P, int parameterIndex, const void *x, int size);
         void (*execute)(T P);
         ResultSet_T (*executeQuery)(T P);
+        long long int (*rowsChanged)(T P);
 } *Pop_T;
 
 #undef T

@@ -215,5 +215,16 @@ void PreparedStatement_execute(T P);
 ResultSet_T PreparedStatement_executeQuery(T P);
 
 
+/**
+ * Returns the number of rows that was inserted, deleted or modified by the
+ * most recently completed SQL statement on the database connection. If used 
+ * with a transaction, this method should be called <i>before</i> commit is
+ * executed, otherwise 0 is returned.
+ * @param P A PreparedStatement object
+ * @return The number of rows changed by the last (DIM) SQL statement
+ */
+long long int PreparedStatement_rowsChanged(T P);
+
+
 #undef T
 #endif

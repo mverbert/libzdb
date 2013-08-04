@@ -33,5 +33,6 @@ void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x);
 void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
 void MysqlPreparedStatement_execute(T P);
 ResultSet_T MysqlPreparedStatement_executeQuery(T P);
+long long int MysqlPreparedStatement_rowsChanged(T P);
 #undef T
 #endif

@@ -63,7 +63,8 @@ const struct Pop_T oraclepops = {
         OraclePreparedStatement_setDouble,
         OraclePreparedStatement_setBlob,
         OraclePreparedStatement_execute,
-        OraclePreparedStatement_executeQuery
+        OraclePreparedStatement_executeQuery,
+        OraclePreparedStatement_rowsChanged
 };
 typedef struct param_t {
         union {
@@ -86,6 +87,7 @@ struct T {
         OCISvcCtx* svc;
         param_t    params;
         sword      lastError;
+        ub4        rowsChanged;
 };
 
 #define TEST_INDEX \
@@ -198,17 +200,28 @@ void OraclePreparedStatement_execute(T P) {
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 1, 0, NULL, NULL, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
+        P->lastError = OCIAttrGet( P->stmt, OCI_HTYPE_STMT, &P->rowsChanged, 0, OCI_ATTR_ROW_COUNT, P->err);
+        if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
+                THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }
 
 
 ResultSet_T OraclePreparedStatement_executeQuery(T P) {
         assert(P);
+        P->rowsChanged = 0;
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 0, 0, NULL, NULL, OCI_DEFAULT);
         if (P->lastError == OCI_SUCCESS || P->lastError == OCI_SUCCESS_WITH_INFO)
                 return ResultSet_new(OracleResultSet_new(P->stmt, P->env, P->err, P->svc, false, P->maxRows), (Rop_T)&oraclerops);
         THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
         return NULL;
 }
+
+
+long long int OraclePreparedStatement_rowsChanged(T P) {
+        assert(P);
+        return P->rowsChanged;
+}
+
 
 /* Error handling: Oracle requires a buffer to store
    error message, to keep error handling thread safe

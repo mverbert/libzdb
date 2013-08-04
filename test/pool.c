@@ -142,22 +142,30 @@ static void testPool(const char *testURL) {
         {
                 int i;
                 char blob[8192];
-                Connection_T con;
-                PreparedStatement_T pre;
                 char *images[]= {"Ceci n'est pas une pipe", "Mona Lisa",
                         "Bryllup i Hardanger", "The Scream",
                         "Vampyre", "Balcony", "Cycle", "Day & Night", 
                         "Hand with Reflecting Sphere",
                         "Drawing Hands", "Ascending and Descending", 0}; 
-                con = ConnectionPool_getConnection(pool);
+                Connection_T con = ConnectionPool_getConnection(pool);
                 assert(con);
-                pre = Connection_prepareStatement(con, "update zild_t set image=? where id=?;");
+                // 1. Prepared statement, perform a nonsense update to test rowsChanged
+                PreparedStatement_T p1 = Connection_prepareStatement(con, "update zild_t set image=?;");
+                PreparedStatement_setString(p1, 1, "");
+                PreparedStatement_execute(p1);
+                printf("\tRows changed: %lld\n", PreparedStatement_rowsChanged(p1));
+                // Assert that all 12 rows in the data set was changed
+                assert(PreparedStatement_rowsChanged(p1) == 12);
+                // 2. Prepared statement, update the table proper with "images". 
+                PreparedStatement_T pre = Connection_prepareStatement(con, "update zild_t set image=? where id=?;");
                 assert(pre);
                 for (i = 0; images[i]; i++) {
                         PreparedStatement_setBlob(pre, 1, images[i], (int)strlen(images[i])+1);
                         PreparedStatement_setInt(pre, 2, i + 1);
                         PreparedStatement_execute(pre);
                 }
+                // The last execute changed one row only
+                assert(PreparedStatement_rowsChanged(pre) == 1);
                 /* Add a database null blob value */
                 PreparedStatement_setBlob(pre, 1, NULL, 0);
                 PreparedStatement_setInt(pre, 2, 5);

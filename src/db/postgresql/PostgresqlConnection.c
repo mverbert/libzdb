@@ -233,7 +233,8 @@ long long int PostgresqlConnection_lastRowId(T C) {
 
 long long int PostgresqlConnection_rowsChanged(T C) {
         assert(C);
-        return Str_parseLLong(PQcmdTuples(C->res));
+        char *changes = PQcmdTuples(C->res);
+        return changes ? Str_parseLLong(changes) : 0;
 }
 
 

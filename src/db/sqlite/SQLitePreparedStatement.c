@@ -54,7 +54,8 @@ const struct Pop_T sqlite3pops = {
         SQLitePreparedStatement_setDouble,
         SQLitePreparedStatement_setBlob,
         SQLitePreparedStatement_execute,
-        SQLitePreparedStatement_executeQuery
+        SQLitePreparedStatement_executeQuery,
+        SQLitePreparedStatement_rowsChanged
 };
 
 #define T PreparedStatementDelegate_T
@@ -170,6 +171,12 @@ ResultSet_T SQLitePreparedStatement_executeQuery(T P) {
                 return ResultSet_new(SQLiteResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&sqlite3rops);
         THROW(SQLException, "%s", sqlite3_errmsg(P->db));
         return NULL;
+}
+
+
+long long int SQLitePreparedStatement_rowsChanged(T P) {
+        assert(P);
+        return (long long int)sqlite3_changes(P->db);
 }
 
 #ifdef PACKAGE_PROTECTED

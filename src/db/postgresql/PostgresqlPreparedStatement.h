@@ -33,5 +33,6 @@ void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x);
 void PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
 void PostgresqlPreparedStatement_execute(T P);
 ResultSet_T PostgresqlPreparedStatement_executeQuery(T P);
+long long int PostgresqlPreparedStatement_rowsChanged(T P);
 #undef T
 #endif

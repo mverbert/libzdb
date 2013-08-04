@@ -56,7 +56,8 @@ const struct Pop_T postgresqlpops = {
         PostgresqlPreparedStatement_setDouble,
         PostgresqlPreparedStatement_setBlob,
         PostgresqlPreparedStatement_execute,
-        PostgresqlPreparedStatement_executeQuery
+        PostgresqlPreparedStatement_executeQuery,
+        PostgresqlPreparedStatement_rowsChanged
 };
 
 typedef struct param_t {
@@ -194,6 +195,14 @@ ResultSet_T PostgresqlPreparedStatement_executeQuery(T P) {
         THROW(SQLException, "%s", PQresultErrorMessage(P->res));
         return NULL;
 }
+
+
+long long int PostgresqlPreparedStatement_rowsChanged(T P) {
+        assert(P);
+        char *changes = PQcmdTuples(P->res);
+        return changes ? Str_parseLLong(changes) : 0;
+}
+
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5200E02F1504F584005B4D2A /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5200E02E1504F584005B4D2A /* libmysqlclient.18.dylib */; };
+		521D820617AEF711008E282B /* OracleConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEC13E716A0002F3C7C /* OracleConnection.c */; };
+		521D820717AEF711008E282B /* OraclePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */; };
+		521D820817AEF711008E282B /* OracleResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF013E716A0002F3C7C /* OracleResultSet.c */; };
+		521D820917AEF76C008E282B /* libclntsh.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 523F7EA1163F13CA004A4731 /* libclntsh.dylib */; };
+		521D820B17AF0471008E282B /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 521D820A17AF0471008E282B /* libmysqlclient.18.dylib */; };
 		524B1E701543696800158F6E /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE513E716A0002F3C7C /* MysqlConnection.c */; };
 		5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */; };
@@ -114,6 +118,7 @@
 		5200E02C1504F550005B4D2A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
 		5200E02E1504F584005B4D2A /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "/usr/local/mysql-5.5.19-osx10.6-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<absolute>"; };
 		5200E0301504F596005B4D2A /* libpq.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/usr/lib/libpq.dylib; sourceTree = DEVELOPER_DIR; };
+		521D820A17AF0471008E282B /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "../../../../usr/local/mysql-5.6.13-osx10.7-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<group>"; };
 		523F7E83163F13CA004A4731 /* nzerror.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nzerror.h; sourceTree = "<group>"; };
 		523F7E84163F13CA004A4731 /* nzt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nzt.h; sourceTree = "<group>"; };
 		523F7E85163F13CA004A4731 /* occi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = occi.h; sourceTree = "<group>"; };
@@ -273,9 +278,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				521D820B17AF0471008E282B /* libmysqlclient.18.dylib in Frameworks */,
+				521D820917AEF76C008E282B /* libclntsh.dylib in Frameworks */,
 				529F8EC2177503520067C40A /* libz.dylib in Frameworks */,
 				529F8EBE1775031E0067C40A /* libsqlite3.dylib in Frameworks */,
-				5200E02F1504F584005B4D2A /* libmysqlclient.18.dylib in Frameworks */,
 				529F8EC0177503440067C40A /* libpq.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,6 +292,7 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
+				521D820A17AF0471008E282B /* libmysqlclient.18.dylib */,
 				529F8EC1177503520067C40A /* libz.dylib */,
 				529F8EBF177503440067C40A /* libpq.dylib */,
 				529F8EBD1775031E0067C40A /* libsqlite3.dylib */,
@@ -759,6 +766,9 @@
 				52F2370613E7256200D24B82 /* PostgresqlResultSet.c in Sources */,
 				52F2370713E7256200D24B82 /* PreparedStatement.c in Sources */,
 				52F2370813E7256200D24B82 /* ResultSet.c in Sources */,
+				521D820617AEF711008E282B /* OracleConnection.c in Sources */,
+				521D820717AEF711008E282B /* OraclePreparedStatement.c in Sources */,
+				521D820817AEF711008E282B /* OracleResultSet.c in Sources */,
 				52F2370913E7256200D24B82 /* SQLiteConnection.c in Sources */,
 				52F2370A13E7256200D24B82 /* SQLitePreparedStatement.c in Sources */,
 				52F2370B13E7256200D24B82 /* SQLiteResultSet.c in Sources */,
@@ -1007,6 +1017,8 @@
 					/usr/local/mysql/lib,
 					"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib",
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/MacOS/lib",
+					"\"$(SRCROOT)/oci/lib\"",
+					"\"/usr/local/mysql-5.6.13-osx10.7-x86_64/lib\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1046,6 +1058,8 @@
 					/usr/local/mysql/lib,
 					"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib",
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/MacOS/lib",
+					"\"$(SRCROOT)/oci/lib\"",
+					"\"/usr/local/mysql-5.6.13-osx10.7-x86_64/lib\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;

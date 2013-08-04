@@ -4,6 +4,7 @@
 
 Version 2.11.4
 --------------
+* New: PreparedStatement_rowsChanged added to PreparedStatement.h
 * Fixes: Oracle: OCIPing is used to check oracle connection and
   ensure that the Pool returns connected connections. Thanks to
   Pavlo Lavrenenko.

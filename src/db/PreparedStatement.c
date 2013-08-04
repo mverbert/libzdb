@@ -137,3 +137,9 @@ ResultSet_T PreparedStatement_executeQuery(T P) {
         return P->resultSet;
 }
 
+
+long long int PreparedStatement_rowsChanged(T P) {
+        assert(P);
+        return P->op->rowsChanged(P->D);
+}
+

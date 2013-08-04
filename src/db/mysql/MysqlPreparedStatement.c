@@ -56,7 +56,8 @@ const struct Pop_T mysqlpops = {
         MysqlPreparedStatement_setDouble,
         MysqlPreparedStatement_setBlob,
         MysqlPreparedStatement_execute,
-        MysqlPreparedStatement_executeQuery
+        MysqlPreparedStatement_executeQuery,
+        MysqlPreparedStatement_rowsChanged
 };
 
 typedef struct param_t {
@@ -101,7 +102,7 @@ T MysqlPreparedStatement_new(void *stmt, int maxRows) {
         P->stmt = stmt;
         P->maxRows = maxRows;
         P->paramCount = (int)mysql_stmt_param_count(P->stmt);
-        if (P->paramCount>0) {
+        if (P->paramCount > 0) {
                 P->params = CALLOC(P->paramCount, sizeof(struct param_t));
                 P->bind = CALLOC(P->paramCount, sizeof(MYSQL_BIND));
         }
@@ -202,7 +203,7 @@ void MysqlPreparedStatement_execute(T P) {
 ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         assert(P);
         if ((P->paramCount > 0) && (P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
-                        THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
+                THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
 #if MYSQL_VERSION_ID >= 50002
         unsigned long cursor = CURSOR_TYPE_READ_ONLY;
         mysql_stmt_attr_set(P->stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
@@ -213,6 +214,12 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
                 return ResultSet_new(MysqlResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&mysqlrops);
         THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         return NULL;
+}
+
+
+long long int MysqlPreparedStatement_rowsChanged(T P) {
+        assert(P);
+        return (long long int)mysql_stmt_affected_rows(P->stmt);
 }
 
 #ifdef PACKAGE_PROTECTED
