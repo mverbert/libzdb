@@ -134,7 +134,7 @@ char *Str_vcat(const char *s, va_list ap) {
         if (s) {
                 int n = 0;
                 va_list ap_copy;
-                int size = STRLEN;
+                int size = 88;
                 buf = ALLOC(size);
                 while (true) {
                         va_copy(ap_copy, ap);
