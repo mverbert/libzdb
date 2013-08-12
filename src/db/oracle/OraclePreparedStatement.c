@@ -117,6 +117,7 @@ T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcC
         P->svc  = svc;
         P->maxRows = max_row;
         P->lastError = OCI_SUCCESS;
+        P->rowsChanged = 0;
         /* paramCount */
         P->lastError = OCIAttrGet(P->stmt, OCI_HTYPE_STMT, &P->paramCount, NULL, OCI_ATTR_BIND_COUNT, P->err);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
@@ -197,6 +198,7 @@ void OraclePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int
 
 void OraclePreparedStatement_execute(T P) {
         assert(P);
+        P->rowsChanged = 0;
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 1, 0, NULL, NULL, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
