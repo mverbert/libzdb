@@ -10,8 +10,8 @@
 		521D820617AEF711008E282B /* OracleConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEC13E716A0002F3C7C /* OracleConnection.c */; };
 		521D820717AEF711008E282B /* OraclePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */; };
 		521D820817AEF711008E282B /* OracleResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF013E716A0002F3C7C /* OracleResultSet.c */; };
-		521D820917AEF76C008E282B /* libclntsh.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 523F7EA1163F13CA004A4731 /* libclntsh.dylib */; };
 		521D820B17AF0471008E282B /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 521D820A17AF0471008E282B /* libmysqlclient.18.dylib */; };
+		522A207517C1111F00E2FA0A /* libclntsh.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 522A207417C1111F00E2FA0A /* libclntsh.dylib */; };
 		524B1E701543696800158F6E /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE513E716A0002F3C7C /* MysqlConnection.c */; };
 		5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */; };
@@ -115,43 +115,10 @@
 
 /* Begin PBXFileReference section */
 		521D820A17AF0471008E282B /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "/usr/local/mysql-5.6.13-osx10.7-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<absolute>"; };
-		523F7E83163F13CA004A4731 /* nzerror.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nzerror.h; sourceTree = "<group>"; };
-		523F7E84163F13CA004A4731 /* nzt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nzt.h; sourceTree = "<group>"; };
-		523F7E85163F13CA004A4731 /* occi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = occi.h; sourceTree = "<group>"; };
-		523F7E86163F13CA004A4731 /* occiAQ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = occiAQ.h; sourceTree = "<group>"; };
-		523F7E87163F13CA004A4731 /* occiCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = occiCommon.h; sourceTree = "<group>"; };
-		523F7E88163F13CA004A4731 /* occiControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = occiControl.h; sourceTree = "<group>"; };
-		523F7E89163F13CA004A4731 /* occiData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = occiData.h; sourceTree = "<group>"; };
-		523F7E8A163F13CA004A4731 /* occiObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = occiObjects.h; sourceTree = "<group>"; };
-		523F7E8B163F13CA004A4731 /* oci.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = oci.h; sourceTree = "<group>"; };
-		523F7E8C163F13CA004A4731 /* oci1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = oci1.h; sourceTree = "<group>"; };
-		523F7E8D163F13CA004A4731 /* oci8dp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = oci8dp.h; sourceTree = "<group>"; };
-		523F7E8E163F13CA004A4731 /* ociap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ociap.h; sourceTree = "<group>"; };
-		523F7E8F163F13CA004A4731 /* ociapr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ociapr.h; sourceTree = "<group>"; };
-		523F7E90163F13CA004A4731 /* ocidef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ocidef.h; sourceTree = "<group>"; };
-		523F7E91163F13CA004A4731 /* ocidem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ocidem.h; sourceTree = "<group>"; };
-		523F7E92163F13CA004A4731 /* ocidfn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ocidfn.h; sourceTree = "<group>"; };
-		523F7E93163F13CA004A4731 /* ociextp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ociextp.h; sourceTree = "<group>"; };
-		523F7E94163F13CA004A4731 /* ocikpr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ocikpr.h; sourceTree = "<group>"; };
-		523F7E95163F13CA004A4731 /* ocixmldb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ocixmldb.h; sourceTree = "<group>"; };
-		523F7E96163F13CA004A4731 /* odci.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = odci.h; sourceTree = "<group>"; };
-		523F7E97163F13CA004A4731 /* oratypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = oratypes.h; sourceTree = "<group>"; };
-		523F7E98163F13CA004A4731 /* ori.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ori.h; sourceTree = "<group>"; };
-		523F7E99163F13CA004A4731 /* orid.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = orid.h; sourceTree = "<group>"; };
-		523F7E9A163F13CA004A4731 /* orl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = orl.h; sourceTree = "<group>"; };
-		523F7E9B163F13CA004A4731 /* oro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = oro.h; sourceTree = "<group>"; };
-		523F7E9C163F13CA004A4731 /* ort.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ort.h; sourceTree = "<group>"; };
-		523F7E9D163F13CA004A4731 /* xa.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xa.h; sourceTree = "<group>"; };
-		523F7EA0163F13CA004A4731 /* classes12.jar */ = {isa = PBXFileReference; lastKnownFileType = archive.jar; path = classes12.jar; sourceTree = "<group>"; };
-		523F7EA1163F13CA004A4731 /* libclntsh.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libclntsh.dylib; sourceTree = "<group>"; };
-		523F7EA2163F13CA004A4731 /* libclntsh.dylib.10.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = libclntsh.dylib.10.1; sourceTree = "<group>"; };
-		523F7EA3163F13CA004A4731 /* libnnz10.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libnnz10.dylib; sourceTree = "<group>"; };
-		523F7EA4163F13CA004A4731 /* libocci.dylib.10.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = libocci.dylib.10.1; sourceTree = "<group>"; };
-		523F7EA5163F13CA004A4731 /* libociei.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libociei.dylib; sourceTree = "<group>"; };
-		523F7EA6163F13CA004A4731 /* libocijdbc10.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libocijdbc10.dylib; sourceTree = "<group>"; };
-		523F7EA7163F13CA004A4731 /* libocijdbc10.jnilib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libocijdbc10.jnilib; sourceTree = "<group>"; };
-		524934F817B6EDC3008BB0F7 /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
-		524934F917B6EDFF008BB0F7 /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
+		522A207417C1111F00E2FA0A /* libclntsh.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libclntsh.dylib; path = oci/lib/libclntsh.dylib; sourceTree = "<group>"; };
+		522A207617C1115E00E2FA0A /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
+		522A207717C1115E00E2FA0A /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
+		522A207817C1115E00E2FA0A /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
 		525CF56D14BFD3C600650C7D /* zdb.pc.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zdb.pc.in; sourceTree = "<group>"; };
 		52788BC613E716A0002F3C7C /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		52788BC713E716A0002F3C7C /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
@@ -161,8 +128,6 @@
 		52788BCC13E716A0002F3C7C /* doxy_head */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doxy_head; sourceTree = "<group>"; };
 		52788BCD13E716A0002F3C7C /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
 		52788BCE13E716A0002F3C7C /* DoxygenLayout.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DoxygenLayout.xml; sourceTree = "<group>"; };
-		52788BCF13E716A0002F3C7C /* install-sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; lineEnding = 0; path = "install-sh"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.sh; };
-		52788BD013E716A0002F3C7C /* missing */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; lineEnding = 0; path = missing; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.sh; };
 		52788BD113E716A0002F3C7C /* configure.ac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = configure.ac; sourceTree = "<group>"; };
 		52788BD213E716A0002F3C7C /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = COPYING; sourceTree = "<group>"; };
 		52788BD513E716A0002F3C7C /* database.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = database.png; sourceTree = "<group>"; };
@@ -231,7 +196,6 @@
 		52788C2213E716A0002F3C7C /* select.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = select.c; sourceTree = "<group>"; };
 		52788C2313E716A0002F3C7C /* unit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unit.c; sourceTree = "<group>"; };
 		52788C2813E716A0002F3C7C /* filterh.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; lineEnding = 0; path = filterh.l; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		527A96AE17B6F018002C2619 /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
 		528F4D3C145A5AA3002CD67D /* libzdb.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libzdb.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		529F8EBD1775031E0067C40A /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		529F8EBF177503440067C40A /* libpq.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.dylib; path = /Applications/Postgres.app/Contents/MacOS/lib/libpq.dylib; sourceTree = "<absolute>"; };
@@ -274,8 +238,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				522A207517C1111F00E2FA0A /* libclntsh.dylib in Frameworks */,
 				521D820B17AF0471008E282B /* libmysqlclient.18.dylib in Frameworks */,
-				521D820917AEF76C008E282B /* libclntsh.dylib in Frameworks */,
 				529F8EC2177503520067C40A /* libz.dylib in Frameworks */,
 				529F8EBE1775031E0067C40A /* libsqlite3.dylib in Frameworks */,
 				529F8EC0177503440067C40A /* libpq.dylib in Frameworks */,
@@ -303,86 +267,20 @@
 				52788C2413E716A0002F3C7C /* tools */,
 				526B7ABD13E7564B008E2CB1 /* libs */,
 				528F4D43145A5AB9002CD67D /* Products */,
-				524934F817B6EDC3008BB0F7 /* select */,
-				524934F917B6EDFF008BB0F7 /* pool */,
-				527A96AE17B6F018002C2619 /* unit */,
+				522A207617C1115E00E2FA0A /* select */,
+				522A207717C1115E00E2FA0A /* unit */,
+				522A207817C1115E00E2FA0A /* pool */,
 			);
-			sourceTree = "<group>";
-		};
-		523F7E81163F13CA004A4731 /* oci */ = {
-			isa = PBXGroup;
-			children = (
-				523F7E82163F13CA004A4731 /* include */,
-				523F7E9E163F13CA004A4731 /* instantclient_10_2 */,
-				523F7E9F163F13CA004A4731 /* lib */,
-			);
-			path = oci;
-			sourceTree = "<group>";
-		};
-		523F7E82163F13CA004A4731 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				523F7E83163F13CA004A4731 /* nzerror.h */,
-				523F7E84163F13CA004A4731 /* nzt.h */,
-				523F7E85163F13CA004A4731 /* occi.h */,
-				523F7E86163F13CA004A4731 /* occiAQ.h */,
-				523F7E87163F13CA004A4731 /* occiCommon.h */,
-				523F7E88163F13CA004A4731 /* occiControl.h */,
-				523F7E89163F13CA004A4731 /* occiData.h */,
-				523F7E8A163F13CA004A4731 /* occiObjects.h */,
-				523F7E8B163F13CA004A4731 /* oci.h */,
-				523F7E8C163F13CA004A4731 /* oci1.h */,
-				523F7E8D163F13CA004A4731 /* oci8dp.h */,
-				523F7E8E163F13CA004A4731 /* ociap.h */,
-				523F7E8F163F13CA004A4731 /* ociapr.h */,
-				523F7E90163F13CA004A4731 /* ocidef.h */,
-				523F7E91163F13CA004A4731 /* ocidem.h */,
-				523F7E92163F13CA004A4731 /* ocidfn.h */,
-				523F7E93163F13CA004A4731 /* ociextp.h */,
-				523F7E94163F13CA004A4731 /* ocikpr.h */,
-				523F7E95163F13CA004A4731 /* ocixmldb.h */,
-				523F7E96163F13CA004A4731 /* odci.h */,
-				523F7E97163F13CA004A4731 /* oratypes.h */,
-				523F7E98163F13CA004A4731 /* ori.h */,
-				523F7E99163F13CA004A4731 /* orid.h */,
-				523F7E9A163F13CA004A4731 /* orl.h */,
-				523F7E9B163F13CA004A4731 /* oro.h */,
-				523F7E9C163F13CA004A4731 /* ort.h */,
-				523F7E9D163F13CA004A4731 /* xa.h */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		523F7E9E163F13CA004A4731 /* instantclient_10_2 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = instantclient_10_2;
-			sourceTree = "<group>";
-		};
-		523F7E9F163F13CA004A4731 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				523F7EA0163F13CA004A4731 /* classes12.jar */,
-				523F7EA1163F13CA004A4731 /* libclntsh.dylib */,
-				523F7EA2163F13CA004A4731 /* libclntsh.dylib.10.1 */,
-				523F7EA3163F13CA004A4731 /* libnnz10.dylib */,
-				523F7EA4163F13CA004A4731 /* libocci.dylib.10.1 */,
-				523F7EA5163F13CA004A4731 /* libociei.dylib */,
-				523F7EA6163F13CA004A4731 /* libocijdbc10.dylib */,
-				523F7EA7163F13CA004A4731 /* libocijdbc10.jnilib */,
-			);
-			path = lib;
 			sourceTree = "<group>";
 		};
 		526B7ABD13E7564B008E2CB1 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				522A207417C1111F00E2FA0A /* libclntsh.dylib */,
 				521D820A17AF0471008E282B /* libmysqlclient.18.dylib */,
 				529F8EC1177503520067C40A /* libz.dylib */,
 				529F8EBF177503440067C40A /* libpq.dylib */,
 				529F8EBD1775031E0067C40A /* libsqlite3.dylib */,
-				523F7E81163F13CA004A4731 /* oci */,
 			);
 			name = libs;
 			sourceTree = "<group>";
@@ -395,8 +293,6 @@
 				52788BCC13E716A0002F3C7C /* doxy_head */,
 				52788BCD13E716A0002F3C7C /* Doxyfile */,
 				52788BCE13E716A0002F3C7C /* DoxygenLayout.xml */,
-				52788BCF13E716A0002F3C7C /* install-sh */,
-				52788BD013E716A0002F3C7C /* missing */,
 			);
 			path = config;
 			sourceTree = "<group>";
@@ -632,7 +528,7 @@
 			);
 			name = select;
 			productName = select;
-			productReference = 524934F817B6EDC3008BB0F7 /* select */;
+			productReference = 522A207617C1115E00E2FA0A /* select */;
 			productType = "com.apple.product-type.tool";
 		};
 		529239B314B7ACC400DFC3A1 /* pool */ = {
@@ -650,7 +546,7 @@
 			);
 			name = pool;
 			productName = pool;
-			productReference = 524934F917B6EDFF008BB0F7 /* pool */;
+			productReference = 522A207817C1115E00E2FA0A /* pool */;
 			productType = "com.apple.product-type.tool";
 		};
 		52C32F47145BABC300C72758 /* unit */ = {
@@ -668,7 +564,7 @@
 			);
 			name = unit;
 			productName = unit;
-			productReference = 527A96AE17B6F018002C2619 /* unit */;
+			productReference = 522A207717C1115E00E2FA0A /* unit */;
 			productType = "com.apple.product-type.tool";
 		};
 		52F236FD13E724D600D24B82 /* libzdb */ = {
@@ -1001,8 +897,9 @@
 					"$(inherited)",
 					/usr/local/mysql/lib,
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/MacOS/lib",
-					"\"$(SRCROOT)/oci/lib\"",
-					"\"/usr/local/mysql/lib\"",
+					"$(SRCROOT)/oci/lib",
+					/usr/local/mysql/lib,
+					/Users/hauk/src/libzdb/oci/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1040,8 +937,9 @@
 					"$(inherited)",
 					/usr/local/mysql/lib,
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/MacOS/lib",
-					"\"$(SRCROOT)/oci/lib\"",
-					"\"/usr/local/mysql/lib\"",
+					"$(SRCROOT)/oci/lib",
+					/usr/local/mysql/lib,
+					/Users/hauk/src/libzdb/oci/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
