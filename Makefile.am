@@ -66,6 +66,7 @@ CLEANFILES      = $(BUILT_SOURCES)
 DISTCLEANFILES  = *~ 
 
 dist-hook::
+	-rm -rf `find $(distdir) -name ".git"`
 	-rm -rf `find $(distdir) -name "._*"`
 	-rm -rf `find $(distdir) -name ".DS_Store"`
 	-rm -rf `find $(distdir) -name ".libs"`
