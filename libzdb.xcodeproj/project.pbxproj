@@ -128,7 +128,7 @@
 		52788BCC13E716A0002F3C7C /* doxy_head */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doxy_head; sourceTree = "<group>"; };
 		52788BCD13E716A0002F3C7C /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
 		52788BCE13E716A0002F3C7C /* DoxygenLayout.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DoxygenLayout.xml; sourceTree = "<group>"; };
-		52788BD113E716A0002F3C7C /* configure.ac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = configure.ac; sourceTree = "<group>"; };
+		52788BD113E716A0002F3C7C /* configure.ac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = configure.ac; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.sh; };
 		52788BD213E716A0002F3C7C /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = COPYING; sourceTree = "<group>"; };
 		52788BD513E716A0002F3C7C /* database.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = database.png; sourceTree = "<group>"; };
 		52788BD613E716A0002F3C7C /* mysqloptions.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mysqloptions.html; sourceTree = "<group>"; };
