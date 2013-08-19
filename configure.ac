@@ -79,17 +79,13 @@ AC_ARG_ENABLE(optimized,
 AC_ARG_ENABLE([zild],
         AS_HELP_STRING([--enable-zild], 
                 [Reduce visibility of objects for linking with the zild app server. 
-                Require gcc version 4.x. This is an internal Tildeslash build 
-                option and should NOT be used by a third-party]),
+                Require gcc version >= 4.x or clang. This is an internal Tildeslash
+                build option and should NOT be used by a third-party]),
      [
         if test "x$enableval" = "xyes" ; then
-                if test "x$GCC" = "xyes"; then
-                        zild_protect="true"
-                        AC_DEFINE([PACKAGE_PROTECTED], 1, [Define to 1 to package protect (hide) non-api objects])
-                        AC_DEFINE([ZILD_PACKAGE_PROTECTED], 1, [Define to 1 to hide objects for linking with zild])
-                else
-                        AC_MSG_ERROR([This option (--enable-zild) require GCC])   
-                fi
+                zild_protect="true"
+                AC_DEFINE([PACKAGE_PROTECTED], 1, [Define to 1 to package protect (hide) non-api objects])
+                AC_DEFINE([ZILD_PACKAGE_PROTECTED], 1, [Define to 1 to hide objects for linking with zild])
         else
                 zild_protect="false"
         fi
@@ -99,19 +95,15 @@ AM_CONDITIONAL([WITH_ZILD], test "xtrue" = "x$zild_protect")
 
 AC_ARG_ENABLE([protected],
         AS_HELP_STRING([--enable-protected], 
-        [Package protect non-API objects. Require gcc version 4.x
+        [Package protect non-API objects. Require gcc version >= 4.x or clang.
          This option hide objects in the DSO which are not part of the API and
          not to be exported. The rationale is to optimize the ABI and protect
          non-public methods of the DSO and thereby reduce the potential for 
          namespace conflicts for clients linking with the library. Recommend]),
      [
         if test "x$enableval" = "xyes" ; then
-             if test "x$GCC" = "xyes"; then
-                     protect="true"
-                     AC_DEFINE([PACKAGE_PROTECTED], 1, [Define to 1 to package protect (hide) non-api objects])
-             else
-                     AC_MSG_ERROR([This option (--enable-protected) require GCC])   
-             fi
+                protect="true"
+                AC_DEFINE([PACKAGE_PROTECTED], 1, [Define to 1 to package protect (hide) non-api objects])
         else
              protect="false"
         fi
@@ -381,7 +373,7 @@ AC_C_BIGENDIAN
 if test "x$GCC" = "xyes"; then
         CFLAGS="$CFLAGS -Wall -Wunused -Wno-unused-label -funsigned-char";
         # Add C99 support
-        CFLAGS="$CFLAGS -D_GNU_SOURCE -std=c99"
+        CFLAGS="$CFLAGS -std=c99"
         # does this compiler support -Wno-pointer-sign ?
         svd_CFLAGS="$CFLAGS"
         CFLAGS="-Wno-pointer-sign $CFLAGS"
