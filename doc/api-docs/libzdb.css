@@ -16,7 +16,7 @@ h1 {  color: #333;
     padding-top:30px;
 }
 .example {color:#555;}
-table {border-collapse:collapse;margin-bottom:20px;}
+table {border-collapse:collapse;}
 table, th, td {border: 1px solid #ccc; padding:5px;}
 th {text-align:left;}
 td:first-child {white-space:nowrap;color:maroon;}
