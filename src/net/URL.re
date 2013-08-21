@@ -71,7 +71,7 @@ struct URL_S {
         /* Keep the above align with zild URL_T */
 };
 
-/* Unsafe URL characters: [00-1F, 7F-FF] <>\"#%{}|\\^[] ` */
+/* Unsafe URL characters: [00-1F, 7F-FF] <>\"#%}{|\\^[] ` */
 static const uchar_t urlunsafe[256] = {
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
