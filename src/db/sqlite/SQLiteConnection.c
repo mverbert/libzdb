@@ -49,7 +49,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct Cop_T sqlite3cops = {
+static const struct Cop_T sqlite3cops = {
         "sqlite",
         SQLiteConnection_onstop,
         SQLiteConnection_new,
@@ -67,6 +67,10 @@ const struct Cop_T sqlite3cops = {
         SQLiteConnection_prepareStatement,
         SQLiteConnection_getLastError
 };
+
+static void __attribute__ ((constructor (300))) register_sqlite() {
+  ConnectionDelegate_register(&sqlite3cops);
+}
 
 #define T ConnectionDelegate_T
 struct T {
