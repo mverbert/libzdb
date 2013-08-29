@@ -254,7 +254,7 @@ static const char *_getLastError(T C) {
 /* ------------------------------------------------------------------------- */
 
 
-const struct Cop_T postgresqlcops = {
+static const struct Cop_T postgresqlcops = {
         .name             = "postgresql",
         .new              = _new,
         .free             = _free,
@@ -270,4 +270,8 @@ const struct Cop_T postgresqlcops = {
         .prepareStatement = _prepareStatement,
         .getLastError     = _getLastError
 };
+
+static void __attribute__ ((constructor (300))) register_postgresql() {
+  ConnectionDelegate_register(&postgresqlcops);
+}
 

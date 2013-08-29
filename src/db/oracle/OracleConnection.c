@@ -423,7 +423,7 @@ static PreparedStatement_T _prepareStatement(T C, const char *sql, va_list ap) {
 /* ------------------------------------------------------------------------- */
 
 
-const struct Cop_T oraclesqlcops = {
+static const struct Cop_T oraclesqlcops = {
         .name             = "oracle",
         .new              = _new,
         .free             = _free,
@@ -439,3 +439,7 @@ const struct Cop_T oraclesqlcops = {
         .prepareStatement = _prepareStatement,
         .getLastError     = _getLastError
 };
+
+static void __attribute__ ((constructor (300))) register_oracle() {
+  ConnectionDelegate_register(&oraclesqlcops);
+}

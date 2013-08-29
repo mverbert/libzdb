@@ -240,7 +240,7 @@ static const char *_getLastError(T C) {
 /* ------------------------------------------------------------------------- */
 
 
-const struct Cop_T sqlite3cops = {
+static const struct Cop_T sqlite3cops = {
         .name 		  = "sqlite",
         .new 		  = _new,
         .free 		  = _free,
@@ -257,3 +257,6 @@ const struct Cop_T sqlite3cops = {
         .getLastError	  = _getLastError
 };
 
+static void __attribute__ ((constructor (300))) register_sqlite() {
+  ConnectionDelegate_register(&sqlite3cops);
+}

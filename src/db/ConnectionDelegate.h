@@ -55,5 +55,7 @@ typedef struct Cop_T {
         const char *(*getLastError)(T C);
 } *Cop_T;
 
+void ConnectionDelegate_register(Cop_T op);
+
 #undef T
 #endif

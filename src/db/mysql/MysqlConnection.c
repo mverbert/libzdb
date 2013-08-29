@@ -286,7 +286,7 @@ static const char *_getLastError(T C) {
 /* ------------------------------------------------------------------------- */
 
 
-const struct Cop_T mysqlcops = {
+static const struct Cop_T mysqlcops = {
         .name 		  = "mysql",
         .new 		  = _new,
         .free 		  = _free,
@@ -303,3 +303,6 @@ const struct Cop_T mysqlcops = {
         .getLastError     = _getLastError
 };
 
+static void __attribute__ ((constructor (300))) register_mysql() {
+  ConnectionDelegate_register(&mysqlcops);
+}
