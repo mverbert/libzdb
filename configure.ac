@@ -337,13 +337,14 @@ if test "xyes" = "x$postgresql"; then
         LDFLAGS="-L`$PGCONFIG --libdir` $LDFLAGS"
         AC_CHECK_HEADERS([libpq-fe.h], [], [postgresql="no"])
         if test "xyes" = "x$postgresql"; then
-                DBCPPFLAGS="$DBCPPFLAGS -I`$PGCONFIG --includedir`"
-                DBLDFLAGS="$DBLDFLAGS -L`$PGCONFIG --libdir` -lpq"
+                DB_POSTGRESQL_CPPFLAGS="-I`$PGCONFIG --includedir`"
+                DB_POSTGRESQL_LDFLAGS="-L`$PGCONFIG --libdir` -lpq"
                 AC_DEFINE([HAVE_LIBPQ], 1, [Define to 1 to enable postgresql])
-        else
-                CPPFLAGS=$svd_CPPFLAGS
-                LDFLAGS=$svd_LDFLAGS
+                AC_SUBST(DB_POSTGRESQL_LDFLAGS)
+                AC_SUBST(DB_POSTGRESQL_CPPFLAGS)
         fi
+        CPPFLAGS=$svd_CPPFLAGS
+        LDFLAGS=$svd_LDFLAGS
 fi
 AM_CONDITIONAL([WITH_POSTGRESQL], test "xyes" = "x$postgresql")
 
@@ -355,38 +356,44 @@ AC_ARG_WITH([sqlite],
                 [Path is optional and if given should specify the full path to the SQLite installation.
                  E.g. /usr/local/sqlite3]),
         [
-                if test "xno" = "x$with_sqlite"; then
-                        AC_MSG_RESULT([no])
-                        sqlite="no"
-                else
-                        AC_MSG_RESULT([yes])
-                        AC_CHECK_FILE([$with_sqlite],
-                        [
-                                svd_LDFLAGS=$LDFLAGS
-                                svd_CPPFLAGS=$CPPFLAGS
-                                LDFLAGS="-L$with_sqlite/lib $LDFLAGS"
-                                CPPFLAGS="-I$with_sqlite/include $CPPFLAGS"
-                                AC_SEARCH_LIBS([sqlite3_open], [sqlite3],
-                                [
-                                        DBCPPFLAGS="$DBCPPFLAGS -I$with_sqlite/include"
-                                        DBLDFLAGS="$DBLDFLAGS -L$with_sqlite/lib/ -lsqlite3"
-                                ],[sqlite="no"],[-ldl])
-                                LDFLAGS=$svd_LDFLAGS
-                                CPPFLAGS=$svd_CPPFLAGS
-
-                        ],
-                        AC_SEARCH_LIBS([sqlite3_open], [sqlite3], [], [sqlite="no"], [-ldl]))
-                fi
-        ],
+        	if test "xno" = "x$with_sqlite"; then
+                	AC_MSG_RESULT([no])
+                	sqlite="no"
+    	        else
+                	AC_MSG_RESULT([yes])
+               		AC_CHECK_FILE([$with_sqlite], [ SQLITE_PATH="$with_sqlite" ],[ sqlite="no" ])
+        	fi
+        ], 
         [
-                AC_MSG_RESULT([yes])
-                AC_SEARCH_LIBS([sqlite3_open], [sqlite3], [], [sqlite="no"])
+               AC_MSG_RESULT([yes])
         ])
+
 if test "xyes" = "x$sqlite"; then
-        AC_DEFINE([HAVE_LIBSQLITE3], 1, [Define to 1 to enable sqlite3])
-        AC_SEARCH_LIBS([sqlite3_soft_heap_limit], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT], [1], [sqlite3_soft_heap_limit])], [], [-ldl])
-        AC_SEARCH_LIBS([sqlite3_soft_heap_limit64], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT64], [1], [sqlite3_soft_heap_limit64])], [], [-ldl])
-        AC_SEARCH_LIBS([sqlite3_errstr], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_ERRSTR], [1], [sqlite3_errstr])], [], [-ldl])
+       svd_LDFLAGS=$LDFLAGS
+       svd_CPPFLAGS=$CPPFLAGS
+       svd_LIBS=$LIBS
+       if test "$SQLITE_PATH"; then
+       		CPPFLAGS="-I$SQLITE_PATH/include $CPPFLAGS"
+       		LDFLAGS="-L$SQLITE_PATH/lib $LDFLAGS"
+       fi
+       AC_SEARCH_LIBS([sqlite3_open], [sqlite3], [], [sqlite="no"])
+       if test "xyes" = "x$sqlite"; then
+            if test "$SQLITE_PATH"; then
+            	DB_SQLITE_CPPFLAGS="-I$SQLITE_PATH/include"
+            	DB_SQLITE_LDFLAGS="-L$SQLITE_PATH/lib -lsqlite3"
+	    else
+            	DB_SQLITE_LDFLAGS="-lsqlite3"
+	    fi
+            AC_SUBST(DB_SQLITE_CPPFLAGS)
+            AC_SUBST(DB_SQLITE_LDFLAGS)                        
+            AC_DEFINE([HAVE_LIBSQLITE3], 1, [Define to 1 to enable sqlite3])
+            AC_SEARCH_LIBS([sqlite3_soft_heap_limit], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT], [1], [sqlite3_soft_heap_limit])], [], [-ldl])
+            AC_SEARCH_LIBS([sqlite3_soft_heap_limit64], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT64], [1], [sqlite3_soft_heap_limit64])], [], [-ldl])
+            AC_SEARCH_LIBS([sqlite3_errstr], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_ERRSTR], [1], [sqlite3_errstr])], [], [-ldl])
+       fi
+       LDFLAGS=$svd_LDFLAGS
+       CPPFLAGS=$svd_CPPFLAGS
+       LIBS=$svd_LIBS
 fi
 AM_CONDITIONAL([WITH_SQLITE], test "xyes" = "x$sqlite")
 
@@ -425,23 +432,28 @@ if test "xyes" = "x$mysql"; then
         LDFLAGS="`$MYSQLCONFIG --libs` $LDFLAGS"
         AC_CHECK_HEADERS([mysql.h], [], [mysql="no"])
         if test "xyes" = "x$mysql"; then
-                DBCPPFLAGS="$DBCPPFLAGS `$MYSQLCONFIG --include`"
-                DBLDFLAGS="$DBLDFLAGS `$MYSQLCONFIG --libs`"
+                DB_MYSQL_CPPFLAGS="`$MYSQLCONFIG --include`"
+                DB_MYSQL_LDFLAGS="`$MYSQLCONFIG --libs`"
                 AC_DEFINE([HAVE_LIBMYSQLCLIENT], 1, [Define to 1 to enable mysql])
-        else
-                CPPFLAGS=$svd_CPPFLAGS
-                LDFLAGS=$svd_LDFLAGS
+                AC_SUBST(DB_MYSQL_LDFLAGS)
+                AC_SUBST(DB_MYSQL_CPPFLAGS)
         fi
+        CPPFLAGS=$svd_CPPFLAGS
+        LDFLAGS=$svd_LDFLAGS
+        LIBS=$svd_LIBS
 fi
 AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
+
 
 oracle="yes"
 AC_MSG_CHECKING(for oracle)
 AX_LIB_ORACLE_OCI
 if test -n "$ORACLE_OCI_CFLAGS" -a -n "$ORACLE_OCI_LDFLAGS"; then
-        DBCPPFLAGS="$DBCPPFLAGS $ORACLE_OCI_CFLAGS"
-        DBLDFLAGS="$DBLDFLAGS $ORACLE_OCI_LDFLAGS"
-        AC_DEFINE([HAVE_ORACLE], 1, [Define to 1 to enable oracle])
+    DB_ORACLE_CPPFLAGS="$ORACLE_OCI_CFLAGS"
+    DB_ORACLE_LDFLAGS="$ORACLE_OCI_LDFLAGS"
+    AC_DEFINE([HAVE_ORACLE], 1, [Define to 1 to enable oracle])
+    AC_SUBST(DB_ORACLE_CPPFLAGS)
+    AC_SUBST(DB_ORACLE_LDFLAGS)
 else
         oracle="no"
 fi
@@ -452,8 +464,6 @@ if test "xno" = "x$postgresql" -a "xno" = "x$mysql" -a "xno" = "x$sqlite" -a "xn
         AC_MSG_ERROR([No available database found or selected. Try configure --help])
 fi
 
-AC_SUBST(DBLDFLAGS)
-AC_SUBST(DBCPPFLAGS)
 
 # ---------------------------------------------------------------------------
 # Header files
