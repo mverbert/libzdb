@@ -1,8 +1,8 @@
-                         CHANGES version 2.11.4
+                         CHANGES version 2.12
 
               This file summarizes changes made since 1.0
 
-Version 2.11.4
+Version 2.12
 --------------
 * New: PreparedStatement_rowsChanged added to PreparedStatement.h
 * Fixes: Oracle: OCIPing is used to check oracle connection and
