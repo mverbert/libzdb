@@ -3,12 +3,12 @@
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -116,7 +116,7 @@ void MysqlPreparedStatement_free(T *P) {
         FREE((*P)->bind);
         mysql_stmt_free_result((*P)->stmt);
 #if MYSQL_VERSION_ID >= 50503
-        /* In case the statement returns multiple result sets or in a stored procedure case, 
+        /* In case the statement returns multiple result sets or in a stored procedure case,
          think it does, we need to run them down. mysql_stmt_reset does not seem to work here. */
         while (mysql_stmt_next_result((*P)->stmt) == 0);
 #endif
@@ -185,13 +185,14 @@ void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int 
 
 void MysqlPreparedStatement_execute(T P) {
         assert(P);
-        if ((P->paramCount > 0) && (P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
+        if (P->paramCount > 0)
+                if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
                         THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
 #if MYSQL_VERSION_ID >= 50002
         unsigned long cursor = CURSOR_TYPE_NO_CURSOR;
         mysql_stmt_attr_set(P->stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
 #endif
-        if ((P->lastError = mysql_stmt_execute(P->stmt))) 
+        if ((P->lastError = mysql_stmt_execute(P->stmt)))
                 THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         if (P->lastError == MYSQL_OK) {
                 /* Discard prepared param data in client/server */
@@ -202,13 +203,14 @@ void MysqlPreparedStatement_execute(T P) {
 
 ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         assert(P);
-        if ((P->paramCount > 0) && (P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
-                THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
+        if (P->paramCount > 0)
+                if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
+                        THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
 #if MYSQL_VERSION_ID >= 50002
         unsigned long cursor = CURSOR_TYPE_READ_ONLY;
         mysql_stmt_attr_set(P->stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
 #endif
-        if ((P->lastError = mysql_stmt_execute(P->stmt))) 
+        if ((P->lastError = mysql_stmt_execute(P->stmt)))
                 THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         if (P->lastError == MYSQL_OK)
                 return ResultSet_new(MysqlResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&mysqlrops);
