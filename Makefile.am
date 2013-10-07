@@ -53,7 +53,7 @@ endif
 
 API_INTERFACES  = src/zdb.h src/db/ConnectionPool.h src/db/Connection.h \
                   src/db/ResultSet.h src/net/URL.h src/db/PreparedStatement.h \
-                  src/exceptions/SQLException.h src/exceptions/Exception.h
+                  src/db/SQLDateTime.h src/exceptions/SQLException.h src/exceptions/Exception.h
 
 nobase_nodist_include_HEADERS = $(patsubst %, $(LIBRARY_NAME)/%, $(notdir $(API_INTERFACES)))
 

@@ -5,10 +5,21 @@
 <link href="tabs.css" rel="stylesheet" type="text/css">
 <style type="text/css" media="screen">
     body {background-color:white;}
-    body,div,p,dl,.memname, .params, .exception {font: normal normal normal 15px/20px "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;}
-    hr:first-child {border:none;}
+    body,div,p,dl,.memname, .params, .exception {font: normal normal normal 16px/22px "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;}
+    #nav-path {display:none;}
+    h2:first-of-type {margin-top:2px; border:none;}
     .headertitle {text-align:center;}
     .summary {display:none;}
     dl.section {border:none;}
+    .memproto > *, .memitem > * {
+            box-shadow: none!important;
+            -moz-box-shadow: none!important;
+            -webkit-box-shadow: none!important;
+            background-image:none!important;
+    }
+    .memproto {
+            border-bottom: 1px #dadfe8 solid;
+            background-color: #eef9ff;
+    }
 </style>
 </head><body>

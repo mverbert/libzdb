@@ -44,6 +44,10 @@
 /* ----------------------------------------------------------- Definitions */
 
 
+typedef struct Date_S { int year; int month; int day; } *Date_T;
+typedef struct Time_S { int hour; int min; int sec; } *Time_T;
+typedef struct DateTime_S { Date_T date; Time_T time; time_t timestamp; } *DateTime_T;
+
 
 /* --------------------------------------------------------------- Private */
 

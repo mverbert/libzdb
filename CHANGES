@@ -1,6 +1,18 @@
-                         CHANGES version 2.12
+                         CHANGES version 2.14
 
               This file summarizes changes made since 1.0
+
+Version 2.14
+--------------
+* New: ResultSet_isnull, can be used to explicit test if a column 
+  value in a Result Set is SQL null. A Result Set already returns
+  the NULL pointer for string and blob types and 0 for primitive data
+  types in this case, but to differ between SQL null and the value NULL
+  or 0, this method can be used.
+* New: Added methods to Result Set for retrieving Date, Time, DateTime
+  and TimeStamp column values. 
+* New: Added PreparedStatement_setTimestamp as a convenience function
+  for setting a Unix timestamp
 
 Version 2.12
 --------------

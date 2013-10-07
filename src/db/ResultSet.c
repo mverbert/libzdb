@@ -119,6 +119,13 @@ int ResultSet_next(T R) {
 }
 
 
+int ResultSet_isnull(T R, int columnIndex) {
+        assert(R);
+        // TODO
+        return 0;
+}
+
+
 const char *ResultSet_getString(T R, int columnIndex) {
 	assert(R);
 	return R->op->getString(R->D, columnIndex);
@@ -182,5 +189,57 @@ const void *ResultSet_getBlob(T R, int columnIndex, int *size) {
 const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
 	assert(R);
 	return ResultSet_getBlob(R, getIndex(R, columnName), size);
+}
+
+
+time_t ResultSet_getTimestamp(T R, int columnIndex) {
+        assert(R);
+        // TODO
+        return 0;
+}
+
+
+time_t ResultSet_getTimestampByName(T R, const char *columnName) {
+        assert(R);
+        return ResultSet_getTimestamp(R, getIndex(R, columnName));
+}
+
+
+sqldate_t ResultSet_getDate(T R, int columnIndex) {
+        assert(R);
+        // TODO
+        return (sqldate_t){.year = 0};
+}
+
+
+sqldate_t ResultSet_getDateByName(T R, const char *columnName) {
+        assert(R);
+        return ResultSet_getDate(R, getIndex(R, columnName));
+}
+
+
+sqltime_t ResultSet_getTime(T R, int columnIndex) {
+        assert(R);
+        // TODO
+        return (sqltime_t){.hour = 0};
+}
+
+
+sqltime_t ResultSet_getTimeByName(T R, const char *columnName) {
+        assert(R);
+        return ResultSet_getTime(R, getIndex(R, columnName));
+}
+
+
+sqldatetime_t ResultSet_getDateTime(T R, int columnIndex) {
+        assert(R);
+        // TODO
+        return (sqldatetime_t){.time.hour = 0};
+}
+
+
+sqldatetime_t ResultSet_getDateTimeByName(T R, const char *columnName) {
+        assert(R);
+        return ResultSet_getDateTime(R, getIndex(R, columnName));
 }
 

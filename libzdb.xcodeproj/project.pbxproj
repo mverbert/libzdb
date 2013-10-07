@@ -119,13 +119,14 @@
 		522A207617C1115E00E2FA0A /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
 		522A207717C1115E00E2FA0A /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
 		522A207817C1115E00E2FA0A /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
+		5257629D1800CF7C00E95D90 /* SQLDateTime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQLDateTime.h; sourceTree = "<group>"; };
 		525CF56D14BFD3C600650C7D /* zdb.pc.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zdb.pc.in; sourceTree = "<group>"; };
 		52788BC613E716A0002F3C7C /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		52788BC713E716A0002F3C7C /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		52788BC813E716A0002F3C7C /* CHANGES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES; sourceTree = "<group>"; };
 		52788BCA13E716A0002F3C7C /* ax_lib_oracle_oci.m4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = ax_lib_oracle_oci.m4; sourceTree = "<group>"; };
 		52788BCB13E716A0002F3C7C /* doxy_bottom */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doxy_bottom; sourceTree = "<group>"; };
-		52788BCC13E716A0002F3C7C /* doxy_head */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doxy_head; sourceTree = "<group>"; };
+		52788BCC13E716A0002F3C7C /* doxy_head */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = doxy_head; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.html; };
 		52788BCD13E716A0002F3C7C /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
 		52788BCE13E716A0002F3C7C /* DoxygenLayout.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DoxygenLayout.xml; sourceTree = "<group>"; };
 		52788BD113E716A0002F3C7C /* configure.ac */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = configure.ac; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.sh; };
@@ -351,6 +352,7 @@
 				52788BFC13E716A0002F3C7C /* ResultSet.c */,
 				52788BFD13E716A0002F3C7C /* ResultSet.h */,
 				52788BFE13E716A0002F3C7C /* ResultSetDelegate.h */,
+				5257629D1800CF7C00E95D90 /* SQLDateTime.h */,
 			);
 			path = db;
 			sourceTree = "<group>";
