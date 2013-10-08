@@ -173,13 +173,13 @@ int ResultSet_next(T R);
 
 /**
  * Returns true if the value of the designated column in the current row of
- * this ResultSet object is SQL null, otherwise false. If the column value is 
- * SQL null, a Result Set returns the NULL pointer for string and blob values
+ * this ResultSet object is SQL NULL, otherwise false. If the column value is 
+ * SQL NULL, a Result Set returns the NULL pointer for string and blob values
  * and 0 for primitive data types. Use this method if you need to differ 
- * between SQL null and the value NULL/0.
+ * between SQL NULL and the value NULL/0.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return True (1) if the column value is SQL null, otherwise false (0)
+ * @return True (1) if the column value is SQL NULL, otherwise false (0)
  * @exception SQLException if a database access error occurs or
  * columnIndex is outside the valid range
  * @see SQLException.h
@@ -196,7 +196,7 @@ int ResultSet_isnull(T R, int columnIndex);
  * the returned value longer, you must make a copy.</i>
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return The column value; if the value is SQL null, the value
+ * @return The column value; if the value is SQL NULL, the value
  * returned is NULL
  * @exception SQLException if a database access error occurs or 
  * columnIndex is outside the valid range
@@ -213,7 +213,7 @@ const char *ResultSet_getString(T R, int columnIndex);
  * to use the returned value longer, you must make a copy.</i>
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return The column value; if the value is SQL null, the value
+ * @return The column value; if the value is SQL NULL, the value
  * returned is NULL
  * @exception SQLException if a database access error occurs or 
  * columnName does not exist
@@ -229,7 +229,7 @@ const char *ResultSet_getStringByName(T R, const char *columnName);
  * method throws an SQLException.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return The column value; if the value is SQL null, the value
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the value is NaN
@@ -244,7 +244,7 @@ int ResultSet_getInt(T R, int columnIndex);
  * found this method throws an SQLException.
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return The column value; if the value is SQL null, the value
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0
  * @exception SQLException if a database access error occurs, columnName
  * does not exist or if the value is NaN
@@ -260,7 +260,7 @@ int ResultSet_getIntByName(T R, const char *columnName);
  * method throws an SQLException.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return The column value; if the value is SQL null, the value
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0
  * @exception SQLException if a database access error occurs, 
  * columnIndex is outside the valid range or if the value is NaN
@@ -275,7 +275,7 @@ long long int ResultSet_getLLong(T R, int columnIndex);
  * is not found this method throws an SQLException.
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return The column value; if the value is SQL null, the value
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0
  * @exception SQLException if a database access error occurs, columnName
  * does not exist or if the value is NaN
@@ -291,7 +291,7 @@ long long int ResultSet_getLLongByName(T R, const char *columnName);
  * method throws an SQLException.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return The column value; if the value is SQL null, the value
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0.0
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the value is NaN
@@ -306,7 +306,7 @@ double ResultSet_getDouble(T R, int columnIndex);
  * not found this method throws an SQLException.
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return The column value; if the value is SQL null, the value
+ * @return The column value; if the value is SQL NULL, the value
  * returned is 0.0
  * @exception SQLException if a database access error occurs, columnName
  * does not exist or if the value is NaN
@@ -325,7 +325,7 @@ double ResultSet_getDoubleByName(T R, const char *columnName);
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @param size The number of bytes in the blob is stored in size 
- * @return The column value; if the value is SQL null, the value
+ * @return The column value; if the value is SQL NULL, the value
  * returned is NULL
  * @exception SQLException if a database access error occurs or 
  * columnIndex is outside the valid range
@@ -343,7 +343,7 @@ const void *ResultSet_getBlob(T R, int columnIndex, int *size);
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
  * @param size The number of bytes in the blob is stored in size 
- * @return The column value; if the value is SQL null, the value
+ * @return The column value; if the value is SQL NULL, the value
  * returned is NULL
  * @exception SQLException if a database access error occurs or 
  * columnName does not exist
@@ -370,11 +370,13 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  * to assume or use values outside this range. Especially if you are on 
  * a 32-bits system. In general and if timestamp with timezone support 
  * is not needed, it is more efficient to use an <code>integer</code> 
- * SQL datatype in the database and Unix timestamp values directly.
+ * SQL data type in the database and Unix timestamp values directly.
+ * This method can be used to retrieve the value of columns with the SQL
+ * data type, DateTime or Timestamp.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @return The column value as seconds since the epoch in the local
- * timezone; if the value is SQL null, the value returned is 0, i.e. 
+ * timezone; if the value is SQL NULL, the value returned is 0, i.e. 
  * '1970-01-01 00:00:00 GMT'
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
@@ -398,13 +400,14 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
  * it is safest not to assume or use values outside this range. Especially
  * if you are on a 32-bits system. In general and if timestamp with 
  * timezone support is not needed, it is more efficient to use an 
- * <code>integer</code> SQL datatype in the database and Unix timestamp
- * values directly.
+ * <code>integer</code> SQL data type in the database and Unix timestamp
+ * values directly. This method can be used to retrieve the value of 
+ * columns with the SQL data type, DateTime or Timestamp.
  * @param R A ResultSet object
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
  * @return The column value as seconds since the epoch in the local
- * timezone; if the value is SQL null, the value returned is 0, i.e.
+ * timezone; if the value is SQL NULL, the value returned is 0, i.e.
  * '1970-01-01 00:00:00 GMT'
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
@@ -422,7 +425,8 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName);
  * the value of columns with the SQL data type, Date, DateTime or Timestamp.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return A Date structure with fields for year, month and day (of month)
+ * @return A Date structure with fields for year, month and day (of month).
+ * If the value is SQL NULL, an empty sqldate_t structure is returned
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
  * to a valid SQL Date
@@ -439,8 +443,9 @@ sqldate_t ResultSet_getDate(T R, int columnIndex);
  * data type, Date, DateTime or Timestamp.
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return A Date structure with fields for year, month and day (of month)
- * @exception SQLException if a database access error occurs, columnIndex
+ * @return A Date structure with fields for year, month and day (of month).
+ * If the value is SQL NULL, an empty sqldate_t structure is returned
+* @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
  * to a valid SQL Date
  * @see SQLException.h
@@ -457,7 +462,8 @@ sqldate_t ResultSet_getDateByName(T R, const char *columnName);
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @return A Time structure with fields for hour, minute, seconds and
- * microseconds (if available)
+ * microseconds (if available). If the value is SQL NULL, an empty 
+ * sqltime_t structure is returned
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
  * to a valid SQL Time
@@ -475,7 +481,8 @@ sqltime_t ResultSet_getTime(T R, int columnIndex);
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
  * @return A Time structure with fields for hour, minute, seconds and
- * microseconds (if available)
+ * microseconds (if available). If the value is SQL NULL, an empty 
+ * sqltime_t structure is returned
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
  * to a valid SQL Time
@@ -493,7 +500,8 @@ sqltime_t ResultSet_getTimeByName(T R, const char *columnName);
  * Timestamp.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return A DateTime structure with fields for date and time
+ * @return A DateTime structure with fields for date and time. If the value 
+ * is SQL NULL, an empty sqldatetime_t structure is returned
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
  * to a valid SQL DateTime
@@ -510,7 +518,8 @@ sqldatetime_t ResultSet_getDateTime(T R, int columnIndex);
  * data type, Time, DateTime or Timestamp.
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return A DateTime structure with fields for date and time
+ * @return A DateTime structure with fields for date and time. If the value 
+ * is SQL NULL, an empty sqldatetime_t structure is returned
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
  * to a valid SQL DateTime

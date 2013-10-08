@@ -25,6 +25,7 @@
 
 #ifndef TIME_INCLUDED
 #define TIME_INCLUDED
+#include "SQLDateTime.h"
 
 
 /**
@@ -37,7 +38,56 @@
 
 
 /** @name Class methods */
-//@{ 
+//@{
+
+
+/**
+ * Returns a Unix timestamp representation of the parsed string in the 
+ * local timezone.
+ * @return A local time representation of <code>t</code> or 0 if 
+ * <code>t</code> is NULL
+ * @exception SQLException if the parameter value cannot be converted
+ * to a valid timestamp
+ * @see SQLException.h
+ */
+time_t Time_toTimestamp(const char *t);
+
+
+/**
+ * Returns a Date representation of the parsed string in the
+ * local timezone.
+ * @return A sqldate_t structure representing the date of <code>t</code>
+ * in the local timezone.
+ * @exception SQLException if the parameter value cannot be converted
+ * to a valid Date, for instance if <code>t</code> is NULL
+ * @see SQLException.h
+ */
+sqldate_t Time_toDate(const char *t);
+
+
+/**
+ * Returns a Time representation of the parsed string in the
+ * local timezone.
+ * @return A sqltime_t structure representing the time of <code>t</code>
+ * in the local timezone.
+ * @exception SQLException if the parameter value cannot be converted
+ * to a valid Time, for instance if <code>t</code> is NULL
+ * @see SQLException.h
+ */
+sqltime_t Time_toTime(const char *t);
+
+
+/**
+ * Returns a DateTime representation of the parsed string in the
+ * local timezone.
+ * @return A sqldatetime_t structure representing the datetime of 
+ * <code>t</code> in the local timezone.
+ * @exception SQLException if the parameter value cannot be converted
+ * to a valid DateTime, for instance if <code>t</code> is NULL
+ * @see SQLException.h
+ */
+sqldatetime_t Time_toDateTime(const char *t);
+
 
 /**
  * Returns the time since the Epoch (00:00:00 UTC, January 1, 1970),

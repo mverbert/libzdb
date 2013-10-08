@@ -18,8 +18,8 @@
             background-image:none!important;
     }
     .memproto {
-            border-bottom: 1px #dadfe8 solid;
-            background-color: #eef9ff;
+            border-bottom: 1px #b8c8e9 solid;
+            background-color: #eef5ff;
     }
 </style>
 </head><body>

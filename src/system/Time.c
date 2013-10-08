@@ -44,10 +44,6 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-typedef struct Date_S { int year; int month; int day; } *Date_T;
-typedef struct Time_S { int hour; int min; int sec; } *Time_T;
-typedef struct DateTime_S { Date_T date; Time_T time; time_t timestamp; } *DateTime_T;
-
 
 /* --------------------------------------------------------------- Private */
 
@@ -59,6 +55,34 @@ typedef struct DateTime_S { Date_T date; Time_T time; time_t timestamp; } *DateT
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
+
+time_t Time_toTimestamp(const char *t) {
+        assert(t);
+        // TODO
+        return 0;
+}
+
+
+sqldate_t Time_toDate(const char *t) {
+        assert(t);
+        // TODO
+        return (sqldate_t){0};
+}
+
+
+sqltime_t Time_toTime(const char *t) {
+        assert(t);
+        // TODO
+        return (sqltime_t){0};
+}
+
+
+sqldatetime_t Time_toDateTime(const char *t) {
+        assert(t);
+        // TODO
+        return (sqldatetime_t){0};
+}
+
 
 time_t Time_now(void) {
 	struct timeval t;

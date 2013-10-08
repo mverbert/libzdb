@@ -121,6 +121,13 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 }
 
 
+void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
+        assert(P);
+        // TODO convert x to timestamp string and find out where to store the string
+        // Call PreparedStatement_setString
+}
+
+
 void PreparedStatement_execute(T P) {
 	assert(P);
         clearResultSet(P);

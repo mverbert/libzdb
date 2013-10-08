@@ -28,6 +28,7 @@
 #include <stdio.h>
 
 #include "ResultSet.h"
+#include "system/Time.h"
 
 
 /**
@@ -194,7 +195,9 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
 
 time_t ResultSet_getTimestamp(T R, int columnIndex) {
         assert(R);
-        // TODO
+        const char *t = ResultSet_getString(R, columnIndex);
+        if (STR_DEF(t))
+                return Time_toTimestamp(t);
         return 0;
 }
 
@@ -207,8 +210,10 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName) {
 
 sqldate_t ResultSet_getDate(T R, int columnIndex) {
         assert(R);
-        // TODO
-        return (sqldate_t){.year = 0};
+        const char *t = ResultSet_getString(R, columnIndex);
+        if (STR_DEF(t))
+                return Time_toDate(t);
+        return (sqldate_t){0};
 }
 
 
@@ -220,8 +225,10 @@ sqldate_t ResultSet_getDateByName(T R, const char *columnName) {
 
 sqltime_t ResultSet_getTime(T R, int columnIndex) {
         assert(R);
-        // TODO
-        return (sqltime_t){.hour = 0};
+        const char *t = ResultSet_getString(R, columnIndex);
+        if (STR_DEF(t))
+                return Time_toTime(t);
+        return (sqltime_t){0};
 }
 
 
@@ -233,8 +240,10 @@ sqltime_t ResultSet_getTimeByName(T R, const char *columnName) {
 
 sqldatetime_t ResultSet_getDateTime(T R, int columnIndex) {
         assert(R);
-        // TODO
-        return (sqldatetime_t){.time.hour = 0};
+        const char *t = ResultSet_getString(R, columnIndex);
+        if (STR_DEF(t))
+                return Time_toDateTime(t);
+        return (sqldatetime_t){0};
 }
 
 

@@ -1,9 +1,67 @@
 <doxygenlayout version="1.0">
-        <!-- Layout definition for a file page -->
+        <!-- Layout definition for a class page -->
+        <class>
+                <detaileddescription title=""/>
+                <briefdescription visible="no"/>
+                <includes visible="no"/>
+                <inheritancegraph visible="no"/>
+                <collaborationgraph visible="no"/>
+                <memberdecl>
+                        <nestedclasses visible="yes" title=""/>
+                        <publictypes title=""/>
+                        <services title=""/>
+                        <interfaces title=""/>
+                        <publicslots title=""/>
+                        <signals title=""/>
+                        <publicmethods title=""/>
+                        <publicstaticmethods title=""/>
+                        <publicattributes title=""/>
+                        <publicstaticattributes title=""/>
+                        <protectedtypes title=""/>
+                        <protectedslots title=""/>
+                        <protectedmethods title=""/>
+                        <protectedstaticmethods title=""/>
+                        <protectedattributes title=""/>
+                        <protectedstaticattributes title=""/>
+                        <packagetypes title=""/>
+                        <packagemethods title=""/>
+                        <packagestaticmethods title=""/>
+                        <packageattributes title=""/>
+                        <packagestaticattributes title=""/>
+                        <properties title=""/>
+                        <events title=""/>
+                        <privatetypes title=""/>
+                        <privateslots title=""/>
+                        <privatemethods title=""/>
+                        <privatestaticmethods title=""/>
+                        <privateattributes title=""/>
+                        <privatestaticattributes title=""/>
+                        <friends title=""/>
+                        <related title="" subtitle=""/>
+                        <membergroups visible="yes"/>
+                </memberdecl>
+                <memberdef>
+                        <inlineclasses title=""/>
+                        <typedefs title=""/>
+                        <enums title=""/>
+                        <services title=""/>
+                        <interfaces title=""/>
+                        <constructors title=""/>
+                        <functions title=""/>
+                        <related title=""/>
+                        <variables title=""/>
+                        <properties title=""/>
+                        <events title=""/>
+                </memberdef>
+                <allmemberslink visible="no"/>
+                <usedfiles visible="no"/>
+                <authorsection visible="no"/>
+        </class>
+       <!-- Layout definition for a file page -->
         <file>
                 <detaileddescription title=""/>
                 <briefdescription visible="no"/>
-                <includes visible="$SHOW_INCLUDE_FILES"/>
+                <includes visible="no"/>
                 <includegraph visible="no"/>
                 <includedbygraph visible="no"/>
                 <sourcelink visible="no"/>
@@ -28,4 +86,5 @@
                 </memberdef>
                 <authorsection/>
         </file>
+
 </doxygenlayout>
