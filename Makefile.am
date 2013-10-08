@@ -116,9 +116,12 @@ $(nobase_nodist_include_HEADERS): $(API_INTERFACES)
 #<< start-filter out
 src/net/URL.c: src/net/URL.re
 	$(RE2C) $(RE2CFLAGS) $< > $@
-        
+src/system/Time.c: src/system/Time.re
+	$(RE2C) $(RE2CFLAGS) $< > $@
+
 dist-hook::
 	-rm -f $(distdir)/src/net/URL.re
+	-rm -f $(distdir)/src/system/Time.re
 	$(FILTERH) < Makefile.am > $(distdir)/Makefile.am
 	$(FILTERH) < Makefile.in > $(distdir)/Makefile.in
 #>> end-filter out

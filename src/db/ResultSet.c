@@ -243,7 +243,7 @@ sqldatetime_t ResultSet_getDateTime(T R, int columnIndex) {
         const char *t = ResultSet_getString(R, columnIndex);
         if (STR_DEF(t))
                 return Time_toDateTime(t);
-        return (sqldatetime_t){0};
+        return (sqldatetime_t){.date.year = 0};
 }
 
 
