@@ -44,7 +44,8 @@
 /**
  * Returns a Unix timestamp representation of the parsed string in the 
  * local timezone.
- * @return A local time representation of <code>t</code> or 0 if 
+ * @param t The Date String to parse
+ * @return A local time representation of <code>t</code> or 0 if
  * <code>t</code> is NULL
  * @exception SQLException if the parameter value cannot be converted
  * to a valid timestamp
@@ -56,37 +57,43 @@ time_t Time_toTimestamp(const char *t);
 /**
  * Returns a Date representation of the parsed string in the
  * local timezone.
- * @return A sqldate_t structure representing the date of <code>t</code>
- * in the local timezone.
+ * @param t The Date String to parse
+ * @param r A pointer to a sqldate_t structure
+ * @return A pointer to the given sqldate_t structure representing the
+ * date of <code>t</code> in the local timezone.
  * @exception SQLException if the parameter value cannot be converted
- * to a valid Date, for instance if <code>t</code> is NULL
+ * to a valid Date
  * @see SQLException.h
  */
-sqldate_t Time_toDate(const char *t);
+sqldate_t *Time_toDate(const char *t, sqldate_t *r);
 
 
 /**
  * Returns a Time representation of the parsed string in the
  * local timezone.
- * @return A sqltime_t structure representing the time of <code>t</code>
- * in the local timezone.
+ * @param t The Date String to parse
+ * @param r A pointer to a sqltime_t structure
+ * @return A pointer to the given sqltime_t structure representing the 
+ * time of <code>t</code> in the local timezone.
  * @exception SQLException if the parameter value cannot be converted
- * to a valid Time, for instance if <code>t</code> is NULL
+ * to a valid Time
  * @see SQLException.h
  */
-sqltime_t Time_toTime(const char *t);
+sqltime_t *Time_toTime(const char *t, sqltime_t *r);
 
 
 /**
  * Returns a DateTime representation of the parsed string in the
  * local timezone.
- * @return A sqldatetime_t structure representing the datetime of 
- * <code>t</code> in the local timezone.
+ * @param t The Date String to parse
+ * @param r A pointer to a sqldatetime_t structure
+ * @return A pointer to the given sqldatetime_t structure representing
+ * the datetime of <code>t</code> in the local timezone.
  * @exception SQLException if the parameter value cannot be converted
- * to a valid DateTime, for instance if <code>t</code> is NULL
+ * to a valid DateTime
  * @see SQLException.h
  */
-sqldatetime_t Time_toDateTime(const char *t);
+sqldatetime_t *Time_toDateTime(const char *t, sqldatetime_t *r);
 
 
 /**

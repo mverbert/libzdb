@@ -210,10 +210,11 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName) {
 
 sqldate_t ResultSet_getDate(T R, int columnIndex) {
         assert(R);
+        sqldate_t r = {.year = 0};
         const char *t = ResultSet_getString(R, columnIndex);
         if (STR_DEF(t))
-                return Time_toDate(t);
-        return (sqldate_t){0};
+                Time_toDate(t, &r);
+        return r;
 }
 
 
@@ -225,10 +226,11 @@ sqldate_t ResultSet_getDateByName(T R, const char *columnName) {
 
 sqltime_t ResultSet_getTime(T R, int columnIndex) {
         assert(R);
+        sqltime_t r = {.hour = 0};
         const char *t = ResultSet_getString(R, columnIndex);
         if (STR_DEF(t))
-                return Time_toTime(t);
-        return (sqltime_t){0};
+                Time_toTime(t, &r);
+        return r;
 }
 
 
@@ -240,10 +242,11 @@ sqltime_t ResultSet_getTimeByName(T R, const char *columnName) {
 
 sqldatetime_t ResultSet_getDateTime(T R, int columnIndex) {
         assert(R);
+        sqldatetime_t r = {.time.hour = 0};
         const char *t = ResultSet_getString(R, columnIndex);
         if (STR_DEF(t))
-                return Time_toDateTime(t);
-        return (sqldatetime_t){.date.year = 0};
+                Time_toDateTime(t, &r);
+        return r;
 }
 
 

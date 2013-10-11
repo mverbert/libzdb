@@ -63,24 +63,24 @@ time_t Time_toTimestamp(const char *t) {
 }
 
 
-sqldate_t Time_toDate(const char *t) {
+sqldate_t *Time_toDate(const char *t, sqldate_t *r) {
         assert(t);
         // TODO
-        return (sqldate_t){0};
+        return r;
 }
 
 
-sqltime_t Time_toTime(const char *t) {
+sqltime_t *Time_toTime(const char *t, sqltime_t *r) {
         assert(t);
         // TODO
-        return (sqltime_t){0};
+        return r;
 }
 
 
-sqldatetime_t Time_toDateTime(const char *t) {
+sqldatetime_t *Time_toDateTime(const char *t, sqldatetime_t *r) {
         assert(t);
         // TODO
-        return (sqldatetime_t){.date.year = 0};
+        return r;
 }
 
 

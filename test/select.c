@@ -15,8 +15,8 @@ int main(void) {
         Connection_T con = ConnectionPool_getConnection(pool);
         TRY
         {
-                Connection_execute(con, "create table bleach(name varchar(255))");
-                PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?)"); 
+                Connection_execute(con, "create table bleach(name varchar(255), created_at timestamp)");
+                PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?, datetime('now'))"); // now = UTC
                 const char *bleach[] = {
                         "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 
                         "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", 0
@@ -25,9 +25,10 @@ int main(void) {
                         PreparedStatement_setString(p, 1, bleach[i]);
                         PreparedStatement_execute(p);
                 }
-                ResultSet_T r = Connection_executeQuery(con, "select name from bleach");
+                // TODO ResultSet_getTemporal methods need to convert to localtime unless otherwise indicated by tz in string
+                ResultSet_T r = Connection_executeQuery(con, "select name, datetime(created_at, 'localtime') from bleach");
                 while (ResultSet_next(r))
-                        printf("%s\n", ResultSet_getString(r, 1));
+                        printf("Name: %s, Created at: %s\n", ResultSet_getString(r, 1), ResultSet_getString(r, 2));
                 Connection_execute(con, "drop table bleach;");
         }
         CATCH(SQLException)

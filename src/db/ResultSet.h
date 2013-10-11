@@ -88,6 +88,13 @@
  * ResultSet_getInt() to get the value as an integer. In the latter case, note
  * that if the column value cannot be converted to a number, an SQLException is thrown.
  *
+ * <h3>Date and Time</h3>
+ * Result Set provides a set of convenience methods to retrieve column values of 
+ * temporal data types. With the following caveats, the interface are strings which
+ * need to be parsed. Further it is assumed that date time values are stored as UTC 
+ * in the database
+ *
+ *
  * <i>A ResultSet is reentrant, but not thread-safe and should only be used by one thread (at the time).</i>
  *
  * @see Connection.h PreparedStatement.h SQLException.h
@@ -135,7 +142,7 @@ int ResultSet_getColumnCount(T R);
  * @param columnIndex The first column is 1, the second is 2, ...
  * @return Column name or NULL if the column does not exist. You 
  * should use the method ResultSet_getColumnCount() to test for 
- * the availablity of columns in the result set.
+ * the availability of columns in the result set.
  */
 const char *ResultSet_getColumnName(T R, int columnIndex);
 
