@@ -8,6 +8,7 @@
     body,div,p,dl,.memname, .params, .exception {font: normal normal normal 16px/22px "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;}
     #nav-path {display:none;}
     h2:first-of-type {margin-top:2px; border:none;}
+    h2,h3,h4 {color:#444;}
     .headertitle {text-align:center;}
     .summary {display:none;}
     dl.section {border:none;}

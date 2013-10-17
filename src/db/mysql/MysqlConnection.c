@@ -95,7 +95,7 @@ static MYSQL *doConnect(URL_T url, char **error) {
         int port;
         my_bool yes = 1;
         my_bool no = 0;
-        volatile int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
+        int connectTimeout = SQL_DEFAULT_TCP_TIMEOUT;
         unsigned long clientFlags = CLIENT_MULTI_STATEMENTS;
         const char *user, *password, *host, *database, *charset, *timeout;
         const char *unix_socket = URL_getParameter(url, "unix-socket");

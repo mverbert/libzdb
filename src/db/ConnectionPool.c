@@ -152,8 +152,7 @@ static void *doSweep(void *args) {
 
 T ConnectionPool_new(URL_T url) {
         T P;
-	if (! url)
-                return NULL;
+	assert(url);
 #ifdef ZILD_PACKAGE_PROTECTED
         Exception_init();
 #endif

@@ -35,6 +35,8 @@
  * connections and allow callers to obtain and use a database connection in
  * a reentrant manner. Applications can instantiate as many ConnectionPool
  * objects as needed and against as many different database systems as needed.
+ * The following diagram gives an overview of the library's components and
+ * their method-associations:
  *
  *  <center><img src="database.png"></center>
  *
@@ -84,7 +86,7 @@
  * alternatively be specified in the auth-part of the URL. If port number is 
  * omitted, the default port number for the database server is used.
  *
- * <b>MySQL:</b>
+ * <h4>MySQL:</h4>
  *
  * Here is an example on how to connect to a <a href="http://www.mysql.org/">
  * MySQL</a> database server:
@@ -108,7 +110,7 @@
  * See <a href="mysqloptions.html">mysql options</a> for all properties that
  * can be set for a mysql connection URL.
  *
- * <b>SQLite:</b>
+ * <h4>SQLite:</h4>
  *
  * For a <a href="http://www.sqlite.org/">SQLite</a> database the connection 
  * URL should simply specify a database file, since a SQLite database 
@@ -131,7 +133,7 @@
  * </code></dd></dt>
  * \endhtmlonly
  *
- * <b>PostgreSQL:</b>
+ * <h4>PostgreSQL:</h4>
  *
  * The URL for connecting to a <a href="http://www.postgresql.org/">
  * PostgreSQL</a> database server might look like:
@@ -160,7 +162,7 @@
  * See <a href="postgresoptions.html">postgresql options</a> for all properties that
  * can be set for a postgresql connection URL.
  *
- * <b>Oracle:</b>
+ * <h4>Oracle:</h4>
  *
  * The URL for connecting to an <a href="http://www.oracle.com/">
  * Oracle</a> database server might look like:
@@ -258,8 +260,9 @@ extern int ZBDEBUG;
  * Create a new ConnectionPool. The pool is created with default 5
  * initial connections. Maximum connections is set to 20. Property
  * methods in this interface can be used to change the default values.
- * @param url The database connection url 
- * @return A new ConnectionPool object or NULL if the URL cannot be parsed
+ * @param url The database connection url. It is a checked runtime error
+ * for the url parameter to be NULL.
+ * @return A new ConnectionPool object
  * @see URL.h
  */
 T ConnectionPool_new(URL_T url);
