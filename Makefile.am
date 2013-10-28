@@ -89,7 +89,9 @@ distclean-local:
                 tools/bin/filterh \
                 src/xconfig.h.in \
                 config/config.guess \
-                config/config.sub
+                config/config.sub \
+                src/net/URL.c
+
                         
 cleanall: clean distclean
 	-rm -f Makefile.in test/Makefile.in configure aclocal.m4 \

@@ -212,8 +212,7 @@ if test "xyes" = "x$mysql"; then
         svd_LDFLAGS=$LDFLAGS
         CPPFLAGS="`$MYSQLCONFIG --include` $CPPFLAGS"
         LDFLAGS="`$MYSQLCONFIG --libs` $LDFLAGS"
-        AC_CHECK_HEADERS([mysql.h])
-        AC_CHECK_LIB([mysqlclient], [mysql_init], [AC_CHECK_LIB([z], [compress],[mysql="yes"],[mysql="no"])], [mysql="no"], [-lz -lssl -lcrypto -lm])
+        AC_CHECK_HEADERS([mysql.h], [], [mysql="no"])
         if test "xyes" = "x$mysql"; then
                 DBCPPFLAGS="$DBCPPFLAGS `$MYSQLCONFIG --include`"
                 DBLDFLAGS="$DBLDFLAGS `$MYSQLCONFIG --libs`"
