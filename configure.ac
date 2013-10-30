@@ -348,7 +348,6 @@ if test "xyes" = "x$with_sqlite"; then
 fi
 AM_CONDITIONAL([WITH_SQLITE], test "xyes" = "x$sqlite")
 
-
 AC_ARG_WITH([mysql],
 	AS_HELP_STRING([--with-mysql],
 		[Build with MySQL support [default=yes]]),
@@ -369,17 +368,25 @@ if test "xyes" = "x$with_mysql"; then
 fi
 AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
 
-oracle="yes"
 AC_MSG_CHECKING(for oracle)
-AX_LIB_ORACLE_OCI
-if test -n "$ORACLE_OCI_CFLAGS" -a -n "$ORACLE_OCI_LDFLAGS"; then
-    DB_ORACLE_CPPFLAGS="$ORACLE_OCI_CFLAGS"
-    DB_ORACLE_LDFLAGS="$ORACLE_OCI_LDFLAGS"
-    AC_DEFINE([HAVE_ORACLE], 1, [Define to 1 to enable oracle])
-    AC_SUBST(DB_ORACLE_CPPFLAGS)
-    AC_SUBST(DB_ORACLE_LDFLAGS)
-else
-        oracle="no"
+AC_ARG_WITH([oracle], 
+        AS_HELP_STRING([--with-oracle], 
+                [Build with Oracle support [default=no]]),
+        [],
+	[	
+		with_oracle="no"
+        ])
+
+if test "xyes" = "x$with_oracle"; then
+	AX_LIB_ORACLE_OCI
+	if test -n "$ORACLE_OCI_CFLAGS" -a -n "$ORACLE_OCI_LDFLAGS"; then
+		DB_ORACLE_CPPFLAGS="$ORACLE_OCI_CFLAGS"
+		DB_ORACLE_LDFLAGS="$ORACLE_OCI_LDFLAGS"
+		AC_DEFINE([HAVE_ORACLE], 1, [Define to 1 to enable oracle])
+		AC_SUBST(DB_ORACLE_CPPFLAGS)
+		AC_SUBST(DB_ORACLE_LDFLAGS)
+        	oracle="yes"
+	fi
 fi
 AM_CONDITIONAL([WITH_ORACLE], test "xyes" = "x$oracle")
 
