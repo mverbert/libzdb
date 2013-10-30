@@ -198,49 +198,23 @@ if test "xyes" = "x$with_mysql"; then
 fi
 AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
 
-postgresql="yes"
-check_postgres_config() 
-{
-        AC_PATH_PROG([PGCONFIG], [pg_config], [no], [$PATH:/usr/local/bin:/usr/local/pgsql/bin])
-        if test "x$PGCONFIG" = "xno"
-        then
-                AC_MSG_WARN([pg_config is required to build libzdb with postgresql])
-                postgresql="no"
-        fi
-}
-AC_MSG_CHECKING(for postgresql)
 AC_ARG_WITH([postgresql], 
-        AS_HELP_STRING([--with-postgresql(=<path>)], 
-                [Path is optional and if given should specify the full path to the PostgreSQL
-                 configure script, pg_config. E.g. --with-postgresql=/<path>/pg_config]), 
+        AS_HELP_STRING([--with-postgresql], 
+                [Build with PostgreSQL support [default=yes]]),
+        [],
         [
-                if test "xno" = "x$with_postgresql"; then
-                        AC_MSG_RESULT([no])
-                        postgresql="no"
-                else
-                        AC_MSG_RESULT([yes])
-                        AC_CHECK_FILE([$with_postgresql], [PGCONFIG=$with_postgresql],[check_postgres_config])
-                fi
-        ],
-        [
-                AC_MSG_RESULT([yes])
-                check_postgres_config
+                with_postgresql="yes"
         ])
-if test "xyes" = "x$postgresql"; then
-        svd_CPPFLAGS=$CPPFLAGS
-        svd_LDFLAGS=$LDFLAGS
-        CPPFLAGS="-I`$PGCONFIG --includedir` $CPPFLAGS"
-        LDFLAGS="-L`$PGCONFIG --libdir` $LDFLAGS"
-        AC_CHECK_HEADERS([libpq-fe.h], [], [postgresql="no"])
-        if test "xyes" = "x$postgresql"; then
-                DB_POSTGRESQL_CPPFLAGS="-I`$PGCONFIG --includedir`"
-                DB_POSTGRESQL_LDFLAGS="-L`$PGCONFIG --libdir` -lpq"
-                AC_DEFINE([HAVE_LIBPQ], 1, [Define to 1 to enable postgresql])
+if test "xyes" = "x$with_postgresql"; then
+	PKG_CHECK_MODULES([LIBPQ], [libpq], [
+                DB_POSTGRESQL_CPPFLAGS="$LIBPQ_CFLAGS"
+                DB_POSTGRESQL_LDFLAGS="$LIBPQ_LIBS"
                 AC_SUBST(DB_POSTGRESQL_LDFLAGS)
                 AC_SUBST(DB_POSTGRESQL_CPPFLAGS)
-        fi
-        CPPFLAGS=$svd_CPPFLAGS
-        LDFLAGS=$svd_LDFLAGS
+                AC_DEFINE([HAVE_LIBPQ], 1, [Define to 1 to enable postgresql])
+		postgresql="yes"
+	],
+	[])
 fi
 AM_CONDITIONAL([WITH_POSTGRESQL], test "xyes" = "x$postgresql")
 
