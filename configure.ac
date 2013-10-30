@@ -178,63 +178,23 @@ AC_SEARCH_LIBS([pthread_create], [pthread], [], [AC_MSG_ERROR([POSIX thread libr
 
 # Database Libraries 
 
-mysql="yes"
-check_mysql_config() 
-{
-        AC_PATH_PROG([MYSQLCONFIG], [mysql_config], [no], [$PATH:/usr/local/bin:/usr/local/mysql/bin])
-        if test "x$MYSQLCONFIG" = "xno" 
-        then
-                AC_MSG_WARN([mysql_config is required to build libzdb with mysql])
-                mysql="no"
-        fi
-}
-AC_MSG_CHECKING(for mysql)
-AC_ARG_WITH([mysql], 
-        AS_HELP_STRING([--with-mysql(=<path>)], 
-                [Path is optional and if given should specify the full path to the MySQL
-                 configure script, mysql_config. E.g. --with-mysql=/<path>/mysql_config]), 
-        [
-                if test "xno" = "x$with_mysql"; then
-                        AC_MSG_RESULT([no])
-                        mysql="no"
-                else
-                        AC_MSG_RESULT([yes])
-                        AC_CHECK_FILE([$with_mysql], [MYSQLCONFIG=$with_mysql], [check_mysql_config])        
-                fi
-        ],
-        [
-                AC_MSG_RESULT([yes])
-                check_mysql_config
-        ])
-if test "xyes" = "x$mysql"; then
-        svd_CPPFLAGS=$CPPFLAGS
-        svd_LDFLAGS=$LDFLAGS
-        svd_LIBS=$LIBS
-        CPPFLAGS="`$MYSQLCONFIG --include` $CPPFLAGS"
-        LDFLAGS="`$MYSQLCONFIG --libs` $LDFLAGS"
-        AC_CHECK_HEADERS([mysql.h])
-        AC_CHECK_LIB([mysqlclient], [mysql_init], 
-        [
-                AC_RUN_IFELSE([AC_LANG_PROGRAM([[#include <mysql.h>]],
-                [[
-                if (MYSQL_VERSION_ID < 40100)
-                        return 1;
-                else
-                        return 0;
-                ]])
-                ],[mysql="yes"],[mysql="no"])
-        ], [mysql="no"], [])
-#        AC_CHECK_LIB([mysqlclient], [mysql_init], [AC_CHECK_LIB([z], [compress],[mysql="yes"],[mysql="no"])], [mysql="no"], [-lz])
-        if test "xyes" = "x$mysql"; then
-                DB_MYSQL_CPPFLAGS="`$MYSQLCONFIG --include`"
-                DB_MYSQL_LDFLAGS="`$MYSQLCONFIG --libs`"
-                AC_DEFINE([HAVE_LIBMYSQLCLIENT], 1, [Define to 1 to enable mysql])
-                AC_SUBST(DB_MYSQL_LDFLAGS)
-                AC_SUBST(DB_MYSQL_CPPFLAGS)
-        fi
-        CPPFLAGS=$svd_CPPFLAGS
-        LDFLAGS=$svd_LDFLAGS
-        LIBS=$svd_LIBS
+AC_ARG_WITH([mysql],
+	AS_HELP_STRING([--with-mysql],
+		[Build with MySQL support [default=yes]]),
+	[],
+	[
+		with_mysql="yes"
+	])	
+if test "xyes" = "x$with_mysql"; then
+	MYSQL_CLIENT([], [thread-safe])
+	if test "x" != "x$MYSQL_CLIENT_LIBS"; then
+		DB_MYSQL_CPPFLAGS="$MYSQL_CLIENT_CFLAGS"
+		DB_MYSQL_LDFLAGS="$MYSQL_CLIENT_LIBS"
+		AC_SUBST(DB_MYSQL_LDFLAGS)
+		AC_SUBST(DB_MYSQL_CPPFLAGS)
+		AC_DEFINE([HAVE_LIBMYSQLCLIENT], 1, [Define to 1 to enable mysql])
+		mysql="yes"
+	fi 
 fi
 AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
 
