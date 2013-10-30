@@ -323,53 +323,31 @@ fi
 AM_CONDITIONAL([WITH_POSTGRESQL], test "xyes" = "x$postgresql")
 
 
-sqlite="yes"
 AC_MSG_CHECKING(for SQLite3)
-AC_ARG_WITH([sqlite],
-        AS_HELP_STRING([--with-sqlite=<path>],
-                [Path is optional and if given should specify the full path to the SQLite installation.
-                 E.g. /usr/local/sqlite3]),
-        [
-        	if test "xno" = "x$with_sqlite"; then
-                	AC_MSG_RESULT([no])
-                	sqlite="no"
-    	        else
-                	AC_MSG_RESULT([yes])
-               		AC_CHECK_FILE([$with_sqlite], [ SQLITE_PATH="$with_sqlite" ],[ sqlite="no" ])
-        	fi
-        ], 
-        [
-               AC_MSG_RESULT([yes])
+AC_ARG_WITH([sqlite], 
+        AS_HELP_STRING([--with-sqlite], 
+                [Build with SQLite support [default=yes]]),
+        [],
+	[	
+		with_sqlite="yes"
         ])
 
-if test "xyes" = "x$sqlite"; then
-       svd_LDFLAGS=$LDFLAGS
-       svd_CPPFLAGS=$CPPFLAGS
-       svd_LIBS=$LIBS
-       if test "$SQLITE_PATH"; then
-       		CPPFLAGS="-I$SQLITE_PATH/include $CPPFLAGS"
-       		LDFLAGS="-L$SQLITE_PATH/lib $LDFLAGS"
-       fi
-       AC_SEARCH_LIBS([sqlite3_open], [sqlite3], [], [sqlite="no"])
-       if test "xyes" = "x$sqlite"; then
-            if test "$SQLITE_PATH"; then
-            	DB_SQLITE_CPPFLAGS="-I$SQLITE_PATH/include"
-            	DB_SQLITE_LDFLAGS="-L$SQLITE_PATH/lib -lsqlite3"
-	    else
-            	DB_SQLITE_LDFLAGS="-lsqlite3"
-	    fi
-            AC_SUBST(DB_SQLITE_CPPFLAGS)
-            AC_SUBST(DB_SQLITE_LDFLAGS)                        
-            AC_DEFINE([HAVE_LIBSQLITE3], 1, [Define to 1 to enable sqlite3])
-            AC_SEARCH_LIBS([sqlite3_soft_heap_limit], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT], [1], [sqlite3_soft_heap_limit])], [], [-ldl])
-            AC_SEARCH_LIBS([sqlite3_soft_heap_limit64], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT64], [1], [sqlite3_soft_heap_limit64])], [], [-ldl])
-            AC_SEARCH_LIBS([sqlite3_errstr], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_ERRSTR], [1], [sqlite3_errstr])], [], [-ldl])
-       fi
-       LDFLAGS=$svd_LDFLAGS
-       CPPFLAGS=$svd_CPPFLAGS
-       LIBS=$svd_LIBS
+if test "xyes" = "x$with_sqlite"; then
+	PKG_CHECK_MODULES([SQLITE], [sqlite3], [
+                DB_SQLITE_CPPFLAGS="$SQLITE_CFLAGS"
+                DB_SQLITE_LDFLAGS="$SQLITE_LIBS"
+            	AC_SUBST(DB_SQLITE_CPPFLAGS)
+            	AC_SUBST(DB_SQLITE_LDFLAGS)                        
+            	AC_SEARCH_LIBS([sqlite3_soft_heap_limit], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT], [1], [sqlite3_soft_heap_limit])], [], [-ldl])
+            	AC_SEARCH_LIBS([sqlite3_soft_heap_limit64], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_SOFT_HEAP_LIMIT64], [1], [sqlite3_soft_heap_limit64])], [], [-ldl])
+            	AC_SEARCH_LIBS([sqlite3_errstr], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_ERRSTR], [1], [sqlite3_errstr])], [], [-ldl])
+            	AC_DEFINE([HAVE_LIBSQLITE3], 1, [Define to 1 to enable sqlite3])
+		sqlite="yes"
+	],
+	[])
 fi
 AM_CONDITIONAL([WITH_SQLITE], test "xyes" = "x$sqlite")
+
 
 AC_ARG_WITH([mysql],
 	AS_HELP_STRING([--with-mysql],
