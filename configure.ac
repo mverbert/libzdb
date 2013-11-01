@@ -323,7 +323,6 @@ fi
 AM_CONDITIONAL([WITH_POSTGRESQL], test "xyes" = "x$postgresql")
 
 
-AC_MSG_CHECKING(for SQLite3)
 AC_ARG_WITH([sqlite], 
         AS_HELP_STRING([--with-sqlite], 
                 [Build with SQLite support [default=yes]]),
@@ -368,7 +367,7 @@ if test "xyes" = "x$with_mysql"; then
 fi
 AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
 
-AC_MSG_CHECKING(for oracle)
+
 AC_ARG_WITH([oracle], 
         AS_HELP_STRING([--with-oracle], 
                 [Build with Oracle support [default=no]]),
@@ -378,6 +377,7 @@ AC_ARG_WITH([oracle],
         ])
 
 if test "xyes" = "x$with_oracle"; then
+	AC_MSG_CHECKING(for Oracle)
 	AX_LIB_ORACLE_OCI
 	if test -n "$ORACLE_OCI_CFLAGS" -a -n "$ORACLE_OCI_LDFLAGS"; then
 		DB_ORACLE_CPPFLAGS="$ORACLE_OCI_CFLAGS"
