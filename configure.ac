@@ -114,7 +114,13 @@ AC_ARG_ENABLE([protected],
 AC_ARG_ENABLE(libdl, 
               AS_HELP_STRING([--enable-libdl],
               [Use libdl to dynamic load database drivers]),
-              [AC_CHECK_LIB([dl], [dlopen], [libdl="yes"], [libdl="no"])],
+              [
+        if test "x$enableval" = "xno" ; then
+                libdl="no"
+        else
+		AC_CHECK_LIB([dl], [dlopen], [libdl="yes"], [libdl="no"])
+	fi
+	],
               [libdl="no"]
 )
 if test "xyes" = "x$libdl"; then
