@@ -219,7 +219,6 @@ fi
 AM_CONDITIONAL([WITH_POSTGRESQL], test "xyes" = "x$postgresql")
 
 
-sqlite="yes"
 AC_MSG_CHECKING(for SQLite3)
 AC_ARG_WITH([sqlite], 
         AS_HELP_STRING([--with-sqlite], 
