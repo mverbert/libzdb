@@ -7,7 +7,11 @@ makebuilddir/libzdb-dev::
 	./bootstrap
 
 # Add here any variable or target overrides you need.
-DEB_CONFIGURE_EXTRA_FLAGS := --enable-libdl --enable-sqliteunlock \
+DEB_CONFIGURE_EXTRA_FLAGS := --enable-libdl \
+	--with-mysql \
+	--with-postgresql \
+	--with-sqlite --enable-sqliteunlock \
+	--without-oracle \
 	--includedir=\$${prefix}/include/${DEB_HOST_MULTIARCH} \
 	--libdir=\$${prefix}/lib/${DEB_HOST_MULTIARCH} 
 
