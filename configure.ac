@@ -391,7 +391,7 @@ fi
 AM_CONDITIONAL([WITH_ORACLE], test "xyes" = "x$oracle")
 
 # Test if any database system was found
-if test "xno" = "x$postgresql" -a "xno" = "x$mysql" -a "xno" = "x$sqlite" -a "xno" = "x$oracle"; then
+if test "xyes" != "x$postgresql" -a "xyes" != "x$mysql" -a "xyes" != "x$sqlite" -a "xyes" != "x$oracle"; then
         AC_MSG_ERROR([No available database found or selected. Try configure --help])
 fi
 
