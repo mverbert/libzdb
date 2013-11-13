@@ -17,13 +17,13 @@
 		529F8EBE1775031E0067C40A /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529F8EBD1775031E0067C40A /* libsqlite3.dylib */; };
 		529F8EC0177503440067C40A /* libpq.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529F8EBF177503440067C40A /* libpq.dylib */; };
 		529F8EC2177503520067C40A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529F8EC1177503520067C40A /* libz.dylib */; };
+		52A30356181FDEDD00F4F4BF /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 521D820A17AF0471008E282B /* libmysqlclient.18.dylib */; };
 		52B1F2B913E7526E004869F0 /* URL.re in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1013E716A0002F3C7C /* URL.re */; };
 		52C32EEE145BA3FA00C72758 /* System.c in Sources */ = {isa = PBXBuildFile; fileRef = 52C32EEB145BA3F900C72758 /* System.c */; };
 		52C32EF0145BA3FA00C72758 /* Time.re in Sources */ = {isa = PBXBuildFile; fileRef = 52C32EED145BA3FA00C72758 /* Time.re */; };
 		52C32F54145BABE200C72758 /* unit.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2313E716A0002F3C7C /* unit.c */; };
 		52C32F55145BABEC00C72758 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		52C32F58145BD12800C72758 /* Mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 52C32F56145BD12800C72758 /* Mem.c */; };
-		52C558D4181E360900DFE5E0 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52C558D3181E360900DFE5E0 /* libmysqlclient.18.dylib */; };
 		52F2370213E7256200D24B82 /* Connection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BDF13E716A0002F3C7C /* Connection.c */; };
 		52F2370313E7256200D24B82 /* ConnectionPool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE213E716A0002F3C7C /* ConnectionPool.c */; };
 		52F2370413E7256200D24B82 /* PostgresqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF313E716A0002F3C7C /* PostgresqlConnection.c */; };
@@ -203,7 +203,6 @@
 		52C32EED145BA3FA00C72758 /* Time.re */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Time.re; sourceTree = "<group>"; };
 		52C32F56145BD12800C72758 /* Mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Mem.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52C32F57145BD12800C72758 /* Mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Mem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		52C558D3181E360900DFE5E0 /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "../../../../usr/local/mysql-5.5.19-osx10.6-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<group>"; };
 		52E79D72168EA4FC00E510BF /* libzdb.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = libzdb.css; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -236,7 +235,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52C558D4181E360900DFE5E0 /* libmysqlclient.18.dylib in Frameworks */,
+				52A30356181FDEDD00F4F4BF /* libmysqlclient.18.dylib in Frameworks */,
 				529F8EC2177503520067C40A /* libz.dylib in Frameworks */,
 				529F8EBE1775031E0067C40A /* libsqlite3.dylib in Frameworks */,
 				529F8EC0177503440067C40A /* libpq.dylib in Frameworks */,
@@ -249,7 +248,6 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
-				52C558D3181E360900DFE5E0 /* libmysqlclient.18.dylib */,
 				52788BDB13E716A0002F3C7C /* README */,
 				52788BD213E716A0002F3C7C /* COPYING */,
 				52788BC613E716A0002F3C7C /* AUTHORS */,
@@ -894,6 +892,7 @@
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/MacOS/lib",
 					/usr/local/mysql/lib,
 					/usr/local/mysql/lib,
+					"/usr/local/mysql-5.6.13-osx10.7-x86_64/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -932,6 +931,7 @@
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/MacOS/lib",
 					/usr/local/mysql/lib,
 					/usr/local/mysql/lib,
+					"/usr/local/mysql-5.6.13-osx10.7-x86_64/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
