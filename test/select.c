@@ -23,12 +23,13 @@ int main(void) {
                 };
                 for (int i = 0; bleach[i]; i++) {
                         PreparedStatement_setString(p, 1, bleach[i]);
+                        // TODO PreparedStatement_setTimestamp(p, 2, Time_now() + 61);
                         PreparedStatement_execute(p);
                 }
                 // TODO ResultSet_getTemporal methods need to convert to localtime unless otherwise indicated by tz in string
                 ResultSet_T r = Connection_executeQuery(con, "select name, datetime(created_at, 'localtime') from bleach");
                 while (ResultSet_next(r))
-                        printf("Name: %s, Created at: %s\n", ResultSet_getString(r, 1), ResultSet_getString(r, 2));
+                        printf("%-22s\t %s\n", ResultSet_getString(r, 1), ResultSet_getString(r, 2));
                 Connection_execute(con, "drop table bleach;");
         }
         CATCH(SQLException)

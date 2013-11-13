@@ -101,10 +101,10 @@ long long int Time_milli(void) {
 
 
 int Time_usleep(long u) {
-        struct timeval tv;
-        tv.tv_sec = u / USEC_PER_SEC;
-        tv.tv_usec = (suseconds_t)(u % USEC_PER_SEC);
-        select(0, 0, 0, 0, &tv);
+        struct timeval t;
+        t.tv_sec = u / USEC_PER_SEC;
+        t.tv_usec = (suseconds_t)(u % USEC_PER_SEC);
+        select(0, 0, 0, 0, &t);
         return true;
 }
 
