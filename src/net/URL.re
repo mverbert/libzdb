@@ -403,9 +403,9 @@ const char *URL_getParameter(T U, const char *name) {
 const char *URL_toString(T U) {
 	assert(U);
 	if (! U->toString) {
-                uchar_t port[7] = {0};
+                uchar_t port[11] = {0};
                 if (U->port >= 0)
-                        snprintf(port, 6, ":%d", U->port);
+                        snprintf(port, 10, ":%d", U->port);
 		U->toString = Str_cat("%s://%s%s%s%s%s%s%s%s%s", 
                                       U->protocol,
                                       U->user ? U->user : "",
