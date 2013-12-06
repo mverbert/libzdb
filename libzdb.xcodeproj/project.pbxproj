@@ -15,7 +15,6 @@
 		529239C114B7AD0100DFC3A1 /* pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2113E716A0002F3C7C /* pool.c */; };
 		529239C214B7AD2100DFC3A1 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		529F8EBE1775031E0067C40A /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529F8EBD1775031E0067C40A /* libsqlite3.dylib */; };
-		529F8EC0177503440067C40A /* libpq.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529F8EBF177503440067C40A /* libpq.dylib */; };
 		529F8EC2177503520067C40A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 529F8EC1177503520067C40A /* libz.dylib */; };
 		52A30356181FDEDD00F4F4BF /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 521D820A17AF0471008E282B /* libmysqlclient.18.dylib */; };
 		52B1F2B913E7526E004869F0 /* URL.re in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1013E716A0002F3C7C /* URL.re */; };
@@ -24,6 +23,7 @@
 		52C32F54145BABE200C72758 /* unit.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2313E716A0002F3C7C /* unit.c */; };
 		52C32F55145BABEC00C72758 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		52C32F58145BD12800C72758 /* Mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 52C32F56145BD12800C72758 /* Mem.c */; };
+		52F0F9D81851DF2A003B0B33 /* libpq.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F0F9D71851DF2A003B0B33 /* libpq.dylib */; };
 		52F2370213E7256200D24B82 /* Connection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BDF13E716A0002F3C7C /* Connection.c */; };
 		52F2370313E7256200D24B82 /* ConnectionPool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE213E716A0002F3C7C /* ConnectionPool.c */; };
 		52F2370413E7256200D24B82 /* PostgresqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF313E716A0002F3C7C /* PostgresqlConnection.c */; };
@@ -204,6 +204,7 @@
 		52C32F56145BD12800C72758 /* Mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Mem.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52C32F57145BD12800C72758 /* Mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Mem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52E79D72168EA4FC00E510BF /* libzdb.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = libzdb.css; sourceTree = "<group>"; };
+		52F0F9D71851DF2A003B0B33 /* libpq.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.dylib; path = usr/lib/libpq.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,10 +236,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52F0F9D81851DF2A003B0B33 /* libpq.dylib in Frameworks */,
 				52A30356181FDEDD00F4F4BF /* libmysqlclient.18.dylib in Frameworks */,
 				529F8EC2177503520067C40A /* libz.dylib in Frameworks */,
 				529F8EBE1775031E0067C40A /* libsqlite3.dylib in Frameworks */,
-				529F8EC0177503440067C40A /* libpq.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +249,7 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
+				52F0F9D71851DF2A003B0B33 /* libpq.dylib */,
 				52788BDB13E716A0002F3C7C /* README */,
 				52788BD213E716A0002F3C7C /* COPYING */,
 				52788BC613E716A0002F3C7C /* AUTHORS */,
@@ -732,6 +734,7 @@
 					"-funsigned-char",
 				);
 				SDKROOT = "";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -778,6 +781,7 @@
 					"-funsigned-char",
 				);
 				SDKROOT = "";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
@@ -883,13 +887,13 @@
 					$SRCROOT/src/util,
 					$SRCROOT/src/exceptions,
 					$SRCROOT/src/db,
+					/Applications/Postgres93.app/Contents/MacOS/include,
 					"/usr/local/mysql/include/**",
-					/Applications/Postgres.app/Contents/MacOS/include/,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/mysql/lib,
-					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/MacOS/lib",
+					"$(SYSTEM_APPS_DIR)/Postgres93.app/Contents/MacOS/lib",
 					/usr/local/mysql/lib,
 					/usr/local/mysql/lib,
 					"/usr/local/mysql-5.6.13-osx10.7-x86_64/lib",
@@ -922,13 +926,13 @@
 					$SRCROOT/src/util,
 					$SRCROOT/src/exceptions,
 					$SRCROOT/src/db,
+					/Applications/Postgres93.app/Contents/MacOS/include,
 					"/usr/local/mysql/include/**",
-					/Applications/Postgres.app/Contents/MacOS/include/,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/mysql/lib,
-					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/MacOS/lib",
+					"$(SYSTEM_APPS_DIR)/Postgres93.app/Contents/MacOS/lib",
 					/usr/local/mysql/lib,
 					/usr/local/mysql/lib,
 					"/usr/local/mysql-5.6.13-osx10.7-x86_64/lib",

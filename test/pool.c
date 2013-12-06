@@ -70,8 +70,17 @@ static void testPool(const char *testURL) {
         {
                 url = URL_new(NULL);
                 assert(! url);
-                pool = ConnectionPool_new(url);
-                assert(! pool);
+                TRY
+                {
+                        pool = ConnectionPool_new(url);
+                        printf("\tResult: Test failed -- exception not thrown\n");
+                        exit(1);
+                }
+                CATCH(AssertException)
+                {
+                        // OK
+                }
+                END_TRY;
         }
         printf("=> Test2: OK\n\n");
         
