@@ -56,8 +56,9 @@ const struct Rop_T oraclerops = {
         OracleResultSet_free,
         OracleResultSet_getColumnCount,
         OracleResultSet_getColumnName,
-        OracleResultSet_next,
         OracleResultSet_getColumnSize,
+        OracleResultSet_next,
+        OracleResultSet_isnull,
         OracleResultSet_getString,
         OracleResultSet_getBlob,
 };
@@ -235,22 +236,6 @@ const char *OracleResultSet_getColumnName(T R, int column) {
 }
 
 
-int OracleResultSet_next(T R) {
-        assert(R);
-        if ((R->row < 0) || ((R->maxRow > 0) && (R->row >= R->maxRow)))
-                return false;
-        R->lastError = OCIStmtFetch2(R->stmt, R->err, 1, OCI_FETCH_NEXT, 0, OCI_DEFAULT);
-        if (R->lastError == OCI_NO_DATA) 
-                return false;
-        if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
-                THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
-	if (R->lastError == OCI_SUCCESS_WITH_INFO)
-		DEBUG("OracleResultSet_next Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError, R->err));
-        R->row++;
-        return ((R->lastError == OCI_SUCCESS) || (R->lastError == OCI_SUCCESS_WITH_INFO));
-}
-
-
 long OracleResultSet_getColumnSize(T R, int columnIndex) {
         OCIParam* pard = NULL;
         ub4 char_semantics = 0;
@@ -271,6 +256,28 @@ long OracleResultSet_getColumnSize(T R, int columnIndex) {
         /* Retrieve the column width in bytes */
         OCIAttrGet(pard, OCI_DTYPE_PARAM, &col_width, NULL, OCI_ATTR_DATA_SIZE, R->err);
         return (status != OCI_SUCCESS) ? -1 : col_width;
+}
+
+
+int OracleResultSet_next(T R) {
+        assert(R);
+        if ((R->row < 0) || ((R->maxRow > 0) && (R->row >= R->maxRow)))
+                return false;
+        R->lastError = OCIStmtFetch2(R->stmt, R->err, 1, OCI_FETCH_NEXT, 0, OCI_DEFAULT);
+        if (R->lastError == OCI_NO_DATA) 
+                return false;
+        if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
+                THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
+	if (R->lastError == OCI_SUCCESS_WITH_INFO)
+		DEBUG("OracleResultSet_next Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError, R->err));
+        R->row++;
+        return ((R->lastError == OCI_SUCCESS) || (R->lastError == OCI_SUCCESS_WITH_INFO));
+}
+
+
+int OracleResultSet_isnull(T R, int columnIndex) {
+        assert(R);
+        return R->columns[i].isNull;
 }
 
 

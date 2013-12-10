@@ -51,8 +51,9 @@ const struct Rop_T postgresqlrops = {
         PostgresqlResultSet_free,
         PostgresqlResultSet_getColumnCount,
         PostgresqlResultSet_getColumnName,
-        PostgresqlResultSet_next,
         PostgresqlResultSet_getColumnSize,
+        PostgresqlResultSet_next,
+        PostgresqlResultSet_isnull,
         PostgresqlResultSet_getString,
         PostgresqlResultSet_getBlob,
 };
@@ -65,10 +66,6 @@ struct T {
         int rowCount;
         PGresult *res;
 };
-
-#define TEST_INDEX \
-        int i; assert(R); i = columnIndex - 1; if (R->columnCount <= 0 || \
-        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range");}
 
 #define ISFIRSTOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '3')
 #define ISOCTDIGIT(CH) ((CH) >= '0' && (CH) <= '7')
@@ -166,14 +163,20 @@ int PostgresqlResultSet_getColumnCount(T R) {
 }
 
 
-const char *PostgresqlResultSet_getColumnName(T R, int column) {
+const char *PostgresqlResultSet_getColumnName(T R, int columnIndex) {
         assert(R);
-        column--;
-        if (R->columnCount <= 0 ||
-            column < 0          ||
-            column > R->columnCount)
+        columnIndex--;
+        if (R->columnCount <= 0 || columnIndex < 0 || columnIndex > R->columnCount)
                 return NULL;
-        return PQfname(R->res, column);
+        return PQfname(R->res, columnIndex);
+}
+
+
+long PostgresqlResultSet_getColumnSize(T R, int columnIndex) {
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        if (PQgetisnull(R->res, R->currentRow, i))
+                return 0;
+        return PQgetlength(R->res, R->currentRow, i);
 }
 
 
@@ -183,17 +186,15 @@ int PostgresqlResultSet_next(T R) {
 }
 
 
-long PostgresqlResultSet_getColumnSize(T R, int columnIndex) {
-        TEST_INDEX
-        if (PQgetisnull(R->res, R->currentRow, i)) 
-                return 0; 
-        return PQgetlength(R->res, R->currentRow, i);
+int PostgresqlResultSet_isnull(T R, int columnIndex) {
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        return PQgetisnull(R->res, R->currentRow, i);
 }
 
 
 const char *PostgresqlResultSet_getString(T R, int columnIndex) {
-        TEST_INDEX
-        if (PQgetisnull(R->res, R->currentRow, i)) 
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        if (PQgetisnull(R->res, R->currentRow, i))
                 return NULL; 
         return PQgetvalue(R->res, R->currentRow, i);
 }
@@ -206,8 +207,8 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
  * the buffer pointer. See also unescape_bytea() above.
  */
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
-        TEST_INDEX
-        if (PQgetisnull(R->res, R->currentRow, i)) 
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        if (PQgetisnull(R->res, R->currentRow, i))
                 return NULL; 
         return unescape_bytea((uchar_t*)PQgetvalue(R->res, R->currentRow, i), PQgetlength(R->res, R->currentRow, i), size);
 }

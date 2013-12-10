@@ -29,9 +29,10 @@
 T OracleResultSet_new(OCIStmt* stmt, OCIEnv* env, OCIError* err, OCISvcCtx* svc, int need_free, int max_row);
 void OracleResultSet_free(T *R);
 int  OracleResultSet_getColumnCount(T R);
-const char *OracleResultSet_getColumnName(T R, int column);
-int  OracleResultSet_next(T R);
+const char *OracleResultSet_getColumnName(T R, int columnIndex);
 long OracleResultSet_getColumnSize(T R, int columnIndex);
+int  OracleResultSet_next(T R);
+int OracleResultSet_isnull(T R, int columnIndex);
 const char *OracleResultSet_getString(T R, int columnIndex);
 const char *OracleResultSet_getStringByName(T R, const char *columnName);
 int OracleResultSet_getInt(T R, int columnIndex);

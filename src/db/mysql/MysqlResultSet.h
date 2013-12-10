@@ -27,9 +27,10 @@
 T MysqlResultSet_new(void *stmt, int maxRows, int keep);
 void MysqlResultSet_free(T *R);
 int MysqlResultSet_getColumnCount(T R);
-const char *MysqlResultSet_getColumnName(T R, int column);
-int MysqlResultSet_next(T R);
+const char *MysqlResultSet_getColumnName(T R, int columnIndex);
 long MysqlResultSet_getColumnSize(T R, int columnIndex);
+int MysqlResultSet_next(T R);
+int MysqlResultSet_isnull(T R, int columnIndex);
 const char *MysqlResultSet_getString(T R, int columnIndex);
 const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size);
 #undef T

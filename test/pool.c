@@ -225,9 +225,11 @@ static void testPool(const char *testURL) {
                         const char *blob = (char*)ResultSet_getBlob(rset, 4, &imagesize);
                         printf("\t%-5d%-16s%-10.2f%-16.38s\n", id, name ? name : "null", percent, imagesize ? blob : "");
                 }
+                // Column count
                 rset = Connection_executeQuery(con, "select image from zild_t where id=12;");
-                assert(1==ResultSet_getColumnCount(rset));
-                // Assert that types are interchangeable (to some degree) and that all data is returned
+                assert(1 == ResultSet_getColumnCount(rset));
+                
+                // Assert that types are interchangeable and that all data is returned
                 while (ResultSet_next(rset)) {
                         const char *image = ResultSet_getStringByName(rset, "image");
                         const void *blob = ResultSet_getBlobByName(rset, "image", &imagesize);
@@ -235,6 +237,18 @@ static void testPool(const char *testURL) {
                         assert(strlen(image) + 1 == 8192);
                         assert(imagesize == 8192);
                 }
+                
+                printf("\tResult: check isnull..");
+                rset = Connection_executeQuery(con, "select id, image from zild_t where id in(1,5,2);");
+                while (ResultSet_next(rset)) {
+                        int id = ResultSet_getIntByName(rset, "id");
+                        if (id == 1 || id == 5)
+                                assert(ResultSet_isnull(rset, 2) == true);
+                        else
+                                assert(ResultSet_isnull(rset, 2) == false);
+                }
+                printf("success\n");
+
                 printf("\tResult: check max rows..");
                 Connection_setMaxRows(con, 3);
                 rset = Connection_executeQuery(con, "select id from zild_t;");
@@ -243,6 +257,7 @@ static void testPool(const char *testURL) {
                 while (ResultSet_next(rset)) i++;
                 assert((i)==3);
                 printf("success\n");
+                
                 printf("\tResult: check prepared statement resultset..");
                 Connection_setMaxRows(con, 0);
                 pre = Connection_prepareStatement(con, "select name from zild_t where id=?");
@@ -253,6 +268,7 @@ static void testPool(const char *testURL) {
                 assert(ResultSet_next(names));
                 assert(Str_isEqual("Leela", ResultSet_getString(names, 1)));
                 printf("success\n");
+                
                 printf("\tResult: check prepared statement re-execute..");
                 PreparedStatement_setInt(pre, 1, 1);
                 names = PreparedStatement_executeQuery(pre);
@@ -260,6 +276,7 @@ static void testPool(const char *testURL) {
                 assert(ResultSet_next(names));
                 assert(Str_isEqual("Fry", ResultSet_getString(names, 1)));
                 printf("success\n");
+                
                 printf("\tResult: check prepared statement without in-params..");
                 pre = Connection_prepareStatement(con, "select name from zild_t;");
                 assert(pre);
@@ -268,6 +285,7 @@ static void testPool(const char *testURL) {
                 for (i = 0; ResultSet_next(names); i++);
                 assert(i==12);
                 printf("success\n");
+                
                 /* Need to close and release statements before
                    we can drop the table, sqlite need this */
                 Connection_clear(con);

@@ -50,8 +50,9 @@ const struct Rop_T sqlite3rops = {
         SQLiteResultSet_free,
         SQLiteResultSet_getColumnCount,
         SQLiteResultSet_getColumnName,
-        SQLiteResultSet_next,
         SQLiteResultSet_getColumnSize,
+        SQLiteResultSet_next,
+        SQLiteResultSet_isnull,
         SQLiteResultSet_getString,
         SQLiteResultSet_getBlob,
 };
@@ -64,10 +65,6 @@ struct T {
 	int columnCount;
 	sqlite3_stmt *stmt;
 };
-
-#define TEST_INDEX \
-        int i; assert(R); i = columnIndex - 1; if (R->columnCount <= 0 || \
-        i < 0 || i >= R->columnCount) THROW(SQLException, "Column index is out of range");
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -105,14 +102,18 @@ int SQLiteResultSet_getColumnCount(T R) {
 }
 
 
-const char *SQLiteResultSet_getColumnName(T R, int column) {
+const char *SQLiteResultSet_getColumnName(T R, int columnIndex) {
 	assert(R);
-	column--;
-	if (R->columnCount <= 0 ||
-	   column < 0           ||
-	   column > R->columnCount)
+	columnIndex--;
+	if (R->columnCount <= 0 || columnIndex < 0 || columnIndex > R->columnCount)
                 return NULL;
-	return sqlite3_column_name(R->stmt, column);
+	return sqlite3_column_name(R->stmt, columnIndex);
+}
+
+
+long SQLiteResultSet_getColumnSize(T R, int columnIndex) {
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        return sqlite3_column_bytes(R->stmt, i);
 }
 
 
@@ -137,20 +138,21 @@ int SQLiteResultSet_next(T R) {
 }
 
 
-long SQLiteResultSet_getColumnSize(T R, int columnIndex) {
-        TEST_INDEX
-        return sqlite3_column_bytes(R->stmt, i);
+int SQLiteResultSet_isnull(T R, int columnIndex) {
+        assert(R);
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        return (sqlite3_column_type(R->stmt, i) == SQLITE_NULL);
 }
 
 
 const char *SQLiteResultSet_getString(T R, int columnIndex) {
-        TEST_INDEX
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
 	return (const char*)sqlite3_column_text(R->stmt, i);
 }
 
 
 const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size) {
-        TEST_INDEX
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
         const void *blob;
         blob = sqlite3_column_blob(R->stmt, i);
         *size = sqlite3_column_bytes(R->stmt, i);

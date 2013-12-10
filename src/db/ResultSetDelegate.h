@@ -41,12 +41,26 @@ typedef struct Rop_T {
         const char *name;
         void (*free)(T *R);
         int (*getColumnCount)(T R);
-        const char *(*getColumnName)(T R, int column);
-        int (*next)(T R);
+        const char *(*getColumnName)(T R, int columnIndex);
         long (*getColumnSize)(T R, int columnIndex);
+        int (*next)(T R);
+        int (*isnull)(T R, int columnIndex);
         const char *(*getString)(T R, int columnIndex);
         const void *(*getBlob)(T R, int columnIndex, int *size);
 } *Rop_T;
+
+/**
+ * Throws exception if columnIndex is outside the columnCount range.
+ * @return columnIndex - 1. In the API columnIndex starts with 1, 
+ * internally it starts with 0.
+ */
+static inline int checkAndSetColoumnIndex(int columnIndex, int columnCount) {
+        int i = columnIndex - 1;
+        if (columnCount <= 0 || i < 0 || i >= columnCount)
+                THROW(SQLException, "Column index is out of range");
+        return i;
+}
+
 
 #undef T
 #endif

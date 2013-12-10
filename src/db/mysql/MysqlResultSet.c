@@ -52,8 +52,9 @@ const struct Rop_T mysqlrops = {
         MysqlResultSet_free,
         MysqlResultSet_getColumnCount,
         MysqlResultSet_getColumnName,
-        MysqlResultSet_next,
         MysqlResultSet_getColumnSize,
+        MysqlResultSet_next,
+        MysqlResultSet_isnull,
         MysqlResultSet_getString,
         MysqlResultSet_getBlob,
 };
@@ -79,10 +80,6 @@ struct T {
 	MYSQL_STMT *stmt;
         column_t columns;
 };
-
-#define TEST_INDEX \
-        int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
-        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); }  
 
 
 /* ------------------------------------------------------- Private methods */
@@ -161,14 +158,20 @@ int MysqlResultSet_getColumnCount(T R) {
 }
 
 
-const char *MysqlResultSet_getColumnName(T R, int column) {
+const char *MysqlResultSet_getColumnName(T R, int columnIndex) {
 	assert(R);
-	column--;
-	if (R->columnCount <= 0 ||
-	   column < 0           ||
-	   column > R->columnCount)
+	columnIndex--;
+	if (R->columnCount <= 0 || columnIndex < 0 || columnIndex > R->columnCount)
 		return NULL;
-	return R->columns[column].field->name;
+	return R->columns[columnIndex].field->name;
+}
+
+
+long MysqlResultSet_getColumnSize(T R, int columnIndex) {
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        if (R->columns[i].is_null)
+                return 0;
+        return R->columns[i].real_length;
 }
 
 
@@ -200,17 +203,14 @@ int MysqlResultSet_next(T R) {
 }
 
 
-long MysqlResultSet_getColumnSize(T R, int columnIndex) {
-        TEST_INDEX
-        if (R->columns[i].is_null) 
-                return 0;
-        return R->columns[i].real_length;
+int MysqlResultSet_isnull(T R, int columnIndex) {
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        return R->columns[i].is_null;
 }
 
-
 const char *MysqlResultSet_getString(T R, int columnIndex) {
-        TEST_INDEX
-        if (R->columns[i].is_null) 
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        if (R->columns[i].is_null)
                 return NULL;
         ensureCapacity(R, i);
         R->columns[i].buffer[R->columns[i].real_length] = 0;
@@ -219,8 +219,8 @@ const char *MysqlResultSet_getString(T R, int columnIndex) {
 
 
 const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
-        TEST_INDEX
-        if (R->columns[i].is_null) 
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        if (R->columns[i].is_null)
                 return NULL;
         ensureCapacity(R, i);
         *size = (int)R->columns[i].real_length;

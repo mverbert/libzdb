@@ -122,8 +122,7 @@ int ResultSet_next(T R) {
 
 int ResultSet_isnull(T R, int columnIndex) {
         assert(R);
-        // TODO
-        return 0;
+        return R->op->isnull(R->D, columnIndex);
 }
 
 

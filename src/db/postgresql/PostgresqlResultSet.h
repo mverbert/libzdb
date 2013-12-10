@@ -27,9 +27,10 @@
 T PostgresqlResultSet_new(void *stmt, int maxRows);
 void PostgresqlResultSet_free(T *R);
 int PostgresqlResultSet_getColumnCount(T R);
-const char *PostgresqlResultSet_getColumnName(T R, int column);
-int PostgresqlResultSet_next(T R);
+const char *PostgresqlResultSet_getColumnName(T R, int columnIndex);
 long PostgresqlResultSet_getColumnSize(T R, int columnIndex);
+int PostgresqlResultSet_next(T R);
+int PostgresqlResultSet_isnull(T R, int columnIndex);
 const char *PostgresqlResultSet_getString(T R, int columnIndex);
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size);
 #undef T

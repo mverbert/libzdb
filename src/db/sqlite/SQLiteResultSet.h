@@ -115,9 +115,10 @@ static inline int sqlite3_blocking_exec(sqlite3 *db, const char *zSql, int (*cal
 T SQLiteResultSet_new(void *stmt, int maxRows, int keep);
 void SQLiteResultSet_free(T *R);
 int SQLiteResultSet_getColumnCount(T R);
-const char *SQLiteResultSet_getColumnName(T R, int column);
-int SQLiteResultSet_next(T R);
+const char *SQLiteResultSet_getColumnName(T R, int columnIndex);
 long SQLiteResultSet_getColumnSize(T R, int columnIndex);
+int SQLiteResultSet_next(T R);
+int SQLiteResultSet_isnull(T R, int columnIndex);
 const char *SQLiteResultSet_getString(T R, int columnIndex);
 const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size);
 #undef T
