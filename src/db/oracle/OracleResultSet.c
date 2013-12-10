@@ -149,15 +149,21 @@ static int initaleDefiningBuffers(T R) {
                 {
                         char *col_name;
                         ub4   col_name_len;
+                        char* tmp_buffer;
 
                         R->lastError = OCIAttrGet(pard, OCI_DTYPE_PARAM, &col_name, &col_name_len, OCI_ATTR_NAME, R->err);
                         if (R->lastError != OCI_SUCCESS)
                                 continue;
+                        // column name could be non NULL terminated
+                        // it is not allowed to do: col_name[col_name_len] = 0;
+                        // so, copy the string
+                        tmp_buffer = Str_ndup(col_name, col_name_len);
 #if defined(ORACLE_COLUMN_NAME_LOWERCASE) && ORACLE_COLUMN_NAME_LOWERCASE > 1
-                        R->columns[i-1].name = CALLOC(1, col_name_len);
-                        OCIMultiByteStrCaseConversion(R->env, R->columns[i-1].name, col_name, OCI_NLS_LOWERCASE);
+                        R->columns[i-1].name = CALLOC(1, col_name_len+1);
+                        OCIMultiByteStrCaseConversion(R->env, R->columns[i-1].name, tmp_buffer, OCI_NLS_LOWERCASE);
+                        FREE(tmp_buffer);
 #else
-                        R->columns[i-1].name = Str_dup(col_name);
+                        R->columns[i-1].name = tmp_buffer;
 #endif /*COLLUMN_NAME_LOWERCASE*/
                 }
                 OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
