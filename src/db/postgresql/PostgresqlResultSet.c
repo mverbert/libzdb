@@ -187,12 +187,14 @@ int PostgresqlResultSet_next(T R) {
 
 
 int PostgresqlResultSet_isnull(T R, int columnIndex) {
+        assert(R);
         int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
         return PQgetisnull(R->res, R->currentRow, i);
 }
 
 
 const char *PostgresqlResultSet_getString(T R, int columnIndex) {
+        assert(R);
         int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
         if (PQgetisnull(R->res, R->currentRow, i))
                 return NULL; 
@@ -207,6 +209,7 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
  * the buffer pointer. See also unescape_bytea() above.
  */
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
+        assert(R);
         int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
         if (PQgetisnull(R->res, R->currentRow, i))
                 return NULL; 

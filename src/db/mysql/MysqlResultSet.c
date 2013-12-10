@@ -204,11 +204,13 @@ int MysqlResultSet_next(T R) {
 
 
 int MysqlResultSet_isnull(T R, int columnIndex) {
+        assert(R);
         int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
         return R->columns[i].is_null;
 }
 
 const char *MysqlResultSet_getString(T R, int columnIndex) {
+        assert(R);
         int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].is_null)
                 return NULL;
@@ -219,6 +221,7 @@ const char *MysqlResultSet_getString(T R, int columnIndex) {
 
 
 const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
+        assert(R);
         int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].is_null)
                 return NULL;

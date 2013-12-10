@@ -146,15 +146,16 @@ int SQLiteResultSet_isnull(T R, int columnIndex) {
 
 
 const char *SQLiteResultSet_getString(T R, int columnIndex) {
+        assert(R);
         int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
 	return (const char*)sqlite3_column_text(R->stmt, i);
 }
 
 
 const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size) {
+        assert(R);
         int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
-        const void *blob;
-        blob = sqlite3_column_blob(R->stmt, i);
+        const void *blob = sqlite3_column_blob(R->stmt, i);
         *size = sqlite3_column_bytes(R->stmt, i);
         return blob;
 }

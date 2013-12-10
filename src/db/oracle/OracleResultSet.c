@@ -88,9 +88,6 @@ struct T {
 #define ORACLE_COLUMN_NAME_LOWERCASE 2
 #endif
 #define LOB_CHUNK_SIZE  2000
-#define TEST_INDEX \
-        int i; assert(R);i = columnIndex-1; if (R->columnCount <= 0 || \
-        i < 0 || i >= R->columnCount) { THROW(SQLException, "Column index is out of range"); } 
 
 
 /* ------------------------------------------------------- Private methods */
@@ -283,13 +280,15 @@ int OracleResultSet_next(T R) {
 
 int OracleResultSet_isnull(T R, int columnIndex) {
         assert(R);
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
         return R->columns[i].isNull;
 }
 
 
 const char *OracleResultSet_getString(T R, int columnIndex) {
-        TEST_INDEX
-        if (R->columns[i].isNull) 
+        assert(R);
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        if (R->columns[i].isNull)
                 return NULL;
         if (R->columns[i].buffer)
                 R->columns[i].buffer[R->columns[i].length] = 0;
@@ -298,8 +297,9 @@ const char *OracleResultSet_getString(T R, int columnIndex) {
 
 
 const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
-        TEST_INDEX
-        if (R->columns[i].isNull) 
+        assert(R);
+        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        if (R->columns[i].isNull)
                 return NULL;
         if (R->columns[i].buffer)
                 FREE(R->columns[i].buffer);
