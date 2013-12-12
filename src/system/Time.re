@@ -37,6 +37,8 @@
 /**
  * Implementation of the Time interface
  *
+ * ISO 8601: http://en.wikipedia.org/wiki/ISO_8601
+ * RFC 3339: http://tools.ietf.org/html/rfc3339
  * @file
  */
 

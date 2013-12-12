@@ -112,7 +112,7 @@ const char *SQLiteResultSet_getColumnName(T R, int columnIndex) {
 
 
 long SQLiteResultSet_getColumnSize(T R, int columnIndex) {
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         return sqlite3_column_bytes(R->stmt, i);
 }
 
@@ -140,21 +140,21 @@ int SQLiteResultSet_next(T R) {
 
 int SQLiteResultSet_isnull(T R, int columnIndex) {
         assert(R);
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         return (sqlite3_column_type(R->stmt, i) == SQLITE_NULL);
 }
 
 
 const char *SQLiteResultSet_getString(T R, int columnIndex) {
         assert(R);
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
 	return (const char*)sqlite3_column_text(R->stmt, i);
 }
 
 
 const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size) {
         assert(R);
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         const void *blob = sqlite3_column_blob(R->stmt, i);
         *size = sqlite3_column_bytes(R->stmt, i);
         return blob;

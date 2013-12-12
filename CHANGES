@@ -1,11 +1,14 @@
-                         CHANGES version 2.14
+                         CHANGES version 3.0
 
               This file summarizes changes made since 1.0
 
-Version 2.14
---------------
+Version 3.0
+-----------
 * New: It is now a checked runtime error for the url parameter given 
   to ConnectionPool_new() to be NULL.
+* New: ResultSet_getLong and PreparedStatement_setLong. Using more 
+  specific SQL data types can have a storage effect on systems that 
+  differ between these types.
 * New: ResultSet_isnull, can be used to explicit test if a column 
   value in a Result Set is SQL null. A Result Set already returns
   the NULL pointer for string and blob types and 0 for primitive data

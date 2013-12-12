@@ -37,6 +37,8 @@
 
 /**
  * Implementation of the PreparedStatement/Delegate interface for SQLite 
+ * SQLite starts parameter index at 1, so checkAndSetParameterIndex is not 
+ * needed
  *
  * @file
  */
@@ -50,8 +52,10 @@ const struct Pop_T sqlite3pops = {
         SQLitePreparedStatement_free,
         SQLitePreparedStatement_setString,
         SQLitePreparedStatement_setInt,
+        SQLitePreparedStatement_setLong,
         SQLitePreparedStatement_setLLong,
         SQLitePreparedStatement_setDouble,
+        SQLitePreparedStatement_setTimestamp,
         SQLitePreparedStatement_setBlob,
         SQLitePreparedStatement_execute,
         SQLitePreparedStatement_executeQuery,
@@ -114,6 +118,11 @@ void SQLitePreparedStatement_setInt(T P, int parameterIndex, int x) {
 }
 
 
+void SQLitePreparedStatement_setLong(T P, int parameterIndex, long x) {
+        SQLitePreparedStatement_setLLong(P, parameterIndex, x);
+}
+
+
 void SQLitePreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
         assert(P);
         sqlite3_reset(P->stmt);
@@ -129,6 +138,12 @@ void SQLitePreparedStatement_setDouble(T P, int parameterIndex, double x) {
         P->lastError = sqlite3_bind_double(P->stmt, parameterIndex, x);
         if (P->lastError == SQLITE_RANGE)
                 THROW(SQLException, "Parameter index is out of range");
+}
+
+
+void SQLitePreparedStatement_setTimestamp(T P, int parameterIndex, long x) {
+        assert(P);
+        // TODO
 }
 
 

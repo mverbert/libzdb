@@ -247,7 +247,7 @@ int ResultSet_getInt(T R, int columnIndex);
 
 /**
  * Retrieves the value of the designated column in the current row of
- * this ResultSet object as an int. If <code>columnName</code> is not 
+ * this ResultSet object as an int. If <code>columnName</code> is not
  * found this method throws an SQLException.
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
@@ -258,6 +258,37 @@ int ResultSet_getInt(T R, int columnIndex);
  * @see SQLException.h
  */
 int ResultSet_getIntByName(T R, const char *columnName);
+
+
+/**
+ * Retrieves the value of the designated column in the current row of
+ * this ResultSet object as a long. If <code>columnIndex</code>
+ * is outside the range [1..ResultSet_getColumnCount()] this
+ * method throws an SQLException.
+ * @param R A ResultSet object
+ * @param columnIndex The first column is 1, the second is 2, ...
+ * @return The column value; if the value is SQL NULL, the value
+ * returned is 0
+ * @exception SQLException if a database access error occurs, columnIndex
+ * is outside the valid range or if the value is NaN
+ * @see SQLException.h
+ */
+long ResultSet_getLong(T R, int columnIndex);
+
+
+/**
+ * Retrieves the value of the designated column in the current row of
+ * this ResultSet object as a long. If <code>columnName</code> is not
+ * found this method throws an SQLException.
+ * @param R A ResultSet object
+ * @param columnName The SQL name of the column. <i>case-sensitive</i>
+ * @return The column value; if the value is SQL NULL, the value
+ * returned is 0
+ * @exception SQLException if a database access error occurs, columnName
+ * does not exist or if the value is NaN
+ * @see SQLException.h
+ */
+long ResultSet_getLongByName(T R, const char *columnName);
 
 
 /**
@@ -309,7 +340,7 @@ double ResultSet_getDouble(T R, int columnIndex);
 
 /**
  * Retrieves the value of the designated column in the current row of
- * this ResultSet object as a double. If <code>columnName</code> is 
+ * this ResultSet object as a double. If <code>columnName</code> is
  * not found this method throws an SQLException.
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>

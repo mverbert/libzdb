@@ -89,6 +89,7 @@ void PreparedStatement_free(T *P) {
 
 
 /* -------------------------------------------------------- Public methods */
+#pragma mark - Setters
 
 
 void PreparedStatement_setString(T P, int parameterIndex, const char *x) {
@@ -100,6 +101,12 @@ void PreparedStatement_setString(T P, int parameterIndex, const char *x) {
 void PreparedStatement_setInt(T P, int parameterIndex, int x) {
 	assert(P);
         P->op->setInt(P->D, parameterIndex, x);
+}
+
+
+void PreparedStatement_setLong(T P, int parameterIndex, long x) {
+	assert(P);
+        P->op->setLong(P->D, parameterIndex, x);
 }
 
 
@@ -123,10 +130,10 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 
 void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
         assert(P);
-        // TODO convert x to timestamp string and find out where to store the string
-        // Call PreparedStatement_setString
+        P->op->setTimestamp(P->D, parameterIndex, x);
 }
 
+#pragma mark - Ops
 
 void PreparedStatement_execute(T P) {
 	assert(P);
@@ -144,6 +151,7 @@ ResultSet_T PreparedStatement_executeQuery(T P) {
         return P->resultSet;
 }
 
+#pragma mark - Properties
 
 long long int PreparedStatement_rowsChanged(T P) {
         assert(P);

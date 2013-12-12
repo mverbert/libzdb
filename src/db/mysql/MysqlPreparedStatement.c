@@ -52,8 +52,10 @@ const struct Pop_T mysqlpops = {
         MysqlPreparedStatement_free,
         MysqlPreparedStatement_setString,
         MysqlPreparedStatement_setInt,
+        MysqlPreparedStatement_setLong,
         MysqlPreparedStatement_setLLong,
         MysqlPreparedStatement_setDouble,
+        MysqlPreparedStatement_setTimestamp,
         MysqlPreparedStatement_setBlob,
         MysqlPreparedStatement_execute,
         MysqlPreparedStatement_executeQuery,
@@ -80,10 +82,6 @@ struct T {
 };
 
 static my_bool yes = true;
-
-#define TEST_INDEX \
-        int i; assert(P); i = parameterIndex - 1; if (P->paramCount <= 0 || \
-        i < 0 || i >= P->paramCount) THROW(SQLException, "Parameter index is out of range"); 
 
 extern const struct Rop_T mysqlrops;
 
@@ -127,7 +125,8 @@ void MysqlPreparedStatement_free(T *P) {
 
 
 void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->bind[i].buffer_type = MYSQL_TYPE_STRING;
         P->bind[i].buffer = (char*)x;
         if (! x) {
@@ -142,7 +141,13 @@ void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
 
 
 void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
-        TEST_INDEX
+        MysqlPreparedStatement_setLong(P, parameterIndex, x);
+}
+
+
+void MysqlPreparedStatement_setLong(T P, int parameterIndex, long x) {
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.integer = x;
         P->bind[i].buffer_type = MYSQL_TYPE_LONG;
         P->bind[i].buffer = (char*)&P->params[i].type.integer;
@@ -151,7 +156,8 @@ void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
 
 
 void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.llong = x;
         P->bind[i].buffer_type = MYSQL_TYPE_LONGLONG;
         P->bind[i].buffer = (char*)&P->params[i].type.llong;
@@ -160,7 +166,8 @@ void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
 
 
 void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.real = x;
         P->bind[i].buffer_type = MYSQL_TYPE_DOUBLE;
         P->bind[i].buffer = (char*)&P->params[i].type.real;
@@ -168,8 +175,15 @@ void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
 }
 
 
+void MysqlPreparedStatement_setTimestamp(T P, int parameterIndex, long x) {
+        assert(P);
+        // TODO
+}
+
+
 void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->bind[i].buffer_type = MYSQL_TYPE_BLOB;
         P->bind[i].buffer = (void*)x;
         if (! x) {

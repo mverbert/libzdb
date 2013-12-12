@@ -150,15 +150,15 @@ char *Str_vcat(const char *s, va_list ap) {
 }
 
 
-int Str_parseInt(const char *s) {
+long Str_parseLong(const char *s) {
 	if (STR_UNDEF(s))
 		THROW(SQLException, "NumberFormatException: For input string null");
         errno = 0;
         char *e;
-	int i = (int)strtol(s, &e, 10);
+	long l = strtol(s, &e, 10);
 	if (errno || (e == s))
 		THROW(SQLException, "NumberFormatException: For input string %s -- %s", s, System_getLastError());
-	return i;
+	return l;
 }
 
 
@@ -167,10 +167,10 @@ long long int Str_parseLLong(const char *s) {
 		THROW(SQLException, "NumberFormatException: For input string null");
         errno = 0;
         char *e;
-	long long l = strtoll(s, &e, 10);
+	long long ll = strtoll(s, &e, 10);
 	if (errno || (e == s))
 		THROW(SQLException, "NumberFormatException: For input string %s -- %s", s, System_getLastError());
-	return l;
+	return ll;
 }
 
 

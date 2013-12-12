@@ -52,8 +52,10 @@ const struct Pop_T postgresqlpops = {
         PostgresqlPreparedStatement_free,
         PostgresqlPreparedStatement_setString,
         PostgresqlPreparedStatement_setInt,
+        PostgresqlPreparedStatement_setLong,
         PostgresqlPreparedStatement_setLLong,
         PostgresqlPreparedStatement_setDouble,
+        PostgresqlPreparedStatement_setTimestamp,
         PostgresqlPreparedStatement_setBlob,
         PostgresqlPreparedStatement_execute,
         PostgresqlPreparedStatement_executeQuery,
@@ -76,10 +78,6 @@ struct T {
         int *paramFormats;
         param_t params;
 };
-
-#define TEST_INDEX \
-        int i; assert(P); i = parameterIndex - 1; if (P->paramCount <= 0 || \
-        i < 0 || i >= P->paramCount) THROW(SQLException, "Parameter index is out of range");
 
 extern const struct Rop_T postgresqlrops;
 
@@ -133,7 +131,8 @@ void PostgresqlPreparedStatement_free(T *P) {
 
 
 void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->paramValues[i] = (char *)x;
         P->paramLengths[i] = 0;
         P->paramFormats[i] = 0;
@@ -141,8 +140,14 @@ void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *
 
 
 void PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
-        TEST_INDEX
-        snprintf(P->params[i].s, 64, "%d", x);
+        PostgresqlPreparedStatement_setLong(P, parameterIndex, x);
+}
+
+
+void PostgresqlPreparedStatement_setLong(T P, int parameterIndex, long x) {
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        snprintf(P->params[i].s, 64, "%ld", x);
         P->paramValues[i] =  P->params[i].s;
         P->paramLengths[i] = 0;
         P->paramFormats[i] = 0;
@@ -150,7 +155,8 @@ void PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
 
 
 void PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         snprintf(P->params[i].s, 64, "%lld", x);
         P->paramValues[i] =  P->params[i].s;
         P->paramLengths[i] = 0; 
@@ -159,7 +165,8 @@ void PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long int
 
 
 void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         snprintf(P->params[i].s, 64, "%lf", x);
         P->paramValues[i] =  P->params[i].s;
         P->paramLengths[i] = 0;
@@ -167,8 +174,15 @@ void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
 }
 
 
+void PostgresqlPreparedStatement_setTimestamp(T P, int parameterIndex, long x) {
+        assert(P);
+        //TODO
+}
+
+
 void PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->paramValues[i] = (char *)x;
         P->paramLengths[i] = (x) ? size : 0;
         P->paramFormats[i] = 1;

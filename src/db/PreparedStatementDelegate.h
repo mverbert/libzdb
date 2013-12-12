@@ -42,13 +42,27 @@ typedef struct Pop_T {
         void (*free)(T *P);
         void (*setString)(T P, int parameterIndex, const char *x);
         void (*setInt)(T P, int parameterIndex, int x);
+        void (*setLong)(T P, int parameterIndex, long x);
         void (*setLLong)(T P, int parameterIndex, long long int x);
         void (*setDouble)(T P, int parameterIndex, double x);
+        void (*setTimestamp)(T P, int parameterIndex, long x);
         void (*setBlob)(T P, int parameterIndex, const void *x, int size);
         void (*execute)(T P);
         ResultSet_T (*executeQuery)(T P);
         long long int (*rowsChanged)(T P);
 } *Pop_T;
+
+/**
+ * Throws exception if parameterIndex is outside the parameterCount range.
+ * @return parameterIndex - 1. In the API parameterIndex starts with 1,
+ * internally it starts with 0.
+ */
+static inline int checkAndSetParameterIndex(int parameterIndex, int parameterCount) {
+        int i = parameterIndex - 1;
+        if (parameterCount <= 0 || i < 0 || i >= parameterCount)
+                THROW(SQLException, "Parameter index is out of range");
+        return i;
+}
 
 #undef T
 #endif

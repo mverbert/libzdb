@@ -280,14 +280,14 @@ int OracleResultSet_next(T R) {
 
 int OracleResultSet_isnull(T R, int columnIndex) {
         assert(R);
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         return R->columns[i].isNull;
 }
 
 
 const char *OracleResultSet_getString(T R, int columnIndex) {
         assert(R);
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].isNull)
                 return NULL;
         if (R->columns[i].buffer)
@@ -298,7 +298,7 @@ const char *OracleResultSet_getString(T R, int columnIndex) {
 
 const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         assert(R);
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].isNull)
                 return NULL;
         if (R->columns[i].buffer)

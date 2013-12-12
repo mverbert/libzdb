@@ -93,17 +93,17 @@ static void testStr() {
         }
         printf("=> Test5: OK\n\n");
         
-        printf("=> Test6: parseInt, parseLLong, parseDouble\n");
+        printf("=> Test6: parseInt, parseLong, parseLLong, parseFloat, parseDouble\n");
         {
                 char i[STRLEN] = "   -2812 bla";
                 char ll[STRLEN ] = "  2147483642 blabla";
-                char d[STRLEN] = "  2.718281828 this is e";
-                char de[STRLEN] = "1.495E+08 kilometer = An Astronomical Unit";
+                char d[STRLEN] = "  2.71828182845904523536028747135266249775724709369995 this is e";
+                char de[STRLEN] = "9.461E^99 nanometers";
                 char ie[STRLEN] = " 9999999999999999999999999999999999999";
                 printf("\tResult:\n");
                 printf("\tParsed int = %d\n", Str_parseInt(i));
                 printf("\tParsed long long = %lld\n", Str_parseLLong(ll));
-                printf("\tParsed double = %.9f\n", Str_parseDouble(d));
+                printf("\tParsed double = %.52f\n", Str_parseDouble(d));
                 printf("\tParsed double exp = %.3e\n", Str_parseDouble(de));
                 TRY
                 {

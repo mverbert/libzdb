@@ -57,8 +57,10 @@ const struct Pop_T oraclepops = {
         OraclePreparedStatement_free,
         OraclePreparedStatement_setString,
         OraclePreparedStatement_setInt,
+        OraclePreparedStatement_setLong,
         OraclePreparedStatement_setLLong,
         OraclePreparedStatement_setDouble,
+        OraclePreparedStatement_setTimestamp,
         OraclePreparedStatement_setBlob,
         OraclePreparedStatement_execute,
         OraclePreparedStatement_executeQuery,
@@ -87,10 +89,6 @@ struct T {
         sword      lastError;
         ub4        rowsChanged;
 };
-
-#define TEST_INDEX \
-        int i; assert(P); i = parameterIndex - 1; if (P->paramCount <= 0 || \
-        i < 0 || i >= P->paramCount) THROW(SQLException, "Parameter index is out of range"); 
 
 extern const struct Rop_T oraclerops;
 
@@ -138,7 +136,8 @@ void OraclePreparedStatement_free(T *P) {
 
 
 void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.string = x;
         P->params[i].length = x ? strlen(x) : 0;
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, (char *)P->params[i].type.string, 
@@ -149,10 +148,16 @@ void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x) {
 
 
 void OraclePreparedStatement_setInt(T P, int parameterIndex, int x) {
-        TEST_INDEX
+        OraclePreparedStatement_setLong(P, parameterIndex, x);
+}
+
+
+void OraclePreparedStatement_setLong(T P, int parameterIndex, long x) {
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.integer = x;
         P->params[i].length = sizeof(x);
-        P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].type.integer, 
+        P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].type.integer,
                                     (int)P->params[i].length, SQLT_INT, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
@@ -160,7 +165,8 @@ void OraclePreparedStatement_setInt(T P, int parameterIndex, int x) {
 
 
 void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].length = sizeof(P->params[i].type.number);
         P->lastError = OCINumberFromInt(P->err, &x, sizeof(x), OCI_NUMBER_SIGNED, &P->params[i].type.number);
         if (P->lastError != OCI_SUCCESS)
@@ -173,7 +179,8 @@ void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long int x) 
 
 
 void OraclePreparedStatement_setDouble(T P, int parameterIndex, double x) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.real = x;
         P->params[i].length = sizeof(x);
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].type.real, 
@@ -183,8 +190,15 @@ void OraclePreparedStatement_setDouble(T P, int parameterIndex, double x) {
 }
 
 
+void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, long x) {
+        assert(P);
+        // TODO
+}
+
+
 void OraclePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
-        TEST_INDEX
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.blob = x;
         P->params[i].length = (x) ? size : 0;
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, (void *)P->params[i].type.blob, 

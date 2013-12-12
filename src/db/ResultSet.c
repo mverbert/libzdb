@@ -126,6 +126,9 @@ int ResultSet_isnull(T R, int columnIndex) {
 }
 
 
+#pragma mark - Getters
+
+
 const char *ResultSet_getString(T R, int columnIndex) {
 	assert(R);
 	return R->op->getString(R->D, columnIndex);
@@ -148,6 +151,19 @@ int ResultSet_getInt(T R, int columnIndex) {
 int ResultSet_getIntByName(T R, const char *columnName) {
 	assert(R);
 	return ResultSet_getInt(R, getIndex(R, columnName));
+}
+
+
+long ResultSet_getLong(T R, int columnIndex) {
+	assert(R);
+        const char *s = R->op->getString(R->D, columnIndex);
+	return s ? Str_parseLong(s) : 0;
+}
+
+
+long ResultSet_getLongByName(T R, const char *columnName) {
+	assert(R);
+	return ResultSet_getLong(R, getIndex(R, columnName));
 }
 
 
@@ -190,6 +206,9 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
 	assert(R);
 	return ResultSet_getBlob(R, getIndex(R, columnName), size);
 }
+
+
+#pragma mark - Date and Time
 
 
 time_t ResultSet_getTimestamp(T R, int columnIndex) {

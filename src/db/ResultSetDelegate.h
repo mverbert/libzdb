@@ -26,7 +26,6 @@
 #ifndef RESULTSETDELEGATE_INCLUDED
 #define RESULTSETDELEGATE_INCLUDED
 
-
 /**
  * This interface defines the <b>contract</b> for the concrete database 
  * implementation used for delegation in the ResultSet class.
@@ -54,13 +53,12 @@ typedef struct Rop_T {
  * @return columnIndex - 1. In the API columnIndex starts with 1, 
  * internally it starts with 0.
  */
-static inline int checkAndSetColoumnIndex(int columnIndex, int columnCount) {
+static inline int checkAndSetColumnIndex(int columnIndex, int columnCount) {
         int i = columnIndex - 1;
         if (columnCount <= 0 || i < 0 || i >= columnCount)
                 THROW(SQLException, "Column index is out of range");
         return i;
 }
-
 
 #undef T
 #endif

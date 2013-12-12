@@ -173,7 +173,7 @@ const char *PostgresqlResultSet_getColumnName(T R, int columnIndex) {
 
 
 long PostgresqlResultSet_getColumnSize(T R, int columnIndex) {
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (PQgetisnull(R->res, R->currentRow, i))
                 return 0;
         return PQgetlength(R->res, R->currentRow, i);
@@ -188,14 +188,14 @@ int PostgresqlResultSet_next(T R) {
 
 int PostgresqlResultSet_isnull(T R, int columnIndex) {
         assert(R);
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         return PQgetisnull(R->res, R->currentRow, i);
 }
 
 
 const char *PostgresqlResultSet_getString(T R, int columnIndex) {
         assert(R);
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (PQgetisnull(R->res, R->currentRow, i))
                 return NULL; 
         return PQgetvalue(R->res, R->currentRow, i);
@@ -210,7 +210,7 @@ const char *PostgresqlResultSet_getString(T R, int columnIndex) {
  */
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
         assert(R);
-        int i = checkAndSetColoumnIndex(columnIndex, R->columnCount);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (PQgetisnull(R->res, R->currentRow, i))
                 return NULL; 
         return unescape_bytea((uchar_t*)PQgetvalue(R->res, R->currentRow, i), PQgetlength(R->res, R->currentRow, i), size);

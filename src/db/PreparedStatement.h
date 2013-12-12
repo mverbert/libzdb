@@ -137,16 +137,29 @@ void PreparedStatement_setString(T P, int parameterIndex, const char *x);
 
 
 /**
- * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the 
- * given int value. 
+ * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
+ * given int value.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The int value to set
- * @exception SQLException if a database access error occurs or if parameter 
+ * @exception SQLException if a database access error occurs or if parameter
  * index is out of range
  * @see SQLException.h
  */
 void PreparedStatement_setInt(T P, int parameterIndex, int x);
+
+
+/**
+ * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
+ * given long value.
+ * @param P A PreparedStatement object
+ * @param parameterIndex The first parameter is 1, the second is 2,..
+ * @param x The long value to set
+ * @exception SQLException if a database access error occurs or if parameter
+ * index is out of range
+ * @see SQLException.h
+ */
+void PreparedStatement_setLong(T P, int parameterIndex, long x);
 
 
 /**

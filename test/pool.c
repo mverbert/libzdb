@@ -175,11 +175,11 @@ static void testPool(const char *testURL) {
                 }
                 // The last execute changed one row only
                 assert(PreparedStatement_rowsChanged(pre) == 1);
-                /* Add a database null blob value */
+                /* Add a database null blob value for id = 5 */
                 PreparedStatement_setBlob(pre, 1, NULL, 0);
                 PreparedStatement_setInt(pre, 2, 5);
                 PreparedStatement_execute(pre);
-                /* Add a database null string value */
+                /* Add a database null string value for id = 1 */
                 PreparedStatement_setString(pre, 1, NULL);
                 PreparedStatement_setInt(pre, 2, 1);
                 PreparedStatement_execute(pre);
