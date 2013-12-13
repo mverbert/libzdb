@@ -97,6 +97,14 @@ sqldatetime_t *Time_toDateTime(const char *t, sqldatetime_t *r);
 
 
 /**
+ * Converts a local time to the GMT timezone
+ * @param localtime A time_t representing a local time
+ * @return The local time converted to the equivalent GMT timezone
+ */
+time_t Time_gmt(time_t localtime);
+
+
+/**
  * Returns the time since the Epoch (00:00:00 UTC, January 1, 1970),
  * measured in seconds. 
  * @return A time_t representing the current local time since the epoch

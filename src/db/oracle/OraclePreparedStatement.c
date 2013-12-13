@@ -60,7 +60,6 @@ const struct Pop_T oraclepops = {
         OraclePreparedStatement_setLong,
         OraclePreparedStatement_setLLong,
         OraclePreparedStatement_setDouble,
-        OraclePreparedStatement_setTimestamp,
         OraclePreparedStatement_setBlob,
         OraclePreparedStatement_execute,
         OraclePreparedStatement_executeQuery,
@@ -187,12 +186,6 @@ void OraclePreparedStatement_setDouble(T P, int parameterIndex, double x) {
                                     (int)P->params[i].length, SQLT_FLT, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
-}
-
-
-void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, long x) {
-        assert(P);
-        // TODO
 }
 
 

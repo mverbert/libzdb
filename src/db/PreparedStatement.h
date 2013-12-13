@@ -203,21 +203,6 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 
 
 /**
- * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
- * given Unix timestamp value. The timestamp value is converted to a SQL 
- * timestamp string. If you need to set a Date, a Time or a DateTime field,
- * use PreparedStatement_setString()
- * @param P A PreparedStatement object
- * @param parameterIndex The first parameter is 1, the second is 2,..
- * @param x The timestamp value to set
- * @exception SQLException if a database access error occurs or if parameter
- * index is out of range
- * @see SQLException.h
- */
-void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x);
-
-
-/**
  * Executes the prepared SQL statement, which may be an INSERT, UPDATE,
  * or DELETE statement or an SQL statement that returns nothing, such
  * as an SQL DDL statement. 

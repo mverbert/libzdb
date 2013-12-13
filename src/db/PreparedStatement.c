@@ -128,12 +128,7 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 }
 
 
-void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
-        assert(P);
-        P->op->setTimestamp(P->D, parameterIndex, x);
-}
-
-#pragma mark - Ops
+#pragma mark - Methods
 
 void PreparedStatement_execute(T P) {
 	assert(P);

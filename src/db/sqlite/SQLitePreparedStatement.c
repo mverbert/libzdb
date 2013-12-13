@@ -55,7 +55,6 @@ const struct Pop_T sqlite3pops = {
         SQLitePreparedStatement_setLong,
         SQLitePreparedStatement_setLLong,
         SQLitePreparedStatement_setDouble,
-        SQLitePreparedStatement_setTimestamp,
         SQLitePreparedStatement_setBlob,
         SQLitePreparedStatement_execute,
         SQLitePreparedStatement_executeQuery,
@@ -138,12 +137,6 @@ void SQLitePreparedStatement_setDouble(T P, int parameterIndex, double x) {
         P->lastError = sqlite3_bind_double(P->stmt, parameterIndex, x);
         if (P->lastError == SQLITE_RANGE)
                 THROW(SQLException, "Parameter index is out of range");
-}
-
-
-void SQLitePreparedStatement_setTimestamp(T P, int parameterIndex, long x) {
-        assert(P);
-        // TODO
 }
 
 

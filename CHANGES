@@ -16,8 +16,6 @@ Version 3.0
   or 0, this method can be used.
 * New: Added methods to Result Set for retrieving Date, Time, DateTime
   and TimeStamp column values. 
-* New: Added PreparedStatement_setTimestamp as a convenience function
-  for setting a Unix timestamp
 
 Version 2.12
 --------------

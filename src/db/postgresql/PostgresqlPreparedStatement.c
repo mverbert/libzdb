@@ -55,7 +55,6 @@ const struct Pop_T postgresqlpops = {
         PostgresqlPreparedStatement_setLong,
         PostgresqlPreparedStatement_setLLong,
         PostgresqlPreparedStatement_setDouble,
-        PostgresqlPreparedStatement_setTimestamp,
         PostgresqlPreparedStatement_setBlob,
         PostgresqlPreparedStatement_execute,
         PostgresqlPreparedStatement_executeQuery,
@@ -171,12 +170,6 @@ void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
         P->paramValues[i] =  P->params[i].s;
         P->paramLengths[i] = 0;
         P->paramFormats[i] = 0;
-}
-
-
-void PostgresqlPreparedStatement_setTimestamp(T P, int parameterIndex, long x) {
-        assert(P);
-        //TODO
 }
 
 

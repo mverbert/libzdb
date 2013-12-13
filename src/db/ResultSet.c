@@ -212,17 +212,12 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
 
 
 time_t ResultSet_getTimestamp(T R, int columnIndex) {
-        assert(R);
-        const char *t = ResultSet_getString(R, columnIndex);
-        if (STR_DEF(t))
-                return Time_toTimestamp(t);
-        return 0;
+        return (time_t)ResultSet_getLong(R, columnIndex);
 }
 
 
 time_t ResultSet_getTimestampByName(T R, const char *columnName) {
-        assert(R);
-        return ResultSet_getTimestamp(R, getIndex(R, columnName));
+        return (time_t)ResultSet_getLong(R, getIndex(R, columnName));
 }
 
 

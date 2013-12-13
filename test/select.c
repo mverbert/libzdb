@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 #include <assert.h>
 #include <zdb.h>
@@ -16,18 +17,18 @@ int main(void) {
         TRY
         {
                 Connection_execute(con, "create table bleach(name varchar(255), created_at timestamp)");
-                PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?, datetime('now'))"); // now = UTC
+                PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?, ?)");
                 const char *bleach[] = {
                         "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 
                         "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", 0
                 };
                 for (int i = 0; bleach[i]; i++) {
                         PreparedStatement_setString(p, 1, bleach[i]);
-                        // TODO PreparedStatement_setTimestamp(p, 2, Time_now() + 61);
+                        PreparedStatement_setLong(p, 2, time(NULL) + i);
                         PreparedStatement_execute(p);
                 }
-                // TODO ResultSet_getTemporal methods need to convert to localtime unless otherwise indicated by tz in string
-                ResultSet_T r = Connection_executeQuery(con, "select name, datetime(created_at, 'localtime') from bleach");
+                ResultSet_T r = Connection_executeQuery(con,
+                                "select name, datetime(created_at, 'unixepoch', 'localtime') from bleach");
                 while (ResultSet_next(r))
                         printf("%-22s\t %s\n", ResultSet_getString(r, 1), ResultSet_getString(r, 2));
                 Connection_execute(con, "drop table bleach;");

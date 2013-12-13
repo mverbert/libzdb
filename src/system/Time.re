@@ -94,6 +94,13 @@ time_t Time_now(void) {
 }
 
 
+time_t Time_gmt(time_t localtime) {
+	struct tm r;
+	gmtime_r(&localtime, &r);
+	return mktime(&r);
+}
+
+
 long long int Time_milli(void) {
 	struct timeval t;
 	if (gettimeofday(&t, NULL) != 0)

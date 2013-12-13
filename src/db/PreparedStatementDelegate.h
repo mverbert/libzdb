@@ -45,7 +45,6 @@ typedef struct Pop_T {
         void (*setLong)(T P, int parameterIndex, long x);
         void (*setLLong)(T P, int parameterIndex, long long int x);
         void (*setDouble)(T P, int parameterIndex, double x);
-        void (*setTimestamp)(T P, int parameterIndex, long x);
         void (*setBlob)(T P, int parameterIndex, const void *x, int size);
         void (*execute)(T P);
         ResultSet_T (*executeQuery)(T P);

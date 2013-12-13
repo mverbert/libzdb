@@ -395,27 +395,21 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
 
 /**
  * Retrieves the value of the designated column in the current row of
- * this ResultSet object as a Unix timestamp in the <i>local</i> timezone.
- * If <code>columnIndex</code> is outside the range 
- * [1..ResultSet_getColumnCount()] this method throws an SQLException. 
- * The returned value represent seconds since the <strong>epoch</strong>
- * (January 1, 1970, 00:00:00 GMT) in the <i>local</i> timezone. A SQL 
- * database will normally store timestamp values in UTC and on retrieval 
- * convert the value to the local timezone. If the SQL value contains a 
- * timezone part, this is respected when converting to Unix timestamp. 
- * Even though the underlying database might support timestamp ranges 
- * before the epoch and after '2038-01-19 03:14:07 UTC' it is safest not
- * to assume or use values outside this range. Especially if you are on 
- * a 32-bits system. In general and if timestamp with timezone support 
- * is not needed, it is more efficient to use an <code>integer</code> 
- * SQL data type in the database and Unix timestamp values directly.
- * This method can be used to retrieve the value of columns with the SQL
- * data type, DateTime or Timestamp.
+ * this ResultSet object as a Unix timestamp. If <code>columnIndex</code>
+ * is outside the range [1..ResultSet_getColumnCount()] this method throws 
+ * an SQLException. The returned value represent seconds since the 
+ * <strong>epoch</strong> (January 1, 1970, 00:00:00 GMT). A SQL database
+ * will normally store timestamp values in UTC and on retrieval convert
+ * the value to the local timezone. <i>This method does not convert the
+ * returned timestamp from the database.</i> Even though the underlying 
+ * database might support timestamp ranges before the epoch and after
+ * '2038-01-19 03:14:07 UTC' it is safest not to assume or use values
+ * outside this range. Especially if you are on a 32-bits system.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return The column value as seconds since the epoch in the local
- * timezone; if the value is SQL NULL, the value returned is 0, i.e. 
- * '1970-01-01 00:00:00 GMT'
+ * @return The column value as seconds since the epoch in the timezone
+ * returned by the database (usually the system timezone); if the value 
+ * is SQL NULL, the value returned is 0, i.e. '1970-01-01 00:00:00'
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
  * to a valid timestamp
@@ -426,27 +420,22 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
 
 /**
  * Retrieves the value of the designated column in the current row of
- * this ResultSet object as a Unix timestamp in the <i>local</i> timezone. 
- * If <code>columnName</code> is not found this method throws an 
- * SQLException. The returned value represent seconds since the <strong>
- * epoch</strong> (January 1, 1970, 00:00:00 GMT) in the <i>local</i> 
- * timezone. A SQL database will normally store timestamp values in UTC 
- * and on retrieval convert the value to the local timezone. If the SQL 
- * value contains a timezone part, this is respected when converting to 
- * Unix timestamp. Even though the underlying database might support 
- * timestamp ranges before the epoch and after '2038-01-19 03:14:07 UTC'
- * it is safest not to assume or use values outside this range. Especially
- * if you are on a 32-bits system. In general and if timestamp with 
- * timezone support is not needed, it is more efficient to use an 
- * <code>integer</code> SQL data type in the database and Unix timestamp
- * values directly. This method can be used to retrieve the value of 
- * columns with the SQL data type, DateTime or Timestamp.
+ * this ResultSet object as a Unix timestamp. If <code>columnName</code> 
+ * is not found this method throws an SQLException. The returned value 
+ * represent seconds since the <strong>epoch</strong> (January 1, 1970, 
+ * 00:00:00 GMT). A SQL database will normally store timestamp values in 
+ * UTC and on retrieval convert the value to the local timezone. <i>This
+ * method does not convert the returned timestamp from the database.</i> 
+ * Even though the underlying database might support timestamp ranges 
+ * before the epoch and after '2038-01-19 03:14:07 UTC' it is safest not 
+ * to assume or use values outside this range. Especially if you are on
+ * a 32-bits system.
  * @param R A ResultSet object
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return The column value as seconds since the epoch in the local
- * timezone; if the value is SQL NULL, the value returned is 0, i.e.
- * '1970-01-01 00:00:00 GMT'
+ * @return The column value as seconds since the epoch in the timezone
+ * returned by the database (usually the system timezone); if the value
+ * is SQL NULL, the value returned is 0, i.e. '1970-01-01 00:00:00'
  * @exception SQLException if a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
  * to a valid timestamp

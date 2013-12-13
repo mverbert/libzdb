@@ -55,7 +55,6 @@ const struct Pop_T mysqlpops = {
         MysqlPreparedStatement_setLong,
         MysqlPreparedStatement_setLLong,
         MysqlPreparedStatement_setDouble,
-        MysqlPreparedStatement_setTimestamp,
         MysqlPreparedStatement_setBlob,
         MysqlPreparedStatement_execute,
         MysqlPreparedStatement_executeQuery,
@@ -172,12 +171,6 @@ void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
         P->bind[i].buffer_type = MYSQL_TYPE_DOUBLE;
         P->bind[i].buffer = (char*)&P->params[i].type.real;
         P->bind[i].is_null = 0;
-}
-
-
-void MysqlPreparedStatement_setTimestamp(T P, int parameterIndex, long x) {
-        assert(P);
-        // TODO
 }
 
 
