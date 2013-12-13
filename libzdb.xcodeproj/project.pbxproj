@@ -249,7 +249,6 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
-				52F0F9D71851DF2A003B0B33 /* libpq.dylib */,
 				52788BDB13E716A0002F3C7C /* README */,
 				52788BD213E716A0002F3C7C /* COPYING */,
 				52788BC613E716A0002F3C7C /* AUTHORS */,
@@ -274,6 +273,7 @@
 		526B7ABD13E7564B008E2CB1 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				52F0F9D71851DF2A003B0B33 /* libpq.dylib */,
 				522A207417C1111F00E2FA0A /* libclntsh.dylib */,
 				521D820A17AF0471008E282B /* libmysqlclient.18.dylib */,
 				529F8EC1177503520067C40A /* libz.dylib */,

@@ -195,6 +195,13 @@
 #define T Exception_T
 /** @cond hide */
 #include <pthread.h>
+#ifndef CLANG_ANALYZER_NORETURN
+#if defined(__clang__)
+#define CLANG_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
+#else
+#define CLANG_ANALYZER_NORETURN
+#endif
+#endif
 #define ThreadData_T pthread_key_t
 #define ThreadData_set(key, value) pthread_setspecific((key), (value))
 #define ThreadData_get(key) pthread_getspecific((key))
@@ -215,7 +222,7 @@ struct Exception_Frame {
 enum { Exception_entered=0, Exception_thrown, Exception_handled, Exception_finalized };
 extern ThreadData_T Exception_stack;
 void Exception_init(void);
-void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...);
+void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...) CLANG_ANALYZER_NORETURN;
 #define pop_Exception_stack ThreadData_set(Exception_stack, ((Exception_Frame*)ThreadData_get(Exception_stack))->prev)
 /** @endcond */
 
