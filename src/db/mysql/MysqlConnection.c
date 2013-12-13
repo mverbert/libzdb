@@ -304,8 +304,10 @@ PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_li
         va_copy(ap_copy, ap);
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
-        if (prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt))
-		return PreparedStatement_new(MysqlPreparedStatement_new(stmt, C->maxRows), (Pop_T)&mysqlpops);
+        if (prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt)) {
+                int parameterCount = (int)mysql_stmt_param_count(stmt);
+		return PreparedStatement_new(MysqlPreparedStatement_new(stmt, C->maxRows, parameterCount), (Pop_T)&mysqlpops, parameterCount);
+        }
         return NULL;
 }
 

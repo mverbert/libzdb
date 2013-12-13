@@ -360,7 +360,7 @@ PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_l
         StringBuffer_vappend(C->sb, sql, ap_copy);
         va_end(ap_copy);
         StringBuffer_trim(C->sb);
-        StringBuffer_prepare4oracle(C->sb);
+        int paramCount = StringBuffer_prepare4oracle(C->sb);
         /* Build statement */
         C->lastError = OCIHandleAlloc(C->env, (void **)&stmtp, OCI_HTYPE_STMT, 0, 0);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
@@ -370,7 +370,7 @@ PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_l
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
-        return PreparedStatement_new(OraclePreparedStatement_new(stmtp, C->env, C->err, C->svc, C->maxRows), (Pop_T)&oraclepops);
+        return PreparedStatement_new(OraclePreparedStatement_new(stmtp, C->env, C->err, C->svc, C->maxRows), (Pop_T)&oraclepops, paramCount);
 }
 
 

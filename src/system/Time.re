@@ -26,6 +26,7 @@
 #include "Config.h"
 
 #include <stdio.h>
+#include <string.h>
 #include <sys/time.h>
 #include <sys/select.h>
 
@@ -94,10 +95,37 @@ time_t Time_now(void) {
 }
 
 
-time_t Time_gmt(time_t localtime) {
-	struct tm r;
-	gmtime_r(&localtime, &r);
-	return mktime(&r);
+char *Time_toString(time_t time, char *result) {
+#define i2a(i) (x[0] = ((i) / 10) + '0', x[1] = ((i) % 10) + '0')
+        assert(result);
+        assert(time >= 0);
+        char x[2];
+        struct tm ts;
+        localtime_r(&time, &ts);
+        memcpy(result, "YYYY-MM-DD HH:MM:SS\0", 20);
+        /*              0    5  8  11 14 17 */
+        i2a((ts.tm_year+1900)/100);
+        result[0] = x[0];
+        result[1] = x[1];
+        i2a((ts.tm_year+1900)%100);
+        result[2] = x[0];
+        result[3] = x[1];
+        i2a(ts.tm_mon + 1); // Months in 01-12
+        result[5] = x[0];
+        result[6] = x[1];
+        i2a(ts.tm_mday);
+        result[8] = x[0];
+        result[9] = x[1];
+        i2a(ts.tm_hour);
+        result[11] = x[0];
+        result[12] = x[1];
+        i2a(ts.tm_min);
+        result[14] = x[0];
+        result[15] = x[1];
+        i2a(ts.tm_sec);
+        result[17] = x[0];
+        result[18] = x[1];
+	return result;
 }
 
 

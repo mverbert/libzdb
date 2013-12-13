@@ -16,6 +16,8 @@ Version 3.0
   or 0, this method can be used.
 * New: Added methods to Result Set for retrieving Date, Time, DateTime
   and TimeStamp column values. 
+* New: Added PreparedStatement_setTimestamp for setting Unix timestamp.
+  The SQLite version uses ISO-8601 time string instead of Unix timestamp
 
 Version 2.12
 --------------

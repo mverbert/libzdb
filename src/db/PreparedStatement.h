@@ -109,9 +109,10 @@ typedef struct PreparedStatement_S *T;
  * Create a new PreparedStatement.
  * @param D the delegate used by this PreparedStatement
  * @param op delegate operations
+ * @param parameterCount number of parameters in this prepared statement
  * @return A new PreparedStatement object
  */
-T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op);
+T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op, int parameterCount);
 
 
 /**
@@ -200,6 +201,24 @@ void PreparedStatement_setDouble(T P, int parameterIndex, double x);
  * @see SQLException.h
  */
 void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
+
+
+/**
+ * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
+ * given Unix timestamp value. The timestamp value given in <code>x</code>
+ * is assumed to be in local system time and no timezone conversion is done
+ * by this method. A SQL database will normally convert the timestamp value 
+ * to UTC and on retrieval convert the value back to the local timezone. 
+ * Internally this method converts the timestamp to a ISO-8601 formated date
+ * string in the local timezone which is then sent to the database.
+ * @param P A PreparedStatement object
+ * @param parameterIndex The first parameter is 1, the second is 2,..
+ * @param x The localtime timestamp value to set
+ * @exception SQLException if a database access error occurs or if parameter
+ * index is out of range
+ * @see SQLException.h
+ */
+void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x);
 
 
 /**

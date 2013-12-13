@@ -177,11 +177,22 @@ static void testTime() {
         }
         printf("=> Test2: OK\n\n");
         
-        printf("=> Test3: usleep\n");
+        printf("=> Test3: Time_toString\n");
+        {
+                char *t = Time_toString(Time_now(), (char[20]){0});
+                assert(t);
+                assert(strlen(t) == 19);
+                printf("\tResult: %s\n", t);
+        }
+        printf("=> Test3: OK\n\n");
+        
+        // TODO do the reverse and parse out string
+
+        printf("=> Test4: usleep\n");
         {
                 Time_usleep(1);
         }
-        printf("=> Test3: OK\n\n");
+        printf("=> Test4: OK\n\n");
         
         printf("============> Time Tests: OK\n\n");
 }

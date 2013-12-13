@@ -27,6 +27,7 @@
 
 #include <stdio.h>
 
+#include "system/Time.h"
 #include "ResultSet.h"
 #include "PreparedStatement.h"
 
@@ -41,9 +42,14 @@
 /* ----------------------------------------------------------- Definitions */
 
 
+typedef struct param_t {
+        char timestamp[20];
+} *param_t;
 #define T PreparedStatement_T
 struct PreparedStatement_S {
         Pop_T op;
+        param_t params;
+        int paramCount;
         ResultSet_T resultSet;
         PreparedStatementDelegate_T D;
 };
@@ -65,13 +71,16 @@ static void clearResultSet(T P) {
 #pragma GCC visibility push(hidden)
 #endif
 
-T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op) {
+T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op, int paramCount) {
 	T P;
 	assert(D);
 	assert(op);
 	NEW(P);
 	P->D = D;
 	P->op = op;
+        P->paramCount = paramCount;
+        if (paramCount)
+                P->params = CALLOC(P->paramCount, sizeof(struct param_t));
 	return P;
 }
 
@@ -80,6 +89,7 @@ void PreparedStatement_free(T *P) {
 	assert(P && *P);
         clearResultSet((*P));
         (*P)->op->free(&(*P)->D);
+        FREE((*P)->params);
 	FREE(*P);
 }
 
@@ -127,6 +137,12 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
         P->op->setBlob(P->D, parameterIndex, x, size);
 }
 
+
+void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        P->op->setString(P->D, parameterIndex, Time_toString(x, P->params[i].timestamp));
+}
 
 #pragma mark - Methods
 

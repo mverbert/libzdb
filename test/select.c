@@ -10,25 +10,24 @@
  */
 
 int main(void) {
-        URL_T url = URL_new("sqlite:///tmp/test.db");
+        URL_T url = URL_new("mysql://localhost:3306/test?user=root&password=root");
         ConnectionPool_T pool = ConnectionPool_new(url);
         ConnectionPool_start(pool);
         Connection_T con = ConnectionPool_getConnection(pool);
         TRY
         {
-                Connection_execute(con, "create table bleach(name varchar(255), created_at timestamp)");
+                Connection_execute(con, "create table IF NOT EXISTS bleach(name varchar(255), created_at timestamp)");
                 PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?, ?)");
                 const char *bleach[] = {
                         "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 
-                        "Kisuke Urahara", "Uryū Ishida", "Renji Abarai", 0
+                        "Kisuke Urahara", "Ury\u016b Ishida", "Renji Abarai", 0
                 };
                 for (int i = 0; bleach[i]; i++) {
                         PreparedStatement_setString(p, 1, bleach[i]);
-                        PreparedStatement_setLong(p, 2, time(NULL) + i);
+                        PreparedStatement_setTimestamp(p, 2, time(NULL) + i);
                         PreparedStatement_execute(p);
                 }
-                ResultSet_T r = Connection_executeQuery(con,
-                                "select name, datetime(created_at, 'unixepoch', 'localtime') from bleach");
+                ResultSet_T r = Connection_executeQuery(con, "select name, created_at from bleach");
                 while (ResultSet_next(r))
                         printf("%-22s\t %s\n", ResultSet_getString(r, 1), ResultSet_getString(r, 2));
                 Connection_execute(con, "drop table bleach;");

@@ -280,8 +280,10 @@ PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_l
 #else
         EXEC_SQLITE(C->lastError, sqlite3_prepare(C->db, StringBuffer_toString(C->sb), -1, &stmt, &tail), C->timeout);
 #endif
-        if (C->lastError == SQLITE_OK)
-		return PreparedStatement_new(SQLitePreparedStatement_new(C->db, stmt, C->maxRows), (Pop_T)&sqlite3pops);
+        if (C->lastError == SQLITE_OK) {
+                int paramCount = sqlite3_bind_parameter_count(stmt);
+		return PreparedStatement_new(SQLitePreparedStatement_new(C->db, stmt, C->maxRows), (Pop_T)&sqlite3pops, paramCount);
+        }
 	return NULL;
 }
 

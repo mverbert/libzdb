@@ -97,11 +97,19 @@ sqldatetime_t *Time_toDateTime(const char *t, sqldatetime_t *r);
 
 
 /**
- * Converts a local time to the GMT timezone
- * @param localtime A time_t representing a local time
- * @return The local time converted to the equivalent GMT timezone
+ * Returns an ISO-8601 formated date string for the given time. The returned
+ * string represent the specified time in localtime. The submitted
+ * result buffer must be large enough to hold at least 20 bytes. Example:
+ * <pre>
+ *  Time_toString(1386951482, buf) -> "2013-12-13T16:18:02"
+ * </pre>
+ * @param time Number of localtime seconds since the EPOCH
+ * @param result The buffer to write the date string too
+ * @return a pointer to the result buffer or NULL if <code>result</code>
+ * was NULL
+ * @exception AssertException if result is NULL or if time is < 0
  */
-time_t Time_gmt(time_t localtime);
+char *Time_toString(time_t time, char result[20]);
 
 
 /**

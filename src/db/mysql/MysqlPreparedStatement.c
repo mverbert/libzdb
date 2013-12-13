@@ -92,13 +92,13 @@ extern const struct Rop_T mysqlrops;
 #pragma GCC visibility push(hidden)
 #endif
 
-T MysqlPreparedStatement_new(void *stmt, int maxRows) {
+T MysqlPreparedStatement_new(void *stmt, int maxRows, int parameterCount) {
         T P;
         assert(stmt);
         NEW(P);
         P->stmt = stmt;
         P->maxRows = maxRows;
-        P->paramCount = (int)mysql_stmt_param_count(P->stmt);
+        P->paramCount = parameterCount;
         if (P->paramCount > 0) {
                 P->params = CALLOC(P->paramCount, sizeof(struct param_t));
                 P->bind = CALLOC(P->paramCount, sizeof(MYSQL_BIND));
