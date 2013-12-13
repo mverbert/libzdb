@@ -10,13 +10,13 @@
  */
 
 int main(void) {
-        URL_T url = URL_new("mysql://localhost:3306/test?user=root&password=root");
+        URL_T url = URL_new("sqlite:///tmp/test.db");
         ConnectionPool_T pool = ConnectionPool_new(url);
         ConnectionPool_start(pool);
         Connection_T con = ConnectionPool_getConnection(pool);
         TRY
         {
-                Connection_execute(con, "create table IF NOT EXISTS bleach(name varchar(255), created_at timestamp)");
+                Connection_execute(con, "create table if not exists bleach(name varchar(255), created_at timestamp)");
                 PreparedStatement_T p = Connection_prepareStatement(con, "insert into bleach values (?, ?)");
                 const char *bleach[] = {
                         "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 

@@ -48,10 +48,10 @@ typedef struct param_t {
 #define T PreparedStatement_T
 struct PreparedStatement_S {
         Pop_T op;
-        param_t params;
         int paramCount;
         ResultSet_T resultSet;
         PreparedStatementDelegate_T D;
+        param_t params;
 };
 
 
@@ -75,12 +75,11 @@ T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op, int paramCount)
 	T P;
 	assert(D);
 	assert(op);
-	NEW(P);
+        P = CALLOC(1, (sizeof(*P) + paramCount * sizeof(P->params[0])));
 	P->D = D;
 	P->op = op;
         P->paramCount = paramCount;
-        if (paramCount)
-                P->params = CALLOC(P->paramCount, sizeof(struct param_t));
+        P->params = (param_t)(P + 1);
 	return P;
 }
 
@@ -89,7 +88,6 @@ void PreparedStatement_free(T *P) {
 	assert(P && *P);
         clearResultSet((*P));
         (*P)->op->free(&(*P)->D);
-        FREE((*P)->params);
 	FREE(*P);
 }
 
