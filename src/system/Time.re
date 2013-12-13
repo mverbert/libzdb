@@ -102,7 +102,7 @@ char *Time_toString(time_t time, char *result) {
         char x[2];
         struct tm ts;
         localtime_r(&time, &ts);
-        memcpy(result, "YYYY-MM-DD HH:MM:SS\0", 20);
+        memcpy(result, "YYYY-MM-DD HH:MM:SS\0", 19);
         /*              0    5  8  11 14 17 */
         i2a((ts.tm_year+1900)/100);
         result[0] = x[0];

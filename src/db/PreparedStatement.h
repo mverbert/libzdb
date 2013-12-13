@@ -123,6 +123,9 @@ void PreparedStatement_free(T *P);
 
 //>> End Protected methods
 
+/** @name Parameters */
+//@{
+
 /**
  * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the 
  * given string value. 
@@ -220,6 +223,7 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
  */
 void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x);
 
+//@}
 
 /**
  * Executes the prepared SQL statement, which may be an INSERT, UPDATE,
@@ -249,7 +253,7 @@ ResultSet_T PreparedStatement_executeQuery(T P);
 
 /**
  * Returns the number of rows that was inserted, deleted or modified by the
- * most recently completed SQL statement on the database connection. If used 
+ * most recently completed SQL statement on the database connection. If used
  * with a transaction, this method should be called <i>before</i> commit is
  * executed, otherwise 0 is returned.
  * @param P A PreparedStatement object
@@ -257,6 +261,18 @@ ResultSet_T PreparedStatement_executeQuery(T P);
  */
 long long int PreparedStatement_rowsChanged(T P);
 
+
+/** @name Properties */
+//@{
+
+/**
+ * Returns the number of parameters in this prepared statement.
+ * @param P A PreparedStatement object
+ * @return The number of parameters in this prepared statement
+ */
+int PreparedStatement_getParameterCount(T P);
+
+//@}
 
 #undef T
 #endif

@@ -209,6 +209,7 @@ int MysqlResultSet_isnull(T R, int columnIndex) {
         return R->columns[i].is_null;
 }
 
+
 const char *MysqlResultSet_getString(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);

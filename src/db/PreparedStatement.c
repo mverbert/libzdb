@@ -97,7 +97,7 @@ void PreparedStatement_free(T *P) {
 
 
 /* -------------------------------------------------------- Public methods */
-#pragma mark - Setters
+#pragma mark - Parameters
 
 
 void PreparedStatement_setString(T P, int parameterIndex, const char *x) {
@@ -160,10 +160,15 @@ ResultSet_T PreparedStatement_executeQuery(T P) {
         return P->resultSet;
 }
 
-#pragma mark - Properties
 
 long long int PreparedStatement_rowsChanged(T P) {
         assert(P);
         return P->op->rowsChanged(P->D);
 }
 
+#pragma mark - Properties
+
+int PreparedStatement_getParameterCount(T P) {
+        assert(P);
+        return P->paramCount;
+}

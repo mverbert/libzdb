@@ -126,7 +126,7 @@ int ResultSet_isnull(T R, int columnIndex) {
 }
 
 
-#pragma mark - Getters
+#pragma mark - Columns
 
 
 const char *ResultSet_getString(T R, int columnIndex) {

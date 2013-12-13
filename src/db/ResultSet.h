@@ -177,6 +177,8 @@ long ResultSet_getColumnSize(T R, int columnIndex);
  */
 int ResultSet_next(T R);
 
+/** @name Columns */
+//@{
 
 /**
  * Returns true if the value of the designated column in the current row of
@@ -389,6 +391,7 @@ const void *ResultSet_getBlob(T R, int columnIndex, int *size);
  */
 const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
 
+//@}
 
 /** @name Date and Time  */
 //@{

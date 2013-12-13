@@ -50,7 +50,7 @@ typedef struct Rop_T {
 
 /**
  * Throws exception if columnIndex is outside the columnCount range.
- * @return columnIndex - 1. In the API columnIndex starts with 1, 
+ * @return columnIndex - 1. In the API, columnIndex starts with 1,
  * internally it starts with 0.
  */
 static inline int checkAndSetColumnIndex(int columnIndex, int columnCount) {
