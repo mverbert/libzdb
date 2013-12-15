@@ -14,7 +14,7 @@
 
  * Memory and Disk space
 
-   A minimum of 1 megabytes RAM are required and around 500KB of free
+   A minimum of 1 megabytes RAM are required and around 700KB of free
    disk space. You may need more RAM depending on how many Connections
    the library should create.
 
@@ -51,8 +51,8 @@
  Use ./configure --help for build and install options. By default, the
  library is built with support for MySQL, PostgreSQL and SQLite. You may
  change this with the --without-<database> options to ./configure. E.g.
- --without-mysql, --without-postgresql or --without-sqlite
-  
+ --without-mysql, --without-postgresql or --without-sqlite. 
+ 
  To verify the library and run unit tests, do 'make verify'. You may
  also want to take a look at test/select.c for an example on how to use
  the library.
@@ -121,9 +121,11 @@
  Reporting a bug
  ---------------
 
- If you believe you have found a bug, please send this information,
- plus information about the machine and OS platform used along with a
- description of the problem to bugs-libzdb@tildeslash.com
+ If you believe you have found a bug, please use the issue tracker on 
+ GitHub (https://github.com/tildeslash/libzdb/issues) to report the 
+ problem. Remember to include the necessary information that will enable 
+ us to understand and reproduce this problem. Alternatively, you can
+ send us an email at bugs-libzdb@tildeslash.com
 
 
  Questions and support
