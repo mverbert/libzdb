@@ -26,7 +26,6 @@
 #ifndef PREPAREDSTATEMENTDELEGATE_INCLUDED
 #define PREPAREDSTATEMENTDELEGATE_INCLUDED
 
-
 /**
  * This interface defines the <b>contract</b> for the concrete database 
  * implementation used for delegation in the PreparedStatement class.
@@ -42,13 +41,12 @@ typedef struct Pop_T {
         void (*free)(T *P);
         void (*setString)(T P, int parameterIndex, const char *x);
         void (*setInt)(T P, int parameterIndex, int x);
-        void (*setLong)(T P, int parameterIndex, long x);
-        void (*setLLong)(T P, int parameterIndex, long long int x);
+        void (*setLLong)(T P, int parameterIndex, long long x);
         void (*setDouble)(T P, int parameterIndex, double x);
         void (*setBlob)(T P, int parameterIndex, const void *x, int size);
         void (*execute)(T P);
         ResultSet_T (*executeQuery)(T P);
-        long long int (*rowsChanged)(T P);
+        long long (*rowsChanged)(T P);
 } *Pop_T;
 
 /**

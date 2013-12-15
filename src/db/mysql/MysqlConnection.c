@@ -155,8 +155,7 @@ static int prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
                 return false;
         }
         if ((C->lastError = mysql_stmt_prepare(*stmt, sql, len))) {
-                StringBuffer_clear(C->sb);
-                StringBuffer_append(C->sb, "%s", mysql_stmt_error(*stmt));
+                StringBuffer_set(C->sb, "%s", mysql_stmt_error(*stmt));
                 mysql_stmt_close(*stmt);
                 *stmt = NULL;
                 return false;
@@ -247,24 +246,23 @@ int MysqlConnection_rollback(T C) {
 }
 
 
-long long int MysqlConnection_lastRowId(T C) {
+long long MysqlConnection_lastRowId(T C) {
         assert(C);
-        return (long long int)mysql_insert_id(C->db);
+        return (long long)mysql_insert_id(C->db);
 }
 
 
-long long int MysqlConnection_rowsChanged(T C) {
+long long MysqlConnection_rowsChanged(T C) {
         assert(C);
-        return (long long int)mysql_affected_rows(C->db);
+        return (long long)mysql_affected_rows(C->db);
 }
 
 
 int MysqlConnection_execute(T C, const char *sql, va_list ap) {
         va_list ap_copy;
 	assert(C);
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         C->lastError = mysql_real_query(C->db, StringBuffer_toString(C->sb), StringBuffer_length(C->sb));
 	return (C->lastError == MYSQL_OK);
@@ -275,9 +273,8 @@ ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap) {
         va_list ap_copy;
         MYSQL_STMT *stmt = NULL;
 	assert(C);
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         if (prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt)) {
 #if MYSQL_VERSION_ID >= 50002
@@ -285,8 +282,7 @@ ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap) {
                 mysql_stmt_attr_set(stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
 #endif
                 if ((C->lastError = mysql_stmt_execute(stmt))) {
-                        StringBuffer_clear(C->sb);
-                        StringBuffer_append(C->sb, "%s", mysql_stmt_error(stmt));
+                        StringBuffer_set(C->sb, "%s", mysql_stmt_error(stmt));
                         mysql_stmt_close(stmt);
                 }
                 else
@@ -300,9 +296,8 @@ PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_li
         va_list ap_copy;
         MYSQL_STMT *stmt = NULL;
         assert(C);
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         if (prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt)) {
                 int parameterCount = (int)mysql_stmt_param_count(stmt);

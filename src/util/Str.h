@@ -144,34 +144,25 @@ char *Str_vcat(const char *s, va_list ap);
  * Parses the string argument as a signed integer in base 10.
  * @param s A string
  * @return The integer represented by the string argument.
- * @exception SQLException if a parse error occurred
+ * @exception SQLException If a parse error occurred
  */
-#define Str_parseInt (int)Str_parseLong
+int Str_parseInt(const char *s);
 
 
 /**
- * Parses the string argument as a signed integer in base 10.
- * @param s A string
- * @return The integer represented by the string argument.
- * @exception SQLException if a parse error occurred
- */
-long Str_parseLong(const char *s);
-
-
-/**
- * Parses the string argument as a signed long long in base 10. 
+ * Parses the string argument as a signed long long in base 10.
  * @param s A string
  * @return The long long represented by the string argument.
- * @exception SQLException if a parse error occurred
+ * @exception SQLException If a parse error occurred
  */
-long long int Str_parseLLong(const char *s);
+long long Str_parseLLong(const char *s);
 
 
 /**
  * Parses the string argument as a double.
  * @param s A string
  * @return The double represented by the string argument.
- * @exception SQLException if a parse error occurred
+ * @exception SQLException If a parse error occurred
  */
 double Str_parseDouble(const char *s);
 

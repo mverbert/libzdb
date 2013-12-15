@@ -52,7 +52,6 @@ const struct Pop_T postgresqlpops = {
         PostgresqlPreparedStatement_free,
         PostgresqlPreparedStatement_setString,
         PostgresqlPreparedStatement_setInt,
-        PostgresqlPreparedStatement_setLong,
         PostgresqlPreparedStatement_setLLong,
         PostgresqlPreparedStatement_setDouble,
         PostgresqlPreparedStatement_setBlob,
@@ -139,21 +138,16 @@ void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *
 
 
 void PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
-        PostgresqlPreparedStatement_setLong(P, parameterIndex, x);
-}
-
-
-void PostgresqlPreparedStatement_setLong(T P, int parameterIndex, long x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
-        snprintf(P->params[i].s, 64, "%ld", x);
+        snprintf(P->params[i].s, 64, "%d", x);
         P->paramValues[i] =  P->params[i].s;
         P->paramLengths[i] = 0;
         P->paramFormats[i] = 0;
 }
 
 
-void PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
+void PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         snprintf(P->params[i].s, 64, "%lld", x);
@@ -204,7 +198,7 @@ ResultSet_T PostgresqlPreparedStatement_executeQuery(T P) {
 }
 
 
-long long int PostgresqlPreparedStatement_rowsChanged(T P) {
+long long PostgresqlPreparedStatement_rowsChanged(T P) {
         assert(P);
         char *changes = PQcmdTuples(P->res);
         return changes ? Str_parseLLong(changes) : 0;

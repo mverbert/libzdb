@@ -218,24 +218,23 @@ int SQLiteConnection_rollback(T C) {
 }
 
 
-long long int SQLiteConnection_lastRowId(T C) {
+long long SQLiteConnection_lastRowId(T C) {
         assert(C);
         return sqlite3_last_insert_rowid(C->db);
 }
 
 
-long long int SQLiteConnection_rowsChanged(T C) {
+long long SQLiteConnection_rowsChanged(T C) {
         assert(C);
-        return (long long int)sqlite3_changes(C->db);
+        return (long long)sqlite3_changes(C->db);
 }
 
 
 int SQLiteConnection_execute(T C, const char *sql, va_list ap) {
         va_list ap_copy;
 	assert(C);
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
 	executeSQL(C, StringBuffer_toString(C->sb));
 	return (C->lastError == SQLITE_OK);
@@ -247,9 +246,8 @@ ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
         const char *tail;
 	sqlite3_stmt *stmt;
 	assert(C);
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
 #if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
         C->lastError = sqlite3_blocking_prepare_v2(C->db, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt, &tail);
@@ -269,9 +267,8 @@ PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_l
         const char *tail;
         sqlite3_stmt *stmt;
         assert(C);
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
 #if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
         C->lastError = sqlite3_blocking_prepare_v2(C->db, StringBuffer_toString(C->sb), -1, &stmt, &tail);

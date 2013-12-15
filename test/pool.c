@@ -55,6 +55,7 @@ static void testPool(const char *testURL) {
                 exit(1);
         }
 
+        
         printf("=> Test1: create/destroy\n");
         {
                 pool = ConnectionPool_new(URL_new(testURL));
@@ -168,6 +169,7 @@ static void testPool(const char *testURL) {
                 // 2. Prepared statement, update the table proper with "images". 
                 PreparedStatement_T pre = Connection_prepareStatement(con, "update zild_t set image=? where id=?;");
                 assert(pre);
+                assert(PreparedStatement_getParameterCount(pre) == 2);
                 for (i = 0; images[i]; i++) {
                         PreparedStatement_setBlob(pre, 1, images[i], (int)strlen(images[i])+1);
                         PreparedStatement_setInt(pre, 2, i + 1);
@@ -595,6 +597,73 @@ static void testPool(const char *testURL) {
                 }
         }
         printf("=> Test9: OK\n\n");
+        
+        printf("=> Test10: Date, Time, DateTime and Timestamp\n");
+        {
+                url = URL_new(testURL);
+                pool = ConnectionPool_new(url);
+                assert(pool);
+                ConnectionPool_start(pool);
+                Connection_T con = ConnectionPool_getConnection(pool);
+                
+                if (Str_startsWith(testURL, "postgres"))
+                        Connection_execute(con, "create table zild_t(d date, t time, dt timestamp, ts timestamp)");
+                else if (Str_startsWith(testURL, "oracle"))
+                        Connection_execute(con, "create table zild_t(d date, t time, dt date, ts timestamp)");
+                else
+                        Connection_execute(con, "create table zild_t(d date, t time, dt datetime, ts timestamp)");
+                
+                PreparedStatement_T p = Connection_prepareStatement(con, "insert into zild_t values (?, ?, ?, ?)");
+                PreparedStatement_setString(p, 1, "2013-12-28");
+                PreparedStatement_setString(p, 2, "10:12:42");
+                PreparedStatement_setString(p, 3, "2013-12-28 10:12:42");
+                PreparedStatement_setTimestamp(p, 4, 1387062778);
+                PreparedStatement_execute(p);
+                ResultSet_T r = Connection_executeQuery(con, "select * from zild_t");
+                if (ResultSet_next(r)) {
+                        struct tm date = ResultSet_getDateTime(r, 1);
+                        struct tm time = ResultSet_getDateTime(r, 2);
+                        struct tm datetime = ResultSet_getDateTime(r, 3);
+                        time_t timestamp = ResultSet_getTimestamp(r, 4);
+                        // Check Date
+                        assert(date.tm_hour == 0);
+                        assert(date.tm_year == 2013);
+                        assert(date.tm_mon == 11); // Remember month - 1
+                        assert(date.tm_mday == 28);
+                        assert(date.tm_gmtoff == 0);
+                        // Check Time
+                        assert(time.tm_year == 0);
+                        assert(time.tm_hour == 10);
+                        assert(time.tm_min == 12);
+                        assert(time.tm_sec == 42);
+                        assert(time.tm_gmtoff == 0);
+                        // Check datetime
+                        assert(datetime.tm_year == 2013);
+                        assert(datetime.tm_mon == 11); // Remember month - 1
+                        assert(datetime.tm_mday == 28);
+                        assert(datetime.tm_hour == 10);
+                        assert(datetime.tm_min == 12);
+                        assert(datetime.tm_sec == 42);
+                        assert(datetime.tm_gmtoff == 0);
+                        // Check timestamp
+                        assert(timestamp == 1387062778);
+                        // Result
+                        printf("\tResult: Date: %s, Time: %s, DateTime: %s, Timestamp: %s\n",
+                               ResultSet_getString(r, 1),
+                               ResultSet_getString(r, 2),
+                               ResultSet_getString(r, 3),
+                               ResultSet_getString(r, 4));
+                }
+                Connection_execute(con, "drop table zild_t;");
+                
+                Connection_close(con);
+                ConnectionPool_stop(pool);
+                ConnectionPool_free(&pool);
+                assert(pool==NULL);
+                URL_free(&url);
+        }
+        printf("=> Test10: OK\n\n");
+
 
         printf("============> Connection Pool Tests: OK\n\n");
 }

@@ -52,7 +52,6 @@ const struct Pop_T mysqlpops = {
         MysqlPreparedStatement_free,
         MysqlPreparedStatement_setString,
         MysqlPreparedStatement_setInt,
-        MysqlPreparedStatement_setLong,
         MysqlPreparedStatement_setLLong,
         MysqlPreparedStatement_setDouble,
         MysqlPreparedStatement_setBlob,
@@ -63,8 +62,8 @@ const struct Pop_T mysqlpops = {
 
 typedef struct param_t {
         union {
-                long integer;
-                long long int llong;
+                int integer;
+                long long llong;
                 double real;
         } type;
         long length;
@@ -140,11 +139,6 @@ void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
 
 
 void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
-        MysqlPreparedStatement_setLong(P, parameterIndex, x);
-}
-
-
-void MysqlPreparedStatement_setLong(T P, int parameterIndex, long x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.integer = x;
@@ -154,7 +148,7 @@ void MysqlPreparedStatement_setLong(T P, int parameterIndex, long x) {
 }
 
 
-void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
+void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.llong = x;
@@ -226,9 +220,9 @@ ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
 }
 
 
-long long int MysqlPreparedStatement_rowsChanged(T P) {
+long long MysqlPreparedStatement_rowsChanged(T P) {
         assert(P);
-        return (long long int)mysql_stmt_affected_rows(P->stmt);
+        return (long long)mysql_stmt_affected_rows(P->stmt);
 }
 
 #ifdef PACKAGE_PROTECTED

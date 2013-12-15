@@ -40,7 +40,6 @@
  * Implementation of the Time interface
  *
  * ISO 8601: http://en.wikipedia.org/wiki/ISO_8601
- * RFC 3339: http://tools.ietf.org/html/rfc3339
  * @file
  */
 
@@ -85,7 +84,7 @@ time_t Time_toTimestamp(const char *s) {
 struct tm *Time_toDateTime(const char *s, struct tm *t) {
         assert(t);
         assert(s);
-        struct tm tm = {.tm_isdst = -1};
+        struct tm tm = {.tm_isdst = 0}; // DST is off
         int has_date = false, has_time = false;
         const char *limit = s + strlen(s), *marker, *token, *cursor = s;
 	while (true) {
@@ -109,6 +108,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                  dd     = [0-9][0-9];
                  yyyy   = [0-9]{4};
                  tz     = [-+]dd(.? dd)?;
+                 frac   = [.][0-9]+;
                  
                  yyyy x dd x dd
                  { // Date: YYYY-MM-DD
@@ -126,7 +126,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                         has_date = true;
                         continue;
                  }
-                 dd x dd x dd
+                 dd x dd x dd frac?
                  { // Time: HH:MM:SS
                         tm.tm_hour = a2i(token, 2);
                         tm.tm_min  = a2i(token + 3, 2);
@@ -134,7 +134,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                         has_time = true;
                         continue;
                  }
-                 dd dd dd tz?
+                 dd dd dd frac?
                  { // Compressed Time: HHMMSS
                         tm.tm_hour = a2i(token, 2);
                         tm.tm_min  = a2i(token + 2, 2);
@@ -175,11 +175,10 @@ time_t Time_now(void) {
 
 char *Time_toString(time_t time, char *result) {
         assert(result);
-        assert(time >= 0);
         char x[2];
         struct tm ts = {0};
         localtime_r(&time, &ts);
-        memcpy(result, "YYYY-MM-DD HH:MM:SS\0", 19);
+        memcpy(result, "YYYY-MM-DD HH:MM:SS\0", 20);
         /*              0    5  8  11 14 17 */
         i2a((ts.tm_year+1900)/100);
         result[0] = x[0];
@@ -206,11 +205,11 @@ char *Time_toString(time_t time, char *result) {
 }
 
 
-long long int Time_milli(void) {
+long long Time_milli(void) {
 	struct timeval t;
 	if (gettimeofday(&t, NULL) != 0)
                 THROW(AssertException, "%s", System_getLastError());
-	return (long long int)t.tv_sec * 1000  +  (long long int)t.tv_usec / 1000;
+	return (long long)t.tv_sec * 1000  +  (long long)t.tv_usec / 1000;
 }
 
 

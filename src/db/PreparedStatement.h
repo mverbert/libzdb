@@ -25,6 +25,7 @@
 
 #ifndef PREPAREDSTATEMENT_INCLUDED
 #define PREPAREDSTATEMENT_INCLUDED
+#include <time.h>
 //<< Protected methods
 #include "PreparedStatementDelegate.h"
 //>> End Protected methods
@@ -93,6 +94,15 @@
  * the Prepared Statement is executed again or until the Connection is
  * returned to the Connection Pool. 
  *
+ * <h3>Date and Time</h3>
+ * PreparedStatement provides PreparedStatement_setTimestamp() for converting
+ * and setting a Unix timestamp value. To set SQL Date, Time or DateTime
+ * values, simply use PreparedStatement_setString() with a time string format
+ * understood by your database. For instance to set a SQL Date value,
+ * <pre>
+ *   PreparedStatement_setString(p, "2013-12-28");
+ * </pre>
+ *
  * <i>A PreparedStatement is reentrant, but not thread-safe and should only be used by one thread (at the time).</i>
  * 
  * @see Connection.h ResultSet.h SQLException.h
@@ -133,7 +143,7 @@ void PreparedStatement_free(T *P);
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The string value to set. Must be a NUL terminated string. NULL
  * is allowed to indicate a SQL NULL value. 
- * @exception SQLException if a database access error occurs or if parameter 
+ * @exception SQLException If a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h
 */
@@ -142,11 +152,17 @@ void PreparedStatement_setString(T P, int parameterIndex, const char *x);
 
 /**
  * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
- * given int value.
+ * given int value. 
+ * In general, on both 32 and 64 bits architecture, <code>int</code> is 4 bytes
+ * or 32 bits and <code>long long</code> is 8 bytes or 64 bits. A
+ * <code>long</code> type is usually equal to <code>int</code> on 32 bits
+ * architecture and equal to to <code>long long</code> on 64 bits architecture.
+ * However, the width of integer types are architecture and compiler dependent.
+ * The above is usually true, but not necessarily.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The int value to set
- * @exception SQLException if a database access error occurs or if parameter
+ * @exception SQLException If a database access error occurs or if parameter
  * index is out of range
  * @see SQLException.h
  */
@@ -154,29 +170,22 @@ void PreparedStatement_setInt(T P, int parameterIndex, int x);
 
 
 /**
- * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
- * given long value.
- * @param P A PreparedStatement object
- * @param parameterIndex The first parameter is 1, the second is 2,..
- * @param x The long value to set
- * @exception SQLException if a database access error occurs or if parameter
- * index is out of range
- * @see SQLException.h
- */
-void PreparedStatement_setLong(T P, int parameterIndex, long x);
-
-
-/**
  * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the 
  * given long long value. 
+ * In general, on both 32 and 64 bits architecture, <code>int</code> is 4 bytes
+ * or 32 bits and <code>long long</code> is 8 bytes or 64 bits. A
+ * <code>long</code> type is usually equal to <code>int</code> on 32 bits
+ * architecture and equal to to <code>long long</code> on 64 bits architecture.
+ * However, the width of integer types are architecture and compiler dependent.
+ * The above is usually true, but not necessarily.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The long long value to set
- * @exception SQLException if a database access error occurs or if parameter 
+ * @exception SQLException If a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h
  */
-void PreparedStatement_setLLong(T P, int parameterIndex, long long int x);
+void PreparedStatement_setLLong(T P, int parameterIndex, long long x);
 
 
 /**
@@ -185,7 +194,7 @@ void PreparedStatement_setLLong(T P, int parameterIndex, long long int x);
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The double value to set
- * @exception SQLException if a database access error occurs or if parameter 
+ * @exception SQLException If a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h
  */
@@ -199,7 +208,7 @@ void PreparedStatement_setDouble(T P, int parameterIndex, double x);
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The blob value to set
  * @param size The number of bytes in the blob 
- * @exception SQLException if a database access error occurs or if parameter 
+ * @exception SQLException If a database access error occurs or if parameter 
  * index is out of range
  * @see SQLException.h
  */
@@ -209,27 +218,30 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 /**
  * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
  * given Unix timestamp value. The timestamp value given in <code>x</code>
- * is assumed to be in local system time and no timezone conversion is done
- * by this method. A SQL database will normally convert the timestamp value 
- * to UTC and on retrieval convert the value back to the local timezone. 
- * Internally this method converts the timestamp to a ISO-8601 like date
- * string in the local timezone which is then sent to the database. This is
- * an implementation detail which is relevant for SQLite as SQLite does not have
- * temporal data types per se. Using this method with SQLite will store
- * a timestamp value as a 19 byte string. This can be useful for two reasons,
- * first, a select will display a timestamp as a human readable value. Second,
- * date/time functions provided by SQLite understand this format, see 
- * http://www.sqlite.org/lang_datefunc.html The drawback is that this can incur
- * storage and computational overhead. If this is a concern, we recommend using
- * raw Unix timestamp values stored in an integer database column and use 
- * PreparedStatement_setLong() and ResultSet_getLong() to respectively set and
- * get these values which is then handled in your application. This applies to
- * all database types supported by this library.
+ * is assumed to be in local system time and no conversion is done by this 
+ * method. A SQL database will normally convert the timestamp value to UTC
+ * and on retrieval convert the value back to the local timezone.
+ 
+ * <i>Implementation note</i>: Internally this method converts the timestamp
+ * to an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a> type time
+ * string in the local timezone which is then sent to the database. This is an
+ * implementation detail, but relevant for SQLite as SQLite does not have 
+ * temporal data types per se. Using this method with SQLite will store a 
+ * timestamp value as a 19 byte string. This can be useful for two reasons, 
+ * first, a SQL select will display a timestamp as a human readable value. 
+ * Second, date/time functions provided by SQLite understand this format, see
+ * http://www.sqlite.org/lang_datefunc.html The drawback is that this can
+ * incur a storage and computational overhead for SQLite compared to storing
+ * a numerical value. If this is a concern, we recommend using raw Unix
+ * timestamp values stored in an integer database column and use 
+ * PreparedStatement_setLLong() and ResultSet_getLLong() to respectively set
+ * and get these values which is then handled in your application. This applies
+ * to all databases supported by this library.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The localtime timestamp value to set
- * @exception SQLException if a database access error occurs or if parameter
- * index is out of range or if the given timestamp cannot be
+ * @exception SQLException If a database access error occurs or if parameter
+ * index is out of range
  * @see SQLException.h
  */
 void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x);
@@ -241,7 +253,7 @@ void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x);
  * or DELETE statement or an SQL statement that returns nothing, such
  * as an SQL DDL statement. 
  * @param P A PreparedStatement object
- * @exception SQLException if a database error occurs
+ * @exception SQLException If a database error occurs
  * @see SQLException.h
  */
 void PreparedStatement_execute(T P);
@@ -255,7 +267,7 @@ void PreparedStatement_execute(T P);
  * @param P A PreparedStatement object
  * @return A ResultSet object that contains the data produced by the prepared
  * statement.
- * @exception SQLException if a database error occurs
+ * @exception SQLException If a database error occurs
  * @see ResultSet.h
  * @see SQLException.h
  */
@@ -270,7 +282,7 @@ ResultSet_T PreparedStatement_executeQuery(T P);
  * @param P A PreparedStatement object
  * @return The number of rows changed by the last (DIM) SQL statement
  */
-long long int PreparedStatement_rowsChanged(T P);
+long long PreparedStatement_rowsChanged(T P);
 
 
 /** @name Properties */

@@ -289,13 +289,13 @@ void Connection_rollback(T C) {
 }
 
 
-long long int Connection_lastRowId(T C) {
+long long Connection_lastRowId(T C) {
         assert(C);
         return C->op->lastRowId(C->D);
 }
 
 
-long long int Connection_rowsChanged(T C) {
+long long Connection_rowsChanged(T C) {
         assert(C);
         return C->op->rowsChanged(C->D);
 }

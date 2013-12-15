@@ -154,27 +154,14 @@ int ResultSet_getIntByName(T R, const char *columnName) {
 }
 
 
-long ResultSet_getLong(T R, int columnIndex) {
-	assert(R);
-        const char *s = R->op->getString(R->D, columnIndex);
-	return s ? Str_parseLong(s) : 0;
-}
-
-
-long ResultSet_getLongByName(T R, const char *columnName) {
-	assert(R);
-	return ResultSet_getLong(R, getIndex(R, columnName));
-}
-
-
-long long int ResultSet_getLLong(T R, int columnIndex) {
+long long ResultSet_getLLong(T R, int columnIndex) {
 	assert(R);
         const char *s = R->op->getString(R->D, columnIndex);
 	return s ? Str_parseLLong(s) : 0;
 }
 
 
-long long int ResultSet_getLLongByName(T R, const char *columnName) {
+long long ResultSet_getLLongByName(T R, const char *columnName) {
 	assert(R);
 	return ResultSet_getLLong(R, getIndex(R, columnName));
 }

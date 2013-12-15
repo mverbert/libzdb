@@ -3,6 +3,7 @@
  * Use is subject to license terms.
  */
 
+%option noyywrap
 %{
   /*
    * Use for filtering text from a C-header file. Filter text between
@@ -35,3 +36,5 @@
 <INITIAL>.      	{ fprintf(yyout, "%s", yytext); }
 
 %%
+
+int main(void) { return yylex(); }

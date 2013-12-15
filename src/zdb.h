@@ -29,7 +29,6 @@
 extern "C" {
 #endif
 
-
 /**
  * Include this interface in your C code to import the libzdb API.
  * This meta interface also wraps libzdb API interface files in an
@@ -51,7 +50,6 @@ extern "C" {
 #include <PreparedStatement.h>
 #include <Connection.h>
 #include <ConnectionPool.h>
-
 
 #ifdef __cplusplus
 }

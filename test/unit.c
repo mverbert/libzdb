@@ -102,13 +102,13 @@ static void testStr() {
                 char de[STRLEN] = "9.461E^99 nanometers";
                 char ie[STRLEN] = " 9999999999999999999999999999999999999";
                 printf("\tResult:\n");
-                printf("\tParsed int = %d\n", Str_parseInt(i));
-                printf("\tParsed long long = %lld\n", Str_parseLLong(ll));
+                printf("\tParsed int32 = %d\n", Str_parseInt(i));
+                printf("\tParsed int64 = %lld\n", Str_parseLLong(ll));
                 printf("\tParsed double = %.52f\n", Str_parseDouble(d));
                 printf("\tParsed double exp = %.3e\n", Str_parseDouble(de));
                 TRY
                 {
-                        printf("\tParse truncated int = %d\n", Str_parseInt(ie));
+                        printf("\tParse overflow int = %d\n", Str_parseInt(ie));
                         assert(false); //Should not come here
                 }
                 CATCH(SQLException)
@@ -207,7 +207,7 @@ static void testTime() {
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
-                // Compresses DateTime
+                // Compressed DateTime
                 assert(Time_toDateTime(" 20131214093808", &t));
                 assert(t.tm_year == 2013);
                 assert(t.tm_mon  == 11);
@@ -215,12 +215,12 @@ static void testTime() {
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
-                // Compresses Date
+                // Compressed Date
                 assert(Time_toDateTime(" 20131214 ", &t));
                 assert(t.tm_year == 2013);
                 assert(t.tm_mon  == 11);
                 assert(t.tm_mday == 14);
-                // Compresses Time
+                // Compressed Time
                 assert(Time_toDateTime("093808", &t));
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
@@ -263,7 +263,7 @@ static void testTime() {
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
                 assert(t.tm_gmtoff == 28800);
-                // Date with timezone, tz should not be set
+                // Date without timezone, tz should not be set
                 assert(Time_toDateTime("2013-12-15-0800 ", &t));
                 assert(t.tm_gmtoff == 0);
                 // Invalid date
@@ -283,14 +283,24 @@ static void testTime() {
         
         printf("=> Test6: Time_toTimestamp\n");
         {
-                time_t t = Time_toTimestamp("2013-12-15 00:12:58");
-                // assert(t == 1387062778); // Cannot assert as DST is system dependent
-                // With TimeZone W. DST is unknown
-                t = Time_toTimestamp("2013-12-15 00:12:58+09:00");
-                // assert(t == 1387095178);
-                // With TimeZone E. DST is uknown
+                // Local time, fraction of second is ignored
+                time_t t = Time_toTimestamp("2013-12-15 00:12:58.123456");
+                assert(t == 1387062778);
+                // Zulu time, no timezone adjustment
+                t = Time_toTimestamp("2013-12-15T00:12:58Z");
+                assert(t == 1387062778);
+                // Invalid timezone is ignored
+                t = Time_toTimestamp("2013-12-15T00:12:58+1");
+                assert(t == 1387062778);
+                // With TimeZone W
+                t = Time_toTimestamp("Tokyo timezone: 2013-12-15 00:12:58+09:00");
+                assert(t == 1387095178);
+                // With TimeZone E
                 t = Time_toTimestamp("New York timezone: 2013-12-15 00:12:58-05");
-                // assert(t == 1387044778);
+                assert(t == 1387044778);
+                // Compressed
+                t = Time_toTimestamp("20131215001258-0500");
+                assert(t == 1387044778);
                 // Invalid timestamp string
                 TRY {
                         Time_toTimestamp("1901-123-45 10:12:14");
@@ -307,11 +317,11 @@ static void testTime() {
         }
         printf("=> Test6: OK\n\n");
         
-        printf("=> Test4: usleep\n");
+        printf("=> Test7: usleep\n");
         {
                 Time_usleep(1);
         }
-        printf("=> Test4: OK\n\n");
+        printf("=> Test7: OK\n\n");
         
         printf("============> Time Tests: OK\n\n");
 }
@@ -731,7 +741,7 @@ static void testStringBuffer() {
         }
         printf("=> Test1: OK\n\n");
         
-        printf("=> Test2: Append NULL value\n");
+        printf("=> Test2: append NULL value\n");
         {
                 sb = StringBuffer_new("");
                 assert(sb);
@@ -742,7 +752,7 @@ static void testStringBuffer() {
         }
         printf("=> Test2: OK\n\n");
         
-        printf("=> Test3: Create with string\n");
+        printf("=> Test3: create with string\n");
         {
                 sb = StringBuffer_new("abc");
                 assert(sb);
@@ -752,7 +762,7 @@ static void testStringBuffer() {
         }
         printf("=> Test3: OK\n\n");
         
-        printf("=> Test4: Append string value\n");
+        printf("=> Test4: append string value\n");
         {
                 sb = StringBuffer_new("abc");
                 assert(sb);
@@ -882,6 +892,27 @@ static void testStringBuffer() {
         }
         printf("=> Test7: OK\n\n");
         
+        printf("=> Test8: set value\n");
+        {
+                sb= StringBuffer_new("abc");
+                assert(sb);
+                StringBuffer_set(sb, "def");
+                assert(IS(StringBuffer_toString(sb), "def"));
+                StringBuffer_free(&sb);
+                assert(sb==NULL);
+                printf("\tTesting set and internal resize:...");
+                sb= StringBuffer_create(4);
+                assert(sb);
+                StringBuffer_set(sb, "abc");
+                StringBuffer_set(sb, "abcdef");
+                assert(IS(StringBuffer_toString(sb), "abcdef"));
+                StringBuffer_set(sb, " ");
+                assert(IS(StringBuffer_toString(sb), " "));
+                printf("ok\n");
+                StringBuffer_free(&sb);
+                assert(sb==NULL);
+        }
+        printf("=> Test8: OK\n\n");
 
         printf("============> StringBuffer Tests: OK\n\n");
 }

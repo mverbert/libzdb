@@ -31,7 +31,7 @@
  * A <b>Connection</b> represent a connection to a SQL database system.
  *
  * Use a Connection to execute SQL statements. There are three ways to
- * execute a SQL statement: Connection_execute() is used to execute SQL 
+ * execute statements: Connection_execute() is used to execute SQL
  * statements that does not return a result set. Such statements are INSERT,
  * UPDATE or DELETE.  Connection_executeQuery() is used to execute a SQL 
  * SELECT statement and return a result set. These methods can only handle
@@ -217,7 +217,7 @@ void Connection_close(T C);
 /**
  * Start a transaction. 
  * @param C A Connection object
- * @exception SQLException if a database error occurs
+ * @exception SQLException If a database error occurs
  * @see SQLException.h
  */
 void Connection_beginTransaction(T C);
@@ -228,7 +228,7 @@ void Connection_beginTransaction(T C);
  * and releases any database locks currently held by this Connection
  * object.
  * @param C A Connection object
- * @exception SQLException if a database error occurs
+ * @exception SQLException If a database error occurs
  * @see SQLException.h
  */
 void Connection_commit(T C);
@@ -240,7 +240,7 @@ void Connection_commit(T C);
  * will first call Connection_clear() before performing the rollback to
  * clear any statements in progress such as selects.
  * @param C A Connection object
- * @exception SQLException if a database error occurs
+ * @exception SQLException If a database error occurs
  * @see SQLException.h
  */
 void Connection_rollback(T C);
@@ -252,7 +252,7 @@ void Connection_rollback(T C);
  * @param C A Connection object
  * @return The value of the rowid from the last insert statement
  */
-long long int Connection_lastRowId(T C);
+long long Connection_lastRowId(T C);
 
 
 /**
@@ -263,7 +263,7 @@ long long int Connection_lastRowId(T C);
  * @param C A Connection object
  * @return The number of rows changed by the last (DIM) SQL statement
  */
-long long int Connection_rowsChanged(T C);
+long long Connection_rowsChanged(T C);
 
 
 /**
@@ -275,7 +275,7 @@ long long int Connection_rowsChanged(T C);
  * clears any previous ResultSets associated with the Connection.
  * @param C A Connection object
  * @param sql A SQL statement
- * @exception SQLException if a database error occurs. 
+ * @exception SQLException If a database error occurs. 
  * @see SQLException.h
  */
 void Connection_execute(T C, const char *sql, ...) __attribute__((format (printf, 2, 3)));
@@ -296,7 +296,7 @@ void Connection_execute(T C, const char *sql, ...) __attribute__((format (printf
  * @param sql A SQL statement
  * @return A ResultSet object that contains the data produced by the
  * given query. 
- * @exception SQLException if a database error occurs. 
+ * @exception SQLException If a database error occurs. 
  * @see ResultSet.h
  * @see SQLException.h
  */
@@ -318,7 +318,7 @@ ResultSet_T Connection_executeQuery(T C, const char *sql, ...) __attribute__((fo
  * IN parameter placeholders
  * @return A new PreparedStatement object containing the pre-compiled
  * SQL statement.
- * @exception SQLException if a database error occurs. 
+ * @exception SQLException If a database error occurs. 
  * @see PreparedStatement.h
  * @see SQLException.h
  */

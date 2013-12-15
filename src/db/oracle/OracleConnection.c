@@ -244,7 +244,7 @@ int  OracleConnection_rollback(T C) {
 }
 
 
-long long int OracleConnection_lastRowId(T C) {
+long long OracleConnection_lastRowId(T C) {
         /*:FIXME:*/
         /*
          Oracle's RowID can be mapped on string only
@@ -274,7 +274,7 @@ long long int OracleConnection_lastRowId(T C) {
 }
 
 
-long long int OracleConnection_rowsChanged(T C) {
+long long OracleConnection_rowsChanged(T C) {
         assert(C);
         return C->rowsChanged;
 }
@@ -285,9 +285,8 @@ int  OracleConnection_execute(T C, const char *sql, va_list ap) {
         va_list ap_copy;
         assert(C);
         C->rowsChanged = 0;
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         StringBuffer_trim(C->sb);
         /* Build statement */
@@ -321,9 +320,8 @@ ResultSet_T OracleConnection_executeQuery(T C, const char *sql, va_list ap) {
         va_list  ap_copy;
         assert(C);
         C->rowsChanged = 0;
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         StringBuffer_trim(C->sb);
         /* Build statement */
@@ -355,9 +353,8 @@ PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_l
         OCIStmt *stmtp;
         va_list ap_copy;
         assert(C);
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         StringBuffer_trim(C->sb);
         int paramCount = StringBuffer_prepare4oracle(C->sb);

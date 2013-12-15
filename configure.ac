@@ -2,7 +2,7 @@
 
 AC_PREREQ([2.53])
 
-AC_INIT([libzdb], [3.0], [bugs-libzdb@tildeslash.com])
+AC_INIT([libzdb], [2.14], [bugs-libzdb@tildeslash.com])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
@@ -18,19 +18,31 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_GCC_TRADITIONAL
 AC_PATH_PROG([RE2C], [re2c], [re2c_not_found], [$PATH:/usr/local/bin:/usr/bin])
-AM_PROG_LEX
-if test -z "${LEXLIB+set}"; then
-       AC_MSG_ERROR([flex is required. Download from http://www.gnu.org/software/flex/])
-else
-        if test ! -d ./tools/bin/
-        then
-                mkdir ./tools/bin || AC_MSG_ERROR([Failed to create ./tools/bin])
+if test -z "${RE2C+set}"; then
+        # Require re2c unless src/net/Url.c already is built
+        if test ! -f src/net/Url.c; then
+                AC_MSG_ERROR([Libzdb require re2c. Download re2c from http://re2c.org/ or use your package manager])
         fi
-        # Build tools in-place in a subshell
-        (cd ./tools/filterh && $LEX filterh.l && $CC -c lex.yy.c && $CC lex.yy.o $LEXLIB -o ../bin/filterh && rm -f lex.yy.*) || AC_MSG_ERROR([Failed to build tools])
-        # Assert that we succeded building filterh
-        test -f ./tools/bin/filterh || AC_MSG_ERROR([Failed to build tools])
 fi
+AM_PROG_LEX
+if test -z "${LEX+set}"; then
+        # Require flex unless lex.yy.c already is built
+        if test ! -f ./tools/filterh/lex.yy.c; then
+                AC_MSG_ERROR([flex is required. Download from http://www.gnu.org/software/flex/ or use your package manager])
+        fi
+fi
+if test ! -d ./tools/bin/
+then
+        mkdir ./tools/bin || AC_MSG_ERROR([Failed to create ./tools/bin])
+fi
+# Build tools in-place in a subshell
+if test ! -f ./tools/filterh/lex.yy.c; then
+        (cd ./tools/filterh && $LEX filterh.l && $CC lex.yy.c -o ../bin/filterh  && rm -f lex.yy.o) || AC_MSG_ERROR([Failed to build tools])
+else
+        (cd ./tools/filterh && $CC lex.yy.c -o ../bin/filterh && rm -f lex.yy.o) || AC_MSG_ERROR([Failed to build tools])
+fi
+# Assert that we succeded building filterh
+test -f ./tools/bin/filterh || AC_MSG_ERROR([Failed to build tools])
 
 # ---------------------------------------------------------------------------
 # Libtool 

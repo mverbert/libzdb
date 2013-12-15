@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		524B1E701543696800158F6E /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
+		524B24A8185E54FD004B6730 /* OracleConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEC13E716A0002F3C7C /* OracleConnection.c */; };
+		524B24A9185E5500004B6730 /* OraclePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */; };
+		524B24AA185E5505004B6730 /* OracleResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF013E716A0002F3C7C /* OracleResultSet.c */; };
+		524B24AD185E55BA004B6730 /* libclntsh.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 522A207417C1111F00E2FA0A /* libclntsh.dylib */; };
 		5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE513E716A0002F3C7C /* MysqlConnection.c */; };
 		5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */; };
 		5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE913E716A0002F3C7C /* MysqlResultSet.c */; };
@@ -115,6 +119,8 @@
 		522A207617C1115E00E2FA0A /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
 		522A207717C1115E00E2FA0A /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
 		522A207817C1115E00E2FA0A /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
+		524B24A6185E40D4004B6730 /* lex.yy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lex.yy.c; sourceTree = "<group>"; };
+		524B24AE185E55BA004B6730 /* libnnz11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnnz11.dylib; path = oci/lib/libnnz11.dylib; sourceTree = "<group>"; };
 		525CF56D14BFD3C600650C7D /* zdb.pc.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zdb.pc.in; sourceTree = "<group>"; };
 		52788BC613E716A0002F3C7C /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		52788BC713E716A0002F3C7C /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
@@ -194,7 +200,6 @@
 		52788C2813E716A0002F3C7C /* filterh.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; lineEnding = 0; path = filterh.l; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		528F4D3C145A5AA3002CD67D /* libzdb.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libzdb.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		529F8EBD1775031E0067C40A /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		529F8EBF177503440067C40A /* libpq.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.dylib; path = /Applications/Postgres.app/Contents/MacOS/lib/libpq.dylib; sourceTree = "<absolute>"; };
 		529F8EC1177503520067C40A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		52C32EE9145BA3A500C72758 /* Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
 		52C32EEB145BA3F900C72758 /* System.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = System.c; sourceTree = "<group>"; };
@@ -235,6 +240,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				524B24AD185E55BA004B6730 /* libclntsh.dylib in Frameworks */,
 				52F0F9D81851DF2A003B0B33 /* libpq.dylib in Frameworks */,
 				52A30356181FDEDD00F4F4BF /* libmysqlclient.18.dylib in Frameworks */,
 				529F8EC2177503520067C40A /* libz.dylib in Frameworks */,
@@ -272,11 +278,11 @@
 		526B7ABD13E7564B008E2CB1 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				524B24AE185E55BA004B6730 /* libnnz11.dylib */,
 				52F0F9D71851DF2A003B0B33 /* libpq.dylib */,
 				522A207417C1111F00E2FA0A /* libclntsh.dylib */,
 				521D820A17AF0471008E282B /* libmysqlclient.18.dylib */,
 				529F8EC1177503520067C40A /* libz.dylib */,
-				529F8EBF177503440067C40A /* libpq.dylib */,
 				529F8EBD1775031E0067C40A /* libsqlite3.dylib */,
 			);
 			name = libs;
@@ -471,6 +477,7 @@
 		52788C2613E716A0002F3C7C /* filterh */ = {
 			isa = PBXGroup;
 			children = (
+				524B24A6185E40D4004B6730 /* lex.yy.c */,
 				52788C2813E716A0002F3C7C /* filterh.l */,
 			);
 			path = filterh;
@@ -588,7 +595,7 @@
 		521CF21713E71619004A7291 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Tildeslash Ltd.";
 			};
 			buildConfigurationList = 521CF21A13E71619004A7291 /* Build configuration list for PBXProject "libzdb" */;
@@ -640,6 +647,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				524B24A8185E54FD004B6730 /* OracleConnection.c in Sources */,
+				524B24A9185E5500004B6730 /* OraclePreparedStatement.c in Sources */,
+				524B24AA185E5505004B6730 /* OracleResultSet.c in Sources */,
 				5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */,
 				5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */,
 				5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */,
@@ -690,7 +700,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -741,7 +750,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -875,7 +883,6 @@
 		52F2370013E724D600D24B82 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -890,6 +897,7 @@
 					$SRCROOT/src/db,
 					/Applications/Postgres93.app/Contents/MacOS/include,
 					"/usr/local/mysql/include/**",
+					$SRCROOT/oci/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -898,6 +906,7 @@
 					/usr/local/mysql/lib,
 					/usr/local/mysql/lib,
 					"/usr/local/mysql-5.6.13-osx10.7-x86_64/lib",
+					/Users/hauk/src/libzdb/oci/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -917,7 +926,6 @@
 		52F2370113E724D600D24B82 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -930,6 +938,7 @@
 					$SRCROOT/src/db,
 					/Applications/Postgres93.app/Contents/MacOS/include,
 					"/usr/local/mysql/include/**",
+					$SRCROOT/oci/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -938,6 +947,7 @@
 					/usr/local/mysql/lib,
 					/usr/local/mysql/lib,
 					"/usr/local/mysql-5.6.13-osx10.7-x86_64/lib",
+					/Users/hauk/src/libzdb/oci/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;

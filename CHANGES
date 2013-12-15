@@ -1,22 +1,23 @@
-                         CHANGES version 3.0
+                         CHANGES version 2.14
 
               This file summarizes changes made since 1.0
 
-Version 3.0
------------
-* New: It is now a checked runtime error for the url parameter given 
-  to ConnectionPool_new() to be NULL.
-* New: ResultSet_getLong and PreparedStatement_setLong. Using more 
-  specific SQL data types can have a storage effect on systems that 
-  differ between these types.
-* New: ResultSet_isnull, can be used to explicit test if a column 
-  value in a Result Set is SQL null. A Result Set already returns
-  the NULL pointer for string and blob types and 0 for primitive data
-  types in this case, but to differ between SQL null and the value NULL
-  or 0, this method can be used.
+Version 2.14
+------------
 * New: Methods for retrieving Date, Time, DateTime and TimeStamp column
   values from a ResultSet and PreparedStatement_setTimestamp for setting
   Unix timestamp.
+* New: ResultSet_isnull, can be used to explicit test if a column
+  value in a Result Set is SQL null. A Result Set already returns
+  the NULL pointer for string and blob types and 0 for primitive data
+  types, but to differ between SQL null and the value NULL or 0, this 
+  method can be used.
+* New: It is now a checked runtime error for the url parameter given 
+  in ConnectionPool_new() to be NULL.
+* New: No longer require flex installed as the generated file is
+  part of the dist.
+* Fixes: Oracle: Fixed a memory corruption in OracleResultSet
+  https://github.com/tildeslash/libzdb/issues/4
 
 Version 2.12
 --------------

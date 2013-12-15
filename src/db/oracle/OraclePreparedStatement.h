@@ -30,13 +30,12 @@ T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcC
 void OraclePreparedStatement_free(T *P);
 void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x);
 void OraclePreparedStatement_setInt(T P, int parameterIndex, int x);
-void OraclePreparedStatement_setLong(T P, int parameterIndex, long x);
-void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long int x);
+void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long x);
 void OraclePreparedStatement_setDouble(T P, int parameterIndex, double x);
 void OraclePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
 void OraclePreparedStatement_execute(T P);
 ResultSet_T OraclePreparedStatement_executeQuery(T P);
-long long int OraclePreparedStatement_rowsChanged(T P);
+long long OraclePreparedStatement_rowsChanged(T P);
 const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp);
 #undef T
 #endif

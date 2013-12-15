@@ -47,7 +47,7 @@
  * @param s The Date String to parse
  * @return A local time representation of <code>s</code> or 0 if
  * <code>s</code> is NULL
- * @exception SQLException if the parameter value cannot be converted
+ * @exception SQLException If the parameter value cannot be converted
  * to a valid timestamp
  * @see SQLException.h
  */
@@ -68,7 +68,7 @@ time_t Time_toTimestamp(const char *s);
  * @param t A pointer to a zeroed tm structure
  * @return A pointer to the tm structure representing the
  * date of <code>s</code> in the local timezone.
- * @exception SQLException if the parameter value cannot be converted
+ * @exception SQLException If the parameter value cannot be converted
  * to a valid Date, Time or DateTime
  * @see SQLException.h
  */
@@ -76,7 +76,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t);
 
 
 /**
- * Returns an ISO-8601 like date string for the given time. (The 'T' separating
+ * Returns an ISO-8601 type date string for the given time. (The 'T' separating
  * date and time is omitted) The returned string represent the specified time 
  * in local time. The submitted result buffer must be large enough to hold at 
  * least 20 bytes. Example:
@@ -87,7 +87,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t);
  * @param result The buffer to write the date string too
  * @return a pointer to the result buffer or NULL if <code>result</code>
  * was NULL
- * @exception AssertException if result is NULL or if time is < 0
+ * @exception AssertException if result is NULL
  */
 char *Time_toString(time_t time, char result[20]);
 
@@ -108,7 +108,7 @@ time_t Time_now(void);
  * the epoch in milliseconds
  * @exception AssertException If time could not be obtained
  */
-long long int Time_milli(void);
+long long Time_milli(void);
 
 
 /**

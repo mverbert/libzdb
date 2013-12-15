@@ -28,12 +28,11 @@ T MysqlPreparedStatement_new(void *stmt, int maxRows, int parameterCount);
 void MysqlPreparedStatement_free(T *P);
 void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x);
 void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x);
-void MysqlPreparedStatement_setLong(T P, int parameterIndex, long x);
-void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long int x);
+void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long x);
 void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x);
 void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
 void MysqlPreparedStatement_execute(T P);
 ResultSet_T MysqlPreparedStatement_executeQuery(T P);
-long long int MysqlPreparedStatement_rowsChanged(T P);
+long long MysqlPreparedStatement_rowsChanged(T P);
 #undef T
 #endif

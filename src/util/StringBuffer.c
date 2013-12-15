@@ -158,6 +158,32 @@ T StringBuffer_vappend(T S, const char *s, va_list ap) {
 }
 
 
+T StringBuffer_set(T S, const char *s, ...) {
+	assert(S);
+        StringBuffer_clear(S);
+        if (STR_DEF(s)) {
+                va_list ap;
+                va_start(ap, s);
+                append(S, s, ap);
+                va_end(ap);
+        }
+        return S;
+}
+
+
+T StringBuffer_vset(T S, const char *s, va_list ap) {
+	assert(S);
+        StringBuffer_clear(S);
+        if (STR_DEF(s)) {
+                va_list ap_copy;
+                va_copy(ap_copy, ap);
+                append(S, s, ap_copy);
+                va_end(ap_copy);
+        }
+        return S;
+}
+
+
 int StringBuffer_length(T S) {
         assert(S);
         return S->used;

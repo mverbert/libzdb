@@ -52,7 +52,6 @@ const struct Pop_T sqlite3pops = {
         SQLitePreparedStatement_free,
         SQLitePreparedStatement_setString,
         SQLitePreparedStatement_setInt,
-        SQLitePreparedStatement_setLong,
         SQLitePreparedStatement_setLLong,
         SQLitePreparedStatement_setDouble,
         SQLitePreparedStatement_setBlob,
@@ -117,12 +116,7 @@ void SQLitePreparedStatement_setInt(T P, int parameterIndex, int x) {
 }
 
 
-void SQLitePreparedStatement_setLong(T P, int parameterIndex, long x) {
-        SQLitePreparedStatement_setLLong(P, parameterIndex, x);
-}
-
-
-void SQLitePreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
+void SQLitePreparedStatement_setLLong(T P, int parameterIndex, long long x) {
         assert(P);
         sqlite3_reset(P->stmt);
         P->lastError = sqlite3_bind_int64(P->stmt, parameterIndex, x);
@@ -182,9 +176,9 @@ ResultSet_T SQLitePreparedStatement_executeQuery(T P) {
 }
 
 
-long long int SQLitePreparedStatement_rowsChanged(T P) {
+long long SQLitePreparedStatement_rowsChanged(T P) {
         assert(P);
-        return (long long int)sqlite3_changes(P->db);
+        return (long long)sqlite3_changes(P->db);
 }
 
 #ifdef PACKAGE_PROTECTED

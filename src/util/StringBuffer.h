@@ -90,6 +90,29 @@ T StringBuffer_vappend(T S, const char *s, va_list ap);
 
 
 /**
+ * Replace the content of this String Buffer with <code>s</code>. That is, the contents
+ * of the string buffer is a copy of the argument string.
+ * @param S StringBuffer object
+ * @param s A string with optional var args
+ * @return a reference to this StringBuffer
+ * @exception MemoryException if allocation was used and failed
+ */
+T StringBuffer_set(T S, const char *s, ...) __attribute__((format (printf, 2, 3)));
+
+
+/**
+ * Replace the content of this String Buffer with <code>s</code>. That is, the contents
+ * of the string buffer is a copy of the argument string.
+ * @param S StringBuffer object
+ * @param s A string with optional var args
+ * @param ap A variable argument list
+ * @return a reference to this StringBuffer
+ * @exception MemoryException if allocation was used and failed
+ */
+T StringBuffer_vset(T S, const char *s, va_list ap);
+
+
+/**
  * Returns the length (character count) of this string buffer.
  * @param S StringBuffer object
  * @return The length of the sequence of characters currently represented 
@@ -123,7 +146,7 @@ const char *StringBuffer_toString(T S);
  * </pre>
  * @param S StringBuffer object
  * @return The number of replacements that took place
- * @exception SQLException if there are more than 99 wild card '?' parameters
+ * @exception SQLException If there are more than 99 wild card '?' parameters
  */
 int StringBuffer_prepare4postgres(T S);
 
@@ -137,7 +160,7 @@ int StringBuffer_prepare4postgres(T S);
  * </pre>
  * @param S StringBuffer object
  * @return The number of replacements that took place
- * @exception SQLException if there are more than 99 wild card '?' parameters
+ * @exception SQLException If there are more than 99 wild card '?' parameters
  */
 int StringBuffer_prepare4oracle(T S);
 

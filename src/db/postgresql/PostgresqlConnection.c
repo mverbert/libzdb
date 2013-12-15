@@ -178,8 +178,7 @@ void PostgresqlConnection_free(T *C) {
 void PostgresqlConnection_setQueryTimeout(T C, int ms) {
 	assert(C);
         C->timeout = ms;
-        StringBuffer_clear(C->sb);
-        StringBuffer_append(C->sb, "SET statement_timeout TO %d;", C->timeout);
+        StringBuffer_set(C->sb, "SET statement_timeout TO %d;", C->timeout);
         PGresult *res = PQexec(C->db, StringBuffer_toString(C->sb));
         PQclear(res);
 }
@@ -225,13 +224,13 @@ int PostgresqlConnection_rollback(T C) {
 }
 
 
-long long int PostgresqlConnection_lastRowId(T C) {
+long long PostgresqlConnection_lastRowId(T C) {
         assert(C);
-        return (long long int)PQoidValue(C->res);
+        return (long long)PQoidValue(C->res);
 }
 
 
-long long int PostgresqlConnection_rowsChanged(T C) {
+long long PostgresqlConnection_rowsChanged(T C) {
         assert(C);
         char *changes = PQcmdTuples(C->res);
         return changes ? Str_parseLLong(changes) : 0;
@@ -242,9 +241,8 @@ int PostgresqlConnection_execute(T C, const char *sql, va_list ap) {
         va_list ap_copy;
 	assert(C);
         PQclear(C->res);
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         C->res = PQexec(C->db, StringBuffer_toString(C->sb));
         C->lastError = PQresultStatus(C->res);
@@ -256,9 +254,8 @@ ResultSet_T PostgresqlConnection_executeQuery(T C, const char *sql, va_list ap) 
         va_list ap_copy;
 	assert(C);
         PQclear(C->res);
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         C->res = PQexec(C->db, StringBuffer_toString(C->sb));
         C->lastError = PQresultStatus(C->res);
@@ -275,9 +272,8 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
         assert(C);
         assert(sql);
         PQclear(C->res);
-        StringBuffer_clear(C->sb);
         va_copy(ap_copy, ap);
-        StringBuffer_vappend(C->sb, sql, ap_copy);
+        StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         paramCount = StringBuffer_prepare4postgres(C->sb);
         uint32_t t = ++statementid; // increment is atomic

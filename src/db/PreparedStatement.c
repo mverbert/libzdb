@@ -43,7 +43,7 @@
 
 
 typedef struct param_t {
-        char timestamp[20];
+        char *timestamp;
 } *param_t;
 #define T PreparedStatement_T
 struct PreparedStatement_S {
@@ -88,6 +88,8 @@ void PreparedStatement_free(T *P) {
 	assert(P && *P);
         clearResultSet((*P));
         (*P)->op->free(&(*P)->D);
+        for (int i = 0; i < (*P)->paramCount; i++)
+                FREE((*P)->params[i].timestamp);
 	FREE(*P);
 }
 
@@ -112,13 +114,7 @@ void PreparedStatement_setInt(T P, int parameterIndex, int x) {
 }
 
 
-void PreparedStatement_setLong(T P, int parameterIndex, long x) {
-	assert(P);
-        P->op->setLong(P->D, parameterIndex, x);
-}
-
-
-void PreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
+void PreparedStatement_setLLong(T P, int parameterIndex, long long x) {
 	assert(P);
         P->op->setLLong(P->D, parameterIndex, x);
 }
@@ -139,6 +135,9 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        // Allocate only if required
+        if (STR_UNDEF(P->params[i].timestamp))
+                P->params[i].timestamp = ALLOC(20);
         P->op->setString(P->D, parameterIndex, Time_toString(x, P->params[i].timestamp));
 }
 
@@ -163,7 +162,7 @@ ResultSet_T PreparedStatement_executeQuery(T P) {
 }
 
 
-long long int PreparedStatement_rowsChanged(T P) {
+long long PreparedStatement_rowsChanged(T P) {
         assert(P);
         return P->op->rowsChanged(P->D);
 }

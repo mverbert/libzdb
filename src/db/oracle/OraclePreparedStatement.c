@@ -57,7 +57,6 @@ const struct Pop_T oraclepops = {
         OraclePreparedStatement_free,
         OraclePreparedStatement_setString,
         OraclePreparedStatement_setInt,
-        OraclePreparedStatement_setLong,
         OraclePreparedStatement_setLLong,
         OraclePreparedStatement_setDouble,
         OraclePreparedStatement_setBlob,
@@ -147,11 +146,6 @@ void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x) {
 
 
 void OraclePreparedStatement_setInt(T P, int parameterIndex, int x) {
-        OraclePreparedStatement_setLong(P, parameterIndex, x);
-}
-
-
-void OraclePreparedStatement_setLong(T P, int parameterIndex, long x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.integer = x;
@@ -163,7 +157,7 @@ void OraclePreparedStatement_setLong(T P, int parameterIndex, long x) {
 }
 
 
-void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long int x) {
+void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].length = sizeof(P->params[i].type.number);
@@ -224,7 +218,7 @@ ResultSet_T OraclePreparedStatement_executeQuery(T P) {
 }
 
 
-long long int OraclePreparedStatement_rowsChanged(T P) {
+long long OraclePreparedStatement_rowsChanged(T P) {
         assert(P);
         return P->rowsChanged;
 }
