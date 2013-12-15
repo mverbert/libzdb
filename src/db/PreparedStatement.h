@@ -212,13 +212,24 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
  * is assumed to be in local system time and no timezone conversion is done
  * by this method. A SQL database will normally convert the timestamp value 
  * to UTC and on retrieval convert the value back to the local timezone. 
- * Internally this method converts the timestamp to a ISO-8601 formated date
- * string in the local timezone which is then sent to the database.
+ * Internally this method converts the timestamp to a ISO-8601 like date
+ * string in the local timezone which is then sent to the database. This is
+ * an implementation detail which is relevant for SQLite as SQLite does not have
+ * temporal data types per se. Using this method with SQLite will store
+ * a timestamp value as a 19 byte string. This can be useful for two reasons,
+ * first, a select will display a timestamp as a human readable value. Second,
+ * date/time functions provided by SQLite understand this format, see 
+ * http://www.sqlite.org/lang_datefunc.html The drawback is that this can incur
+ * storage and computational overhead. If this is a concern, we recommend using
+ * raw Unix timestamp values stored in an integer database column and use 
+ * PreparedStatement_setLong() and ResultSet_getLong() to respectively set and
+ * get these values which is then handled in your application. This applies to
+ * all database types supported by this library.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The localtime timestamp value to set
  * @exception SQLException if a database access error occurs or if parameter
- * index is out of range
+ * index is out of range or if the given timestamp cannot be
  * @see SQLException.h
  */
 void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x);

@@ -14,10 +14,9 @@ Version 3.0
   the NULL pointer for string and blob types and 0 for primitive data
   types in this case, but to differ between SQL null and the value NULL
   or 0, this method can be used.
-* New: Added methods to Result Set for retrieving Date, Time, DateTime
-  and TimeStamp column values. 
-* New: Added PreparedStatement_setTimestamp for setting Unix timestamp.
-  The SQLite version uses ISO-8601 time string instead of Unix timestamp
+* New: Methods for retrieving Date, Time, DateTime and TimeStamp column
+  values from a ResultSet and PreparedStatement_setTimestamp for setting
+  Unix timestamp.
 
 Version 2.12
 --------------

@@ -212,58 +212,28 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
 
 
 time_t ResultSet_getTimestamp(T R, int columnIndex) {
-        return (time_t)ResultSet_getLong(R, columnIndex);
+        assert(R);
+        return Time_toTimestamp(ResultSet_getString(R, columnIndex));
 }
 
 
 time_t ResultSet_getTimestampByName(T R, const char *columnName) {
-        return (time_t)ResultSet_getLong(R, getIndex(R, columnName));
-}
-
-
-sqldate_t ResultSet_getDate(T R, int columnIndex) {
         assert(R);
-        sqldate_t r = {.year = 0};
-        const char *t = ResultSet_getString(R, columnIndex);
-        if (STR_DEF(t))
-                Time_toDate(t, &r);
-        return r;
+        return ResultSet_getTimestamp(R, getIndex(R, columnName));
 }
 
 
-sqldate_t ResultSet_getDateByName(T R, const char *columnName) {
+struct tm ResultSet_getDateTime(T R, int columnIndex) {
         assert(R);
-        return ResultSet_getDate(R, getIndex(R, columnName));
+        struct tm t = {.tm_year = 0};
+        const char *s = ResultSet_getString(R, columnIndex);
+        if (STR_DEF(s))
+                Time_toDateTime(s, &t);
+        return t;
 }
 
 
-sqltime_t ResultSet_getTime(T R, int columnIndex) {
-        assert(R);
-        sqltime_t r = {.hour = 0};
-        const char *t = ResultSet_getString(R, columnIndex);
-        if (STR_DEF(t))
-                Time_toTime(t, &r);
-        return r;
-}
-
-
-sqltime_t ResultSet_getTimeByName(T R, const char *columnName) {
-        assert(R);
-        return ResultSet_getTime(R, getIndex(R, columnName));
-}
-
-
-sqldatetime_t ResultSet_getDateTime(T R, int columnIndex) {
-        assert(R);
-        sqldatetime_t r = {.time.hour = 0};
-        const char *t = ResultSet_getString(R, columnIndex);
-        if (STR_DEF(t))
-                Time_toDateTime(t, &r);
-        return r;
-}
-
-
-sqldatetime_t ResultSet_getDateTimeByName(T R, const char *columnName) {
+struct tm ResultSet_getDateTimeByName(T R, const char *columnName) {
         assert(R);
         return ResultSet_getDateTime(R, getIndex(R, columnName));
 }

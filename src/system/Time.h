@@ -25,7 +25,7 @@
 
 #ifndef TIME_INCLUDED
 #define TIME_INCLUDED
-#include "SQLDateTime.h"
+#include <time.h>
 
 
 /**
@@ -44,66 +44,46 @@
 /**
  * Returns a Unix timestamp representation of the parsed string in the 
  * local timezone.
- * @param t The Date String to parse
- * @return A local time representation of <code>t</code> or 0 if
- * <code>t</code> is NULL
+ * @param s The Date String to parse
+ * @return A local time representation of <code>s</code> or 0 if
+ * <code>s</code> is NULL
  * @exception SQLException if the parameter value cannot be converted
  * to a valid timestamp
  * @see SQLException.h
  */
-time_t Time_toTimestamp(const char *t);
+time_t Time_toTimestamp(const char *s);
 
 
 /**
- * Returns a Date representation of the parsed string in the
- * local timezone.
- * @param t The Date String to parse
- * @param r A pointer to a sqldate_t structure
- * @return A pointer to the given sqldate_t structure representing the
- * date of <code>t</code> in the local timezone.
+ * Returns a Date, Time or DateTime representation of the parsed string in the 
+ * local timezone. Fields follows the convention of the tm structure where, 
+ * tm_hour = hours since midnight [0-23], tm_min = minutes after the hour 
+ * [0-59], tm_sec = seconds after the minute [0-60], tm_mday = day of the month
+ * [1-31] and tm_mon = months since January [0-11]. The exception is tm_year 
+ * which contains the year literal and <i>not years since 1900</i> which is the
+ * convention. All other fields in the structure are set to zero. If the given
+ * date string <code>s</code> contains both date and time all the fields 
+ * mentioned above are set, otherwise only the Date or Time fields are set.
+ * @param s The Date String to parse
+ * @param t A pointer to a zeroed tm structure
+ * @return A pointer to the tm structure representing the
+ * date of <code>s</code> in the local timezone.
  * @exception SQLException if the parameter value cannot be converted
- * to a valid Date
+ * to a valid Date, Time or DateTime
  * @see SQLException.h
  */
-sqldate_t *Time_toDate(const char *t, sqldate_t *r);
+struct tm *Time_toDateTime(const char *s, struct tm *t);
 
 
 /**
- * Returns a Time representation of the parsed string in the
- * local timezone.
- * @param t The Date String to parse
- * @param r A pointer to a sqltime_t structure
- * @return A pointer to the given sqltime_t structure representing the 
- * time of <code>t</code> in the local timezone.
- * @exception SQLException if the parameter value cannot be converted
- * to a valid Time
- * @see SQLException.h
- */
-sqltime_t *Time_toTime(const char *t, sqltime_t *r);
-
-
-/**
- * Returns a DateTime representation of the parsed string in the
- * local timezone.
- * @param t The Date String to parse
- * @param r A pointer to a sqldatetime_t structure
- * @return A pointer to the given sqldatetime_t structure representing
- * the datetime of <code>t</code> in the local timezone.
- * @exception SQLException if the parameter value cannot be converted
- * to a valid DateTime
- * @see SQLException.h
- */
-sqldatetime_t *Time_toDateTime(const char *t, sqldatetime_t *r);
-
-
-/**
- * Returns an ISO-8601 formated date string for the given time. The returned
- * string represent the specified time in localtime. The submitted
- * result buffer must be large enough to hold at least 20 bytes. Example:
+ * Returns an ISO-8601 like date string for the given time. (The 'T' separating
+ * date and time is omitted) The returned string represent the specified time 
+ * in local time. The submitted result buffer must be large enough to hold at 
+ * least 20 bytes. Example:
  * <pre>
- *  Time_toString(1386951482, buf) -> "2013-12-13T16:18:02"
+ *  Time_toString(1386951482, buf) -> "2013-12-13 16:18:02"
  * </pre>
- * @param time Number of localtime seconds since the EPOCH
+ * @param time Number of local time seconds since the EPOCH
  * @param result The buffer to write the date string too
  * @return a pointer to the result buffer or NULL if <code>result</code>
  * was NULL

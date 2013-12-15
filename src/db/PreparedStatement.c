@@ -142,7 +142,9 @@ void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
         P->op->setString(P->D, parameterIndex, Time_toString(x, P->params[i].timestamp));
 }
 
+
 #pragma mark - Methods
+
 
 void PreparedStatement_execute(T P) {
 	assert(P);
@@ -166,7 +168,9 @@ long long int PreparedStatement_rowsChanged(T P) {
         return P->op->rowsChanged(P->D);
 }
 
+
 #pragma mark - Properties
+
 
 int PreparedStatement_getParameterCount(T P) {
         assert(P);

@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
 #include "Config.h"
 #include "URL.h"
@@ -179,15 +180,133 @@ static void testTime() {
         
         printf("=> Test3: Time_toString\n");
         {
-                char *t = Time_toString(Time_now(), (char[20]){0});
-                assert(t);
-                assert(strlen(t) == 19);
+                char *t = Time_toString(1387010338, (char[20]){0});
+                assert(Str_isEqual(t, "2013-12-14 09:38:58"));
                 printf("\tResult: %s\n", t);
         }
         printf("=> Test3: OK\n\n");
         
-        // TODO do the reverse and parse out string
-
+        printf("=> Test5: Time_toString\n");
+        {
+                struct tm t;
+                // DateTime ISO-8601 format
+                assert(Time_toDateTime("2013-12-14T09:38:08Z", &t));
+                assert(t.tm_year == 2013);
+                assert(t.tm_mon  == 11);
+                assert(t.tm_mday == 14);
+                assert(t.tm_hour == 9);
+                assert(t.tm_min  == 38);
+                assert(t.tm_sec  == 8);
+                // Date
+                assert(Time_toDateTime("2013-12-14", &t));
+                assert(t.tm_year == 2013);
+                assert(t.tm_mon  == 11);
+                assert(t.tm_mday == 14);
+                // Time
+                assert(Time_toDateTime("09:38:08", &t));
+                assert(t.tm_hour == 9);
+                assert(t.tm_min  == 38);
+                assert(t.tm_sec  == 8);
+                // Compresses DateTime
+                assert(Time_toDateTime(" 20131214093808", &t));
+                assert(t.tm_year == 2013);
+                assert(t.tm_mon  == 11);
+                assert(t.tm_mday == 14);
+                assert(t.tm_hour == 9);
+                assert(t.tm_min  == 38);
+                assert(t.tm_sec  == 8);
+                // Compresses Date
+                assert(Time_toDateTime(" 20131214 ", &t));
+                assert(t.tm_year == 2013);
+                assert(t.tm_mon  == 11);
+                assert(t.tm_mday == 14);
+                // Compresses Time
+                assert(Time_toDateTime("093808", &t));
+                assert(t.tm_hour == 9);
+                assert(t.tm_min  == 38);
+                assert(t.tm_sec  == 8);
+                // Reverse DateTime
+                assert(Time_toDateTime(" 09:38:08 2013-12-14", &t));
+                assert(t.tm_year == 2013);
+                assert(t.tm_mon  == 11);
+                assert(t.tm_mday == 14);
+                assert(t.tm_hour == 9);
+                assert(t.tm_min  == 38);
+                assert(t.tm_sec  == 8);
+                // DateTime with timezone Zulu (UTC)
+                assert(Time_toDateTime("2013-12-14 09:38:08Z", &t));
+                assert(t.tm_year == 2013);
+                assert(t.tm_mon  == 11);
+                assert(t.tm_mday == 14);
+                assert(t.tm_hour == 9);
+                assert(t.tm_min  == 38);
+                assert(t.tm_sec  == 8);
+                assert(t.tm_gmtoff == 0); // offset from UTC in seconds
+                // DateTime with timezone CET
+                assert(Time_toDateTime("Battle of stikklestad 1030-07-29 11:15:33+01:00", &t));
+                assert(t.tm_year == 1030);
+                assert(t.tm_mon  == 6);
+                assert(t.tm_mday == 29);
+                assert(t.tm_hour == 11);
+                assert(t.tm_min  == 15);
+                assert(t.tm_sec  == 33);
+                assert(t.tm_gmtoff == -3600);
+                // Time with timezone
+                assert(Time_toDateTime(" 09:38:08+01:45", &t));
+                assert(t.tm_hour == 9);
+                assert(t.tm_min  == 38);
+                assert(t.tm_sec  == 8);
+                assert(t.tm_gmtoff == -6300);
+                // Time with timezone PST compressed
+                assert(Time_toDateTime("Pacific Time Zone 09:38:08 -0800 ", &t));
+                assert(t.tm_hour == 9);
+                assert(t.tm_min  == 38);
+                assert(t.tm_sec  == 8);
+                assert(t.tm_gmtoff == 28800);
+                // Date with timezone, tz should not be set
+                assert(Time_toDateTime("2013-12-15-0800 ", &t));
+                assert(t.tm_gmtoff == 0);
+                // Invalid date
+                TRY {
+                        Time_toDateTime("1901-123-45", &t);
+                        printf("\t Test Failed\n");
+                        exit(1);
+                } CATCH (SQLException) {
+                        // OK
+                } ELSE {
+                        printf("\t Test Failed with wrong exception\n");
+                        exit(1);
+                }
+                END_TRY;
+        }
+        printf("=> Test5: OK\n\n");
+        
+        printf("=> Test6: Time_toTimestamp\n");
+        {
+                time_t t = Time_toTimestamp("2013-12-15 00:12:58");
+                // assert(t == 1387062778); // Cannot assert as DST is system dependent
+                // With TimeZone W. DST is unknown
+                t = Time_toTimestamp("2013-12-15 00:12:58+09:00");
+                // assert(t == 1387095178);
+                // With TimeZone E. DST is uknown
+                t = Time_toTimestamp("New York timezone: 2013-12-15 00:12:58-05");
+                // assert(t == 1387044778);
+                // Invalid timestamp string
+                TRY {
+                        Time_toTimestamp("1901-123-45 10:12:14");
+                        // Should not come here
+                        printf("\t Test Failed\n");
+                        exit(1);
+                } CATCH (SQLException) {
+                        // OK
+                } ELSE {
+                        printf("\t Test Failed with wrong exception\n");
+                        exit(1);
+                }
+                END_TRY;
+        }
+        printf("=> Test6: OK\n\n");
+        
         printf("=> Test4: usleep\n");
         {
                 Time_usleep(1);

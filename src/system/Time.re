@@ -26,6 +26,7 @@
 #include "Config.h"
 
 #include <stdio.h>
+#include <ctype.h>
 #include <string.h>
 #include <sys/time.h>
 #include <sys/select.h>
@@ -47,9 +48,18 @@
 /* ----------------------------------------------------------- Definitions */
 
 
+#define i2a(i) (x[0] = ((i) / 10) + '0', x[1] = ((i) % 10) + '0')
+
 
 /* --------------------------------------------------------------- Private */
 
+
+static inline int a2i(const char *a, int l) {
+        int n = 0;
+        for (; *a && l--; a++)
+                n = n * 10 + (*a) - '0';
+        return n;
+}
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -59,31 +69,99 @@
 #pragma GCC visibility push(hidden)
 #endif
 
-time_t Time_toTimestamp(const char *t) {
-        assert(t);
-        // TODO
-        return 0;
+time_t Time_toTimestamp(const char *s) {
+        if (STR_DEF(s)) {
+                struct tm t = {0};
+                if (Time_toDateTime(s, &t)) {
+                        t.tm_year -= 1900;
+                        long off = t.tm_gmtoff;
+                        return mktime(&t) - off; // mktime does not honor tm_gmtoff
+                }
+        }
+	return 0;
 }
 
 
-sqldate_t *Time_toDate(const char *t, sqldate_t *r) {
+struct tm *Time_toDateTime(const char *s, struct tm *t) {
         assert(t);
-        // TODO
-        return r;
-}
-
-
-sqltime_t *Time_toTime(const char *t, sqltime_t *r) {
-        assert(t);
-        // TODO
-        return r;
-}
-
-
-sqldatetime_t *Time_toDateTime(const char *t, sqldatetime_t *r) {
-        assert(t);
-        // TODO
-        return r;
+        assert(s);
+        struct tm tm = {.tm_isdst = -1};
+        int has_date = false, has_time = false;
+        const char *limit = s + strlen(s), *marker, *token, *cursor = s;
+	while (true) {
+		if (cursor >= limit) {
+                        if (has_date || has_time) {
+                                *(struct tm*)t = tm;
+                                return t;
+                        }
+                        THROW(SQLException, "Invalid date or time");
+                }
+                token = cursor;
+                /*!re2c
+                 re2c:define:YYCTYPE  = "unsigned char";
+                 re2c:define:YYCURSOR = cursor;
+                 re2c:define:YYLIMIT  = limit;
+                 re2c:define:YYMARKER = marker;
+                 re2c:yyfill:enable   = 0;
+                 
+                 any    = [\000-\377];
+                 x      = [^0-9];
+                 dd     = [0-9][0-9];
+                 yyyy   = [0-9]{4};
+                 tz     = [-+]dd(.? dd)?;
+                 
+                 yyyy x dd x dd
+                 { // Date: YYYY-MM-DD
+                        tm.tm_year  = a2i(token, 4);
+                        tm.tm_mon   = a2i(token + 5, 2) - 1;
+                        tm.tm_mday  = a2i(token + 8, 2);
+                        has_date = true;
+                        continue;
+                 }
+                 yyyy dd dd
+                 { // Compressed Date: YYYYMMDD
+                        tm.tm_year  = a2i(token, 4);
+                        tm.tm_mon   = a2i(token + 4, 2) - 1;
+                        tm.tm_mday  = a2i(token + 6, 2);
+                        has_date = true;
+                        continue;
+                 }
+                 dd x dd x dd
+                 { // Time: HH:MM:SS
+                        tm.tm_hour = a2i(token, 2);
+                        tm.tm_min  = a2i(token + 3, 2);
+                        tm.tm_sec  = a2i(token + 6, 2);
+                        has_time = true;
+                        continue;
+                 }
+                 dd dd dd tz?
+                 { // Compressed Time: HHMMSS
+                        tm.tm_hour = a2i(token, 2);
+                        tm.tm_min  = a2i(token + 2, 2);
+                        tm.tm_sec  = a2i(token + 4, 2);
+                        has_time = true;
+                        continue;
+                 }
+                 tz
+                 { // Timezone: +-HH:MM, +-HH or +-HHMM is offset from UTC in seconds
+                        if (has_time) { // Only set timezone if time has been seen
+                                tm.tm_gmtoff = a2i(token + 1, 2) * 3600;
+                                if (token[3] >= '0' && token[3] <= '9')
+                                        tm.tm_gmtoff += a2i(token + 3, 2) * 60;
+                                else if (token[4] >= '0' && token[4] <= '9')
+                                        tm.tm_gmtoff += a2i(token + 4, 2) * 60;
+                                if (token[0] == '+')
+                                        tm.tm_gmtoff *= -1;
+                        }
+                        continue;
+                 }
+                 any
+                 {
+                        continue;
+                 }
+                 */
+        }
+	return NULL;
 }
 
 
@@ -96,11 +174,10 @@ time_t Time_now(void) {
 
 
 char *Time_toString(time_t time, char *result) {
-#define i2a(i) (x[0] = ((i) / 10) + '0', x[1] = ((i) % 10) + '0')
         assert(result);
         assert(time >= 0);
         char x[2];
-        struct tm ts;
+        struct tm ts = {0};
         localtime_r(&time, &ts);
         memcpy(result, "YYYY-MM-DD HH:MM:SS\0", 19);
         /*              0    5  8  11 14 17 */

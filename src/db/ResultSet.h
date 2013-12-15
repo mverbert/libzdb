@@ -28,7 +28,7 @@
 //<< Protected methods
 #include "ResultSetDelegate.h"
 //>> End Protected methods
-#include "SQLDateTime.h"
+#include <time.h>
 
 
 /**
@@ -75,8 +75,8 @@
  * </pre>
  * Here is another example where a generated result is selected and printed:
  * <pre>
- * ResultSet_T r = Connection_executeQuery(con, "SELECT count(*) FROM users");
- * printf("Number of users: %s\n", ResultSet_next(r) ? ResultSet_getString(r, 1) : "no users");
+ * ResultSet_T r = Connection_executeQuery(con, "SELECT count(*) FROM employees");
+ * printf("Number of employees: %s\n", ResultSet_next(r) ? ResultSet_getString(r, 1) : "none");
  * </pre>
  *
  * <h3>Automatic type conversions</h3>
@@ -89,13 +89,14 @@
  * that if the column value cannot be converted to a number, an SQLException is thrown.
  *
  * <h3>Date and Time</h3>
- * Result Set provides a set of convenience methods to retrieve column values of 
- * temporal data types. With the following caveats, the interface are strings which
- * need to be parsed. Further it is assumed that date time values are stored as UTC 
- * in the database
+ * Result Set provides two principal methods for retrieving temporal column
+ * values as C types. ResultSet_getTimestamp() converts a SQL timestamp value
+ * to a <code>time_t</code> and ResultSet_getDateTime() returns a 
+ * <code>tm structure</code> representing a SQL Date, Time, DateTime or Timestamp
+ * column type. To get a temporal column value as a string use ResultSet_getString()
  *
- *
- * <i>A ResultSet is reentrant, but not thread-safe and should only be used by one thread (at the time).</i>
+ * <i>A ResultSet is reentrant, but not thread-safe and should only be used by 
+ * one thread (at the time).</i>
  *
  * @see Connection.h PreparedStatement.h SQLException.h
  * @file
@@ -403,17 +404,19 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  * an SQLException. The returned value represent seconds since the 
  * <strong>epoch</strong> (January 1, 1970, 00:00:00 GMT). A SQL database
  * will normally store timestamp values in UTC and on retrieval convert
- * the value to the local timezone. <i>This method does not convert the
- * returned timestamp from the database.</i> Even though the underlying 
- * database might support timestamp ranges before the epoch and after
- * '2038-01-19 03:14:07 UTC' it is safest not to assume or use values
- * outside this range. Especially if you are on a 32-bits system.
+ * the value to the local timezone. <i>If the column value contains timezone
+ * information this is honoured. It is system dependent if the value is
+ * adjusted for daylight savings time (DST).</i>
+ * 
+ * Even though the underlying database might support timestamp ranges before 
+ * the epoch and after '2038-01-19 03:14:07 UTC' it is safest not to assume or
+ * use values outside this range. Especially on a 32-bits system.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @return The column value as seconds since the epoch in the timezone
  * returned by the database (usually the system timezone); if the value 
  * is SQL NULL, the value returned is 0, i.e. '1970-01-01 00:00:00'
- * @exception SQLException if a database access error occurs, columnIndex
+ * @exception SQLException If a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
  * to a valid timestamp
  * @see SQLException.h
@@ -426,20 +429,21 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
  * this ResultSet object as a Unix timestamp. If <code>columnName</code> 
  * is not found this method throws an SQLException. The returned value 
  * represent seconds since the <strong>epoch</strong> (January 1, 1970, 
- * 00:00:00 GMT). A SQL database will normally store timestamp values in 
- * UTC and on retrieval convert the value to the local timezone. <i>This
- * method does not convert the returned timestamp from the database.</i> 
- * Even though the underlying database might support timestamp ranges 
- * before the epoch and after '2038-01-19 03:14:07 UTC' it is safest not 
- * to assume or use values outside this range. Especially if you are on
- * a 32-bits system.
+ * 00:00:00 GMT). A SQL database will normally store timestamp values in UTC 
+ * and on retrieval convert the value to the local timezone. <i>If the column 
+ * value contains timezone information this is honoured. It is system dependent 
+ * if the value is adjusted for daylight savings time (DST).</i>
+ *
+ * Even though the underlying database might support timestamp ranges before
+ * the epoch and after '2038-01-19 03:14:07 UTC' it is safest not to assume or
+ * use values outside this range. Especially on a 32-bits system.
  * @param R A ResultSet object
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
  * @return The column value as seconds since the epoch in the timezone
  * returned by the database (usually the system timezone); if the value
  * is SQL NULL, the value returned is 0, i.e. '1970-01-01 00:00:00'
- * @exception SQLException if a database access error occurs, columnIndex
+ * @exception SQLException If a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
  * to a valid timestamp
  * @see SQLException.h
@@ -449,113 +453,61 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName);
 
 /**
  * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a SQL Date object in the local timezone. If <code>
- * columnIndex</code> is outside the range [1..ResultSet_getColumnCount()]
- * this method throws an SQLException. This method can be used to retrieve 
- * the value of columns with the SQL data type, Date, DateTime or Timestamp.
+ * ResultSet object as a Date, Time or DateTime. If <code>columnIndex </code> 
+ * is outside the range [1..ResultSet_getColumnCount()] this method throws an
+ * SQLException. This method can be used to retrieve the value of columns with 
+ * the SQL data type, Date, Time, DateTime or Timestamp. The returned 
+ * <code>tm</code> structure follows the convention for usage with mktime(3) 
+ * where, tm_hour = hours since midnight [0-23], tm_min = minutes after the 
+ * hour [0-59], tm_sec = seconds after the minute [0-60], tm_mday = day of the
+ * month [1-31] and tm_mon = months since January <b>[0-11]</b>. The Daylight 
+ * Savings Time flag, tm_isdst is set to -1 per convention and tm_gmtoff is 
+ * set to the offset from UTC in seconds if the column value contains timezone
+ * information, otherwise tm_gmtoff is set to 0. The exception to the above is 
+ * <b>tm_year</b> which contains the year literal and <i>not years since 
+ * 1900</i> which is the convention. All other fields in the structure are set
+ * to zero. If the column type is DateTime or Timestamp all the fields 
+ * mentioned above are set, if it is a Date or Time, only the relevant fields
+ * are set.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return A Date structure with fields for year, month and day (of month).
- * If the value is SQL NULL, an empty sqldate_t structure is returned
- * @exception SQLException if a database access error occurs, columnIndex
+ * @return A tm structure with fields for date and time. If the value
+ * is SQL NULL, a zeroed tm structure is returned
+ * @exception SQLException If a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
- * to a valid SQL Date
+ * to a valid SQL Date, Time or DateTime type
  * @see SQLException.h
  */
-sqldate_t ResultSet_getDate(T R, int columnIndex);
+struct tm ResultSet_getDateTime(T R, int columnIndex);
 
 
 /**
  * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a SQL Date object in the local timezone.  If 
- * <code>columnName</code> is not found this method throws an SQLException. 
- * This method can be used to retrieve the value of columns with the SQL 
- * data type, Date, DateTime or Timestamp.
+ * ResultSet object as a Date, Time or DateTime. If <code>columnName</code> is 
+ * not found this method throws an SQLException. This method can be used to 
+ * retrieve the value of columns with the SQL data type, Date, Time, DateTime 
+ * or Timestamp. The returned <code>tm</code> structure follows the convention 
+ * for usage with mktime(3) where, tm_hour = hours since midnight [0-23], 
+ * tm_min = minutes after the hour [0-59], tm_sec = seconds after the minute 
+ * [0-60], tm_mday = day of the month [1-31] and tm_mon = months since January
+ * <b>[0-11]</b>. The Daylight Savings Time flag, tm_isdst is set to -1 per 
+ * convention and tm_gmtoff is set to the offset from UTC in seconds if the 
+ * column value contains timezone information, otherwise tm_gmtoff is set to 0. 
+ * The exception to the above is <b>tm_year</b> which contains the year literal 
+ * and <i>not years since 1900</i> which is the convention. All other fields in
+ * the structure are set to zero. If the column type is DateTime or Timestamp 
+ * all the fields mentioned above are set, if it is a Date or Time, only the 
+ * relevant fields are set.
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return A Date structure with fields for year, month and day (of month).
- * If the value is SQL NULL, an empty sqldate_t structure is returned
-* @exception SQLException if a database access error occurs, columnIndex
+ * @return A tm structure with fields for date and time. If the value
+ * is SQL NULL, a zeroed tm structure is returned
+ * @exception SQLException If a database access error occurs, columnIndex
  * is outside the valid range or if the column value cannot be converted
- * to a valid SQL Date
+ * to a valid SQL Date, Time or DateTime type
  * @see SQLException.h
  */
-sqldate_t ResultSet_getDateByName(T R, const char *columnName);
-
-
-/**
- * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a SQL Time object in the local timezone. If <code>
- * columnIndex</code> is outside the range [1..ResultSet_getColumnCount()]
- * this method throws an SQLException. This method can be used to retrieve
- * the value of columns with the SQL data type, Time, DateTime or Timestamp.
- * @param R A ResultSet object
- * @param columnIndex The first column is 1, the second is 2, ...
- * @return A Time structure with fields for hour, minute, seconds and
- * microseconds (if available). If the value is SQL NULL, an empty 
- * sqltime_t structure is returned
- * @exception SQLException if a database access error occurs, columnIndex
- * is outside the valid range or if the column value cannot be converted
- * to a valid SQL Time
- * @see SQLException.h
- */
-sqltime_t ResultSet_getTime(T R, int columnIndex);
-
-
-/**
- * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a SQL Time object in the local timezone.  If
- * <code>columnName</code> is not found this method throws an SQLException.
- * This method can be used to retrieve the value of columns with the SQL
- * data type, Time, DateTime or Timestamp.
- * @param R A ResultSet object
- * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return A Time structure with fields for hour, minute, seconds and
- * microseconds (if available). If the value is SQL NULL, an empty 
- * sqltime_t structure is returned
- * @exception SQLException if a database access error occurs, columnIndex
- * is outside the valid range or if the column value cannot be converted
- * to a valid SQL Time
- * @see SQLException.h
- */
-sqltime_t ResultSet_getTimeByName(T R, const char *columnName);
-
-
-/**
- * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a SQL DateTime object in the local timezone. If <code>
- * columnIndex</code> is outside the range [1..ResultSet_getColumnCount()]
- * this method throws an SQLException. This method can be used to retrieve
- * the value of columns with the SQL data type, Date, Time, DateTime or 
- * Timestamp.
- * @param R A ResultSet object
- * @param columnIndex The first column is 1, the second is 2, ...
- * @return A DateTime structure with fields for date and time. If the value 
- * is SQL NULL, an empty sqldatetime_t structure is returned
- * @exception SQLException if a database access error occurs, columnIndex
- * is outside the valid range or if the column value cannot be converted
- * to a valid SQL DateTime
- * @see SQLException.h
- */
-sqldatetime_t ResultSet_getDateTime(T R, int columnIndex);
-
-
-/**
- * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a SQL Time object in the local timezone.  If
- * <code>columnName</code> is not found this method throws an SQLException.
- * This method can be used to retrieve the value of columns with the SQL
- * data type, Time, DateTime or Timestamp.
- * @param R A ResultSet object
- * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return A DateTime structure with fields for date and time. If the value 
- * is SQL NULL, an empty sqldatetime_t structure is returned
- * @exception SQLException if a database access error occurs, columnIndex
- * is outside the valid range or if the column value cannot be converted
- * to a valid SQL DateTime
- * @see SQLException.h
- */
-sqldatetime_t ResultSet_getDateTimeByName(T R, const char *columnName);
+struct tm ResultSet_getDateTimeByName(T R, const char *columnName);
 
 //@}
 
