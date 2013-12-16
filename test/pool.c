@@ -27,6 +27,12 @@
 #define SCHEMA_SQLITE     "CREATE TABLE zild_t(id INTEGER PRIMARY KEY, name VARCHAR(255), percent REAL, image BLOB);"
 #define SCHEMA_ORACLE     "CREATE TABLE zild_t(id NUMBER , name VARCHAR(255), percent REAL, image CLOB);"
 
+#if HAVE_STRUCT_TM_TM_GMTOFF
+#define TM_GMTOFF tm_gmtoff
+#else
+#define TM_GMTOFF tm_wday
+#endif
+
 
 static void TabortHandler(const char *error) {
         fprintf(stdout, "Error: %s\n", error);
@@ -630,13 +636,13 @@ static void testPool(const char *testURL) {
                         assert(date.tm_year == 2013);
                         assert(date.tm_mon == 11); // Remember month - 1
                         assert(date.tm_mday == 28);
-                        assert(date.tm_gmtoff == 0);
+                        assert(date.TM_GMTOFF == 0);
                         // Check Time
                         assert(time.tm_year == 0);
                         assert(time.tm_hour == 10);
                         assert(time.tm_min == 12);
                         assert(time.tm_sec == 42);
-                        assert(time.tm_gmtoff == 0);
+                        assert(time.TM_GMTOFF == 0);
                         // Check datetime
                         assert(datetime.tm_year == 2013);
                         assert(datetime.tm_mon == 11); // Remember month - 1
@@ -644,7 +650,7 @@ static void testPool(const char *testURL) {
                         assert(datetime.tm_hour == 10);
                         assert(datetime.tm_min == 12);
                         assert(datetime.tm_sec == 42);
-                        assert(datetime.tm_gmtoff == 0);
+                        assert(datetime.TM_GMTOFF == 0);
                         // Check timestamp
                         assert(timestamp == 1387062778);
                         // Result

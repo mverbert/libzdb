@@ -238,7 +238,7 @@ const char *ResultSet_getStringByName(T R, const char *columnName);
  * In general, on both 32 and 64 bits architecture, <code>int</code> is 4 bytes
  * or 32 bits and <code>long long</code> is 8 bytes or 64 bits. A
  * <code>long</code> type is usually equal to <code>int</code> on 32 bits
- * architecture and equal to to <code>long long</code> on 64 bits architecture.
+ * architecture and equal to <code>long long</code> on 64 bits architecture.
  * However, the width of integer types are architecture and compiler dependent.
  * The above is usually true, but not necessarily.
  * @param R A ResultSet object
@@ -259,7 +259,7 @@ int ResultSet_getInt(T R, int columnIndex);
  * In general, on both 32 and 64 bits architecture, <code>int</code> is 4 bytes
  * or 32 bits and <code>long long</code> is 8 bytes or 64 bits. A
  * <code>long</code> type is usually equal to <code>int</code> on 32 bits
- * architecture and equal to to <code>long long</code> on 64 bits architecture.
+ * architecture and equal to <code>long long</code> on 64 bits architecture.
  * However, the width of integer types are architecture and compiler dependent.
  * The above is usually true, but not necessarily.
  * @param R A ResultSet object
@@ -281,7 +281,7 @@ int ResultSet_getIntByName(T R, const char *columnName);
  * In general, on both 32 and 64 bits architecture, <code>int</code> is 4 bytes
  * or 32 bits and <code>long long</code> is 8 bytes or 64 bits. A 
  * <code>long</code> type is usually equal to <code>int</code> on 32 bits 
- * architecture and equal to to <code>long long</code> on 64 bits architecture. 
+ * architecture and equal to <code>long long</code> on 64 bits architecture.
  * However, the width of integer types are architecture and compiler dependent.
  * The above is usually true, but not necessarily.
  * @param R A ResultSet object
@@ -302,7 +302,7 @@ long long ResultSet_getLLong(T R, int columnIndex);
  * In general, on both 32 and 64 bits architecture, <code>int</code> is 4 bytes
  * or 32 bits and <code>long long</code> is 8 bytes or 64 bits. A
  * <code>long</code> type is usually equal to <code>int</code> on 32 bits
- * architecture and equal to to <code>long long</code> on 64 bits architecture.
+ * architecture and equal to <code>long long</code> on 64 bits architecture.
  * However, the width of integer types are architecture and compiler dependent.
  * The above is usually true, but not necessarily.
  * @param R A ResultSet object
@@ -453,8 +453,10 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName);
  * for usage with mktime(3) where, tm_hour = hours since midnight [0-23],
  * tm_min = minutes after the hour [0-59], tm_sec = seconds after the minute
  * [0-60], tm_mday = day of the month [1-31] and tm_mon = months since January
- * <b>[0-11]</b>. tm_gmtoff is set to the offset from UTC in seconds if the 
+ * <b>[0-11]</b>. tm_gmtoff is set to the offset from UTC in seconds if the
  * column value contains timezone information, otherwise tm_gmtoff is set to 0. 
+ * <i>On systems without tm_gmtoff, (Solaris), the member, tm_wday is set to 
+ * gmt offset instead as this property is ignored by mktime on input.</i>
  * The exception to the above is <b>tm_year</b> which contains the year literal
  * and <i>not years since 1900</i> which is the convention. All other fields 
  * in the structure are set to zero. If the column type is DateTime or Timestamp
@@ -483,6 +485,8 @@ struct tm ResultSet_getDateTime(T R, int columnIndex);
  * [0-60], tm_mday = day of the month [1-31] and tm_mon = months since January
  * <b>[0-11]</b>. tm_gmtoff is set to the offset from UTC in seconds if the
  * column value contains timezone information, otherwise tm_gmtoff is set to 0.
+ * <i>On systems without tm_gmtoff, (Solaris), the member, tm_wday is set to
+ * gmt offset instead as this property is ignored by mktime on input.</i>
  * The exception to the above is <b>tm_year</b> which contains the year literal
  * and <i>not years since 1900</i> which is the convention. All other fields
  * in the structure are set to zero. If the column type is DateTime or Timestamp

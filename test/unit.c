@@ -188,6 +188,11 @@ static void testTime() {
         
         printf("=> Test5: Time_toString\n");
         {
+#if HAVE_STRUCT_TM_TM_GMTOFF
+#define TM_GMTOFF tm_gmtoff
+#else
+#define TM_GMTOFF tm_wday
+#endif
                 struct tm t;
                 // DateTime ISO-8601 format
                 assert(Time_toDateTime("2013-12-14T09:38:08Z", &t));
@@ -241,7 +246,7 @@ static void testTime() {
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
-                assert(t.tm_gmtoff == 0); // offset from UTC in seconds
+                assert(t.TM_GMTOFF == 0); // offset from UTC in seconds
                 // DateTime with timezone CET
                 assert(Time_toDateTime("Battle of stikklestad 1030-07-29 11:15:33+01:00", &t));
                 assert(t.tm_year == 1030);
@@ -250,22 +255,22 @@ static void testTime() {
                 assert(t.tm_hour == 11);
                 assert(t.tm_min  == 15);
                 assert(t.tm_sec  == 33);
-                assert(t.tm_gmtoff == -3600);
+                assert(t.TM_GMTOFF == -3600);
                 // Time with timezone
                 assert(Time_toDateTime(" 09:38:08+01:45", &t));
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
-                assert(t.tm_gmtoff == -6300);
+                assert(t.TM_GMTOFF == -6300);
                 // Time with timezone PST compressed
                 assert(Time_toDateTime("Pacific Time Zone 09:38:08 -0800 ", &t));
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
-                assert(t.tm_gmtoff == 28800);
+                assert(t.TM_GMTOFF == 28800);
                 // Date without timezone, tz should not be set
                 assert(Time_toDateTime("2013-12-15-0800 ", &t));
-                assert(t.tm_gmtoff == 0);
+                assert(t.TM_GMTOFF == 0);
                 // Invalid date
                 TRY {
                         Time_toDateTime("1901-123-45", &t);

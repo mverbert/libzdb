@@ -156,7 +156,7 @@ void PreparedStatement_setString(T P, int parameterIndex, const char *x);
  * In general, on both 32 and 64 bits architecture, <code>int</code> is 4 bytes
  * or 32 bits and <code>long long</code> is 8 bytes or 64 bits. A
  * <code>long</code> type is usually equal to <code>int</code> on 32 bits
- * architecture and equal to to <code>long long</code> on 64 bits architecture.
+ * architecture and equal to <code>long long</code> on 64 bits architecture.
  * However, the width of integer types are architecture and compiler dependent.
  * The above is usually true, but not necessarily.
  * @param P A PreparedStatement object
@@ -175,7 +175,7 @@ void PreparedStatement_setInt(T P, int parameterIndex, int x);
  * In general, on both 32 and 64 bits architecture, <code>int</code> is 4 bytes
  * or 32 bits and <code>long long</code> is 8 bytes or 64 bits. A
  * <code>long</code> type is usually equal to <code>int</code> on 32 bits
- * architecture and equal to to <code>long long</code> on 64 bits architecture.
+ * architecture and equal to <code>long long</code> on 64 bits architecture.
  * However, the width of integer types are architecture and compiler dependent.
  * The above is usually true, but not necessarily.
  * @param P A PreparedStatement object
@@ -231,7 +231,7 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
  * first, a SQL select will display a timestamp as a human readable value. 
  * Second, date/time functions provided by SQLite understand this format, see
  * http://www.sqlite.org/lang_datefunc.html The drawback is that this can
- * incur a storage and computational overhead for SQLite compared to storing
+ * incur storage and computational overhead for SQLite compared to storing
  * a numerical value. If this is a concern, we recommend using raw Unix
  * timestamp values stored in an integer database column and use 
  * PreparedStatement_setLLong() and ResultSet_getLLong() to respectively set

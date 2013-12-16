@@ -47,6 +47,12 @@
 /* ----------------------------------------------------------- Definitions */
 
 
+#if HAVE_STRUCT_TM_TM_GMTOFF
+#define TM_GMTOFF tm_gmtoff
+#else
+#define TM_GMTOFF tm_wday
+#endif
+
 #define i2a(i) (x[0] = ((i) / 10) + '0', x[1] = ((i) % 10) + '0')
 
 
@@ -73,7 +79,7 @@ time_t Time_toTimestamp(const char *s) {
                 struct tm t = {0};
                 if (Time_toDateTime(s, &t)) {
                         t.tm_year -= 1900;
-                        long off = t.tm_gmtoff;
+                        long off = t.TM_GMTOFF;
                         return mktime(&t) - off; // mktime does not honor tm_gmtoff
                 }
         }
@@ -145,13 +151,13 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                  tz
                  { // Timezone: +-HH:MM, +-HH or +-HHMM is offset from UTC in seconds
                         if (has_time) { // Only set timezone if time has been seen
-                                tm.tm_gmtoff = a2i(token + 1, 2) * 3600;
+                                tm.TM_GMTOFF = a2i(token + 1, 2) * 3600;
                                 if (token[3] >= '0' && token[3] <= '9')
-                                        tm.tm_gmtoff += a2i(token + 3, 2) * 60;
+                                        tm.TM_GMTOFF += a2i(token + 3, 2) * 60;
                                 else if (token[4] >= '0' && token[4] <= '9')
-                                        tm.tm_gmtoff += a2i(token + 4, 2) * 60;
+                                        tm.TM_GMTOFF += a2i(token + 4, 2) * 60;
                                 if (token[0] == '+')
-                                        tm.tm_gmtoff *= -1;
+                                        tm.TM_GMTOFF *= -1;
                         }
                         continue;
                  }

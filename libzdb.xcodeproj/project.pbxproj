@@ -8,10 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		524B1E701543696800158F6E /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
-		524B24A8185E54FD004B6730 /* OracleConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEC13E716A0002F3C7C /* OracleConnection.c */; };
-		524B24A9185E5500004B6730 /* OraclePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */; };
-		524B24AA185E5505004B6730 /* OracleResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF013E716A0002F3C7C /* OracleResultSet.c */; };
-		524B24AD185E55BA004B6730 /* libclntsh.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 522A207417C1111F00E2FA0A /* libclntsh.dylib */; };
 		5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE513E716A0002F3C7C /* MysqlConnection.c */; };
 		5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */; };
 		5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE913E716A0002F3C7C /* MysqlResultSet.c */; };
@@ -240,7 +236,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				524B24AD185E55BA004B6730 /* libclntsh.dylib in Frameworks */,
 				52F0F9D81851DF2A003B0B33 /* libpq.dylib in Frameworks */,
 				52A30356181FDEDD00F4F4BF /* libmysqlclient.18.dylib in Frameworks */,
 				529F8EC2177503520067C40A /* libz.dylib in Frameworks */,
@@ -647,9 +642,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				524B24A8185E54FD004B6730 /* OracleConnection.c in Sources */,
-				524B24A9185E5500004B6730 /* OraclePreparedStatement.c in Sources */,
-				524B24AA185E5505004B6730 /* OracleResultSet.c in Sources */,
 				5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */,
 				5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */,
 				5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */,
