@@ -17,15 +17,15 @@ AC_CONFIG_COMMANDS([libtool_patch],[test `uname` = "OpenBSD" && perl -p -i -e "s
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_GCC_TRADITIONAL
-AC_PATH_PROG([RE2C], [re2c], [re2c_not_found], [$PATH:/usr/local/bin:/usr/bin])
-if test -z "${RE2C+set}"; then
-        # Require re2c unless src/net/Url.c already is built
-        if test ! -f src/net/Url.c; then
+AC_PATH_PROG([RE2C], [re2c], [no], [$PATH:/usr/local/bin:/usr/bin])
+if test "x$RE2C" = "xno"; then
+        # Require re2c unless src/net/URL.c already is built
+        if test ! -f src/net/URL.c; then
                 AC_MSG_ERROR([Libzdb require re2c. Download re2c from http://re2c.org/ or use your package manager])
         fi
 fi
 AM_PROG_LEX
-if test -z "${LEX+set}"; then
+if test -z "${LEXLIB+set}"; then
         # Require flex unless lex.yy.c already is built
         if test ! -f ./tools/filterh/lex.yy.c; then
                 AC_MSG_ERROR([flex is required. Download from http://www.gnu.org/software/flex/ or use your package manager])
@@ -376,10 +376,7 @@ AC_RUN_IFELSE([AC_LANG_PROGRAM([[
 # Data Types
 # ---------------------------------------------------------------------------
 
-AC_CHECK_MEMBERS([struct tm.tm_gmtoff], [],
-                 [AC_MSG_RESULT([struct tm does not have tm_gmtoff])],
-                 [[#include <time.h>]]
-)
+AC_CHECK_MEMBERS([struct tm.tm_gmtoff], [], [], [[#include <time.h>]])
 
 # ---------------------------------------------------------------------------
 # Compiler 
