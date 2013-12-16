@@ -156,7 +156,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                                         tm.TM_GMTOFF += a2i(token + 3, 2) * 60;
                                 else if (token[4] >= '0' && token[4] <= '9')
                                         tm.TM_GMTOFF += a2i(token + 4, 2) * 60;
-                                if (token[0] == '+')
+                                if (token[0] == '-')
                                         tm.TM_GMTOFF *= -1;
                         }
                         continue;

@@ -401,8 +401,11 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  * use values outside this range. Especially on a 32-bits system.
  *
  * Implementation note: SQLite does not have temporal SQL data types per se and
- * using this method with SQLite <b>require</b> the column value be a time
- * string. See PreparedStatement_setTimestamp() for details.
+ * using this method with SQLite <b>require</b> the column value in the Result
+ * Set to be a time string. If timestamp is a numerical value in the database, 
+ * this can be achieved by using one of SQLite's date/time functions in the
+ * SQL select statement producing this ResultSet. See also 
+ * PreparedStatement_setTimestamp() for details.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @return The column value as seconds since the epoch in the timezone
@@ -411,7 +414,7 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  * @exception SQLException If a database access error occurs, if 
  * <code>columnIndex</code> is outside the range [1..ResultSet_getColumnCount()]
  * or if the column value cannot be converted to a valid timestamp
- * @see SQLException.h
+ * @see SQLException.h PreparedStatement_setTimestamp
  */
 time_t ResultSet_getTimestamp(T R, int columnIndex);
 
@@ -429,8 +432,11 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
  * use values outside this range. Especially on a 32-bits system.
  *
  * Implementation note: SQLite does not have temporal SQL data types per se and
- * using this method with SQLite <b>require</b> the column value be a time
- * string. See PreparedStatement_setTimestamp() for details.
+ * using this method with SQLite <b>require</b> the column value in the Result
+ * Set to be a time string. If timestamp is a numerical value in the database,
+ * this can be achieved by using one of SQLite's date/time functions in the
+ * SQL select statement producing this ResultSet. See also
+ * PreparedStatement_setTimestamp() for details.
  * @param R A ResultSet object
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
@@ -440,7 +446,7 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
  * @exception SQLException If a database access error occurs, if 
  * <code>columnName</code> is not found or if the column value cannot be 
  * converted to a valid timestamp
- * @see SQLException.h
+ * @see SQLException.h PreparedStatement_setTimestamp
  */
 time_t ResultSet_getTimestampByName(T R, const char *columnName);
 
@@ -462,6 +468,12 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName);
  * in the structure are set to zero. If the column type is DateTime or Timestamp
  * all the fields mentioned above are set, if it is a Date or Time, only the
  * relevant fields are set.
+ *
+ * Implementation note: SQLite does not have temporal SQL data types per se and
+ * using this method with SQLite <b>require</b> the column value in the Result
+ * Set to be a time string. If the column value is numerical in the database,
+ * this can be achieved by using one of SQLite's date/time functions in the
+ * SQL select statement producing this ResultSet.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @return A tm structure with fields for date and time. If the value
@@ -492,6 +504,12 @@ struct tm ResultSet_getDateTime(T R, int columnIndex);
  * in the structure are set to zero. If the column type is DateTime or Timestamp
  * all the fields mentioned above are set, if it is a Date or Time, only the
  * relevant fields are set.
+ *
+ * Implementation note: SQLite does not have temporal SQL data types per se and
+ * using this method with SQLite <b>require</b> the column value in the Result
+ * Set to be a time string. If the column value is numerical in the database,
+ * this can be achieved by using one of SQLite's date/time functions in the
+ * SQL select statement producing this ResultSet.
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
  * @return A tm structure with fields for date and time. If the value

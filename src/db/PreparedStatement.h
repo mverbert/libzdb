@@ -218,12 +218,12 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 /**
  * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
  * given Unix timestamp value. The timestamp value given in <code>x</code>
- * is assumed to be in local system time and no conversion is done by this 
+ * is assumed to be in local system time and no time conversion is done by this
  * method. A SQL database will normally convert the timestamp value to UTC
  * and on retrieval convert the value back to the local timezone.
  
- * <i>Implementation note</i>: Internally this method converts the timestamp
- * to an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a> type time
+ * <i>Implementation note</i>: Internally this method transforms the timestamp
+ * to an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a> time
  * string in the local timezone which is then sent to the database. This is an
  * implementation detail, but relevant for SQLite as SQLite does not have 
  * temporal data types per se. Using this method with SQLite will store a 
@@ -242,7 +242,7 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
  * @param x The localtime timestamp value to set
  * @exception SQLException If a database access error occurs or if parameter
  * index is out of range
- * @see SQLException.h
+ * @see SQLException.h ResultSet_getTimestamp
  */
 void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x);
 

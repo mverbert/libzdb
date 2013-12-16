@@ -255,19 +255,19 @@ static void testTime() {
                 assert(t.tm_hour == 11);
                 assert(t.tm_min  == 15);
                 assert(t.tm_sec  == 33);
-                assert(t.TM_GMTOFF == -3600);
+                assert(t.TM_GMTOFF == 3600);
                 // Time with timezone
                 assert(Time_toDateTime(" 09:38:08+01:45", &t));
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
-                assert(t.TM_GMTOFF == -6300);
+                assert(t.TM_GMTOFF == 6300);
                 // Time with timezone PST compressed
                 assert(Time_toDateTime("Pacific Time Zone 09:38:08 -0800 ", &t));
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
-                assert(t.TM_GMTOFF == 28800);
+                assert(t.TM_GMTOFF == -28800);
                 // Date without timezone, tz should not be set
                 assert(Time_toDateTime("2013-12-15-0800 ", &t));
                 assert(t.TM_GMTOFF == 0);
@@ -299,13 +299,13 @@ static void testTime() {
                 assert(t == 1387062778);
                 // With TimeZone W
                 t = Time_toTimestamp("Tokyo timezone: 2013-12-15 00:12:58+09:00");
-                assert(t == 1387095178);
+                assert(t == 1387030378);
                 // With TimeZone E
                 t = Time_toTimestamp("New York timezone: 2013-12-15 00:12:58-05");
-                assert(t == 1387044778);
+                assert(t == 1387080778);
                 // Compressed
                 t = Time_toTimestamp("20131215001258-0500");
-                assert(t == 1387044778);
+                assert(t == 1387080778);
                 // Invalid timestamp string
                 TRY {
                         Time_toTimestamp("1901-123-45 10:12:14");
