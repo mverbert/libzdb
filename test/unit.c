@@ -248,7 +248,7 @@ static void testTime() {
                 assert(t.tm_sec  == 8);
                 assert(t.TM_GMTOFF == 0); // offset from UTC in seconds
                 // DateTime with timezone CET
-                assert(Time_toDateTime("Battle of stikklestad 1030-07-29 11:15:33+01:00", &t));
+                assert(Time_toDateTime("The Battle of Stiklestad 1030-07-29 11:15:33+01:00", &t));
                 assert(t.tm_year == 1030);
                 assert(t.tm_mon  == 6);
                 assert(t.tm_mday == 29);
