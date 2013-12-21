@@ -69,6 +69,7 @@ typedef struct column_t {
         char *name;
         unsigned long length;
         OCILobLocator *lob_loc;
+        OCIDateTime   *date; 
 } *column_t;
 #define T ResultSetDelegate_T
 struct T {
@@ -77,6 +78,7 @@ struct T {
         ub4         maxRow;
         OCIStmt*    stmt;
         OCIEnv*     env;
+        OCISession* usr;
         OCIError*   err;
         OCISvcCtx*  svc;
         column_t    columns;
@@ -88,7 +90,7 @@ struct T {
 #define ORACLE_COLUMN_NAME_LOWERCASE 2
 #endif
 #define LOB_CHUNK_SIZE  2000
-
+#define DATE_STR_BUF_SIZE   255
 
 /* ------------------------------------------------------- Private methods */
 
@@ -137,6 +139,18 @@ static int initaleDefiningBuffers(T R) {
                                 R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, 
                                         &(R->columns[i-1].lob_loc), deptlen, SQLT_CLOB, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
                                 break;
+                        case SQLT_DAT:
+                        case SQLT_DATE:
+                        case SQLT_TIMESTAMP:
+                        case SQLT_TIMESTAMP_TZ:
+                        case SQLT_TIMESTAMP_LTZ:
+                                R->columns[i-1].buffer = NULL;
+                                status = OCIDescriptorAlloc((dvoid *)R->env, (dvoid **) &(R->columns[i-1].date),
+                                                (ub4) OCI_DTYPE_TIMESTAMP,
+                                                (size_t) 0, (dvoid **) 0);
+                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, 
+                                        &(R->columns[i-1].date), sizeof(R->columns[i-1].date), SQLT_TIMESTAMP, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
+                                break;
                         default:
                                 R->columns[i-1].lob_loc = NULL;
                                 R->columns[i-1].buffer = ALLOC(deptlen + 1);
@@ -171,7 +185,24 @@ static int initaleDefiningBuffers(T R) {
         return true;
 }
 
+static int OracleDate_toString(T R, int i)
+{
+        const char fmt[] = "YY-MM-DD HH24.MI.SS"; // "YYYY-MM-DD HH24:MI:SS TZR TZD"
 
+        R->columns[i].length = DATE_STR_BUF_SIZE;
+        if (R->columns[i].buffer)
+                FREE(R->columns[i].buffer);
+
+        R->columns[i].buffer = ALLOC(R->columns[i].length + 1);
+        R->lastError = OCIDateTimeToText(R->usr, 
+                                         R->err, 
+                                         R->columns[i].date,
+                                         fmt, strlen(fmt),
+                                         0,
+                                         NULL, 0,
+                                         (ub4*)&(R->columns[i].length), (OraText *)R->columns[i].buffer);
+        return ((R->lastError == OCI_SUCCESS) || (R->lastError == OCI_SUCCESS_WITH_INFO));;
+}
 /* ----------------------------------------------------- Protected methods */
 
 
@@ -179,7 +210,7 @@ static int initaleDefiningBuffers(T R) {
 #pragma GCC visibility push(hidden)
 #endif
 
-T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc, int need_free, int max_row) {
+T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int need_free, int max_row) {
         T R;
         assert(stmt);
         assert(env);
@@ -190,6 +221,7 @@ T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc,
         R->env  = env;
         R->err  = err;
         R->svc  = svc;
+        R->usr  = usr;
         R->freeStatement = need_free;
         R->row = 0;
         R->lastError = OCIAttrGet(R->stmt, OCI_HTYPE_STMT, &R->maxRow, NULL, OCI_ATTR_ROW_COUNT/*OCI_ATTR_ROWS_FETCHED*/, R->err);
@@ -217,6 +249,8 @@ void OracleResultSet_free(T *R) {
         for (int i = 0; i < (*R)->columnCount; i++) {
                 if ((*R)->columns[i].lob_loc)
                         OCIDescriptorFree((*R)->columns[i].lob_loc, OCI_DTYPE_LOB);
+                if ((*R)->columns[i].date)
+                        OCIDescriptorFree((dvoid*)(*R)->columns[i].date, OCI_DTYPE_TIMESTAMP);
                 FREE((*R)->columns[i].buffer);
                 FREE((*R)->columns[i].name);
         }
@@ -271,8 +305,8 @@ int OracleResultSet_next(T R) {
                 return false;
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
-	if (R->lastError == OCI_SUCCESS_WITH_INFO)
-		DEBUG("OracleResultSet_next Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError, R->err));
+        if (R->lastError == OCI_SUCCESS_WITH_INFO)
+                DEBUG("OracleResultSet_next Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError, R->err));
         R->row++;
         return ((R->lastError == OCI_SUCCESS) || (R->lastError == OCI_SUCCESS_WITH_INFO));
 }
@@ -290,6 +324,13 @@ const char *OracleResultSet_getString(T R, int columnIndex) {
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].isNull)
                 return NULL;
+        if (R->columns[i].date)
+        {
+                if (!OracleDate_toString(R, i))
+                {
+                        THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
+                }
+        }
         if (R->columns[i].buffer)
                 R->columns[i].buffer[R->columns[i].length] = 0;
         return R->columns[i].buffer;

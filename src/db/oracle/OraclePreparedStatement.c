@@ -77,15 +77,16 @@ typedef struct param_t {
 } *param_t;
 #define T PreparedStatementDelegate_T
 struct T {
-        int        maxRows;
-        ub4        paramCount;
-        OCIStmt*   stmt;
-        OCIEnv*    env;
-        OCIError*  err;
-        OCISvcCtx* svc;
-        param_t    params;
-        sword      lastError;
-        ub4        rowsChanged;
+        int         maxRows;
+        ub4         paramCount;
+        OCISession* usr;
+        OCIStmt*    stmt;
+        OCIEnv*     env;
+        OCIError*   err;
+        OCISvcCtx*  svc;
+        param_t     params;
+        sword       lastError;
+        ub4         rowsChanged;
 };
 
 extern const struct Rop_T oraclerops;
@@ -98,7 +99,7 @@ extern const struct Rop_T oraclerops;
 #pragma GCC visibility push(hidden)
 #endif
 
-T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcCtx *svc, int max_row) {
+T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int max_row) {
         T P;
         assert(stmt);
         assert(env);
@@ -109,6 +110,7 @@ T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCIError *err, OCISvcC
         P->env  = env;
         P->err  = err;
         P->svc  = svc;
+        P->usr  = usr; 
         P->maxRows = max_row;
         P->lastError = OCI_SUCCESS;
         P->rowsChanged = 0;
@@ -212,7 +214,7 @@ ResultSet_T OraclePreparedStatement_executeQuery(T P) {
         P->rowsChanged = 0;
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 0, 0, NULL, NULL, OCI_DEFAULT);
         if (P->lastError == OCI_SUCCESS || P->lastError == OCI_SUCCESS_WITH_INFO)
-                return ResultSet_new(OracleResultSet_new(P->stmt, P->env, P->err, P->svc, false, P->maxRows), (Rop_T)&oraclerops);
+                return ResultSet_new(OracleResultSet_new(P->stmt, P->env, P->usr, P->err, P->svc, false, P->maxRows), (Rop_T)&oraclerops);
         THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
         return NULL;
 }
@@ -238,22 +240,22 @@ static pthread_once_t error_msg_key_once = PTHREAD_ONCE_INIT;
 
 /* Return the thread-specific buffer */
 static char * get_err_buffer(void) {
-	return (char *) pthread_getspecific(error_msg_key);
+        return (char *) pthread_getspecific(error_msg_key);
 }
 
 /* Allocate the key */
 static void error_msg_key_alloc() {
-	pthread_key_create(&error_msg_key, free);
-	pthread_setspecific(error_msg_key, malloc(STRLEN));
+        pthread_key_create(&error_msg_key, free);
+        pthread_setspecific(error_msg_key, malloc(STRLEN));
 }
 
 /* This is a general error function also used in OracleResultSet */
 const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp) {
         sb4 errcode;
         char* erb;
-	pthread_once(&error_msg_key_once, error_msg_key_alloc);
-	erb = get_err_buffer();
-	assert(erb);
+        pthread_once(&error_msg_key_once, error_msg_key_alloc);
+        erb = get_err_buffer();
+        assert(erb);
         assert(errhp);
         switch (err)
         {
