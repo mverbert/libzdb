@@ -925,6 +925,7 @@ static void testStringBuffer() {
 
 int main(void) {
         Exception_init();
+        setenv("TZ", "Europe/Oslo" , 1);
 	testStr();
 	testMem();
 	testTime();
