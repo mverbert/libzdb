@@ -135,7 +135,6 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
-        // Allocate only if required
         if (STR_UNDEF(P->params[i].timestamp))
                 P->params[i].timestamp = ALLOC(20);
         P->op->setString(P->D, parameterIndex, Time_toString(x, P->params[i].timestamp));
