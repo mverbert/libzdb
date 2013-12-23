@@ -171,14 +171,6 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
 }
 
 
-time_t Time_now(void) {
-	struct timeval t;
-	if (gettimeofday(&t, NULL) != 0)
-                THROW(AssertException, "%s", System_getLastError());
-	return t.tv_sec;
-}
-
-
 char *Time_toString(time_t time, char *result) {
         assert(result);
         char x[2];
@@ -208,6 +200,14 @@ char *Time_toString(time_t time, char *result) {
         result[17] = x[0];
         result[18] = x[1];
 	return result;
+}
+
+
+time_t Time_now(void) {
+	struct timeval t;
+	if (gettimeofday(&t, NULL) != 0)
+                THROW(AssertException, "%s", System_getLastError());
+	return t.tv_sec;
 }
 
 

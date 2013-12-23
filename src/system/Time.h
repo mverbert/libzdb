@@ -85,8 +85,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t);
  * </pre>
  * @param time Number of local time seconds since the EPOCH
  * @param result The buffer to write the date string too
- * @return a pointer to the result buffer or NULL if <code>result</code>
- * was NULL
+ * @return a pointer to the result buffer
  * @exception AssertException if result is NULL
  */
 char *Time_toString(time_t time, char result[20]);
