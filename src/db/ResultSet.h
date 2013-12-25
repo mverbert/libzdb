@@ -389,12 +389,13 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
 //@{
 
 /**
- * Retrieves the value of the designated column in the current row of
- * this ResultSet object as a Unix timestamp. The returned value
- * represent seconds since the <strong>epoch</strong> (January 1, 1970,
- * 00:00:00 GMT). A SQL database can or will store timestamp values
- * in UTC and on retrieval convert the value to the local timezone. <i>If the
- * column value contains timezone information (unlikely) this is honoured.</i>
+ * Retrieves the value of the designated column in the current row of this
+ * ResultSet object as a Unix timestamp in local system time. The returned 
+ * value represent seconds since the <strong>epoch</strong> (January 1, 1970,
+ * 00:00:00 GMT). A SQL database can or will store timestamp values in UTC and
+ * on retrieval convert the value to the local timezone. <i>No time conversion
+ * is done by this method. If needed, ResultSet_getDateTime() can be used to
+ * obtain and correct for timezone if column value contains this information.</i>
  *
  * Even though the underlying database might support timestamp ranges before
  * the epoch and after '2038-01-19 03:14:07 UTC' it is safest not to assume or
@@ -402,9 +403,10 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  *
  * Implementation note: SQLite does not have temporal SQL data types per se and
  * using this method with SQLite <b>require</b> the column value in the Result
- * Set to be a time string. If timestamp is a numerical value in the database, 
- * this can be achieved by using one of SQLite's date/time functions in the
- * SQL select statement producing this ResultSet. See also 
+ * Set to be a (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a>)
+ * time string. If timestamp is a numerical value in the database, this can be
+ * achieved by using one of SQLite's date/time functions in the SQL select
+ * statement producing this ResultSet. See also
  * PreparedStatement_setTimestamp() for details.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
@@ -420,12 +422,13 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
 
 
 /**
- * Retrieves the value of the designated column in the current row of
- * this ResultSet object as a Unix timestamp. The returned value
- * represent seconds since the <strong>epoch</strong> (January 1, 1970,
- * 00:00:00 GMT). A SQL database can or will store timestamp values
- * in UTC and on retrieval convert the value to the local timezone. <i>If the
- * column value contains timezone information (unlikely) this is honoured.</i>
+ * Retrieves the value of the designated column in the current row of this
+ * ResultSet object as a Unix timestamp in local system time. The returned
+ * value represent seconds since the <strong>epoch</strong> (January 1, 1970,
+ * 00:00:00 GMT). A SQL database can or will store timestamp values in UTC and
+ * on retrieval convert the value to the local timezone. <i>No time conversion
+ * is done by this method. If needed, ResultSet_getDateTime() can be used to
+ * obtain and correct for timezone if column value contains this information.</i>
  *
  * Even though the underlying database might support timestamp ranges before
  * the epoch and after '2038-01-19 03:14:07 UTC' it is safest not to assume or
@@ -433,9 +436,10 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
  *
  * Implementation note: SQLite does not have temporal SQL data types per se and
  * using this method with SQLite <b>require</b> the column value in the Result
- * Set to be a time string. If timestamp is a numerical value in the database,
- * this can be achieved by using one of SQLite's date/time functions in the
- * SQL select statement producing this ResultSet. See also
+ * Set to be a (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a>)
+ * time string. If timestamp is a numerical value in the database, this can be
+ * achieved by using one of SQLite's date/time functions in the SQL select
+ * statement producing this ResultSet. See also
  * PreparedStatement_setTimestamp() for details.
  * @param R A ResultSet object
  * @param R A ResultSet object
@@ -459,21 +463,22 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName);
  * for usage with mktime(3) where, tm_hour = hours since midnight [0-23],
  * tm_min = minutes after the hour [0-59], tm_sec = seconds after the minute
  * [0-60], tm_mday = day of the month [1-31] and tm_mon = months since January
- * <b>[0-11]</b>. tm_gmtoff is set to the offset from UTC in seconds if the
- * column value contains timezone information, otherwise tm_gmtoff is set to 0. 
- * <i>On systems without tm_gmtoff, (Solaris), the member, tm_wday is set to 
- * gmt offset instead as this property is ignored by mktime on input.</i>
- * The exception to the above is <b>tm_year</b> which contains the year literal
- * and <i>not years since 1900</i> which is the convention. All other fields 
- * in the structure are set to zero. If the column type is DateTime or Timestamp
- * all the fields mentioned above are set, if it is a Date or Time, only the
- * relevant fields are set.
+ * <b class="textinfo">[0-11]</b>. tm_gmtoff is set to the offset from UTC in
+ * seconds if the column value contains timezone information, otherwise 
+ * tm_gmtoff is set to 0. <i>On systems without tm_gmtoff, (Solaris), the 
+ * member, tm_wday is set to gmt offset instead as this property is ignored 
+ * by mktime on input.</i> The exception to the above is <b>tm_year</b> which
+ * contains the year literal and <i>not years since 1900</i> which is the 
+ * convention. All other fields in the structure are set to zero. If the 
+ * column type is DateTime or Timestamp all the fields mentioned above are 
+ * set, if it is a Date or Time, only the relevant fields are set.
  *
  * Implementation note: SQLite does not have temporal SQL data types per se and
  * using this method with SQLite <b>require</b> the column value in the Result
- * Set to be a time string. If the column value is numerical in the database,
- * this can be achieved by using one of SQLite's date/time functions in the
- * SQL select statement producing this ResultSet.
+ * Set to be a (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a>) 
+ * time string. If the column value is numerical in the database, this can be 
+ * achieved by using one of SQLite's date/time functions in the SQL select 
+ * statement producing this ResultSet.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @return A tm structure with fields for date and time. If the value
@@ -495,21 +500,22 @@ struct tm ResultSet_getDateTime(T R, int columnIndex);
  * for usage with mktime(3) where, tm_hour = hours since midnight [0-23],
  * tm_min = minutes after the hour [0-59], tm_sec = seconds after the minute
  * [0-60], tm_mday = day of the month [1-31] and tm_mon = months since January
- * <b>[0-11]</b>. tm_gmtoff is set to the offset from UTC in seconds if the
- * column value contains timezone information, otherwise tm_gmtoff is set to 0.
- * <i>On systems without tm_gmtoff, (Solaris), the member, tm_wday is set to
- * gmt offset instead as this property is ignored by mktime on input.</i>
- * The exception to the above is <b>tm_year</b> which contains the year literal
- * and <i>not years since 1900</i> which is the convention. All other fields
- * in the structure are set to zero. If the column type is DateTime or Timestamp
- * all the fields mentioned above are set, if it is a Date or Time, only the
- * relevant fields are set.
+ * <b class="textinfo">[0-11]</b>. tm_gmtoff is set to the offset from UTC in
+ * seconds if the column value contains timezone information, otherwise
+ * tm_gmtoff is set to 0. <i>On systems without tm_gmtoff, (Solaris), the
+ * member, tm_wday is set to gmt offset instead as this property is ignored
+ * by mktime on input.</i> The exception to the above is <b>tm_year</b> which
+ * contains the year literal and <i>not years since 1900</i> which is the
+ * convention. All other fields in the structure are set to zero. If the
+ * column type is DateTime or Timestamp all the fields mentioned above are
+ * set, if it is a Date or Time, only the relevant fields are set.
  *
  * Implementation note: SQLite does not have temporal SQL data types per se and
  * using this method with SQLite <b>require</b> the column value in the Result
- * Set to be a time string. If the column value is numerical in the database,
- * this can be achieved by using one of SQLite's date/time functions in the
- * SQL select statement producing this ResultSet.
+ * Set to be a (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a>)
+ * time string. If the column value is numerical in the database, this can be
+ * achieved by using one of SQLite's date/time functions in the SQL select
+ * statement producing this ResultSet.
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
  * @return A tm structure with fields for date and time. If the value

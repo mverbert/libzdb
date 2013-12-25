@@ -79,8 +79,7 @@ time_t Time_toTimestamp(const char *s) {
                 struct tm t = {0};
                 if (Time_toDateTime(s, &t)) {
                         t.tm_year -= 1900;
-                        long off = t.TM_GMTOFF;
-                        return mktime(&t) - off; // mktime does not honor tm_gmtoff
+                        return mktime(&t);
                 }
         }
 	return 0;
