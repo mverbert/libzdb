@@ -24,7 +24,5 @@
     }
     .textinfo {color: #428bca;}
     .textnote {color: #a94442;}
-
-    .important { color: #960203; }
 </style>
 </head><body>

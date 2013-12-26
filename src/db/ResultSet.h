@@ -394,8 +394,8 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  * value represent seconds since the <strong>epoch</strong> (January 1, 1970,
  * 00:00:00 GMT). A SQL database can or will store timestamp values in UTC and
  * on retrieval convert the value to the local timezone. <i>No time conversion
- * is done by this method. If needed, ResultSet_getDateTime() can be used to
- * obtain and correct for timezone if column value contains this information.</i>
+ * is done by this method</i>. If needed, ResultSet_getDateTime() can be used to
+ * obtain and correct for timezone if column value contains this information.
  *
  * Even though the underlying database might support timestamp ranges before
  * the epoch and after '2038-01-19 03:14:07 UTC' it is safest not to assume or
@@ -423,12 +423,12 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
 
 /**
  * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a Unix timestamp in local system time. The returned
+ * ResultSet object as a Unix timestamp in local system time. The returned 
  * value represent seconds since the <strong>epoch</strong> (January 1, 1970,
  * 00:00:00 GMT). A SQL database can or will store timestamp values in UTC and
  * on retrieval convert the value to the local timezone. <i>No time conversion
- * is done by this method. If needed, ResultSet_getDateTime() can be used to
- * obtain and correct for timezone if column value contains this information.</i>
+ * is done by this method</i>. If needed, ResultSet_getDateTime() can be used to
+ * obtain and correct for timezone if column value contains this information.
  *
  * Even though the underlying database might support timestamp ranges before
  * the epoch and after '2038-01-19 03:14:07 UTC' it is safest not to assume or

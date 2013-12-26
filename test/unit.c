@@ -186,7 +186,7 @@ static void testTime() {
         }
         printf("=> Test3: OK\n\n");
         
-        printf("=> Test5: Time_toString\n");
+        printf("=> Test4: Time_toDateTime\n");
         {
 #if HAVE_STRUCT_TM_TM_GMTOFF
 #define TM_GMTOFF tm_gmtoff
@@ -268,7 +268,7 @@ static void testTime() {
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
                 assert(t.TM_GMTOFF == -28800);
-                // Date without timezone, tz should not be set
+                // Date without time, tz should not be set
                 assert(Time_toDateTime("2013-12-15-0800 ", &t));
                 assert(t.TM_GMTOFF == 0);
                 // Invalid date
@@ -284,9 +284,9 @@ static void testTime() {
                 }
                 END_TRY;
         }
-        printf("=> Test5: OK\n\n");
+        printf("=> Test4: OK\n\n");
         
-        printf("=> Test6: Time_toTimestamp\n");
+        printf("=> Test5: Time_toTimestamp\n");
         {
                 // Local time, fraction of second is ignored
                 time_t t = Time_toTimestamp("2013-12-15 00:12:58.123456");
@@ -311,13 +311,13 @@ static void testTime() {
                 }
                 END_TRY;
         }
-        printf("=> Test6: OK\n\n");
+        printf("=> Test5: OK\n\n");
         
-        printf("=> Test7: usleep\n");
+        printf("=> Test6: usleep\n");
         {
                 Time_usleep(1);
         }
-        printf("=> Test7: OK\n\n");
+        printf("=> Test6: OK\n\n");
         
         printf("============> Time Tests: OK\n\n");
 }
