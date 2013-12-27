@@ -54,6 +54,7 @@ const struct Pop_T mysqlpops = {
         MysqlPreparedStatement_setInt,
         MysqlPreparedStatement_setLLong,
         MysqlPreparedStatement_setDouble,
+        NULL, /* setTimestamp */
         MysqlPreparedStatement_setBlob,
         MysqlPreparedStatement_execute,
         MysqlPreparedStatement_executeQuery,
