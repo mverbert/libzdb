@@ -54,6 +54,7 @@ const struct Pop_T sqlite3pops = {
         SQLitePreparedStatement_setInt,
         SQLitePreparedStatement_setLLong,
         SQLitePreparedStatement_setDouble,
+        NULL, /* setTimestamp */
         SQLitePreparedStatement_setBlob,
         SQLitePreparedStatement_execute,
         SQLitePreparedStatement_executeQuery,

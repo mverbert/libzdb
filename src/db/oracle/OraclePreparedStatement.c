@@ -59,6 +59,7 @@ const struct Pop_T oraclepops = {
         OraclePreparedStatement_setInt,
         OraclePreparedStatement_setLLong,
         OraclePreparedStatement_setDouble,
+        OraclePreparedStatement_setTimestamp,
         OraclePreparedStatement_setBlob,
         OraclePreparedStatement_execute,
         OraclePreparedStatement_executeQuery,
@@ -71,6 +72,7 @@ typedef struct param_t {
                 const void *blob;
                 const char *string;
                 OCINumber number;
+                OCIDateTime* date;
         } type;
         long length;
         OCIBind* bind;
@@ -142,6 +144,40 @@ void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x) {
         P->params[i].length = x ? strlen(x) : 0;
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, (char *)P->params[i].type.string, 
                                     (int)P->params[i].length, SQLT_CHR, 0, 0, 0, 0, 0, OCI_DEFAULT);
+        if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
+                THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
+}
+
+
+void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, const time_t time/*, const char* timezone*/) {
+        assert(P);
+        struct tm ts = {0};
+        ub4   valid;
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+
+        P->lastError = OCIDescriptorAlloc((dvoid *)P->env, (dvoid **) &(P->params[i].type.date),
+                                          (ub4) OCI_DTYPE_TIMESTAMP,
+                                          (size_t) 0, (dvoid **) 0);
+        if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
+                THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
+
+        localtime_r(&time, &ts);
+
+        OCIDateTimeConstruct(P->usr,
+                             P->err,
+                             P->params[i].type.date, //OCIDateTime   *datetime,
+                             ts.tm_year, ts.tm_mon, ts.tm_mday, ts.tm_hour, ts.tm_min, ts.tm_sec, 0/*fsec*/,
+                             (OraText*)0, 0);
+        
+        if (OCI_SUCCESS != OCIDateTimeCheck(P->usr, P->err, P->params[i].type.date, &valid) || valid != 0)
+        {
+                THROW(SQLException, "Bad date/time value");
+        }
+
+        P->params[i].length = sizeof(OCIDateTime *);
+
+        P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].type.date, 
+                                    P->params[i].length, SQLT_TIMESTAMP, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }

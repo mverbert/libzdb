@@ -54,6 +54,7 @@ const struct Pop_T postgresqlpops = {
         PostgresqlPreparedStatement_setInt,
         PostgresqlPreparedStatement_setLLong,
         PostgresqlPreparedStatement_setDouble,
+        NULL, /* setTimestamp */
         PostgresqlPreparedStatement_setBlob,
         PostgresqlPreparedStatement_execute,
         PostgresqlPreparedStatement_executeQuery,
