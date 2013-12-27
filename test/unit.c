@@ -291,21 +291,12 @@ static void testTime() {
                 // Local time, fraction of second is ignored
                 time_t t = Time_toTimestamp("2013-12-15 00:12:58.123456");
                 assert(t == 1387062778);
-                // Zulu time, no timezone adjustment
-                t = Time_toTimestamp("2013-12-15T00:12:58Z");
-                assert(t == 1387062778);
-                // Invalid timezone is ignored
-                t = Time_toTimestamp("2013-12-15T00:12:58+1");
-                assert(t == 1387062778);
-                // With TimeZone W
+                // TimeZone is ignored
                 t = Time_toTimestamp("Tokyo timezone: 2013-12-15 00:12:58+09:00");
-                assert(t == 1387030378);
-                // With TimeZone E
-                t = Time_toTimestamp("New York timezone: 2013-12-15 00:12:58-05");
-                assert(t == 1387080778);
+                assert(t == 1387062778);
                 // Compressed
                 t = Time_toTimestamp("20131215001258-0500");
-                assert(t == 1387080778);
+                assert(t == 1387062778);
                 // Invalid timestamp string
                 TRY {
                         Time_toTimestamp("1901-123-45 10:12:14");

@@ -609,11 +609,12 @@ static void testPool(const char *testURL) {
                 url = URL_new(testURL);
                 pool = ConnectionPool_new(url);
                 assert(pool);
+                setenv("TZ", "Europe/Oslo" , 1);
                 ConnectionPool_start(pool);
                 Connection_T con = ConnectionPool_getConnection(pool);
                 
                 if (Str_startsWith(testURL, "postgres"))
-                        Connection_execute(con, "create table zild_t(d date, t time, dt timestamp, ts timestamp)");
+                        Connection_execute(con, "create table zild_t(d date, t time, dt timestamp, ts timestamp with time zone)");
                 else if (Str_startsWith(testURL, "oracle"))
                         Connection_execute(con, "create table zild_t(d date, t time, dt date, ts timestamp)");
                 else
