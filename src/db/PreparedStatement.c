@@ -27,7 +27,6 @@
 
 #include <stdio.h>
 
-#include "system/Time.h"
 #include "ResultSet.h"
 #include "PreparedStatement.h"
 
@@ -42,16 +41,12 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-typedef struct param_t {
-        char *timestamp;
-} *param_t;
 #define T PreparedStatement_T
 struct PreparedStatement_S {
         Pop_T op;
         int paramCount;
         ResultSet_T resultSet;
         PreparedStatementDelegate_T D;
-        param_t params;
 };
 
 
@@ -75,11 +70,10 @@ T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op, int paramCount)
 	T P;
 	assert(D);
 	assert(op);
-        P = CALLOC(1, (sizeof(*P) + paramCount * sizeof(P->params[0])));
+        NEW(P);
 	P->D = D;
 	P->op = op;
         P->paramCount = paramCount;
-        P->params = (param_t)(P + 1);
 	return P;
 }
 
@@ -88,8 +82,6 @@ void PreparedStatement_free(T *P) {
 	assert(P && *P);
         clearResultSet((*P));
         (*P)->op->free(&(*P)->D);
-        for (int i = 0; i < (*P)->paramCount; i++)
-                FREE((*P)->params[i].timestamp);
 	FREE(*P);
 }
 
@@ -134,15 +126,7 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 
 void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
-        if (P->op->setTimestamp != NULL)
-                P->op->setTimestamp(P->D, parameterIndex, x);
-        else {
-                // Allocate only if required
-                if (STR_UNDEF(P->params[i].timestamp))
-                        P->params[i].timestamp = ALLOC(20);
-                P->op->setString(P->D, parameterIndex, Time_toString(x, P->params[i].timestamp));
-        }
+        P->op->setTimestamp(P->D, parameterIndex, x);
 }
 
 

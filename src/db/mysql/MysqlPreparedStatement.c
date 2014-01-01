@@ -54,7 +54,7 @@ const struct Pop_T mysqlpops = {
         MysqlPreparedStatement_setInt,
         MysqlPreparedStatement_setLLong,
         MysqlPreparedStatement_setDouble,
-        NULL, /* setTimestamp */
+        MysqlPreparedStatement_setTimestamp,
         MysqlPreparedStatement_setBlob,
         MysqlPreparedStatement_execute,
         MysqlPreparedStatement_executeQuery,
@@ -66,6 +66,7 @@ typedef struct param_t {
                 int integer;
                 long long llong;
                 double real;
+                MYSQL_TIME timestamp;
         } type;
         long length;
 } *param_t;
@@ -74,10 +75,10 @@ typedef struct param_t {
 struct T {
         int maxRows;
         int lastError;
-        int paramCount;
         param_t params;
         MYSQL_STMT *stmt;
         MYSQL_BIND *bind;
+        int parameterCount;
 };
 
 static my_bool yes = true;
@@ -98,10 +99,10 @@ T MysqlPreparedStatement_new(void *stmt, int maxRows, int parameterCount) {
         NEW(P);
         P->stmt = stmt;
         P->maxRows = maxRows;
-        P->paramCount = parameterCount;
-        if (P->paramCount > 0) {
-                P->params = CALLOC(P->paramCount, sizeof(struct param_t));
-                P->bind = CALLOC(P->paramCount, sizeof(MYSQL_BIND));
+        P->parameterCount = parameterCount;
+        if (P->parameterCount > 0) {
+                P->params = CALLOC(P->parameterCount, sizeof(struct param_t));
+                P->bind = CALLOC(P->parameterCount, sizeof(MYSQL_BIND));
         }
         P->lastError = MYSQL_OK;
         return P;
@@ -125,7 +126,7 @@ void MysqlPreparedStatement_free(T *P) {
 
 void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->bind[i].buffer_type = MYSQL_TYPE_STRING;
         P->bind[i].buffer = (char*)x;
         if (! x) {
@@ -141,37 +142,54 @@ void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
 
 void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.integer = x;
         P->bind[i].buffer_type = MYSQL_TYPE_LONG;
-        P->bind[i].buffer = (char*)&P->params[i].type.integer;
+        P->bind[i].buffer = &P->params[i].type.integer;
         P->bind[i].is_null = 0;
 }
 
 
 void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.llong = x;
         P->bind[i].buffer_type = MYSQL_TYPE_LONGLONG;
-        P->bind[i].buffer = (char*)&P->params[i].type.llong;
+        P->bind[i].buffer = &P->params[i].type.llong;
         P->bind[i].is_null = 0;
 }
 
 
 void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.real = x;
         P->bind[i].buffer_type = MYSQL_TYPE_DOUBLE;
-        P->bind[i].buffer = (char*)&P->params[i].type.real;
+        P->bind[i].buffer = &P->params[i].type.real;
+        P->bind[i].is_null = 0;
+}
+
+
+void MysqlPreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
+        struct tm ts = {0};
+        localtime_r(&x, &ts);
+        P->params[i].type.timestamp.year = ts.tm_year + 1900;
+        P->params[i].type.timestamp.month = ts.tm_mon + 1;
+        P->params[i].type.timestamp.day = ts.tm_mday;
+        P->params[i].type.timestamp.hour = ts.tm_hour;
+        P->params[i].type.timestamp.minute = ts.tm_min;
+        P->params[i].type.timestamp.second = ts.tm_sec;
+        P->bind[i].buffer_type = MYSQL_TYPE_TIMESTAMP;
+        P->bind[i].buffer = &P->params[i].type.timestamp;
         P->bind[i].is_null = 0;
 }
 
 
 void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->bind[i].buffer_type = MYSQL_TYPE_BLOB;
         P->bind[i].buffer = (void*)x;
         if (! x) {
@@ -187,7 +205,7 @@ void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int 
 
 void MysqlPreparedStatement_execute(T P) {
         assert(P);
-        if (P->paramCount > 0)
+        if (P->parameterCount > 0)
                 if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
                         THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
 #if MYSQL_VERSION_ID >= 50002
@@ -205,7 +223,7 @@ void MysqlPreparedStatement_execute(T P) {
 
 ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         assert(P);
-        if (P->paramCount > 0)
+        if (P->parameterCount > 0)
                 if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
                         THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
 #if MYSQL_VERSION_ID >= 50002

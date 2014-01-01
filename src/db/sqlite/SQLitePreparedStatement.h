@@ -30,6 +30,7 @@ void SQLitePreparedStatement_setString(T P, int parameterIndex, const char *x);
 void SQLitePreparedStatement_setInt(T P, int parameterIndex, int x);
 void SQLitePreparedStatement_setLLong(T P, int parameterIndex, long long x);
 void SQLitePreparedStatement_setDouble(T P, int parameterIndex, double x);
+void SQLitePreparedStatement_setTimestamp(T P, int parameterIndex, time_t x);
 void SQLitePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
 void SQLitePreparedStatement_execute(T P);
 ResultSet_T SQLitePreparedStatement_executeQuery(T P);

@@ -30,6 +30,7 @@ void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *
 void PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x);
 void PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long x);
 void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x);
+void PostgresqlPreparedStatement_setTimestamp(T P, int parameterIndex, time_t x);
 void PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
 void PostgresqlPreparedStatement_execute(T P);
 ResultSet_T PostgresqlPreparedStatement_executeQuery(T P);

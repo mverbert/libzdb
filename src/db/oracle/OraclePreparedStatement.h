@@ -33,7 +33,7 @@ void OraclePreparedStatement_setInt(T P, int parameterIndex, int x);
 void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long x);
 void OraclePreparedStatement_setDouble(T P, int parameterIndex, double x);
 void OraclePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size);
-void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, const time_t time/*, const char* timezone*/);
+void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, time_t time);
 void OraclePreparedStatement_execute(T P);
 ResultSet_T OraclePreparedStatement_executeQuery(T P);
 long long OraclePreparedStatement_rowsChanged(T P);

@@ -218,25 +218,16 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 /**
  * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
  * given Unix timestamp value. The timestamp value given in <code>x</code>
- * is assumed to be in local system time and no time conversion is done by this
- * method. A SQL database will normally convert the timestamp value to UTC
- * and on retrieval convert the value back to the local timezone.
- 
- * <i>Implementation note</i>: Internally this method transforms the timestamp
- * to an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a> time
- * string in the local timezone which is then sent to the database. This is an
- * implementation detail, but relevant for SQLite as SQLite does not have 
- * temporal data types per se. Using this method with SQLite will store a 
- * timestamp value as a 19 byte string. This can be useful for two reasons, 
- * first, a SQL select will display a timestamp as a human readable value. 
- * Second, date/time functions provided by SQLite understand this format, see
- * http://www.sqlite.org/lang_datefunc.html The drawback is that this can
- * incur storage and computational overhead for SQLite compared to storing
- * a numerical value. If this is a concern, we recommend using raw Unix
- * timestamp values stored in an integer database column and use 
- * PreparedStatement_setLLong() and ResultSet_getLLong() to respectively set
- * and get these values which is then handled in your application. This applies
- * to all databases supported by this library.
+ * is assumed to be in local system time. A SQL database will normally convert 
+ * the timestamp value to UTC and on retrieval convert the value back to the 
+ * local timezone.
+ *
+ * <i class="textinfo">Implementation note</i>: SQLite does not have temporal 
+ * data types per se. Using this method with SQLite will store a timestamp value 
+ * as an integer representing Unix Time, i.e. the number of seconds since 
+ * 1970-01-01 00:00:00 UTC. <i>The local time <code>x</code> is converted to
+ * UTC before it is stored and using ResultSet_getTimestamp() will convert the 
+ * time back to local time on retrieval</i>.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The localtime timestamp value to set

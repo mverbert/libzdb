@@ -92,6 +92,7 @@ struct T {
 #define LOB_CHUNK_SIZE  2000
 #define DATE_STR_BUF_SIZE   255
 
+
 /* ------------------------------------------------------- Private methods */
 
 
@@ -203,6 +204,8 @@ static int OracleDate_toString(T R, int i)
                                          (ub4*)&(R->columns[i].length), (OraText *)R->columns[i].buffer);
         return ((R->lastError == OCI_SUCCESS) || (R->lastError == OCI_SUCCESS_WITH_INFO));;
 }
+
+
 /* ----------------------------------------------------- Protected methods */
 
 

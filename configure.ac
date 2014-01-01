@@ -19,8 +19,8 @@ AC_PROG_CXX
 AC_PROG_GCC_TRADITIONAL
 AC_PATH_PROG([RE2C], [re2c], [no], [$PATH:/usr/local/bin:/usr/bin])
 if test "x$RE2C" = "xno"; then
-        # Require re2c unless src/net/URL.c already is built
-        if test ! -f src/net/URL.c; then
+        # Require re2c unless URL.c and Time.c already are built
+        if test ! -f src/net/URL.c -a ! -f src/system/Time.c; then
                 AC_MSG_ERROR([Libzdb require re2c. Download re2c from http://re2c.org/ or use your package manager])
         fi
 fi
@@ -31,6 +31,11 @@ if test -z "${LEXLIB+set}"; then
                 AC_MSG_ERROR([flex is required. Download from http://www.gnu.org/software/flex/ or use your package manager])
         fi
 fi
+
+# ---------------------------------------------------------------------------
+# Tools
+# ---------------------------------------------------------------------------
+
 if test ! -d ./tools/bin/
 then
         mkdir ./tools/bin || AC_MSG_ERROR([Failed to create ./tools/bin])

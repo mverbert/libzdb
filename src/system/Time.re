@@ -170,7 +170,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
 }
 
 
-char *Time_toString(time_t time, char *result) {
+char *Time_toString(time_t time, char result[20]) {
         assert(result);
         char x[2];
         struct tm ts = {0};

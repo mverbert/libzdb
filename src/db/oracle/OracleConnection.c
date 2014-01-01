@@ -407,7 +407,7 @@ const char *OracleConnection_getLastError(T C) {
 
 /* Oracle client library finalization */
 void OracleConnection_onstop(void) {
-        // Not needed, OracleConnection_free below handle finalization
+        // Not needed, OracleConnection_free handle finalization
 }
 
 #ifdef PACKAGE_PROTECTED

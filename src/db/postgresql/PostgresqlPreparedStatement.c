@@ -29,6 +29,7 @@
 #include <string.h>
 #include <libpq-fe.h>
 
+#include "system/Time.h"
 #include "ResultSet.h"
 #include "PostgresqlResultSet.h"
 #include "PreparedStatementDelegate.h"
@@ -54,7 +55,7 @@ const struct Pop_T postgresqlpops = {
         PostgresqlPreparedStatement_setInt,
         PostgresqlPreparedStatement_setLLong,
         PostgresqlPreparedStatement_setDouble,
-        NULL, /* setTimestamp */
+        PostgresqlPreparedStatement_setTimestamp,
         PostgresqlPreparedStatement_setBlob,
         PostgresqlPreparedStatement_execute,
         PostgresqlPreparedStatement_executeQuery,
@@ -168,6 +169,15 @@ void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
 }
 
 
+void PostgresqlPreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
+        assert(P);
+        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        P->paramValues[i] = Time_toString(x, P->params[i].s);
+        P->paramLengths[i] = 0;
+        P->paramFormats[i] = 0;
+}
+
+
 void PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
@@ -181,7 +191,7 @@ void PostgresqlPreparedStatement_execute(T P) {
         assert(P);
         PQclear(P->res);
         P->res = PQexecPrepared(P->db, P->stmt, P->paramCount, (const char **)P->paramValues, P->paramLengths, P->paramFormats, 0);
-        P->lastError = PQresultStatus(P->res);
+        P->lastError = P->res ? PQresultStatus(P->res) : PGRES_FATAL_ERROR;
         if (P->lastError != PGRES_COMMAND_OK)
                 THROW(SQLException, "%s", PQresultErrorMessage(P->res));
 }
@@ -191,7 +201,7 @@ ResultSet_T PostgresqlPreparedStatement_executeQuery(T P) {
         assert(P);
         PQclear(P->res);
         P->res = PQexecPrepared(P->db, P->stmt, P->paramCount, (const char **)P->paramValues, P->paramLengths, P->paramFormats, 0);
-        P->lastError = PQresultStatus(P->res);
+        P->lastError = P->res ? PQresultStatus(P->res) : PGRES_FATAL_ERROR;
         if (P->lastError == PGRES_TUPLES_OK)
                 return ResultSet_new(PostgresqlResultSet_new(P->res, P->maxRows), (Rop_T)&postgresqlrops);
         THROW(SQLException, "%s", PQresultErrorMessage(P->res));

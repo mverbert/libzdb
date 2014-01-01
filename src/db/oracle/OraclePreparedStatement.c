@@ -149,7 +149,7 @@ void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x) {
 }
 
 
-void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, const time_t time/*, const char* timezone*/) {
+void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, time_t time) {
         assert(P);
         struct tm ts = {0};
         ub4   valid;

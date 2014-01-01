@@ -26,6 +26,7 @@
 #include "Config.h"
 
 #include <stdio.h>
+#include <time.h>
 #include <sqlite3.h>
 
 #include "system/Time.h"
@@ -54,7 +55,7 @@ const struct Pop_T sqlite3pops = {
         SQLitePreparedStatement_setInt,
         SQLitePreparedStatement_setLLong,
         SQLitePreparedStatement_setDouble,
-        NULL, /* setTimestamp */
+        SQLitePreparedStatement_setTimestamp,
         SQLitePreparedStatement_setBlob,
         SQLitePreparedStatement_execute,
         SQLitePreparedStatement_executeQuery,
@@ -132,6 +133,14 @@ void SQLitePreparedStatement_setDouble(T P, int parameterIndex, double x) {
         P->lastError = sqlite3_bind_double(P->stmt, parameterIndex, x);
         if (P->lastError == SQLITE_RANGE)
                 THROW(SQLException, "Parameter index is out of range");
+}
+
+
+void SQLitePreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
+        assert(P);
+        // Convert local time to UTC
+	time_t utc = mktime(gmtime_r(&x, &(struct tm){.tm_year = 0}));
+        P->lastError = sqlite3_bind_int64(P->stmt, parameterIndex, utc);
 }
 
 

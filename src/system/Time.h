@@ -59,13 +59,17 @@ time_t Time_toTimestamp(const char *s);
  * local timezone. Fields follows the convention of the tm structure where, 
  * tm_hour = hours since midnight [0-23], tm_min = minutes after the hour 
  * [0-59], tm_sec = seconds after the minute [0-60], tm_mday = day of the month
- * [1-31] and tm_mon = months since January [0-11]. The exception is tm_year 
- * which contains the year literal and <i>not years since 1900</i> which is the
- * convention. All other fields in the structure are set to zero. If the given
- * date string <code>s</code> contains both date and time all the fields 
- * mentioned above are set, otherwise only the Date or Time fields are set.
+ * [1-31] and tm_mon = months since January [0-11]. tm_gmtoff is set to the 
+ * offset from UTC in seconds if the column value contains timezone information,
+ * otherwise tm_gmtoff is set to 0. <i>On systems without tm_gmtoff, (Solaris), 
+ * the member, tm_wday is set to gmt offset instead as this property is ignored
+ * by mktime on input.</i>The exception is tm_year which contains the year 
+ * literal and <i>not years since 1900</i> which is the convention. All other 
+ * fields in the structure are set to zero. If the given date string 
+ * <code>s</code> contains both date and time all the fields mentioned above 
+ * are set, otherwise only the Date or Time fields are set.
  * @param s The Date String to parse
- * @param t A pointer to a zeroed tm structure
+ * @param t A pointer to a tm structure
  * @return A pointer to the tm structure representing the
  * date of <code>s</code> in the local timezone.
  * @exception SQLException If the parameter value cannot be converted
@@ -76,7 +80,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t);
 
 
 /**
- * Returns an ISO-8601 type date string for the given time. (The 'T' separating
+ * Returns an ISO-8601 date string for the given time. (The 'T' separating
  * date and time is omitted) The returned string represent the specified time 
  * in local time. The submitted result buffer must be large enough to hold at 
  * least 20 bytes. Example:

@@ -279,7 +279,8 @@ PreparedStatement_T PostgresqlConnection_prepareStatement(T C, const char *sql, 
         uint32_t t = ++statementid; // increment is atomic
         name = Str_cat("%d", t);
         C->res = PQprepare(C->db, name, StringBuffer_toString(C->sb), 0, NULL);
-        if (C->res && (C->lastError == PGRES_EMPTY_QUERY || C->lastError == PGRES_COMMAND_OK || C->lastError == PGRES_TUPLES_OK))
+        C->lastError = C->res ? PQresultStatus(C->res) : PGRES_FATAL_ERROR;
+        if (C->lastError == PGRES_EMPTY_QUERY || C->lastError == PGRES_COMMAND_OK || C->lastError == PGRES_TUPLES_OK)
 		return PreparedStatement_new(PostgresqlPreparedStatement_new(C->db, C->maxRows, name, paramCount), (Pop_T)&postgresqlpops, paramCount);
         return NULL;
 }
@@ -292,7 +293,7 @@ const char *PostgresqlConnection_getLastError(T C) {
 
 /* Postgres client library finalization */
 void  PostgresqlConnection_onstop(void) {
-        // Not needed, PostgresqlConnection_free below handle finalization
+        // Not needed, PostgresqlConnection_free handle finalization
 }
 
 #ifdef PACKAGE_PROTECTED
