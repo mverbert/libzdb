@@ -243,7 +243,7 @@ static void testTime() {
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
                 // DateTime with timezone Zulu (UTC)
-                assert(Time_toDateTime("The Battle of Stamford Bridge 1066-09-25 14:15:33+00:00", &t));
+                assert(Time_toDateTime("The Battle of Stamford Bridge 1066-09-25 12:15:33+00:00", &t));
                 assert(t.tm_year == 1066);
                 assert(t.tm_mon  == 8);
                 assert(t.tm_mday == 25);
