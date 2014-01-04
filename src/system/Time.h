@@ -42,10 +42,10 @@
 
 
 /**
- * Returns a Unix timestamp representation of the parsed string in the 
- * local timezone.
- * @param s The Date String to parse
- * @return A local time representation of <code>s</code> or 0 if
+ * Returns a Unix timestamp representation of the parsed string in the
+ * UTC timezone. I.e. any timezone information in the string is ignored.
+ * @param s The Date String to parse. Time is expected to be in UTC
+ * @return A UTC time representation of <code>s</code> or 0 if
  * <code>s</code> is NULL
  * @exception SQLException If the parameter value cannot be converted
  * to a valid timestamp

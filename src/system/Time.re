@@ -156,8 +156,7 @@ time_t Time_toTimestamp(const char *s) {
                 struct tm t = {0};
                 if (Time_toDateTime(s, &t)) {
                         t.tm_year -= 1900;
-                        long off = t.TM_GMTOFF;
-                        return timegm(&t) - off;
+                        return timegm(&t);
                 }
         }
 	return 0;

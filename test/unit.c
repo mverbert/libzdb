@@ -286,18 +286,18 @@ static void testTime() {
                 // Time, fraction of second is ignored
                 time_t t = Time_toTimestamp("2013-12-15 00:12:58.123456");
                 assert(t == 1387066378);
-                // TimeZone east
+                // TimeZone east, ignored. String is parsed as UTC
                 t = Time_toTimestamp("Tokyo timezone: 2013-12-15 00:12:58+09:00");
-                assert(t == 1387033978);
-                // TimeZone west
+                assert(t == 1387066378);
+                // TimeZone west, ignored. String is parsed as UTC
                 t = Time_toTimestamp("New York timezone: 2013-12-15 00:12:58-05:00");
-                assert(t == 1387084378);
+                assert(t == 1387066378);
                 // TimeZone Zulu
                 t = Time_toTimestamp("Grenwich timezone: 2013-12-15 00:12:58Z");
                 assert(t == 1387066378);
                 // Compressed
                 t = Time_toTimestamp("20131215001258-0500");
-                assert(t == 1387084378);
+                assert(t == 1387066378);
                 // Invalid timestamp string
                 TRY {
                         Time_toTimestamp("1901-123-45 10:12:14");

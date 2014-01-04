@@ -390,7 +390,7 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
 
 /**
  * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a Unix timestamp. The returned value is assumed to be
+ * ResultSet object as a Unix timestamp. The returned value is expected to be
  * in the UTC timezone and represent seconds since the <strong>epoch</strong>
  * (January 1, 1970, 00:00:00 GMT).
  *
@@ -401,7 +401,7 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  * <i class="textinfo">SQLite</i> does not have temporal SQL data types per se
  * and using this method with SQLite assume the column value in the Result Set
  * to be either a numerical value representing a Unix Time in UTC which is
- * returned as is or a <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
+ * returned as-is or a <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
  * time string which is converted to a time_t value.
  * See also PreparedStatement_setTimestamp()
  * @param R A ResultSet object
@@ -419,7 +419,7 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
 
 /**
  * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a Unix timestamp. The returned value is assumed to be
+ * ResultSet object as a Unix timestamp. The returned value is expected to be
  * in the UTC timezone and represent seconds since the <strong>epoch</strong>
  * (January 1, 1970, 00:00:00 GMT).
  *
@@ -430,7 +430,7 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
  * <i class="textinfo">SQLite</i> does not have temporal SQL data types per se
  * and using this method with SQLite assume the column value in the Result Set
  * to be either a numerical value representing a Unix Time in UTC which is 
- * returned as is or a <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
+ * returned as-is or a <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
  * time string which is converted to a time_t value.
  * See also PreparedStatement_setTimestamp()
  * @param R A ResultSet object
