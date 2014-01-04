@@ -247,7 +247,7 @@ static void testTime() {
                 assert(t.tm_year == 1066);
                 assert(t.tm_mon  == 8);
                 assert(t.tm_mday == 25);
-                assert(t.tm_hour == 14);
+                assert(t.tm_hour == 12);
                 assert(t.tm_min  == 15);
                 assert(t.tm_sec  == 33);
                 assert(t.TM_GMTOFF == 0); // offset from UTC in seconds
