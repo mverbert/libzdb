@@ -401,8 +401,8 @@ AC_C_BIGENDIAN
 # and enable C99 support
 if test "x$GCC" = "xyes"; then
         CFLAGS="$CFLAGS -Wall -Wunused -Wno-unused-label -funsigned-char";
-        # Add C99 support
-        CFLAGS="$CFLAGS -std=c99"
+        # Add C99 support, but with gnu extensions to include timegm and struct tm.tm_gmtoff
+        CFLAGS="$CFLAGS -std=gnu99"
         # does this compiler support -Wno-pointer-sign ?
         svd_CFLAGS="$CFLAGS"
         CFLAGS="-Wno-pointer-sign $CFLAGS"
