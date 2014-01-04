@@ -33,5 +33,6 @@ int MysqlResultSet_next(T R);
 int MysqlResultSet_isnull(T R, int columnIndex);
 const char *MysqlResultSet_getString(T R, int columnIndex);
 const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size);
+time_t MysqlResultSet_getTimestamp(T R, int columnIndex);
 #undef T
 #endif

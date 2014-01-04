@@ -181,7 +181,11 @@ static void testTime() {
         printf("=> Test3: Time_toString\n");
         {
                 char *t = Time_toString(1387010338, (char[20]){0});
-                assert(Str_isEqual(t, "2013-12-14 09:38:58"));
+                assert(Str_isEqual(t, "2013-12-14 08:38:58"));
+                printf("\tResult: %s\n", t);
+                // Assert time is converted in UTC timezone
+                Time_toString(0, t);
+                assert(Str_isEqual(t, "1970-01-01 00:00:00"));
                 printf("\tResult: %s\n", t);
         }
         printf("=> Test3: OK\n\n");
@@ -290,13 +294,19 @@ static void testTime() {
         {
                 // Local time, fraction of second is ignored
                 time_t t = Time_toTimestamp("2013-12-15 00:12:58.123456");
-                assert(t == 1387062778);
-                // TimeZone is ignored
+                assert(t == 1387066378);
+                // TimeZone west
                 t = Time_toTimestamp("Tokyo timezone: 2013-12-15 00:12:58+09:00");
-                assert(t == 1387062778);
+                assert(t == 1387033978);
+                // TimeZone east
+                t = Time_toTimestamp("New York timezone: 2013-12-15 00:12:58-05:00");
+                assert(t == 1387084378);
+                // TimeZone Zulu
+                t = Time_toTimestamp("Grenwich timezone: 2013-12-15 00:12:58Z");
+                assert(t == 1387066378);
                 // Compressed
                 t = Time_toTimestamp("20131215001258-0500");
-                assert(t == 1387062778);
+                assert(t == 1387084378);
                 // Invalid timestamp string
                 TRY {
                         Time_toTimestamp("1901-123-45 10:12:14");

@@ -95,10 +95,10 @@
  * returned to the Connection Pool. 
  *
  * <h3>Date and Time</h3>
- * PreparedStatement provides PreparedStatement_setTimestamp() for converting
- * and setting a Unix timestamp value. To set SQL Date, Time or DateTime
- * values, simply use PreparedStatement_setString() with a time string format
- * understood by your database. For instance to set a SQL Date value,
+ * PreparedStatement provides PreparedStatement_setTimestamp() for setting a
+ * Unix timestamp value. To set SQL Date, Time or DateTime values, simply use
+ * PreparedStatement_setString() with a time string format understood by your
+ * database. For instance to set a SQL Date value,
  * <pre>
  *   PreparedStatement_setString(p, "2013-12-28");
  * </pre>
@@ -218,19 +218,14 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 /**
  * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
  * given Unix timestamp value. The timestamp value given in <code>x</code>
- * is assumed to be in local system time. A SQL database will normally convert 
- * the timestamp value to UTC and on retrieval convert the value back to the 
- * local timezone.
- *
- * <i class="textinfo">Implementation note</i>: SQLite does not have temporal 
- * data types per se. Using this method with SQLite will store a timestamp value 
- * as an integer representing Unix Time, i.e. the number of seconds since 
- * 1970-01-01 00:00:00 UTC. <i>The local time <code>x</code> is converted to
- * UTC before it is stored and using ResultSet_getTimestamp() will convert the 
- * time back to local time on retrieval</i>.
+ * is assumed to be in the UTC timezone. For instance a value returned by 
+ * time(3) which represents the system's notion of the current Greenwich time.
+ * <i class="textinfo">SQLite</i> does not have temporal data types per se. 
+ * Using this method with SQLite will store the timestamp value as a numerical
+ * type as is.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
- * @param x The localtime timestamp value to set
+ * @param x The GMT timestamp value to set. E.g. a value returned by time(3)
  * @exception SQLException If a database access error occurs or if parameter
  * index is out of range
  * @see SQLException.h ResultSet_getTimestamp

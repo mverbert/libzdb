@@ -121,5 +121,6 @@ int SQLiteResultSet_next(T R);
 int SQLiteResultSet_isnull(T R, int columnIndex);
 const char *SQLiteResultSet_getString(T R, int columnIndex);
 const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size);
+time_t SQLiteResultSet_getTimestamp(T R, int columnIndex);
 #undef T
 #endif

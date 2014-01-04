@@ -200,7 +200,7 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
 
 time_t ResultSet_getTimestamp(T R, int columnIndex) {
         assert(R);
-        return Time_toTimestamp(ResultSet_getString(R, columnIndex));
+        return R->op->getTimestamp(R->D, columnIndex);
 }
 
 

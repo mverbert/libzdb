@@ -27,7 +27,8 @@ int main(void) {
                         PreparedStatement_setTimestamp(p, 2, time(NULL) + i);
                         PreparedStatement_execute(p);
                 }
-                ResultSet_T r = Connection_executeQuery(con, "select name, created_at from bleach");
+                ResultSet_T r = Connection_executeQuery(con,
+                        "select name, datetime(created_at, 'unixepoch', 'localtime') from bleach");
                 while (ResultSet_next(r))
                         printf("%-22s\t %s\n", ResultSet_getString(r, 1), ResultSet_getString(r, 2));
                 Connection_execute(con, "drop table bleach;");

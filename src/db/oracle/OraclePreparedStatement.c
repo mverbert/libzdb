@@ -74,7 +74,7 @@ typedef struct param_t {
                 OCINumber number;
                 OCIDateTime* date;
         } type;
-        long length;
+        int length;
         OCIBind* bind;
 } *param_t;
 #define T PreparedStatementDelegate_T
@@ -141,7 +141,7 @@ void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
         P->params[i].type.string = x;
-        P->params[i].length = x ? strlen(x) : 0;
+        P->params[i].length = x ? (int)strlen(x) : 0;
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, (char *)P->params[i].type.string, 
                                     (int)P->params[i].length, SQLT_CHR, 0, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
@@ -151,7 +151,7 @@ void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x) {
 
 void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, time_t time) {
         assert(P);
-        struct tm ts = {0};
+        struct tm ts = {.tm_isdst = -1};
         ub4   valid;
         int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
 
@@ -161,7 +161,7 @@ void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, time_t time) 
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 
-        localtime_r(&time, &ts);
+        gmtime_r(&time, &ts);
 
         OCIDateTimeConstruct(P->usr,
                              P->err,
@@ -171,7 +171,7 @@ void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, time_t time) 
         
         if (OCI_SUCCESS != OCIDateTimeCheck(P->usr, P->err, P->params[i].type.date, &valid) || valid != 0)
         {
-                THROW(SQLException, "Bad date/time value");
+                THROW(SQLException, "Invalid date/time value");
         }
 
         P->params[i].length = sizeof(OCIDateTime *);

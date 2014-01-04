@@ -25,6 +25,7 @@
 
 #ifndef RESULTSETDELEGATE_INCLUDED
 #define RESULTSETDELEGATE_INCLUDED
+#include "system/Time.h"
 
 /**
  * This interface defines the <b>contract</b> for the concrete database 
@@ -46,6 +47,7 @@ typedef struct Rop_T {
         int (*isnull)(T R, int columnIndex);
         const char *(*getString)(T R, int columnIndex);
         const void *(*getBlob)(T R, int columnIndex, int *size);
+        time_t (*getTimestamp)(T R, int columnIndex);
 } *Rop_T;
 
 /**

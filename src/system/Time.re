@@ -28,7 +28,9 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <time.h>
 #include <sys/time.h>
+#include <sys/types.h>
 #include <sys/select.h>
 
 #include "Str.h"
@@ -46,6 +48,80 @@
 
 /* ----------------------------------------------------------- Definitions */
 
+#ifndef HAVE_TIMEGM
+/*
+ * Spdylay - SPDY Library
+ *
+ * Copyright (c) 2013 Tatsuhiro Tsujikawa
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+
+/* Counter the number of leap year in the range [0, y). The |y| is the
+ year, including century (e.g., 2012) */
+static int count_leap_year(int y)
+{
+        y -= 1;
+        return y/4-y/100+y/400;
+}
+
+
+/* Returns nonzero if the |y| is the leap year. The |y| is the year,
+ including century (e.g., 2012) */
+static int is_leap_year(int y)
+{
+        return y%4 == 0 && (y%100 != 0 || y%400 == 0);
+}
+
+
+/* The number of days before ith month begins */
+static int daysum[] = {
+        0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
+};
+
+
+/* Based on the algorithm of Python 2.7 calendar.timegm. */
+time_t timegm(struct tm *tm)
+{
+        int days;
+        int num_leap_year;
+        int64_t t;
+        if(tm->tm_mon > 11) {
+                return -1;
+        }
+        num_leap_year = count_leap_year(tm->tm_year + 1900) - count_leap_year(1970);
+        days = (tm->tm_year - 70) * 365 +
+        num_leap_year + daysum[tm->tm_mon] + tm->tm_mday-1;
+        if(tm->tm_mon >= 2 && is_leap_year(tm->tm_year + 1900)) {
+                ++days;
+        }
+        t = ((int64_t)days * 24 + tm->tm_hour) * 3600 + tm->tm_min * 60 + tm->tm_sec;
+        if(sizeof(time_t) == 4) {
+                if(t < INT32_MIN || t > INT32_MAX) {
+                        return -1;
+                }
+        }
+        return t;
+}
+#endif /* !HAVE_TIMEGM */
 
 #if HAVE_STRUCT_TM_TM_GMTOFF
 #define TM_GMTOFF tm_gmtoff
@@ -74,12 +150,14 @@ static inline int a2i(const char *a, int l) {
 #pragma GCC visibility push(hidden)
 #endif
 
+
 time_t Time_toTimestamp(const char *s) {
         if (STR_DEF(s)) {
                 struct tm t = {0};
                 if (Time_toDateTime(s, &t)) {
                         t.tm_year -= 1900;
-                        return mktime(&t);
+                        long off = t.TM_GMTOFF;
+                        return timegm(&t) - off;
                 }
         }
 	return 0;
@@ -89,7 +167,7 @@ time_t Time_toTimestamp(const char *s) {
 struct tm *Time_toDateTime(const char *s, struct tm *t) {
         assert(t);
         assert(s);
-        struct tm tm = {.tm_isdst = 0}; // DST is off
+        struct tm tm = {.tm_isdst = -1}; 
         int has_date = false, has_time = false;
         const char *limit = s + strlen(s), *marker, *token, *cursor = s;
 	while (true) {
@@ -173,8 +251,8 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
 char *Time_toString(time_t time, char result[20]) {
         assert(result);
         char x[2];
-        struct tm ts = {0};
-        localtime_r(&time, &ts);
+        struct tm ts = {.tm_isdst = -1};
+        gmtime_r(&time, &ts);
         memcpy(result, "YYYY-MM-DD HH:MM:SS\0", 20);
         /*              0    5  8  11 14 17 */
         i2a((ts.tm_year+1900)/100);
@@ -226,7 +304,7 @@ int Time_usleep(long u) {
         return true;
 }
 
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
-

@@ -61,6 +61,7 @@ const struct Rop_T oraclerops = {
         OracleResultSet_isnull,
         OracleResultSet_getString,
         OracleResultSet_getBlob,
+        OracleResultSet_getTimestamp
 };
 typedef struct column_t {
         OCIDefine *def;
@@ -372,6 +373,15 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         *size = R->columns[i].length = (int)total_bytes;
         return (const void *)R->columns[i].buffer;
 }
+
+
+time_t OracleResultSet_getTimestamp(T R, int columnIndex) {
+        assert(R);
+        return Time_toTimestamp(OracleResultSet_getString(R, columnIndex));
+}
+
+
+
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

@@ -138,9 +138,7 @@ void SQLitePreparedStatement_setDouble(T P, int parameterIndex, double x) {
 
 void SQLitePreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
         assert(P);
-        // Convert local time to UTC
-	time_t utc = mktime(gmtime_r(&x, &(struct tm){.tm_year = 0}));
-        P->lastError = sqlite3_bind_int64(P->stmt, parameterIndex, utc);
+        P->lastError = sqlite3_bind_int64(P->stmt, parameterIndex, x);
 }
 
 

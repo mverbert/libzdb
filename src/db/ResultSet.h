@@ -390,29 +390,25 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
 
 /**
  * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a Unix timestamp in local system time. The returned 
- * value represent seconds since the <strong>epoch</strong> (January 1, 1970,
- * 00:00:00 GMT). A SQL database can or will store timestamp values in UTC and
- * on retrieval convert the value to the local timezone. <i>No time conversion
- * is done by this method</i>. If needed, ResultSet_getDateTime() can be used to
- * obtain and correct for timezone if column value contains this information.
+ * ResultSet object as a Unix timestamp. The returned value is assumed to be
+ * in the UTC timezone and represent seconds since the <strong>epoch</strong>
+ * (January 1, 1970, 00:00:00 GMT).
  *
  * Even though the underlying database might support timestamp ranges before
  * the epoch and after '2038-01-19 03:14:07 UTC' it is safest not to assume or
  * use values outside this range. Especially on a 32-bits system.
  *
- * Implementation note: SQLite does not have temporal SQL data types per se and
- * using this method with SQLite <b>require</b> the column value in the Result
- * Set to be a (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a>)
- * time string. If timestamp is a numerical value in the database, this can be
- * achieved by using one of SQLite's date/time functions in the SQL select
- * statement producing this ResultSet. See also
- * PreparedStatement_setTimestamp() for details.
+ * <i class="textinfo">SQLite</i> does not have temporal SQL data types per se
+ * and using this method with SQLite assume the column value in the Result Set
+ * to be either a numerical value representing a Unix Time in UTC which is
+ * returned as is or a <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
+ * time string which is converted to a time_t value.
+ * See also PreparedStatement_setTimestamp()
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return The column value as seconds since the epoch in the timezone
- * returned by the database (usually the system timezone); if the value 
- * is SQL NULL, the value returned is 0, i.e. '1970-01-01 00:00:00'
+ * @return The column value as seconds since the epoch in the 
+ * <i class="textinfo">UTC timezone</i>. If the value is SQL NULL, the
+ * value returned is 0, i.e. January 1, 1970, 00:00:00 GMT
  * @exception SQLException If a database access error occurs, if 
  * <code>columnIndex</code> is outside the range [1..ResultSet_getColumnCount()]
  * or if the column value cannot be converted to a valid timestamp
@@ -423,30 +419,25 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
 
 /**
  * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a Unix timestamp in local system time. The returned 
- * value represent seconds since the <strong>epoch</strong> (January 1, 1970,
- * 00:00:00 GMT). A SQL database can or will store timestamp values in UTC and
- * on retrieval convert the value to the local timezone. <i>No time conversion
- * is done by this method</i>. If needed, ResultSet_getDateTime() can be used to
- * obtain and correct for timezone if column value contains this information.
+ * ResultSet object as a Unix timestamp. The returned value is assumed to be
+ * in the UTC timezone and represent seconds since the <strong>epoch</strong>
+ * (January 1, 1970, 00:00:00 GMT).
  *
  * Even though the underlying database might support timestamp ranges before
  * the epoch and after '2038-01-19 03:14:07 UTC' it is safest not to assume or
  * use values outside this range. Especially on a 32-bits system.
  *
- * Implementation note: SQLite does not have temporal SQL data types per se and
- * using this method with SQLite <b>require</b> the column value in the Result
- * Set to be a (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601</a>)
- * time string. If timestamp is a numerical value in the database, this can be
- * achieved by using one of SQLite's date/time functions in the SQL select
- * statement producing this ResultSet. See also
- * PreparedStatement_setTimestamp() for details.
- * @param R A ResultSet object
+ * <i class="textinfo">SQLite</i> does not have temporal SQL data types per se
+ * and using this method with SQLite assume the column value in the Result Set
+ * to be either a numerical value representing a Unix Time in UTC which is 
+ * returned as is or a <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
+ * time string which is converted to a time_t value.
+ * See also PreparedStatement_setTimestamp()
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return The column value as seconds since the epoch in the timezone
- * returned by the database (usually the system timezone); if the value
- * is SQL NULL, the value returned is 0, i.e. '1970-01-01 00:00:00'
+ * @return The column value as seconds since the epoch in the
+ * <i class="textinfo">UTC timezone</i>. If the value is SQL NULL, the
+ * value returned is 0, i.e. January 1, 1970, 00:00:00 GMT
  * @exception SQLException If a database access error occurs, if 
  * <code>columnName</code> is not found or if the column value cannot be 
  * converted to a valid timestamp

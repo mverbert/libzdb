@@ -57,6 +57,7 @@ const struct Rop_T mysqlrops = {
         MysqlResultSet_isnull,
         MysqlResultSet_getString,
         MysqlResultSet_getBlob,
+        MysqlResultSet_getTimestamp
 };
 
 typedef struct column_t {
@@ -230,6 +231,13 @@ const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
         *size = (int)R->columns[i].real_length;
         return R->columns[i].buffer;
 }
+
+
+time_t MysqlResultSet_getTimestamp(T R, int columnIndex) {
+        assert(R);
+        return Time_toTimestamp(MysqlResultSet_getString(R, columnIndex));
+}
+
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

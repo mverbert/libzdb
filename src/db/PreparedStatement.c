@@ -44,7 +44,7 @@
 #define T PreparedStatement_T
 struct PreparedStatement_S {
         Pop_T op;
-        int paramCount;
+        int parameterCount;
         ResultSet_T resultSet;
         PreparedStatementDelegate_T D;
 };
@@ -66,14 +66,14 @@ static void clearResultSet(T P) {
 #pragma GCC visibility push(hidden)
 #endif
 
-T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op, int paramCount) {
+T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op, int parameterCount) {
 	T P;
 	assert(D);
 	assert(op);
         NEW(P);
 	P->D = D;
 	P->op = op;
-        P->paramCount = paramCount;
+        P->parameterCount = parameterCount;
 	return P;
 }
 
@@ -161,5 +161,5 @@ long long PreparedStatement_rowsChanged(T P) {
 
 int PreparedStatement_getParameterCount(T P) {
         assert(P);
-        return P->paramCount;
+        return P->parameterCount;
 }

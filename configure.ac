@@ -377,11 +377,17 @@ AC_RUN_IFELSE([AC_LANG_PROGRAM([[
         [], [AC_MSG_FAILURE([vsnprintf does not conform to c99])]
 )
 
+AC_CHECK_FUNCS([timegm])
+
+
 # ---------------------------------------------------------------------------
 # Data Types
 # ---------------------------------------------------------------------------
 
-AC_CHECK_MEMBERS([struct tm.tm_gmtoff], [], [], [[#include <time.h>]])
+AC_CHECK_MEMBERS([struct tm.tm_gmtoff], [], [], [[
+        #include <time.h>
+        #include <sys/types.h>
+]])
 
 # ---------------------------------------------------------------------------
 # Compiler 
@@ -412,8 +418,11 @@ fi
 # ---------------------------------------------------------------------------
 
 AC_CONFIG_HEADERS(src/xconfig.h)
-AC_CONFIG_FILES([Makefile test/Makefile])
-AC_CONFIG_FILES([zdb.pc])
+AC_CONFIG_FILES([
+        Makefile
+        test/Makefile
+        zdb.pc
+])
 AC_OUTPUT
 
 cat <<EOT

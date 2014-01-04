@@ -34,14 +34,7 @@ long OracleResultSet_getColumnSize(T R, int columnIndex);
 int  OracleResultSet_next(T R);
 int OracleResultSet_isnull(T R, int columnIndex);
 const char *OracleResultSet_getString(T R, int columnIndex);
-const char *OracleResultSet_getStringByName(T R, const char *columnName);
-int OracleResultSet_getInt(T R, int columnIndex);
-int OracleResultSet_getIntByName(T R, const char *columnName);
-long long OracleResultSet_getLLong(T R, int columnIndex);
-long long OracleResultSet_getLLongByName(T R, const char *columnName);
-double OracleResultSet_getDouble(T R, int columnIndex);
-double OracleResultSet_getDoubleByName(T R, const char *columnName);
 const void *OracleResultSet_getBlob(T R, int columnIndex, int *size);
-const void *OracleResultSet_getBlobByName(T R, const char *columnName, int *size);
+time_t OracleResultSet_getTimestamp(T R, int columnIndex);
 #undef T
 #endif

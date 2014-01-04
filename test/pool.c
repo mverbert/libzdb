@@ -612,19 +612,17 @@ static void testPool(const char *testURL) {
                 setenv("TZ", "Europe/Oslo" , 1);
                 ConnectionPool_start(pool);
                 Connection_T con = ConnectionPool_getConnection(pool);
-                
                 if (Str_startsWith(testURL, "postgres"))
-                        Connection_execute(con, "create table zild_t(d date, t time, dt timestamp, ts timestamp with time zone)");
+                        Connection_execute(con, "create table zild_t(d date, t time, dt timestamp, ts timestamp)");
                 else if (Str_startsWith(testURL, "oracle"))
                         Connection_execute(con, "create table zild_t(d date, t time, dt date, ts timestamp)");
                 else
                         Connection_execute(con, "create table zild_t(d date, t time, dt datetime, ts timestamp)");
-                
                 PreparedStatement_T p = Connection_prepareStatement(con, "insert into zild_t values (?, ?, ?, ?)");
                 PreparedStatement_setString(p, 1, "2013-12-28");
                 PreparedStatement_setString(p, 2, "10:12:42");
                 PreparedStatement_setString(p, 3, "2013-12-28 10:12:42");
-                PreparedStatement_setTimestamp(p, 4, 1387062778);
+                PreparedStatement_setTimestamp(p, 4, 1387066378);
                 PreparedStatement_execute(p);
                 ResultSet_T r = Connection_executeQuery(con, "select * from zild_t");
                 if (ResultSet_next(r)) {
@@ -653,16 +651,15 @@ static void testPool(const char *testURL) {
                         assert(datetime.tm_sec == 42);
                         assert(datetime.TM_GMTOFF == 0);
                         // Check timestamp
-                        assert(timestamp == 1387062778);
+                        assert(timestamp == 1387066378);
                         // Result
                         printf("\tResult: Date: %s, Time: %s, DateTime: %s, Timestamp: %s\n",
                                ResultSet_getString(r, 1),
                                ResultSet_getString(r, 2),
                                ResultSet_getString(r, 3),
-                               ResultSet_getString(r, 4));
+                               ResultSet_getString(r, 4)); // SQLite will show unix time, others will show a time string
                 }
                 Connection_execute(con, "drop table zild_t;");
-                
                 Connection_close(con);
                 ConnectionPool_stop(pool);
                 ConnectionPool_free(&pool);

@@ -173,8 +173,8 @@ void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
 void MysqlPreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
-        struct tm ts = {0};
-        localtime_r(&x, &ts);
+        struct tm ts = {.tm_isdst = -1};
+        gmtime_r(&x, &ts);
         P->params[i].type.timestamp.year = ts.tm_year + 1900;
         P->params[i].type.timestamp.month = ts.tm_mon + 1;
         P->params[i].type.timestamp.day = ts.tm_mday;
