@@ -243,23 +243,14 @@ static void testTime() {
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
                 // DateTime with timezone Zulu (UTC)
-                assert(Time_toDateTime("2013-12-14 09:38:08Z", &t));
-                assert(t.tm_year == 2013);
-                assert(t.tm_mon  == 11);
-                assert(t.tm_mday == 14);
-                assert(t.tm_hour == 9);
-                assert(t.tm_min  == 38);
-                assert(t.tm_sec  == 8);
-                assert(t.TM_GMTOFF == 0); // offset from UTC in seconds
-                // DateTime with timezone CET
-                assert(Time_toDateTime("The Battle of Stiklestad 1030-07-29 11:15:33+01:00", &t));
-                assert(t.tm_year == 1030);
-                assert(t.tm_mon  == 6);
-                assert(t.tm_mday == 29);
-                assert(t.tm_hour == 11);
+                assert(Time_toDateTime("The Battle of Stamford Bridge 1066-09-25 14:15:33+00:00", &t));
+                assert(t.tm_year == 1066);
+                assert(t.tm_mon  == 8);
+                assert(t.tm_mday == 25);
+                assert(t.tm_hour == 14);
                 assert(t.tm_min  == 15);
                 assert(t.tm_sec  == 33);
-                assert(t.TM_GMTOFF == 3600);
+                assert(t.TM_GMTOFF == 0); // offset from UTC in seconds
                 // Time with timezone
                 assert(Time_toDateTime(" 09:38:08+01:45", &t));
                 assert(t.tm_hour == 9);
