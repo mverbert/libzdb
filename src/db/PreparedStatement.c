@@ -90,8 +90,7 @@ void PreparedStatement_free(T *P) {
 #endif
 
 
-/* -------------------------------------------------------- Public methods */
-#pragma mark - Parameters
+/* ------------------------------------------------------------ Parameters */
 
 
 void PreparedStatement_setString(T P, int parameterIndex, const char *x) {
@@ -130,7 +129,7 @@ void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
 }
 
 
-#pragma mark - Methods
+/* -------------------------------------------------------- Public methods */
 
 
 void PreparedStatement_execute(T P) {
@@ -156,7 +155,7 @@ long long PreparedStatement_rowsChanged(T P) {
 }
 
 
-#pragma mark - Properties
+/* ------------------------------------------------------------ Properties */
 
 
 int PreparedStatement_getParameterCount(T P) {

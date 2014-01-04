@@ -126,7 +126,7 @@ int ResultSet_isnull(T R, int columnIndex) {
 }
 
 
-#pragma mark - Columns
+/* --------------------------------------------------------------- Columns */
 
 
 const char *ResultSet_getString(T R, int columnIndex) {
@@ -195,7 +195,7 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
 }
 
 
-#pragma mark - Date and Time
+/* --------------------------------------------------------- Date and Time */
 
 
 time_t ResultSet_getTimestamp(T R, int columnIndex) {
