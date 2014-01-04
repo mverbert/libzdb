@@ -116,7 +116,6 @@
 		522A207617C1115E00E2FA0A /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
 		522A207717C1115E00E2FA0A /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
 		522A207817C1115E00E2FA0A /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
-		52439D801874736D00EC05B1 /* Postgres93Helper.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = Postgres93Helper.app; sourceTree = "<group>"; };
 		52439D8118747B9600EC05B1 /* libpq.5.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.5.6.dylib; path = /Applications/Postgres.app/Contents/Versions/9.3/lib/libpq.5.6.dylib; sourceTree = "<absolute>"; };
 		52439D8318747BAD00EC05B1 /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "/usr/local/mysql-5.6.13-osx10.7-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<absolute>"; };
 		524B24A6185E40D4004B6730 /* lex.yy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lex.yy.c; sourceTree = "<group>"; };
@@ -252,7 +251,6 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
-				52439D7E1874736D00EC05B1 /* Library */,
 				52788BDB13E716A0002F3C7C /* README */,
 				52788BD213E716A0002F3C7C /* COPYING */,
 				52788BC613E716A0002F3C7C /* AUTHORS */,
@@ -272,23 +270,6 @@
 				522A207717C1115E00E2FA0A /* unit */,
 				522A207817C1115E00E2FA0A /* pool */,
 			);
-			sourceTree = "<group>";
-		};
-		52439D7E1874736D00EC05B1 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				52439D7F1874736D00EC05B1 /* LoginItems */,
-			);
-			name = Library;
-			path = ../../../../Applications/Postgres93.app/Contents/Library;
-			sourceTree = "<group>";
-		};
-		52439D7F1874736D00EC05B1 /* LoginItems */ = {
-			isa = PBXGroup;
-			children = (
-				52439D801874736D00EC05B1 /* Postgres93Helper.app */,
-			);
-			path = LoginItems;
 			sourceTree = "<group>";
 		};
 		526B7ABD13E7564B008E2CB1 /* libs */ = {
