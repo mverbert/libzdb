@@ -292,13 +292,13 @@ static void testTime() {
         
         printf("=> Test5: Time_toTimestamp\n");
         {
-                // Local time, fraction of second is ignored
+                // Time, fraction of second is ignored
                 time_t t = Time_toTimestamp("2013-12-15 00:12:58.123456");
                 assert(t == 1387066378);
-                // TimeZone west
+                // TimeZone east
                 t = Time_toTimestamp("Tokyo timezone: 2013-12-15 00:12:58+09:00");
                 assert(t == 1387033978);
-                // TimeZone east
+                // TimeZone west
                 t = Time_toTimestamp("New York timezone: 2013-12-15 00:12:58-05:00");
                 assert(t == 1387084378);
                 // TimeZone Zulu

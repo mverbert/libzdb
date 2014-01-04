@@ -1,9 +1,9 @@
-                         CHANGES version 2.14
+                         CHANGES version 3.0
 
               This file summarizes changes made since 1.0
 
-Version 2.14
-------------
+Version 3.0
+-----------
 * New: Methods for retrieving Date, Time, DateTime and TimeStamp column
   values from a ResultSet and PreparedStatement_setTimestamp for setting
   Unix timestamp.
