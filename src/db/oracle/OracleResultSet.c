@@ -189,7 +189,7 @@ static int initaleDefiningBuffers(T R) {
 
 static int OracleDate_toString(T R, int i)
 {
-        const char fmt[] = "YY-MM-DD HH24.MI.SS"; // "YYYY-MM-DD HH24:MI:SS TZR TZD"
+        const char fmt[] = "IYYY-MM-DD HH24.MI.SS"; // "YYYY-MM-DD HH24:MI:SS TZR TZD"
 
         R->columns[i].length = DATE_STR_BUF_SIZE;
         if (R->columns[i].buffer)

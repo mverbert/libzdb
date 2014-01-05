@@ -166,7 +166,7 @@ void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, time_t time) 
         OCIDateTimeConstruct(P->usr,
                              P->err,
                              P->params[i].type.date, //OCIDateTime   *datetime,
-                             ts.tm_year, ts.tm_mon, ts.tm_mday, ts.tm_hour, ts.tm_min, ts.tm_sec, 0/*fsec*/,
+                             ts.tm_year+1900, ts.tm_mon+1, ts.tm_mday, ts.tm_hour, ts.tm_min, ts.tm_sec, 0/*fsec*/,
                              (OraText*)0, 0);
         
         if (OCI_SUCCESS != OCIDateTimeCheck(P->usr, P->err, P->params[i].type.date, &valid) || valid != 0)
