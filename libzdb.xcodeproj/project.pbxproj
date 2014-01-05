@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5225ED31187919B8002F13D0 /* OracleConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEC13E716A0002F3C7C /* OracleConnection.c */; };
+		5225ED32187919B8002F13D0 /* OraclePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */; };
+		5225ED33187919B8002F13D0 /* OracleResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF013E716A0002F3C7C /* OracleResultSet.c */; };
+		5225ED3818791AE7002F13D0 /* libclntsh.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D4A0221877B7C10016B6A3 /* libclntsh.dylib */; };
 		52439D8218747B9600EC05B1 /* libpq.5.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52439D8118747B9600EC05B1 /* libpq.5.6.dylib */; };
 		52439D8418747BAD00EC05B1 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52439D8318747BAD00EC05B1 /* libmysqlclient.18.dylib */; };
 		524B1E701543696800158F6E /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
@@ -23,10 +27,6 @@
 		52C32F54145BABE200C72758 /* unit.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2313E716A0002F3C7C /* unit.c */; };
 		52C32F55145BABEC00C72758 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		52C32F58145BD12800C72758 /* Mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 52C32F56145BD12800C72758 /* Mem.c */; };
-		52D4A0231877B7C10016B6A3 /* libclntsh.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D4A0221877B7C10016B6A3 /* libclntsh.dylib */; };
-		52D4A0241877B8210016B6A3 /* OracleConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEC13E716A0002F3C7C /* OracleConnection.c */; };
-		52D4A0251877B8210016B6A3 /* OraclePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */; };
-		52D4A0261877B8210016B6A3 /* OracleResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF013E716A0002F3C7C /* OracleResultSet.c */; };
 		52F2370213E7256200D24B82 /* Connection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BDF13E716A0002F3C7C /* Connection.c */; };
 		52F2370313E7256200D24B82 /* ConnectionPool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE213E716A0002F3C7C /* ConnectionPool.c */; };
 		52F2370413E7256200D24B82 /* PostgresqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF313E716A0002F3C7C /* PostgresqlConnection.c */; };
@@ -113,6 +113,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5225ED34187919CE002F13D0 /* libclntsh.dylib.11.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = libclntsh.dylib.11.1; path = oci/lib/libclntsh.dylib.11.1; sourceTree = "<group>"; };
 		522A207617C1115E00E2FA0A /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
 		522A207717C1115E00E2FA0A /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
 		522A207817C1115E00E2FA0A /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -238,7 +239,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52D4A0231877B7C10016B6A3 /* libclntsh.dylib in Frameworks */,
+				5225ED3818791AE7002F13D0 /* libclntsh.dylib in Frameworks */,
 				52439D8418747BAD00EC05B1 /* libmysqlclient.18.dylib in Frameworks */,
 				52439D8218747B9600EC05B1 /* libpq.5.6.dylib in Frameworks */,
 				529F8EBE1775031E0067C40A /* libsqlite3.dylib in Frameworks */,
@@ -251,6 +252,7 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
+				5225ED34187919CE002F13D0 /* libclntsh.dylib.11.1 */,
 				52788BDB13E716A0002F3C7C /* README */,
 				52788BD213E716A0002F3C7C /* COPYING */,
 				52788BC613E716A0002F3C7C /* AUTHORS */,
@@ -643,9 +645,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52D4A0241877B8210016B6A3 /* OracleConnection.c in Sources */,
-				52D4A0251877B8210016B6A3 /* OraclePreparedStatement.c in Sources */,
-				52D4A0261877B8210016B6A3 /* OracleResultSet.c in Sources */,
+				5225ED31187919B8002F13D0 /* OracleConnection.c in Sources */,
+				5225ED32187919B8002F13D0 /* OraclePreparedStatement.c in Sources */,
+				5225ED33187919B8002F13D0 /* OracleResultSet.c in Sources */,
 				5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */,
 				5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */,
 				5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */,
@@ -777,6 +779,7 @@
 					$SRCROOT/src/db,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
 					"-Wno-address",
@@ -873,6 +876,7 @@
 		52F2370013E724D600D24B82 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -909,13 +913,14 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = "";
-				VALID_ARCHS = x86_64;
+				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Debug;
 		};
 		52F2370113E724D600D24B82 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -950,7 +955,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = "";
-				VALID_ARCHS = x86_64;
+				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Release;
 		};

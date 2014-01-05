@@ -57,7 +57,8 @@ const struct Rop_T mysqlrops = {
         MysqlResultSet_isnull,
         MysqlResultSet_getString,
         MysqlResultSet_getBlob,
-        MysqlResultSet_getTimestamp
+        NULL, // getTimestamp is handled in ResultSet
+        NULL  // getDateTime is handled in ResultSet
 };
 
 typedef struct column_t {
@@ -230,12 +231,6 @@ const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
         ensureCapacity(R, i);
         *size = (int)R->columns[i].real_length;
         return R->columns[i].buffer;
-}
-
-
-time_t MysqlResultSet_getTimestamp(T R, int columnIndex) {
-        assert(R);
-        return Time_toTimestamp(MysqlResultSet_getString(R, columnIndex));
 }
 
 

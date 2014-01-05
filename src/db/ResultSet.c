@@ -200,7 +200,15 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
 
 time_t ResultSet_getTimestamp(T R, int columnIndex) {
         assert(R);
-        return R->op->getTimestamp(R->D, columnIndex);
+        time_t t = 0;
+        if (R->op->getTimestamp) {
+                t = R->op->getTimestamp(R->D, columnIndex);
+        } else {
+                const char *s = ResultSet_getString(R, columnIndex);
+                if (STR_DEF(s))
+                        t = Time_toTimestamp(s);
+        }
+        return t;
 }
 
 
@@ -212,10 +220,14 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName) {
 
 struct tm ResultSet_getDateTime(T R, int columnIndex) {
         assert(R);
-        struct tm t = {.tm_year = 0};
-        const char *s = ResultSet_getString(R, columnIndex);
-        if (STR_DEF(s))
-                Time_toDateTime(s, &t);
+        struct tm t = {.tm_isdst = -1};
+        if (R->op->getDateTime) {
+                R->op->getDateTime(R->D, columnIndex, &t);
+        } else {
+                const char *s = ResultSet_getString(R, columnIndex);
+                if (STR_DEF(s))
+                        Time_toDateTime(s, &t);
+        }
         return t;
 }
 

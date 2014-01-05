@@ -33,7 +33,5 @@ int PostgresqlResultSet_next(T R);
 int PostgresqlResultSet_isnull(T R, int columnIndex);
 const char *PostgresqlResultSet_getString(T R, int columnIndex);
 const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size);
-time_t PostgresqlResultSet_getTimestamp(T R, int columnIndex);
-
 #undef T
 #endif

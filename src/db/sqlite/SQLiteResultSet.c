@@ -55,7 +55,8 @@ const struct Rop_T sqlite3rops = {
         SQLiteResultSet_isnull,
         SQLiteResultSet_getString,
         SQLiteResultSet_getBlob,
-        SQLiteResultSet_getTimestamp
+        SQLiteResultSet_getTimestamp,
+        SQLiteResultSet_getDateTime
 };
 
 #define T ResultSetDelegate_T
@@ -166,10 +167,24 @@ time_t SQLiteResultSet_getTimestamp(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (sqlite3_column_type(R->stmt, i) == SQLITE_INTEGER) {
-                return sqlite3_column_int64(R->stmt, i);
+                return (time_t)sqlite3_column_int64(R->stmt, i);
         }
         // Not integer storage class, try to parse as time string
         return Time_toTimestamp(sqlite3_column_text(R->stmt, i));
+}
+
+
+struct tm *SQLiteResultSet_getDateTime(T R, int columnIndex, struct tm *tm) {
+        assert(R);
+        int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
+        if (sqlite3_column_type(R->stmt, i) == SQLITE_INTEGER) {
+                time_t utc = (time_t)sqlite3_column_int64(R->stmt, i);
+                if (gmtime_r(&utc, tm)) tm->tm_year += 1900; // Use year literal 
+        } else {
+                // Not integer storage class, try to parse as time string
+                Time_toDateTime(sqlite3_column_text(R->stmt, i), tm);
+        }
+        return tm;
 }
 
 

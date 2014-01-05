@@ -61,7 +61,8 @@ const struct Rop_T oraclerops = {
         OracleResultSet_isnull,
         OracleResultSet_getString,
         OracleResultSet_getBlob,
-        OracleResultSet_getTimestamp
+        NULL, // getTimestamp is handled in ResultSet
+        NULL  // getDateTime is handled in ResultSet
 };
 typedef struct column_t {
         OCIDefine *def;
@@ -362,7 +363,7 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
                 if (read_bytes) {
                         total_bytes += read_bytes;
                         piece = OCI_NEXT_PIECE;
-                        R->columns[i].buffer = RESIZE(R->columns[i].buffer, total_bytes + LOB_CHUNK_SIZE);
+                        R->columns[i].buffer = RESIZE(R->columns[i].buffer, (long)(total_bytes + LOB_CHUNK_SIZE));
                 }
         } while (R->lastError == OCI_NEED_DATA);
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO) {
@@ -373,15 +374,6 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         *size = R->columns[i].length = (int)total_bytes;
         return (const void *)R->columns[i].buffer;
 }
-
-
-time_t OracleResultSet_getTimestamp(T R, int columnIndex) {
-        assert(R);
-        return Time_toTimestamp(OracleResultSet_getString(R, columnIndex));
-}
-
-
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
