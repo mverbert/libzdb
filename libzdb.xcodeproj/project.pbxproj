@@ -113,7 +113,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5225ED34187919CE002F13D0 /* libclntsh.dylib.11.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = libclntsh.dylib.11.1; path = oci/lib/libclntsh.dylib.11.1; sourceTree = "<group>"; };
 		522A207617C1115E00E2FA0A /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
 		522A207717C1115E00E2FA0A /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
 		522A207817C1115E00E2FA0A /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -252,7 +251,6 @@
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
-				5225ED34187919CE002F13D0 /* libclntsh.dylib.11.1 */,
 				52788BDB13E716A0002F3C7C /* README */,
 				52788BD213E716A0002F3C7C /* COPYING */,
 				52788BC613E716A0002F3C7C /* AUTHORS */,
