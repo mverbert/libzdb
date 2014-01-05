@@ -48,6 +48,7 @@ typedef struct Rop_T {
         const char *(*getString)(T R, int columnIndex);
         const void *(*getBlob)(T R, int columnIndex, int *size);
         time_t (*getTimestamp)(T R, int columnIndex);
+        struct tm *(*getDateTime)(T R, int columnIndex, struct tm *tm);
 } *Rop_T;
 
 /**

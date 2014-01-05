@@ -35,6 +35,5 @@ int  OracleResultSet_next(T R);
 int OracleResultSet_isnull(T R, int columnIndex);
 const char *OracleResultSet_getString(T R, int columnIndex);
 const void *OracleResultSet_getBlob(T R, int columnIndex, int *size);
-time_t OracleResultSet_getTimestamp(T R, int columnIndex);
 #undef T
 #endif

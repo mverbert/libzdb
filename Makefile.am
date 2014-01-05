@@ -78,7 +78,7 @@ clean-local:
 		-rm -f `find src -name "*.o" -o -name "*.lo" -o -name "*.loT" \
                 -o -name "*~" -o -name ".#*" -o -name "core*"`
 
-distclean-local: 
+distclean-local::
 	-rm -rf autom4te.cache/ \
                 build/ \
                 $(LIBRARY_NAME)
@@ -89,8 +89,7 @@ distclean-local:
                 tools/bin/filterh \
                 src/xconfig.h.in \
                 config/config.guess \
-                config/config.sub \
-                src/net/URL.c
+                config/config.sub
 
                         
 cleanall: clean distclean
@@ -116,6 +115,10 @@ $(nobase_nodist_include_HEADERS): $(API_INTERFACES)
 	$(check-exit))
 
 #<< start-filter out
+distclean-local::
+	-rm -f  src/net/URL.c \
+                src/system/Time.c
+
 src/net/URL.c: src/net/URL.re
 	$(RE2C) $(RE2CFLAGS) $< > $@
 src/system/Time.c: src/system/Time.re

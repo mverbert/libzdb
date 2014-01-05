@@ -56,7 +56,8 @@ const struct Rop_T postgresqlrops = {
         PostgresqlResultSet_isnull,
         PostgresqlResultSet_getString,
         PostgresqlResultSet_getBlob,
-        PostgresqlResultSet_getTimestamp
+        NULL, // getTimestamp is handled in ResultSet
+        NULL  // getDateTime is handled in ResultSet
 };
 
 #define T ResultSetDelegate_T
@@ -216,13 +217,6 @@ const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
                 return NULL; 
         return unescape_bytea((uchar_t*)PQgetvalue(R->res, R->currentRow, i), PQgetlength(R->res, R->currentRow, i), size);
 }
-
-
-time_t PostgresqlResultSet_getTimestamp(T R, int columnIndex) {
-        assert(R);
-        return Time_toTimestamp(PostgresqlResultSet_getString(R, columnIndex));
-}
-
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

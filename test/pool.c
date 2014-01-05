@@ -630,6 +630,7 @@ static void testPool(const char *testURL) {
                         struct tm time = ResultSet_getDateTime(r, 2);
                         struct tm datetime = ResultSet_getDateTime(r, 3);
                         time_t timestamp = ResultSet_getTimestamp(r, 4);
+                        struct tm timestampAsTm = ResultSet_getDateTime(r, 4);
                         // Check Date
                         assert(date.tm_hour == 0);
                         assert(date.tm_year == 2013);
@@ -652,6 +653,14 @@ static void testPool(const char *testURL) {
                         assert(datetime.TM_GMTOFF == 0);
                         // Check timestamp
                         assert(timestamp == 1387066378);
+                        // Check timestamp as datetime
+                        assert(timestampAsTm.tm_year == 2013);
+                        assert(timestampAsTm.tm_mon == 11); // Remember month - 1
+                        assert(timestampAsTm.tm_mday == 15);
+                        assert(timestampAsTm.tm_hour == 0);
+                        assert(timestampAsTm.tm_min == 12);
+                        assert(timestampAsTm.tm_sec == 58);
+                        assert(timestampAsTm.TM_GMTOFF == 0);
                         // Result
                         printf("\tResult: Date: %s, Time: %s, DateTime: %s, Timestamp: %s\n",
                                ResultSet_getString(r, 1),
