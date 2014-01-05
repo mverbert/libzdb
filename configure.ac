@@ -382,10 +382,7 @@ AC_CHECK_FUNCS([timegm])
 # Data Types
 # ---------------------------------------------------------------------------
 
-AC_CHECK_MEMBERS([struct tm.tm_gmtoff], [], [], [[
-        #include <time.h>
-        #include <sys/types.h>
-]])
+AC_CHECK_MEMBERS([struct tm.tm_gmtoff], [], [], [[#include <time.h>]])
 
 # ---------------------------------------------------------------------------
 # Compiler 

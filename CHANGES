@@ -5,19 +5,19 @@
 Version 3.0
 -----------
 * New: Methods for retrieving Date, Time, DateTime and TimeStamp column
-  values from a ResultSet and PreparedStatement_setTimestamp for setting
+  values from a ResultSet. PreparedStatement_setTimestamp for setting
   Unix timestamp.
 * New: ResultSet_isnull, can be used to explicit test if a column
   value in a Result Set is SQL null. A Result Set already returns
   the NULL pointer for string and blob types and 0 for primitive data
-  types, but to differ between SQL null and the value NULL or 0, this 
-  method can be used.
+  types if column value is SQL null, but to differ between SQL null and 
+  the value NULL or 0, this method can be used.
 * New: PreparedStatement_getParameterCount, Returns the number of 
   parameters in a prepared statement
 * New: It is now a checked runtime error for the url parameter given 
   in ConnectionPool_new() to be NULL.
 * New: No longer require flex installed as the generated file is
-  part of the dist.
+  part of the distribution.
 * Fixes: Oracle: Fixed a memory corruption in OracleResultSet
   https://github.com/tildeslash/libzdb/issues/4
 

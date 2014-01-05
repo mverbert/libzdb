@@ -94,10 +94,9 @@ char *Str_copy(char *dest, const char *src, int n) {
 char *Str_dup(const char *s) { 
         char *t = NULL;
         if (s) {
-                size_t n = strlen(s); 
-                t = ALLOC(n + 1);
+                size_t n = strlen(s) + 1;
+                t = ALLOC(n);
                 memcpy(t, s, n);
-                t[n] = 0;
         }
         return t;
 }
