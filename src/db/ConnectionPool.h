@@ -146,7 +146,7 @@
  *
  * As with the MySQL URL, the username and password are specified as 
  * properties to the URL. Likewise, the auth-part of the URL can be used 
- * instead, to specify the username and the password:
+ * instead to specify the username and the password:
  *
  * \htmlonly
  * <dt><dd><code>

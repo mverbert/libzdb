@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-#include <assert.h>
 #include <zdb.h>
 
 /*
@@ -43,5 +42,4 @@ int main(void) {
         END_TRY;
         ConnectionPool_free(&pool);
         URL_free(&url);
-        return 0;
 }

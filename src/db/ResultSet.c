@@ -220,7 +220,7 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName) {
 
 struct tm ResultSet_getDateTime(T R, int columnIndex) {
         assert(R);
-        struct tm t = {.tm_isdst = -1};
+        struct tm t = {.tm_year = 0};
         if (R->op->getDateTime) {
                 R->op->getDateTime(R->D, columnIndex, &t);
         } else {
