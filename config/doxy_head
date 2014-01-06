@@ -8,8 +8,10 @@
     body,div,p,dl,.memname, .params, .exception {font: normal normal normal 16px/22px "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;}
     #nav-path {display:none;}
     h2:first-of-type {margin-top:2px; border:none;}
-    h2,h3,h4 {color:#444;}
-    .headertitle {text-align:center;}
+    h2.groupheader {font-size:26px; line-height:28px;color:#286796;}
+    h3 {font-size:20px;color: rgb(51, 51, 51);}
+    div.header { background-image:none; background-color: #3b96d7; color:white;}
+    div.title {text-align:center;font-size: 28px; font-weight:normal;}
     .summary {display:none;}
     dl.section {border:none;}
     .memproto > *, .memitem > * {
@@ -20,7 +22,7 @@
     }
     .memproto {
             border-bottom: 1px #b8c8e9 solid;
-            background-color: #eef5ff;
+            background-color: #f7fcff;
     }
     .textinfo {color: #428bca;}
     .textnote {color: #a94442;}
