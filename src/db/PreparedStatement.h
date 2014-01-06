@@ -218,11 +218,11 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
 /**
  * Sets the <i>in</i> parameter at index <code>parameterIndex</code> to the
  * given Unix timestamp value. The timestamp value given in <code>x</code>
- * is assumed to be in the UTC timezone. For instance a value returned by 
+ * is expected to be in the UTC timezone. For instance, a value returned by
  * time(3) which represents the system's notion of the current Greenwich time.
- * <i class="textinfo">SQLite</i> does not have temporal data types per se. 
+ * <i class="textinfo">SQLite</i> does not have temporal SQL data types per se.
  * Using this method with SQLite will store the timestamp value as a numerical
- * type as is.
+ * type as-is.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The GMT timestamp value to set. E.g. a value returned by time(3)
