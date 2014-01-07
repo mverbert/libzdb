@@ -129,6 +129,24 @@ AC_ARG_ENABLE([protected],
      ],[protect="false"]
 )
 
+AC_ARG_ENABLE(libdl, 
+              AS_HELP_STRING([--enable-libdl],
+              [Use libdl to dynamic load database drivers]),
+              [
+        if test "x$enableval" = "xno" ; then
+                libdl="no"
+        else
+		AC_CHECK_LIB([dl], [dlopen], [libdl="yes"], [libdl="no"])
+	fi
+	],
+              [libdl="no"]
+)
+if test "xyes" = "x$libdl"; then
+        AC_DEFINE([HAVE_LIBDL], 1, [Define to 1 to enable libdl])
+fi
+
+AM_CONDITIONAL([WITH_LIBDL], test "xyes" = "x$libdl")
+
 AC_ARG_ENABLE([openssl],
         AS_HELP_STRING([--enable-openssl(=<path>)], 
                 [Link libzdb with openssl. If database libraries were linked static,
@@ -284,8 +302,8 @@ fi
 AM_CONDITIONAL([WITH_ORACLE], test "xyes" = "x$oracle")
 
 # Test if any database system was found
-if test "xyes" != "x$postgresql" -a "xyes" != "x$mysql" -a "xyes" != "x$sqlite" -a "xyes" != "x$oracle"; then
-        AC_MSG_ERROR([No available database found or selected. Try configure --help])
+if test "xno" = "x$postgresql" -a "xno" = "x$mysql" -a "xno" = "x$sqlite" -a "xno" = "x$oracle" -a "xno" = "x$libdl" ; then
+        AC_MSG_ERROR([No available database found or selected, and dynamic loading disabled. Try configure --help])
 fi
 
 
@@ -391,6 +409,11 @@ if test "xfalse" = "x$profile"; then
 echo "|   Profiling:                                    DISABLED   |"
 else
 echo "|   Profiling:                                    ENABLED    |"
+fi
+if test "xno" = "x$libdl"; then
+echo "|   Dynamically load drivers:                     DISABLED   |"
+else
+echo "|   Dynamically load drivers:                     ENABLED    |"
 fi
 if test "xfalse" = "x$zild_protect"; then
 echo "|   Zild:                                         DISABLED   |"

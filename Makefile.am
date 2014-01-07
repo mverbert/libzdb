@@ -34,8 +34,15 @@ LIBRARY_MAJOR_VERSION=11
 libzdb_la_LDFLAGS = -version-info $(LIBRARY_MAJOR_VERSION):0:0
 MODULE_NOVERSION= -module -avoid-version
 
+if ! WITH_LIBDL
 noinst_LTLIBRARIES =
 libzdb_la_LIBADD = 
+else
+libzdb_la_LDFLAGS += -ldl
+modules_LTLIBRARIES =
+modulesdir=$(libdir)/@PACKAGE_NAME@$(LIBRARY_MAJOR_VERSION)
+libzdb_la_CPPFLAGS=-DMODULESDIR="\"$(modulesdir)\""
+endif
 
 if WITH_MYSQL
 mysql_la_SOURCES = src/db/mysql/MysqlConnection.c \
@@ -44,8 +51,12 @@ mysql_la_SOURCES = src/db/mysql/MysqlConnection.c \
 mysql_la_CPPFLAGS = $(DB_MYSQL_CPPFLAGS)
 mysql_la_LDFLAGS = $(DB_MYSQL_LDFLAGS) $(MODULE_NOVERSION)
 
+if WITH_LIBDL
+modules_LTLIBRARIES += mysql.la
+else
 noinst_LTLIBRARIES += mysql.la
 libzdb_la_LIBADD += mysql.la
+endif
 endif # WITH_MYSQL
 
 if WITH_POSTGRESQL
@@ -55,8 +66,12 @@ postgresql_la_SOURCES = src/db/postgresql/PostgresqlConnection.c \
 postgresql_la_CPPFLAGS = $(DB_POSTGRESQL_CPPFLAGS)
 postgresql_la_LDFLAGS = $(DB_POSTGRESQL_LDFLAGS) $(MODULE_NOVERSION)
 
+if WITH_LIBDL
+modules_LTLIBRARIES += postgresql.la
+else
 noinst_LTLIBRARIES += postgresql.la
 libzdb_la_LIBADD += postgresql.la
+endif
 endif # WITH_POSTGRESQL
 
 if WITH_SQLITE
@@ -66,8 +81,12 @@ sqlite_la_SOURCES = src/db/sqlite/SQLiteConnection.c \
 sqlite_la_CPPFLAGS = $(DB_SQLITE_CPPFLAGS)
 sqlite_la_LDFLAGS = $(DB_SQLITE_LDFLAGS) $(MODULE_NOVERSION) 
 
+if WITH_LIBDL
+modules_LTLIBRARIES += sqlite.la
+else
 noinst_LTLIBRARIES += sqlite.la
 libzdb_la_LIBADD += sqlite.la
+endif
 endif # WITH_SQLITE
 
 if WITH_ORACLE
@@ -77,8 +96,12 @@ oracle_la_SOURCES = src/db/oracle/OracleConnection.c \
 oracle_la_CPPFLAGS = $(DB_ORACLE_CPPFLAGS)
 oracle_la_LDFLAGS = $(DB_ORACLE_LDFLAGS) $(MODULE_NOVERSION)
 
+if WITH_LIBDL
+modules_LTLIBRARIES += oracle.la
+else
 noinst_LTLIBRARIES += oracle.la
 libzdb_la_LIBADD += oracle.la
+endif
 endif
 
 API_INTERFACES  = src/zdb.h src/db/ConnectionPool.h src/db/Connection.h \
