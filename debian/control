@@ -9,7 +9,7 @@ Package: libzdb-dev
 Section: libdevel
 Architecture: any
 Multi-Arch: same
-Depends: libzdb10 (= ${binary:Version})
+Depends: libzdb11 (= ${binary:Version})
 Description: Zild Database Library
  A small and easy to use database API written in C.
  .
@@ -18,12 +18,12 @@ Description: Zild Database Library
  .
  This package contains the development files.
 
-Package: libzdb10
+Package: libzdb11
 Section: libs
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${misc:Pre-Depends}
-Suggests: libzdb10-postgresql, libzdb10-mysql, libzdb10-sqlite3
+Suggests: libzdb11-postgresql, libzdb11-mysql, libzdb11-sqlite3
 Description:  Zild Database Library
  A small and easy to use database API written in C.
  .
@@ -31,11 +31,11 @@ Description:  Zild Database Library
  and exception handling. This version supports dynamic
  loading of database connectors.
 
-Package: libzdb10-postgresql
+Package: libzdb11-postgresql
 Section: libs
 Architecture: any
 Multi-Arch: same
-Depends: ${shlibs:Depends}, ${misc:Depends}, libzdb10 (>= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, libzdb11 (>= ${binary:Version})
 Description:  Zild Database Library - PostgreSQL connectivity
  A small and easy to use database API written in C.
  .
@@ -44,11 +44,11 @@ Description:  Zild Database Library - PostgreSQL connectivity
  .
  This package supports PostgreSQL connectivity.
 
-Package: libzdb10-mysql
+Package: libzdb11-mysql
 Section: libs
 Architecture: any
 Multi-Arch: same
-Depends: ${shlibs:Depends}, ${misc:Depends}, libzdb10 (>= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, libzdb11 (>= ${binary:Version})
 Description:  Zild Database Library - MySQL connectivity
  A small and easy to use database API written in C.
  .
@@ -57,11 +57,11 @@ Description:  Zild Database Library - MySQL connectivity
  .
  This package supports MySQL connectivity.
 
-Package: libzdb10-sqlite3
+Package: libzdb11-sqlite3
 Section: libs
 Architecture: any
 Multi-Arch: same
-Depends: ${shlibs:Depends}, ${misc:Depends}, libzdb10 (>= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, libzdb11 (>= ${binary:Version})
 Description:  Zild Database Library - Sqlite3 connectivity
  A small and easy to use database API written in C.
  .
