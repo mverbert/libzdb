@@ -41,10 +41,10 @@
  *  <center><img src="database.png"></center>
  *
  * The method ConnectionPool_getConnection() is used to obtain a new
- * connection from the pool. If there are no connections available it will
- * create a new connection and return this. If the pool has already
- * handed out <i>maxConnections</i> the next call to 
- * ConnectionPool_getConnection() will return NULL. Use Connection_close() 
+ * connection from the pool. If there are no connections available a new
+ * connection is created and returned. If the pool has already handed out
+ * <i>maxConnections</i> Connections, the next call to 
+ * ConnectionPool_getConnection() will return NULL. Use Connection_close()
  * to return a connection to the pool so it can be reused.
  *
  * A connection pool is created default with 5 initial connections and 
