@@ -353,9 +353,17 @@ void ConnectionPool_returnConnection(T P, Connection_T connection) {
 	assert(P);
         assert(connection);
 	if (Connection_isInTransaction(connection)) {
-                TRY Connection_rollback(connection); ELSE END_TRY;
+                TRY
+                        Connection_rollback(connection);
+                ELSE
+                        DEBUG("Failed to rollback transaction -- %s\n", Exception_frame.message);
+                END_TRY;
 	}
-	Connection_clear(connection);
+	TRY
+                Connection_clear(connection); // Could theoretically throw exception and we don't want that
+        ELSE
+                DEBUG("Failed to clear connection -- %s\n", Exception_frame.message);
+        END_TRY;
 	LOCK(P->mutex)
         {
 		Connection_setAvailable(connection, true);

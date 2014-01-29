@@ -18,13 +18,13 @@ Version 3.0
   in ConnectionPool_new() to be NULL.
 * New: No longer require flex installed as the generated file is
   part of the distribution.
-* Fixes: Oracle: Fixed a memory corruption in OracleResultSet
-  https://github.com/tildeslash/libzdb/issues/4
+* Fixed: Oracle: memory corruption in OracleResultSet when a Blob 
+  value is retrieved as a String
 
 Version 2.12
 --------------
 * New: PreparedStatement_rowsChanged added to PreparedStatement.h
-* Fixes: Oracle: OCIPing is used to check oracle connection and
+* Fixed: Oracle: OCIPing is used to check oracle connection and
   ensure that the Pool returns connected connections. Thanks to
   Pavlo Lavrenenko.
 
@@ -38,12 +38,12 @@ Version 2.11.2
 * New: Throw SQLException if a database access error occurs
   when ResultSet_next() is called. Previously, access errors
   could be masked as end of result set. Thanks to JiaQiang Xu.
-* Fixes: Possible mem leak in Oracle's blob operation fixed 
+* Fixed: Possible mem leak in Oracle's blob operation fixed 
   (Volodymyr Tarasenko)
 
 Version 2.11.1
 --------------
-* Fixes: MySQL: Fixed a ResultSet bind memory error which could occur
+* Fixed: MySQL: Fixed a ResultSet bind memory error which could occur
   if string or blob columns of different size caused successive buffer
   reallocation. Thanks to Ryan Addams for discovering the problem.
 
@@ -51,11 +51,11 @@ Version 2.11
 ------------
 * New: Added support for the new bytea hex encoding format
   introduced in PostgreSQL 9.0.
-* Fixes: MySQL: A table with two or more columns larger than 256
+* Fixed: MySQL: A table with two or more columns larger than 256
   bytes would cause libzdb to truncate the second column to 256 
   bytes in the first row. Thanks to Me from China for bug report
   and patch.
-* Fixes: Using configure flags --with-xxx without arguments
+* Fixed: Using configure flags --with-xxx without arguments
   now works as expected. Thanks to Johan Bergström for report
 
 Version 2.10.6
@@ -63,10 +63,10 @@ Version 2.10.6
 * New: ConnectionPool_start() now throws an SQLException instead
   of calling ABORT if starting the pool failed. Thanks to
   Christopher O'Hara for suggestion.
-* Fixes: MySQL: Using a stored procedure which returned a
+* Fixed: MySQL: Using a stored procedure which returned a
   result set would freeze the connection until it was reaped.
   Thanks to Jesse White for patch.
-* Fixes: Ensure that the library can be restarted after it was 
+* Fixed: Ensure that the library can be restarted after it was 
   stopped without leaking resources. Only applicable for MySQL
   which could leak memory on runtime restart. Thanks to Axel 
   Steiner for initial patch and suggestion.
@@ -82,13 +82,13 @@ Version 2.10.4
 
 Version 2.10.3
 --------------
-Bug fixes: Oracle: fixed a compile issue for GCC when strict
-C99 is used. Thanks to Stas Oginsky.
+* Fixed: Oracle: fixed a compile issue for GCC when strict C99 is
+  used. Thanks to Stas Oginsky.
 
 Version 2.10.2
 --------------
-Bug fixes: Oracle: fixed a parameter sequence bug at
-connection. Bug was introduced in 2.9. Thanks to l00106600.
+* Fixed: Oracle: fixed a parameter sequence bug at connection. Bug
+  was introduced in 2.9. Thanks to l00106600.
 
 Version 2.10.1
 --------------
