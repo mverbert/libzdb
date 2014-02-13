@@ -101,7 +101,7 @@
  
  Libzdb can be used directly in a C++ or in a Objective-C(++) project. The 
  <zdb.h> header contains the 'extern "C"' statement which is required when
- importing C declarations into C++ code and linking with a C library. 
+ importing C declarations into C++ code and linking with a C library.
  
   
  License Notes
@@ -141,8 +141,9 @@
  ------------
  
  You are welcome to contribute to this project, but please note that
- we are only able to accept contributions under a CC0 license,
- http://creativecommons.org/publicdomain/zero/1.0/
+ an electronically signed CLA is required to be on file before any Pull 
+ Request or patches are accepted or you are given commit rights to the 
+ project. To sign, go to http://tildeslash.com/cla/
 
 
  Contact information
