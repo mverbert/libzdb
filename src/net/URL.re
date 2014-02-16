@@ -178,7 +178,8 @@ authority:
                    }
 
         port       {
-                        U->port = Str_parseInt(YYTOKEN + 1); // read past ':'
+                        U->portStr = YYTOKEN + 1; // read past ':'
+                        U->port = Str_parseInt(U->portStr);
                         goto authority; 
                    }
 
@@ -404,8 +405,8 @@ const char *URL_getParameter(T U, const char *name) {
 const char *URL_toString(T U) {
 	assert(U);
 	if (! U->toString) {
-                uchar_t port[11] = {0};
-                if (U->port >= 0)
+                uchar_t port[11] = {};
+                if (U->portStr) // port seen in URL
                         snprintf(port, 10, ":%d", U->port);
 		U->toString = Str_cat("%s://%s%s%s%s%s%s%s%s%s", 
                                       U->protocol,

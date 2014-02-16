@@ -153,7 +153,7 @@ static inline int a2i(const char *a, int l) {
 
 time_t Time_toTimestamp(const char *s) {
         if (STR_DEF(s)) {
-                struct tm t = {0};
+                struct tm t = {};
                 if (Time_toDateTime(s, &t)) {
                         t.tm_year -= 1900;
                         return timegm(&t);
