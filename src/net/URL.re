@@ -93,13 +93,9 @@ static const uchar_t urlunsafe[256] = {
 };
 
 #define UNKNOWN_PORT -1
-#define YYCTYPE       uchar_t
-#define YYCURSOR      U->buffer  
-#define YYLIMIT       U->limit  
-#define YYMARKER      U->marker
-#define YYCTXMARKER   U->ctx
-#define YYFILL(n)     ((void)0)
-#define YYTOKEN       U->token
+#define YYCURSOR     U->buffer
+#define YYLIMIT      U->limit
+#define YYTOKEN      U->token
 #define SET_PROTOCOL(PORT) *(YYCURSOR-3)=0; U->protocol=U->token; U->port=PORT; goto authority
 
 
@@ -109,147 +105,147 @@ static const uchar_t urlunsafe[256] = {
 static int parseURL(T U) {
         param_t param = NULL;
 	/*!re2c
-	ws		= [ \t\r\n];
-	any		= [\000-\377];
-	protocol        = [a-zA-Z0-9]+"://";
-	auth            = ([\040-\377]\[@])+[@];
-	host            = ([a-zA-Z0-9\-]+)([.]([a-zA-Z0-9\-]+))*;
-	port            = [:][0-9]+;
-	path            = [/]([\041-\377]\[?#;])*;
-	query           = ([\040-\377]\[#])*;
-	parameterkey    = ([\041-\377]\[=])+;
-	parametervalue  = ([\040-\377]\[&])*;
+         re2c:define:YYCTYPE      = "unsigned char";
+         re2c:define:YYCURSOR     = U->buffer;
+         re2c:define:YYLIMIT      = U->limit;
+         re2c:define:YYMARKER     = U->marker;
+         re2c:define:YYCTXMARKER  = U->ctx;
+         re2c:yyfill:enable       = 0;
+
+         ws                       = [ \t\r\n];
+         any		          = [\000-\377];
+         protocol                 = [a-zA-Z0-9]+"://";
+         auth                     = ([\040-\377]\[@])+[@];
+         host                     = ([a-zA-Z0-9\-]+)([.]([a-zA-Z0-9\-]+))*;
+         port                     = [:][0-9]+;
+         path                     = [/]([\041-\377]\[?#;])*;
+         query                    = ([\040-\377]\[#])*;
+         parameterkey             = ([\041-\377]\[=])+;
+         parametervalue           = ([\040-\377]\[&])*;
 	*/
 proto:
 	if (YYCURSOR >= YYLIMIT)
 		return false;
 	YYTOKEN = YYCURSOR;
 	/*!re2c
-
-        ws         {
-                        goto proto;
-		   }
-
-        "mysql://" {
-                      	SET_PROTOCOL(MYSQL_DEFAULT_PORT);
-                   }
-                   
-        "postgresql://" {
-                      	SET_PROTOCOL(POSTGRESQL_DEFAULT_PORT);
-                   }
-
-        "oracle://" {
-                      	SET_PROTOCOL(ORACLE_DEFAULT_PORT);
-                   }
-
-        protocol   {
-                      	SET_PROTOCOL(UNKNOWN_PORT);
-                   }
-    
-        any        {
-                      	goto proto;
-                   }
+         ws         
+         {
+                goto proto;
+         }
+         "mysql://"
+         {
+                SET_PROTOCOL(MYSQL_DEFAULT_PORT);
+         }
+         "postgresql://" 
+         {
+                SET_PROTOCOL(POSTGRESQL_DEFAULT_PORT);
+         }
+         "oracle://"
+         {
+                SET_PROTOCOL(ORACLE_DEFAULT_PORT);
+         }
+         protocol
+         {
+                SET_PROTOCOL(UNKNOWN_PORT);
+         }
+         any        
+         {
+                goto proto;
+         }
 	*/
 authority:
 	if (YYCURSOR >= YYLIMIT)
 		return true;
 	YYTOKEN = YYCURSOR;
 	/*!re2c
-    
-        ws         { 
-                        goto authority; 
-                   }
-
-        auth       {
-                        *(YYCURSOR - 1) = 0;
-                        U->user = YYTOKEN;
-                        char *p = strchr(U->user, ':');
-                        if (p) {
-                                *(p++) = 0;
-                                U->password = URL_unescape(p);
-                        }
-                        URL_unescape(U->user);
-                        goto authority; 
-                   }
-
-        host       {
-                        U->host = Str_ndup(YYTOKEN, (int)(YYCURSOR - YYTOKEN));
-                        goto authority; 
-                   }
-
-        port       {
-                        U->portStr = YYTOKEN + 1; // read past ':'
-                        U->port = Str_parseInt(U->portStr);
-                        goto authority; 
-                   }
-
-        path       {
-                        *YYCURSOR = 0;
-                        U->path = URL_unescape(YYTOKEN);
-                        return true;
-                   }
-                   
-        path[?]    {
-                        *(YYCURSOR-1) = 0;
-                        U->path = URL_unescape(YYTOKEN);
-                        goto query; 
-                   }
-                   
-       any         {
-                      	return true;
-                   }
-                   
+         ws         
+         {
+                goto authority;
+         }
+         auth       
+         {
+                *(YYCURSOR - 1) = 0;
+                U->user = YYTOKEN;
+                char *p = strchr(U->user, ':');
+                if (p) {
+                        *(p++) = 0;
+                        U->password = URL_unescape(p);
+                }
+                URL_unescape(U->user);
+                goto authority;
+         }
+         host       
+         {
+                U->host = Str_ndup(YYTOKEN, (int)(YYCURSOR - YYTOKEN));
+                goto authority;
+         }
+         port       
+         {
+                U->portStr = YYTOKEN + 1; // read past ':'
+                U->port = Str_parseInt(U->portStr);
+                goto authority;
+         }
+         path       
+         {
+                *YYCURSOR = 0;
+                U->path = URL_unescape(YYTOKEN);
+                return true;
+         }
+         path[?]    
+         {
+                *(YYCURSOR-1) = 0;
+                U->path = URL_unescape(YYTOKEN);
+                goto query;
+         }
+         any         
+         {
+                return true;
+         }
 	*/
 query:
         if (YYCURSOR >= YYLIMIT)
 		return true;
 	YYTOKEN =  YYCURSOR;
 	/*!re2c
-
-        query      {
-                        *YYCURSOR = 0;
-                        U->query = Str_ndup(YYTOKEN, (int)(YYCURSOR - YYTOKEN));
-                        YYCURSOR = YYTOKEN; // backtrack to start of query string after terminating it and
-                        goto params;
-                   }
-
-        any        { 
-                      return true;     
-                   }
-		   
+         query      
+         {
+                *YYCURSOR = 0;
+                U->query = Str_ndup(YYTOKEN, (int)(YYCURSOR - YYTOKEN));
+                YYCURSOR = YYTOKEN; // backtrack to start of query string after terminating it and
+                goto params;
+         }
+         any        
+         {
+                return true;
+         }
 	*/
 params:
 	if (YYCURSOR >= YYLIMIT)
 		return true;
 	YYTOKEN =  YYCURSOR;
 	/*!re2c
-         
-         parameterkey {
-                /* No parameters in querystring */
-                return true;
-        }
-
-        parameterkey/[=] {
+         parameterkey/[=] 
+         {
                 NEW(param);
                 param->name = YYTOKEN;
                 param->next = U->params;
                 U->params = param;
                 goto params;
-        }
-
-        [=]parametervalue[&]? {
+         }
+         [=]parametervalue[&]?
+         {
                 *YYTOKEN++ = 0;
                 if (*(YYCURSOR - 1) == '&')
                         *(YYCURSOR - 1) = 0;
-                if (! param) /* format error */
+                if (! param) // format error
                         return true; 
                 param->value = URL_unescape(YYTOKEN);
                 goto params;
-        }
-
-        any { 
+         }
+         any 
+         {
                 return true;
-        }
+         }
         */
         return false;
 }
