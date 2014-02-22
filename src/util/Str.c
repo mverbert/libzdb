@@ -129,23 +129,18 @@ char *Str_cat(const char *s, ...) {
 
 
 char *Str_vcat(const char *s, va_list ap) {
-        char *buf = NULL;
+        char *t = NULL;
         if (s) {
-                int n = 0;
                 va_list ap_copy;
-                int size = 88;
-                buf = ALLOC(size);
-                while (true) {
-                        va_copy(ap_copy, ap);
-                        n = vsnprintf(buf, size, s, ap_copy);
-                        va_end(ap_copy);
-                        if (n < size)
-                                break;
-                        size = n + 1;
-                        RESIZE(buf, size);
-                }
+                va_copy(ap_copy, ap);
+                int size = vsnprintf(t, 0, s, ap_copy) + 1;
+                va_end(ap_copy);
+                t = ALLOC(size);
+                va_copy(ap_copy, ap);
+                vsnprintf(t, size, s, ap_copy);
+                va_end(ap_copy);
         }
-        return buf;
+        return t;
 }
 
 
