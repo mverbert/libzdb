@@ -32,6 +32,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/select.h>
+#include <limits.h>
 
 #include "Str.h"
 #include "system/System.h"
@@ -115,7 +116,7 @@ time_t timegm(struct tm *tm)
         }
         t = ((int64_t)days * 24 + tm->tm_hour) * 3600 + tm->tm_min * 60 + tm->tm_sec;
         if(sizeof(time_t) == 4) {
-                if(t < INT32_MIN || t > INT32_MAX) {
+                if(t < INT_MIN || t > INT_MAX) {
                         return -1;
                 }
         }
