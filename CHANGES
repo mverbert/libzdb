@@ -1,6 +1,12 @@
-                         CHANGES version 3.0
+                         CHANGES version 3.1
 
               This file summarizes changes made since 1.0
+
+Version 3.1
+-----------
+* New: Support Literal IPv6 Addresses in URL, RFC2732. You can now
+  use an IPv6 address as host in URL as long as it is enclosed in
+  brackets, e.g. mysql://[2001:db8:85a3::8a2e:370:7334]:3306/test
 
 Version 3.0
 -----------

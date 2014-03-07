@@ -550,6 +550,42 @@ static void testURL() {
         }
         printf("=> Test12: OK\n\n");
 
+        printf("=> Test13: IPv4 and IPv6 hosts\n");
+        {
+                // IPv4
+                url = URL_new("mysql://r%40ot:p%40ssword@192.168.2.42:3306/test?user=r%26ot&password=pass%3Dword");
+                assert(IS(URL_getUser(url), "r@ot"));
+                assert(IS(URL_getPassword(url), "p@ssword"));
+                assert(IS(URL_getHost(url), "192.168.2.42"));
+                assert(URL_getPort(url) == 3306);
+                assert(IS(URL_getPath(url), "/test"));
+                assert(IS(URL_getParameter(url, "user"), "r&ot"));
+                assert(IS(URL_getParameter(url, "password"), "pass=word"));
+                URL_free(&url);
+                // IPv6
+                url = URL_new("mysql://r%40ot:p%40ssword@[2001:db8:85a3::8a2e:370:7334]:3306/test?user=r%26ot&password=pass%3Dword");
+                assert(IS(URL_getUser(url), "r@ot"));
+                assert(IS(URL_getPassword(url), "p@ssword"));
+                // Assert that IP6 brackets are removed
+                assert(IS(URL_getHost(url), "2001:db8:85a3::8a2e:370:7334"));
+                assert(URL_getPort(url) == 3306);
+                assert(IS(URL_getPath(url), "/test"));
+                assert(IS(URL_getParameter(url, "user"), "r&ot"));
+                assert(IS(URL_getParameter(url, "password"), "pass=word"));
+                // Assert that IP6 brackets are put back in toString
+                assert(IS(URL_toString(url), "mysql://r@ot:p@ssword@[2001:db8:85a3::8a2e:370:7334]:3306/test?user=r%26ot&password=pass%3Dword"));
+                URL_free(&url);
+                // IPv6 localhost
+                url = URL_new("mysql://[fe80::1%lo0]/");
+                // Assert that IP6 brackets are removed
+                assert(IS(URL_getHost(url), "fe80::1%lo0"));
+                assert(URL_getPort(url) == 3306);
+                // Assert that IP6 brackets are put back in toString
+                assert(IS(URL_toString(url), "mysql://[fe80::1%lo0]/"));
+                URL_free(&url);
+        }
+        printf("=> Test13: OK\n\n");
+
         printf("============> URL Tests: OK\n\n");
 }
 

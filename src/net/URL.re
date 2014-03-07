@@ -53,6 +53,7 @@ typedef struct param_t {
 
 #define T URL_T
 struct URL_S {
+        int ip6;
 	int port;
        	char *ref;
 	char *path;
@@ -115,8 +116,9 @@ static int parseURL(T U) {
          ws                       = [ \t\r\n];
          any		          = [\000-\377];
          protocol                 = [a-zA-Z0-9]+"://";
-         auth                     = ([\040-\377]\[@])+[@];
+         auth                     = ([\040-\077\101-\132\134\136-\377])+[@];
          host                     = ([a-zA-Z0-9\-]+)([.]([a-zA-Z0-9\-]+))*;
+         host6                    = '[' [0-9a-zA-Z:%]+ ']';
          port                     = [:][0-9]+;
          path                     = [/]([\041-\377]\[?#;])*;
          query                    = ([\040-\377]\[#])*;
@@ -174,12 +176,18 @@ authority:
                 URL_unescape(U->user);
                 goto authority;
          }
-         host       
+         host6
+         {
+                U->ip6 = true;
+                U->host = Str_ndup(YYTOKEN + 1, (int)(YYCURSOR - YYTOKEN - 2));
+                goto authority;
+         }
+         host
          {
                 U->host = Str_ndup(YYTOKEN, (int)(YYCURSOR - YYTOKEN));
                 goto authority;
          }
-         port       
+         port
          {
                 U->portStr = YYTOKEN + 1; // read past ':'
                 U->port = Str_parseInt(U->portStr);
@@ -404,13 +412,15 @@ const char *URL_toString(T U) {
                 uchar_t port[11] = {};
                 if (U->portStr) // port seen in URL
                         snprintf(port, 10, ":%d", U->port);
-		U->toString = Str_cat("%s://%s%s%s%s%s%s%s%s%s", 
+		U->toString = Str_cat("%s://%s%s%s%s%s%s%s%s%s%s%s",
                                       U->protocol,
                                       U->user ? U->user : "",
                                       U->password ? ":" : "",
                                       U->password ? U->password : "",
                                       U->user ? "@" : "",
+                                      U->ip6 ? "[" : "",
                                       U->host ? U->host : "",
+                                      U->ip6 ? "]" : "",
                                       port,
                                       U->path ? U->path : "",
                                       U->query ? "?" : "",
