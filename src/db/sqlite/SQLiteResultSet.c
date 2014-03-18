@@ -166,9 +166,8 @@ const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size) {
 time_t SQLiteResultSet_getTimestamp(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
-        if (sqlite3_column_type(R->stmt, i) == SQLITE_INTEGER) {
+        if (sqlite3_column_type(R->stmt, i) == SQLITE_INTEGER)
                 return (time_t)sqlite3_column_int64(R->stmt, i);
-        }
         // Not integer storage class, try to parse as time string
         return Time_toTimestamp(sqlite3_column_text(R->stmt, i));
 }

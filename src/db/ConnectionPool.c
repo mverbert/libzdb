@@ -323,8 +323,8 @@ Connection_T ConnectionPool_getConnection(T P) {
 	assert(P);
 	LOCK(P->mutex) 
         {
-                int i, size = Vector_size(P->pool);
-                for (i = 0; i < size; i++) {
+                int size = Vector_size(P->pool);
+                for (int i = 0; i < size; i++) {
                         con = Vector_get(P->pool, i);
                         if (Connection_isAvailable(con) && Connection_ping(con)) {
                                 Connection_setAvailable(con, false);
@@ -359,11 +359,7 @@ void ConnectionPool_returnConnection(T P, Connection_T connection) {
                         DEBUG("Failed to rollback transaction -- %s\n", Exception_frame.message);
                 END_TRY;
 	}
-	TRY
-                Connection_clear(connection); // Could theoretically throw exception and we don't want that
-        ELSE
-                DEBUG("Failed to clear connection -- %s\n", Exception_frame.message);
-        END_TRY;
+	Connection_clear(connection);
 	LOCK(P->mutex)
         {
 		Connection_setAvailable(connection, true);
