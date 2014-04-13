@@ -37,8 +37,8 @@
 
 
 /**
- * Implementation of the PreparedStatement/Delegate interface for SQLite 
- * SQLite starts parameter index at 1, so checkAndSetParameterIndex is not 
+ * Implementation of the PreparedStatement/Delegate interface for SQLite.
+ * NOTE: SQLite starts parameter index at 1, so checkAndSetParameterIndex is not
  * needed
  *
  * @file
@@ -140,6 +140,8 @@ void SQLitePreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
         assert(P);
         sqlite3_reset(P->stmt);
         P->lastError = sqlite3_bind_int64(P->stmt, parameterIndex, x);
+        if (P->lastError == SQLITE_RANGE)
+                THROW(SQLException, "Parameter index is out of range");
 }
 
 
