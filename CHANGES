@@ -8,7 +8,7 @@ Version 3.1
   use an IPv6 address as host in URL as long as it is enclosed in
   brackets, e.g. mysql://[2001:db8:85a3::8a2e:370:7334]:3306/test
   Requires that linked database libs supports IPv6. MySQL 5.x, 
-  Postgres 9.x and Oracle 11.x or later version should be fine. 
+  Postgres 9.x and Oracle 11.x or later versions should be fine.
 
 Version 3.0
 -----------

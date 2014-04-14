@@ -25,6 +25,7 @@
             border-bottom: 1px #b8c8e9 solid;
             background-color: #f7fcff;
     }
+    pre {white-space: pre-wrap;}
     .textinfo {color: #428bca;}
     .textnote {color: #a94442;}
 </style>

@@ -92,7 +92,7 @@
  * values as C types. ResultSet_getTimestamp() converts a SQL timestamp value
  * to a <code>time_t</code> and ResultSet_getDateTime() returns a 
  * <code>tm structure</code> representing a SQL Date, Time, DateTime or Timestamp
- * column type. To get a temporal column value as a string use ResultSet_getString()
+ * column type. To get a temporal column value as a string, simply use ResultSet_getString()
  *
  * <i>A ResultSet is reentrant, but not thread-safe and should only be used by 
  * one thread (at the time).</i>
@@ -454,12 +454,12 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName);
  * for usage with mktime(3) where, tm_hour = hours since midnight [0-23],
  * tm_min = minutes after the hour [0-59], tm_sec = seconds after the minute
  * [0-60], tm_mday = day of the month [1-31] and tm_mon = months since January
- * <b class="textinfo">[0-11]</b>. tm_gmtoff is set to the offset from UTC in
+ * <b class="textnote">[0-11]</b>. tm_gmtoff is set to the offset from UTC in
  * seconds if the column value contains timezone information, otherwise 
  * tm_gmtoff is set to 0. <i>On systems without tm_gmtoff, (Solaris), the 
  * member, tm_wday is set to gmt offset instead as this property is ignored 
- * by mktime on input.</i> The exception to the above is <b>tm_year</b> which
- * contains the year literal and <i>not years since 1900</i> which is the 
+ * by mktime on input.</i> The exception to the above is <b class="textnote">tm_year</b> 
+ * which contains the year literal and <i>not years since 1900</i> which is the
  * convention. All other fields in the structure are set to zero. If the 
  * column type is DateTime or Timestamp all the fields mentioned above are 
  * set, if it is a Date or Time, only the relevant fields are set.
@@ -485,12 +485,12 @@ struct tm ResultSet_getDateTime(T R, int columnIndex);
  * for usage with mktime(3) where, tm_hour = hours since midnight [0-23],
  * tm_min = minutes after the hour [0-59], tm_sec = seconds after the minute
  * [0-60], tm_mday = day of the month [1-31] and tm_mon = months since January
- * <b class="textinfo">[0-11]</b>. tm_gmtoff is set to the offset from UTC in
+ * <b class="textnote">[0-11]</b>. tm_gmtoff is set to the offset from UTC in
  * seconds if the column value contains timezone information, otherwise
  * tm_gmtoff is set to 0. <i>On systems without tm_gmtoff, (Solaris), the
  * member, tm_wday is set to gmt offset instead as this property is ignored
- * by mktime on input.</i> The exception to the above is <b>tm_year</b> which
- * contains the year literal and <i>not years since 1900</i> which is the
+ * by mktime on input.</i> The exception to the above is <b class="textnote">tm_year</b>
+ * which contains the year literal and <i>not years since 1900</i> which is the
  * convention. All other fields in the structure are set to zero. If the
  * column type is DateTime or Timestamp all the fields mentioned above are
  * set, if it is a Date or Time, only the relevant fields are set.

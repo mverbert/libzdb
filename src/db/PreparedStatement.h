@@ -100,7 +100,7 @@
  * PreparedStatement_setString() with a time string format understood by your
  * database. For instance to set a SQL Date value,
  * <pre>
- *   PreparedStatement_setString(p, "2013-12-28");
+ *   PreparedStatement_setString(p, parameterIndex, "2013-12-28");
  * </pre>
  *
  * <i>A PreparedStatement is reentrant, but not thread-safe and should only be used by one thread (at the time).</i>
@@ -220,8 +220,8 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
  * given Unix timestamp value. The timestamp value given in <code>x</code>
  * is expected to be in the UTC timezone. For instance, a value returned by
  * time(3) which represents the system's notion of the current Greenwich time.
- * <i class="textinfo">SQLite</i> does not have temporal SQL data types per se.
- * Using this method with SQLite will store the timestamp value as a numerical
+ * <i class="textinfo">SQLite</i> does not have temporal SQL data types per se
+ * and using this method with SQLite will store the timestamp value as a numerical
  * type as-is.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
