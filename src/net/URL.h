@@ -50,6 +50,10 @@
  * mechanism defined in RFC 2396; <code>credentials</code>, <code>path</code> and parameter
  * <code>values</code>.
  *
+ * An <i>IPv6 address</i> can be used for host as defined in
+ * <a href="http://www.ietf.org/rfc/rfc2732.txt">RFC2732</a> by enclosing the 
+ * address in [brackets]. For instance, mysql://[2010:836B:4179::836B:4179]:3306/test
+ *
  * For more information about the URL syntax and specification, see,
  * <a href="ftp://ftp.rfc-editor.org/in-notes/rfc2396.txt">RFC2396 -
  * Uniform Resource Identifiers (URI): Generic Syntax</a>
