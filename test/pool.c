@@ -609,7 +609,6 @@ static void testPool(const char *testURL) {
                 url = URL_new(testURL);
                 pool = ConnectionPool_new(url);
                 assert(pool);
-                setenv("TZ", "Europe/Oslo" , 1);
                 ConnectionPool_start(pool);
                 Connection_T con = ConnectionPool_getConnection(pool);
                 if (Str_startsWith(testURL, "postgres"))
