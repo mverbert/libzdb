@@ -87,7 +87,7 @@ struct T {
 /* ------------------------------------------------------- Private methods */
 
 
-static inline void ensureCapacity(T R, int i) {
+static inline void _ensureCapacity(T R, int i) {
         if ((R->columns[i].real_length > R->bind[i].buffer_length)) {
                 /* Column was truncated, resize and fetch column directly. */
                 RESIZE(R->columns[i].buffer, R->columns[i].real_length + 1);
@@ -217,7 +217,7 @@ const char *MysqlResultSet_getString(T R, int columnIndex) {
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].is_null)
                 return NULL;
-        ensureCapacity(R, i);
+        _ensureCapacity(R, i);
         R->columns[i].buffer[R->columns[i].real_length] = 0;
         return R->columns[i].buffer;
 }
@@ -228,7 +228,7 @@ const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].is_null)
                 return NULL;
-        ensureCapacity(R, i);
+        _ensureCapacity(R, i);
         *size = (int)R->columns[i].real_length;
         return R->columns[i].buffer;
 }

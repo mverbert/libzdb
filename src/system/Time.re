@@ -130,13 +130,13 @@ time_t timegm(struct tm *tm)
 #define TM_GMTOFF tm_wday
 #endif
 
-#define i2a(i) (x[0] = ((i) / 10) + '0', x[1] = ((i) % 10) + '0')
+#define _i2a(i) (x[0] = ((i) / 10) + '0', x[1] = ((i) % 10) + '0')
 
 
 /* --------------------------------------------------------------- Private */
 
 
-static inline int a2i(const char *a, int l) {
+static inline int _a2i(const char *a, int l) {
         int n = 0;
         for (; *a && l--; a++)
                 n = n * 10 + (*a) - '0';
@@ -195,44 +195,44 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                  
                  yyyy x dd x dd
                  { // Date: YYYY-MM-DD
-                        tm.tm_year  = a2i(token, 4);
-                        tm.tm_mon   = a2i(token + 5, 2) - 1;
-                        tm.tm_mday  = a2i(token + 8, 2);
+                        tm.tm_year  = _a2i(token, 4);
+                        tm.tm_mon   = _a2i(token + 5, 2) - 1;
+                        tm.tm_mday  = _a2i(token + 8, 2);
                         has_date = true;
                         continue;
                  }
                  yyyy dd dd
                  { // Compressed Date: YYYYMMDD
-                        tm.tm_year  = a2i(token, 4);
-                        tm.tm_mon   = a2i(token + 4, 2) - 1;
-                        tm.tm_mday  = a2i(token + 6, 2);
+                        tm.tm_year  = _a2i(token, 4);
+                        tm.tm_mon   = _a2i(token + 4, 2) - 1;
+                        tm.tm_mday  = _a2i(token + 6, 2);
                         has_date = true;
                         continue;
                  }
                  dd x dd x dd frac?
                  { // Time: HH:MM:SS
-                        tm.tm_hour = a2i(token, 2);
-                        tm.tm_min  = a2i(token + 3, 2);
-                        tm.tm_sec  = a2i(token + 6, 2);
+                        tm.tm_hour = _a2i(token, 2);
+                        tm.tm_min  = _a2i(token + 3, 2);
+                        tm.tm_sec  = _a2i(token + 6, 2);
                         has_time = true;
                         continue;
                  }
                  dd dd dd frac?
                  { // Compressed Time: HHMMSS
-                        tm.tm_hour = a2i(token, 2);
-                        tm.tm_min  = a2i(token + 2, 2);
-                        tm.tm_sec  = a2i(token + 4, 2);
+                        tm.tm_hour = _a2i(token, 2);
+                        tm.tm_min  = _a2i(token + 2, 2);
+                        tm.tm_sec  = _a2i(token + 4, 2);
                         has_time = true;
                         continue;
                  }
                  tz
                  { // Timezone: +-HH:MM, +-HH or +-HHMM is offset from UTC in seconds
                         if (has_time) { // Only set timezone if time has been seen
-                                tm.TM_GMTOFF = a2i(token + 1, 2) * 3600;
+                                tm.TM_GMTOFF = _a2i(token + 1, 2) * 3600;
                                 if (token[3] >= '0' && token[3] <= '9')
-                                        tm.TM_GMTOFF += a2i(token + 3, 2) * 60;
+                                        tm.TM_GMTOFF += _a2i(token + 3, 2) * 60;
                                 else if (token[4] >= '0' && token[4] <= '9')
-                                        tm.TM_GMTOFF += a2i(token + 4, 2) * 60;
+                                        tm.TM_GMTOFF += _a2i(token + 4, 2) * 60;
                                 if (token[0] == '-')
                                         tm.TM_GMTOFF *= -1;
                         }
@@ -255,25 +255,25 @@ char *Time_toString(time_t time, char result[20]) {
         gmtime_r(&time, &ts);
         memcpy(result, "YYYY-MM-DD HH:MM:SS\0", 20);
         /*              0    5  8  11 14 17 */
-        i2a((ts.tm_year+1900)/100);
+        _i2a((ts.tm_year+1900)/100);
         result[0] = x[0];
         result[1] = x[1];
-        i2a((ts.tm_year+1900)%100);
+        _i2a((ts.tm_year+1900)%100);
         result[2] = x[0];
         result[3] = x[1];
-        i2a(ts.tm_mon + 1); // Months in 01-12
+        _i2a(ts.tm_mon + 1); // Months in 01-12
         result[5] = x[0];
         result[6] = x[1];
-        i2a(ts.tm_mday);
+        _i2a(ts.tm_mday);
         result[8] = x[0];
         result[9] = x[1];
-        i2a(ts.tm_hour);
+        _i2a(ts.tm_hour);
         result[11] = x[0];
         result[12] = x[1];
-        i2a(ts.tm_min);
+        _i2a(ts.tm_min);
         result[14] = x[0];
         result[15] = x[1];
-        i2a(ts.tm_sec);
+        _i2a(ts.tm_sec);
         result[17] = x[0];
         result[18] = x[1];
 	return result;

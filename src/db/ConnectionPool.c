@@ -78,7 +78,7 @@ void(*AbortHandler)(const char *error) = NULL;
 /* ------------------------------------------------------- Private methods */
 
 
-static void drainPool(T P) {
+static void _drainPool(T P) {
         while (! Vector_isEmpty(P->pool)) {
 		Connection_T con = Vector_pop(P->pool);
 		Connection_free(&con);
@@ -86,7 +86,7 @@ static void drainPool(T P) {
 }
 
 
-static int fillPool(T P) {
+static int _fillPool(T P) {
 	for (int i = 0; i < P->initialConnections; i++) {
                 Connection_T con = Connection_new(P, &P->error);
 		if (! con) {
@@ -103,7 +103,7 @@ static int fillPool(T P) {
 }
 
 
-static int getActive(T P){
+static int _getActive(T P){
         int i, n = 0, size = Vector_size(P->pool);
         for (i = 0; i < size; i++)
                 if (! Connection_isAvailable(Vector_get(P->pool, i))) 
@@ -112,9 +112,9 @@ static int getActive(T P){
 }
 
 
-static int reapConnections(T P) {
+static int _reapConnections(T P) {
         int n = 0;
-        int x = Vector_size(P->pool) - getActive(P) - P->initialConnections;
+        int x = Vector_size(P->pool) - _getActive(P) - P->initialConnections;
         time_t timedout = Time_now() - P->connectionTimeout;
         for (int i = 0; ((n < x) && (i < Vector_size(P->pool))); i++) {
                 Connection_T con = Vector_get(P->pool, i);
@@ -131,7 +131,7 @@ static int reapConnections(T P) {
 }
 
 
-static void *doSweep(void *args) {
+static void *_doSweep(void *args) {
         T P = args;
         struct timespec wait = {0, 0};
         Mutex_lock(P->mutex);
@@ -139,7 +139,7 @@ static void *doSweep(void *args) {
                 wait.tv_sec = Time_now() + P->sweepInterval;
                 Sem_timeWait(P->alarm,  P->mutex, wait);
                 if (P->stopped) break;
-                reapConnections(P);
+                _reapConnections(P);
         }
         Mutex_unlock(P->mutex);
         DEBUG("Reaper thread stopped\n");
@@ -265,7 +265,7 @@ int ConnectionPool_active(T P) {
         assert(P);
         LOCK(P->mutex)
         {
-                n = getActive(P);
+                n = _getActive(P);
         }
         END_LOCK;
         return n;
@@ -281,11 +281,11 @@ void ConnectionPool_start(T P) {
         {
                 P->stopped = false;
                 if (! P->filled) {
-                        P->filled = fillPool(P);
+                        P->filled = _fillPool(P);
                         if (P->filled && P->doSweep) {
                                 DEBUG("Starting Database reaper thread\n");
                                 Sem_init(P->alarm);
-                                Thread_create(P->reaper, doSweep, P);
+                                Thread_create(P->reaper, _doSweep, P);
                         }
                 }
         }
@@ -302,7 +302,7 @@ void ConnectionPool_stop(T P) {
         {
                 P->stopped = true;
                 if (P->filled) {
-                        drainPool(P);
+                        _drainPool(P);
                         P->filled = false;
                         stopSweep = (P->doSweep && P->reaper);
                         Connection_onstop(P);
@@ -373,7 +373,7 @@ int ConnectionPool_reapConnections(T P) {
         assert(P);
         LOCK(P->mutex)
         {
-                n = reapConnections(P);
+                n = _reapConnections(P);
         }
         END_LOCK;
         return n;

@@ -53,7 +53,7 @@ struct PreparedStatement_S {
 /* ------------------------------------------------------- Private methods */
 
 
-static void clearResultSet(T P) {
+static void _clearResultSet(T P) {
         if (P->resultSet)
                 ResultSet_free(&P->resultSet);
 }
@@ -80,7 +80,7 @@ T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op, int parameterCo
 
 void PreparedStatement_free(T *P) {
 	assert(P && *P);
-        clearResultSet((*P));
+        _clearResultSet((*P));
         (*P)->op->free(&(*P)->D);
 	FREE(*P);
 }
@@ -134,14 +134,14 @@ void PreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
 
 void PreparedStatement_execute(T P) {
 	assert(P);
-        clearResultSet(P);
+        _clearResultSet(P);
         P->op->execute(P->D);
 }
 
 
 ResultSet_T PreparedStatement_executeQuery(T P) {
 	assert(P);
-        clearResultSet(P);
+        _clearResultSet(P);
 	P->resultSet = P->op->executeQuery(P->D);
         if (! P->resultSet)
                 THROW(SQLException, "PreparedStatement_executeQuery");

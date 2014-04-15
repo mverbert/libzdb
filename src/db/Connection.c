@@ -96,7 +96,7 @@ struct Connection_S {
 /* ------------------------------------------------------- Private methods */
 
 
-static Cop_T getOp(const char *protocol) {
+static Cop_T _getOp(const char *protocol) {
         for (int i = 0; cops[i]; i++) 
                 if (Str_startsWith(protocol, cops[i]->name)) 
                         return (Cop_T)cops[i];
@@ -104,8 +104,8 @@ static Cop_T getOp(const char *protocol) {
 }
 
 
-static int setDelegate(T C, char **error) {
-        C->op = getOp(URL_getProtocol(C->url));
+static int _setDelegate(T C, char **error) {
+        C->op = _getOp(URL_getProtocol(C->url));
         if (! C->op) {
                 *error = Str_cat("database protocol '%s' not supported", URL_getProtocol(C->url));
                 return false;
@@ -115,7 +115,7 @@ static int setDelegate(T C, char **error) {
 }
 
 
-static void freePrepared(T C) {
+static void _freePrepared(T C) {
         while (! Vector_isEmpty(C->prepared)) {
 		PreparedStatement_T ps = Vector_pop(C->prepared);
 		PreparedStatement_free(&ps);
@@ -132,7 +132,7 @@ static void freePrepared(T C) {
 
 
 void Connection_onstop(void *pool) {
-        (getOp(URL_getProtocol(ConnectionPool_getURL(pool))))->onstop();
+        (_getOp(URL_getProtocol(ConnectionPool_getURL(pool))))->onstop();
 }
 
 
@@ -150,7 +150,7 @@ T Connection_new(void *pool, char **error) {
         C->timeout = SQL_DEFAULT_TIMEOUT;
         C->url = ConnectionPool_getURL(pool);
         C->lastAccessedTime = Time_now();
-        if (! setDelegate(C, error))
+        if (! _setDelegate(C, error))
                 Connection_free(&C);
 	return C;
 }
@@ -248,7 +248,7 @@ void Connection_clear(T C) {
                 Connection_setMaxRows(C, 0);
         if (C->timeout != SQL_DEFAULT_TIMEOUT)
                 Connection_setQueryTimeout(C, SQL_DEFAULT_TIMEOUT);
-        freePrepared(C);
+        _freePrepared(C);
 }
 
 
@@ -352,6 +352,6 @@ const char *Connection_getLastError(T C) {
 
 
 int Connection_isSupported(const char *url) {
-        return (url ? (getOp(url) != NULL) : false);
+        return (url ? (_getOp(url) != NULL) : false);
 }
 

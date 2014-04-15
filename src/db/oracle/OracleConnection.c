@@ -98,7 +98,7 @@ extern const struct Pop_T oraclepops;
 /* ------------------------------------------------------- Private methods */
 
 
-static int doConnect(T C, URL_T url, char**  error) {
+static int _doConnect(T C, URL_T url, char**  error) {
 #define ERROR(e) do {*error = Str_dup(e); return false;} while (0)
 #define ORAERROR(e) do{ *error = Str_dup(OracleConnection_getLastError(e)); return false;} while(0)
         const char *database, *username, *password;
@@ -174,7 +174,7 @@ T OracleConnection_new(URL_T url, char **error) {
         C->url = url;
         C->sb = StringBuffer_create(STRLEN);
         C->timeout = SQL_DEFAULT_TIMEOUT;
-        if (! doConnect(C, url, error)) {
+        if (! _doConnect(C, url, error)) {
                 OracleConnection_free(&C);
                 return NULL;
         }

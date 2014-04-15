@@ -83,7 +83,7 @@ struct T {
  below for usage and further info. See also Postgres' PQunescapeBytea() function
  which this function mirrors except it does not allocate a new string.
  */
-static inline const void *unescape_bytea(uchar_t *s, int len, int *r) {
+static inline const void *_unescape_bytea(uchar_t *s, int len, int *r) {
         assert(s);
         register int i, j;
         if (s[0] == '\\' && s[1] == 'x') { // bytea hex format
@@ -215,7 +215,7 @@ const void *PostgresqlResultSet_getBlob(T R, int columnIndex, int *size) {
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (PQgetisnull(R->res, R->currentRow, i))
                 return NULL; 
-        return unescape_bytea((uchar_t*)PQgetvalue(R->res, R->currentRow, i), PQgetlength(R->res, R->currentRow, i), size);
+        return _unescape_bytea((uchar_t*)PQgetvalue(R->res, R->currentRow, i), PQgetlength(R->res, R->currentRow, i), size);
 }
 
 #ifdef PACKAGE_PROTECTED

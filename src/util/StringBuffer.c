@@ -53,7 +53,7 @@ struct T {
 /* ------------------------------------------------------- Private methods */
 
 
-static inline void append(T S, const char *s, va_list ap) {
+static inline void _append(T S, const char *s, va_list ap) {
         va_list ap_copy;
         while (true) {
                 va_copy(ap_copy, ap);
@@ -70,7 +70,7 @@ static inline void append(T S, const char *s, va_list ap) {
 
 
 /* Replace all occurences of ? in this string buffer with prefix[1..99] */
-static int prepare(T S, char prefix) {
+static int _prepare(T S, char prefix) {
         int n, i;
         for (n = i = 0; S->buffer[i]; i++) if (S->buffer[i] == '?') n++;
         if (n > 99)
@@ -98,7 +98,7 @@ static int prepare(T S, char prefix) {
 }
 
 
-static inline T ctor(int hint) {
+static inline T _ctor(int hint) {
         T S;
         NEW(S);
         S->length = hint;
@@ -116,14 +116,14 @@ static inline T ctor(int hint) {
 #endif
 
 T StringBuffer_new(const char *s) {
-        return StringBuffer_append(ctor(STRLEN), "%s", s);
+        return StringBuffer_append(_ctor(STRLEN), "%s", s);
 }
 
 
 T StringBuffer_create(int hint) {
         if (hint <= 0)
                 THROW(AssertException, "Illegal hint value");
-        return ctor(hint);
+        return _ctor(hint);
 }
 
 
@@ -139,7 +139,7 @@ T StringBuffer_append(T S, const char *s, ...) {
         if (STR_DEF(s)) {
                 va_list ap;
                 va_start(ap, s);
-                append(S, s, ap);
+                _append(S, s, ap);
                 va_end(ap);
         }
         return S;
@@ -151,7 +151,7 @@ T StringBuffer_vappend(T S, const char *s, va_list ap) {
         if (STR_DEF(s)) {
                 va_list ap_copy;
                 va_copy(ap_copy, ap);
-                append(S, s, ap_copy);
+                _append(S, s, ap_copy);
                 va_end(ap_copy);
         }
         return S;
@@ -164,7 +164,7 @@ T StringBuffer_set(T S, const char *s, ...) {
         if (STR_DEF(s)) {
                 va_list ap;
                 va_start(ap, s);
-                append(S, s, ap);
+                _append(S, s, ap);
                 va_end(ap);
         }
         return S;
@@ -177,7 +177,7 @@ T StringBuffer_vset(T S, const char *s, va_list ap) {
         if (STR_DEF(s)) {
                 va_list ap_copy;
                 va_copy(ap_copy, ap);
-                append(S, s, ap_copy);
+                _append(S, s, ap_copy);
                 va_end(ap_copy);
         }
         return S;
@@ -206,13 +206,13 @@ const char *StringBuffer_toString(T S) {
 
 int StringBuffer_prepare4postgres(T S) {
         assert(S);
-        return prepare(S, '$');
+        return _prepare(S, '$');
 }
 
 
 int StringBuffer_prepare4oracle(T S) {
         assert(S);
-        return prepare(S, ':');
+        return _prepare(S, ':');
 }
 
 

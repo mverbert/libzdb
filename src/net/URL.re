@@ -103,7 +103,7 @@ static const uchar_t urlunsafe[256] = {
 /* ------------------------------------------------------- Private methods */
 
 
-static int parseURL(T U) {
+static int _parseURL(T U) {
         param_t param = NULL;
 	/*!re2c
          re2c:define:YYCTYPE      = "unsigned char";
@@ -259,7 +259,7 @@ params:
 }
 
 
-static inline int x2b(uchar_t *x) {
+static inline int _x2b(uchar_t *x) {
 	register int b;
 	b = ((x[0] >= 'A') ? ((x[0] & 0xdf) - 'A')+10 : (x[0] - '0'));
 	b *= 16;
@@ -268,16 +268,16 @@ static inline int x2b(uchar_t *x) {
 }
 
 
-static inline uchar_t *b2x(uchar_t b, uchar_t *x) {
-        static const char b2x_table[] = "0123456789ABCDEF";
+static inline uchar_t *_b2x(uchar_t b, uchar_t *x) {
+        static const char _b2x_table[] = "0123456789ABCDEF";
         *x++ = '%';
-        *x++ = b2x_table[b >> 4];
-        *x = b2x_table[b & 0xf];
+        *x++ = _b2x_table[b >> 4];
+        *x = _b2x_table[b & 0xf];
         return x;
 }
 
 
-static void freeParams(param_t p) {
+static void _freeParams(param_t p) {
         for (param_t q = NULL; p; p = q) {
                 q = p->next;
                 FREE(p);
@@ -285,14 +285,14 @@ static void freeParams(param_t p) {
 }
 
 
-static T ctor(uchar_t *data) {
+static T _ctor(uchar_t *data) {
         T U;
 	NEW(U);
 	U->data = data;
 	YYCURSOR = U->data;
 	U->port = UNKNOWN_PORT;
 	YYLIMIT = U->data + strlen(U->data);
-	if (! parseURL(U))
+	if (! _parseURL(U))
                 URL_free(&U);
 	return U;
 }
@@ -305,7 +305,7 @@ T URL_new(const char *url) {
         if (STR_UNDEF(url))
                 return NULL;
         Exception_init();
-        return ctor((uchar_t*)Str_dup(url));
+        return _ctor((uchar_t*)Str_dup(url));
 }
 
 
@@ -315,14 +315,14 @@ T URL_create(const char *url, ...) {
         Exception_init();
 	va_list ap;
         va_start(ap, url);
-	T U = ctor((uchar_t*)Str_vcat(url, ap));
+	T U = _ctor((uchar_t*)Str_vcat(url, ap));
   	va_end(ap);
         return U;
 }
 
 void URL_free(T *U) {
 	assert(U && *U);
-        freeParams((*U)->params);
+        _freeParams((*U)->params);
         FREE((*U)->paramNames);
 	FREE((*U)->toString);
 	FREE((*U)->query);
@@ -442,7 +442,7 @@ char *URL_unescape(char *url) {
                         else if (url[x] == '%') {
                                 if (! (url[x + 1] && url[x + 2]))
                                         break;
-                                url[x] = x2b(url + y + 1);
+                                url[x] = _x2b(url + y + 1);
                                 y += 2;
                         }
                 }
@@ -463,7 +463,7 @@ char *URL_escape(const char *url) {
                 p = escaped = ALLOC(i + n + 1);
                 for (; *url; url++, p++) {
                         if (urlunsafe[(unsigned char)(*p = *url)])
-                                p = b2x(*url, p);
+                                p = _b2x(*url, p);
                 }
                 *p = 0;
         }

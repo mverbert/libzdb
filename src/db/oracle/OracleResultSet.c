@@ -98,7 +98,7 @@ struct T {
 /* ------------------------------------------------------- Private methods */
 
 
-static int initaleDefiningBuffers(T R) {
+static int _initaleDefiningBuffers(T R) {
         ub2 dtype = 0;
         int deptlen;
         int sizelen = sizeof(deptlen);
@@ -188,7 +188,7 @@ static int initaleDefiningBuffers(T R) {
         return true;
 }
 
-static int OracleDate_toString(T R, int i)
+static int _toString(T R, int i)
 {
         const char fmt[] = "IYYY-MM-DD HH24.MI.SS"; // "YYYY-MM-DD HH24:MI:SS TZR TZD"
 
@@ -237,7 +237,7 @@ T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
         R->columns = CALLOC(R->columnCount, sizeof (struct column_t));
-        if (!initaleDefiningBuffers(R)) {
+        if (!_initaleDefiningBuffers(R)) {
                 DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
                 R->row = -1;
         }
@@ -331,7 +331,7 @@ const char *OracleResultSet_getString(T R, int columnIndex) {
                 return NULL;
         if (R->columns[i].date)
         {
-                if (!OracleDate_toString(R, i))
+                if (!_toString(R, i))
                 {
                         THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
                 }

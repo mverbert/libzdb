@@ -85,7 +85,7 @@ extern const struct Pop_T sqlite3pops;
 /* ------------------------------------------------------- Private methods */
 
 
-static sqlite3 *doConnect(URL_T url, char **error) {
+static sqlite3 *_doConnect(URL_T url, char **error) {
         int status;
 	sqlite3 *db;
         const char *path = URL_getPath(url);
@@ -108,7 +108,7 @@ static sqlite3 *doConnect(URL_T url, char **error) {
 }
 
 
-static inline void executeSQL(T C, const char *sql) {
+static inline void _executeSQL(T C, const char *sql) {
 #if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
         C->lastError = sqlite3_blocking_exec(C->db, sql, NULL, NULL, NULL);
 #else
@@ -117,7 +117,7 @@ static inline void executeSQL(T C, const char *sql) {
 }
 
 
-static int setProperties(T C, char **error) {
+static int _setProperties(T C, char **error) {
         const char **properties = URL_getParameterNames(C->url);
         if (properties) {
                 StringBuffer_clear(C->sb);
@@ -133,7 +133,7 @@ static int setProperties(T C, char **error) {
                         else
                                 StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));
                 }
-                executeSQL(C, StringBuffer_toString(C->sb));
+                _executeSQL(C, StringBuffer_toString(C->sb));
                 if (C->lastError != SQLITE_OK) {
                         *error = Str_cat("unable to set database pragmas -- %s", sqlite3_errmsg(C->db));
                         return false;
@@ -155,14 +155,14 @@ T SQLiteConnection_new(URL_T url, char **error) {
         sqlite3 *db;
 	assert(url);
         assert(error);
-        if (! (db = doConnect(url, error)))
+        if (! (db = _doConnect(url, error)))
                 return NULL;
 	NEW(C);
         C->db = db;
         C->url = url;
         C->timeout = SQL_DEFAULT_TIMEOUT;
         C->sb = StringBuffer_create(STRLEN);
-        if (! setProperties(C, error))
+        if (! _setProperties(C, error))
                 SQLiteConnection_free(&C);
 	return C;
 }
@@ -192,28 +192,28 @@ void SQLiteConnection_setMaxRows(T C, int max) {
 
 int SQLiteConnection_ping(T C) {
         assert(C);
-        executeSQL(C, "select 1;");
+        _executeSQL(C, "select 1;");
         return (C->lastError == SQLITE_OK);
 }
 
 
 int SQLiteConnection_beginTransaction(T C) {
 	assert(C);
-        executeSQL(C, "BEGIN TRANSACTION;");
+        _executeSQL(C, "BEGIN TRANSACTION;");
         return (C->lastError == SQLITE_OK);
 }
 
 
 int SQLiteConnection_commit(T C) {
 	assert(C);
-        executeSQL(C, "COMMIT TRANSACTION;");
+        _executeSQL(C, "COMMIT TRANSACTION;");
         return (C->lastError == SQLITE_OK);
 }
 
 
 int SQLiteConnection_rollback(T C) {
 	assert(C);
-        executeSQL(C, "ROLLBACK TRANSACTION;");
+        _executeSQL(C, "ROLLBACK TRANSACTION;");
         return (C->lastError == SQLITE_OK);
 }
 
@@ -236,7 +236,7 @@ int SQLiteConnection_execute(T C, const char *sql, va_list ap) {
         va_copy(ap_copy, ap);
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
-	executeSQL(C, StringBuffer_toString(C->sb));
+	_executeSQL(C, StringBuffer_toString(C->sb));
 	return (C->lastError == SQLITE_OK);
 }
 

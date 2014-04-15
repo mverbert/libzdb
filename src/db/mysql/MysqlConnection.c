@@ -90,7 +90,7 @@ extern const struct Pop_T mysqlpops;
 /* ------------------------------------------------------- Private methods */
 
 
-static MYSQL *doConnect(URL_T url, char **error) {
+static MYSQL *_doConnect(URL_T url, char **error) {
 #define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
         int port;
         my_bool yes = 1;
@@ -148,7 +148,7 @@ error:
 }
 
 
-static int prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
+static int _prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
         if (! (*stmt = mysql_stmt_init(C->db))) {
                 DEBUG("mysql_stmt_init -- Out of memory\n");
                 C->lastError = CR_OUT_OF_MEMORY;
@@ -176,7 +176,7 @@ T MysqlConnection_new(URL_T url, char **error) {
         MYSQL *db;
 	assert(url);
         assert(error);
-        if (! (db = doConnect(url, error)))
+        if (! (db = _doConnect(url, error)))
                 return NULL;
 	NEW(C);
         C->db = db;
@@ -276,7 +276,7 @@ ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap) {
         va_copy(ap_copy, ap);
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
-        if (prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt)) {
+        if (_prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt)) {
 #if MYSQL_VERSION_ID >= 50002
                 unsigned long cursor = CURSOR_TYPE_READ_ONLY;
                 mysql_stmt_attr_set(stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
@@ -299,7 +299,7 @@ PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_li
         va_copy(ap_copy, ap);
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
-        if (prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt)) {
+        if (_prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt)) {
                 int parameterCount = (int)mysql_stmt_param_count(stmt);
 		return PreparedStatement_new(MysqlPreparedStatement_new(stmt, C->maxRows, parameterCount), (Pop_T)&mysqlpops, parameterCount);
         }

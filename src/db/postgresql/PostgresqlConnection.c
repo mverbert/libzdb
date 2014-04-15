@@ -86,7 +86,7 @@ extern const struct Pop_T postgresqlpops;
 /* ------------------------------------------------------- Private methods */
 
 
-static int doConnect(T C, char **error) {
+static int _doConnect(T C, char **error) {
 #define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
         /* User */
         if (URL_getUser(C->url))
@@ -158,7 +158,7 @@ T PostgresqlConnection_new(URL_T url, char **error) {
         C->url = url;
         C->sb = StringBuffer_create(STRLEN);
         C->timeout = SQL_DEFAULT_TIMEOUT;
-        if (! doConnect(C, error))
+        if (! _doConnect(C, error))
                 PostgresqlConnection_free(&C);
 	return C;
 }

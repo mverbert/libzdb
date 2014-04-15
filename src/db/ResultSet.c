@@ -51,10 +51,9 @@ struct ResultSet_S {
 /* ------------------------------------------------------- Private methods */
 
 
-static inline int getIndex(T R, const char *name) {
-        int i;
+static inline int _getIndex(T R, const char *name) {
         int columns = ResultSet_getColumnCount(R);
-        for (i = 1; i <= columns; i++)
+        for (int i = 1; i <= columns; i++)
                 if (Str_isByteEqual(name, ResultSet_getColumnName(R, i)))
                         return i;
         THROW(SQLException, "Invalid column name '%s'", name ? name : "null");
@@ -137,7 +136,7 @@ const char *ResultSet_getString(T R, int columnIndex) {
 
 const char *ResultSet_getStringByName(T R, const char *columnName) {
 	assert(R);
-	return ResultSet_getString(R, getIndex(R, columnName));
+	return ResultSet_getString(R, _getIndex(R, columnName));
 }
 
 
@@ -150,7 +149,7 @@ int ResultSet_getInt(T R, int columnIndex) {
 
 int ResultSet_getIntByName(T R, const char *columnName) {
 	assert(R);
-	return ResultSet_getInt(R, getIndex(R, columnName));
+	return ResultSet_getInt(R, _getIndex(R, columnName));
 }
 
 
@@ -163,7 +162,7 @@ long long ResultSet_getLLong(T R, int columnIndex) {
 
 long long ResultSet_getLLongByName(T R, const char *columnName) {
 	assert(R);
-	return ResultSet_getLLong(R, getIndex(R, columnName));
+	return ResultSet_getLLong(R, _getIndex(R, columnName));
 }
 
 
@@ -176,7 +175,7 @@ double ResultSet_getDouble(T R, int columnIndex) {
 
 double ResultSet_getDoubleByName(T R, const char *columnName) {
 	assert(R);
-	return ResultSet_getDouble(R, getIndex(R, columnName));
+	return ResultSet_getDouble(R, _getIndex(R, columnName));
 }
 
 
@@ -191,7 +190,7 @@ const void *ResultSet_getBlob(T R, int columnIndex, int *size) {
 
 const void *ResultSet_getBlobByName(T R, const char *columnName, int *size) {
 	assert(R);
-	return ResultSet_getBlob(R, getIndex(R, columnName), size);
+	return ResultSet_getBlob(R, _getIndex(R, columnName), size);
 }
 
 
@@ -214,7 +213,7 @@ time_t ResultSet_getTimestamp(T R, int columnIndex) {
 
 time_t ResultSet_getTimestampByName(T R, const char *columnName) {
         assert(R);
-        return ResultSet_getTimestamp(R, getIndex(R, columnName));
+        return ResultSet_getTimestamp(R, _getIndex(R, columnName));
 }
 
 
@@ -234,6 +233,6 @@ struct tm ResultSet_getDateTime(T R, int columnIndex) {
 
 struct tm ResultSet_getDateTimeByName(T R, const char *columnName) {
         assert(R);
-        return ResultSet_getDateTime(R, getIndex(R, columnName));
+        return ResultSet_getDateTime(R, _getIndex(R, columnName));
 }
 
