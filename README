@@ -22,8 +22,8 @@
    You will need a C99 compiler installed to build the library. The 
    GNU C compiler (GCC) from the Free Software Foundation (FSF) is
    recommended. In addition, your PATH must contain basic build tools
-   such as make and flex and database configuration scripts for MySQL
-   and PostgreSQL, that is, mysql_config and pg_config respectively. 
+   such as make and database configuration scripts for MySQL and 
+   PostgreSQL, that is, mysql_config and pg_config respectively.
    
  * Database systems
  
@@ -57,7 +57,7 @@
  the library.
   
  Note that unit tests cannot be built if the --enable-protected
- configure switch where used. This switch is used to package protect
+ configure switch was used. This switch is used to package protect
  non-API objects in the library. It is strongly recommended to build the
  library with --enable-protected as it will be faster and reduce the risk
  for name symbol interposing
