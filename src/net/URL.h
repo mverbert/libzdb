@@ -224,28 +224,6 @@ char *URL_unescape(char *url);
  */
 char *URL_escape(const char *url);
 
-
-/**
- * <b>Class method</b>, normalize an URL path string. The 
- * <code>path</code> parameter is modified by this method. Examples:
- * <p><table>
- * <tr><td><b>path</b></td><td><b>normalized path</b></td>
- * <tr><td>/foo//</td><td>/foo/</td>
- * <tr><td>/foo/./</td><td>/foo/</td>
- * <tr><td>/foo/../bar</td><td>/bar</td>
- * <tr><td>/foo/../bar/</td><td>/bar/</td>
- * <tr><td>/foo/../bar/../baz</td><td>/baz</td>
- * <tr><td>//foo//./bar</td><td>/foo/bar</td>
- * <tr><td>/../foo</td><td>/foo</td>
- * <tr><td>/a/../b/../../x</td><td>/x</td>
- * <tr><td>/.././../</td><td>/</td>
- * <tr><td>/..</td><td>/</td>
- * </table>
- * @param path The path to normalize
- * @return A pointer to the normalized <code>path</code> string.
- */
-char *URL_normalize(char *path);
-
 // @}
 
 #undef T

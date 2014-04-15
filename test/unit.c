@@ -445,53 +445,7 @@ static void testURL() {
         }
         printf("=> Test7: OK\n\n");
         
-        printf("=> Test8: Normalized url\n");
-        {
-                char path[STRLEN];
-                snprintf(path, STRLEN, "/a/../b/../");
-                printf("\tResult: /a/../b/../ -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/", path));
-                snprintf(path, STRLEN, "/../../a");
-                printf("\tResult: /../../a -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/a", path));
-                snprintf(path, STRLEN, "/foo//");
-                printf("\tResult: /foo// -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/foo/", path));
-                snprintf(path, STRLEN, "//foo/");
-                printf("\tResult: //foo/ -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/foo/", path));
-                snprintf(path, STRLEN, "/foo/./");
-                printf("\tResult: /foo/./ -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/foo/", path));
-                snprintf(path, STRLEN, "/foo/../bar");
-                printf("\tResult: /foo/../bar -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/bar", path));
-                snprintf(path, STRLEN, "/foo/../bar/");
-                printf("\tResult: /foo/../bar/ -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/bar/", path));
-                snprintf(path, STRLEN, "/../bar/../baz");
-                printf("\tResult: /../bar/../baz -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/baz", path));
-                snprintf(path, STRLEN, "//foo//./bar");
-                printf("\tResult: //foo//./bar -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/foo/bar", path));
-                snprintf(path, STRLEN, "/foo/..");
-                printf("\tResult: /foo/.. -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/", path));
-                snprintf(path, STRLEN, "/a/../b/../../a");
-                printf("\tResult: /a/../b/../../a -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/a", path));
-                snprintf(path, STRLEN, "/.././../");
-                printf("\tResult: /.././../ -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/", path));
-                *path = 0;
-                printf("\tResult: \"\" -> %s\n", URL_normalize(path));
-                assert(Str_isEqual("/", path));
-                assert(NULL == URL_normalize(NULL));
-        }
-        printf("=> Test8: OK\n\n");
-        
-        printf("=> Test9: unescape\n");
+        printf("=> Test8: unescape\n");
         {
                 char s9a[] = "";
 		char s9x[] = "http://www.tildeslash.com/%";
@@ -506,9 +460,9 @@ static void testURL() {
                 assert(Str_isEqual(URL_unescape(s9x), "http://www.tildeslash.com/"));
                 assert(Str_isEqual(URL_unescape(s9y), "http://www.tildeslash.com/"));
         }
-        printf("=> Test9: OK\n\n");
+        printf("=> Test8: OK\n\n");
         
-        printf("=> Test10: escape\n");
+        printf("=> Test9: escape\n");
         {
                 char s10[] = "http://www.tildeslash.com/<>#%{}|\\^~[] `";
                 char *rs10 = URL_escape(s10);
@@ -518,9 +472,9 @@ static void testURL() {
                 assert(! URL_escape(NULL));
                 FREE(rs10);
         }
-        printf("=> Test10: OK\n\n");
+        printf("=> Test9: OK\n\n");
         
-        printf("=> Test11: URL parameters,\n\tmysql://localhost:3306/db?"
+        printf("=> Test10: URL parameters,\n\tmysql://localhost:3306/db?"
                "user=root&password=swordfish&charset=utf8\n");
         {
                 int i = 0;
@@ -536,9 +490,9 @@ static void testURL() {
                 assert(i == 3);
                 URL_free(&url);
         }
-        printf("=> Test11: OK\n\n");
+        printf("=> Test10: OK\n\n");
            
-        printf("=> Test12: auto unescape of credentials, path and param values\n");
+        printf("=> Test11: auto unescape of credentials, path and param values\n");
         {
                 url = URL_new("mysql://r%40ot:p%40ssword@localhost/test%20dir?user=r%26ot&password=pass%3Dword");
                 assert(IS(URL_getUser(url), "r@ot"));
@@ -548,9 +502,9 @@ static void testURL() {
                 assert(IS(URL_getParameter(url, "password"), "pass=word"));
                 URL_free(&url);
         }
-        printf("=> Test12: OK\n\n");
+        printf("=> Test11: OK\n\n");
 
-        printf("=> Test13: IPv4 and IPv6 hosts\n");
+        printf("=> Test12: IPv4 and IPv6 hosts\n");
         {
                 // IPv4
                 url = URL_new("mysql://r%40ot:p%40ssword@192.168.2.42:3306/test?user=r%26ot&password=pass%3Dword");
@@ -584,7 +538,7 @@ static void testURL() {
                 assert(IS(URL_toString(url), "mysql://[fe80::1%lo0]/"));
                 URL_free(&url);
         }
-        printf("=> Test13: OK\n\n");
+        printf("=> Test12: OK\n\n");
 
         printf("============> URL Tests: OK\n\n");
 }
