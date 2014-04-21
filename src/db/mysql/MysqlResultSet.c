@@ -48,17 +48,16 @@
 #define MYSQL_OK 0
 
 const struct Rop_T mysqlrops = {
-	"mysql",
-        MysqlResultSet_free,
-        MysqlResultSet_getColumnCount,
-        MysqlResultSet_getColumnName,
-        MysqlResultSet_getColumnSize,
-        MysqlResultSet_next,
-        MysqlResultSet_isnull,
-        MysqlResultSet_getString,
-        MysqlResultSet_getBlob,
-        NULL, // getTimestamp is handled in ResultSet
-        NULL  // getDateTime is handled in ResultSet
+	.name           = "mysql",
+        .free           = MysqlResultSet_free,
+        .getColumnCount = MysqlResultSet_getColumnCount,
+        .getColumnName  = MysqlResultSet_getColumnName,
+        .getColumnSize  = MysqlResultSet_getColumnSize,
+        .next           = MysqlResultSet_next,
+        .isnull         = MysqlResultSet_isnull,
+        .getString      = MysqlResultSet_getString,
+        .getBlob        = MysqlResultSet_getBlob
+        // getTimestamp and getDateTime is handled in ResultSet
 };
 
 typedef struct column_t {

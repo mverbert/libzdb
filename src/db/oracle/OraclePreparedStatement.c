@@ -53,17 +53,17 @@
 
 
 const struct Pop_T oraclepops = {
-        "oracle",
-        OraclePreparedStatement_free,
-        OraclePreparedStatement_setString,
-        OraclePreparedStatement_setInt,
-        OraclePreparedStatement_setLLong,
-        OraclePreparedStatement_setDouble,
-        OraclePreparedStatement_setTimestamp,
-        OraclePreparedStatement_setBlob,
-        OraclePreparedStatement_execute,
-        OraclePreparedStatement_executeQuery,
-        OraclePreparedStatement_rowsChanged
+        .name           = "oracle",
+        .free           = OraclePreparedStatement_free,
+        .setString      = OraclePreparedStatement_setString,
+        .setInt         = OraclePreparedStatement_setInt,
+        .setLLong       = OraclePreparedStatement_setLLong,
+        .setDouble      = OraclePreparedStatement_setDouble,
+        .setTimestamp   = OraclePreparedStatement_setTimestamp,
+        .setBlob        = OraclePreparedStatement_setBlob,
+        .execute        = OraclePreparedStatement_execute,
+        .executeQuery   = OraclePreparedStatement_executeQuery,
+        .rowsChanged    = OraclePreparedStatement_rowsChanged
 };
 typedef struct param_t {
         union {

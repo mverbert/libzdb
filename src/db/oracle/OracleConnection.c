@@ -53,22 +53,22 @@
 /* ----------------------------------------------------------- Definitions */
 
 const struct Cop_T oraclesqlcops = {
-        "oracle",
-        OracleConnection_onstop,
-        OracleConnection_new,
-        OracleConnection_free,
-        OracleConnection_setQueryTimeout,
-        OracleConnection_setMaxRows,
-        OracleConnection_ping,
-        OracleConnection_beginTransaction,
-        OracleConnection_commit,
-        OracleConnection_rollback,
-        OracleConnection_lastRowId,
-        OracleConnection_rowsChanged,
-        OracleConnection_execute,
-        OracleConnection_executeQuery,
-        OracleConnection_prepareStatement,
-        OracleConnection_getLastError
+        .name 		 	= "oracle",
+        .onstop 	 	= OracleConnection_onstop,
+        .new 		 	= OracleConnection_new,
+        .free 		 	= OracleConnection_free,
+        .setQueryTimeout 	= OracleConnection_setQueryTimeout,
+        .setMaxRows 	 	= OracleConnection_setMaxRows,
+        .ping		 	= OracleConnection_ping,
+        .beginTransaction       = OracleConnection_beginTransaction,
+        .commit			= OracleConnection_commit,
+        .rollback		= OracleConnection_rollback,
+        .lastRowId		= OracleConnection_lastRowId,
+        .rowsChanged		= OracleConnection_rowsChanged,
+        .execute		= OracleConnection_execute,
+        .executeQuery		= OracleConnection_executeQuery,
+        .prepareStatement	= OracleConnection_prepareStatement,
+        .getLastError		= OracleConnection_getLastError
 };
 
 #define ERB_SIZE 152

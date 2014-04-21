@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5225ED31187919B8002F13D0 /* OracleConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEC13E716A0002F3C7C /* OracleConnection.c */; };
-		5225ED32187919B8002F13D0 /* OraclePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */; };
-		5225ED33187919B8002F13D0 /* OracleResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF013E716A0002F3C7C /* OracleResultSet.c */; };
-		5225ED3818791AE7002F13D0 /* libclntsh.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D4A0221877B7C10016B6A3 /* libclntsh.dylib */; };
 		52439D8218747B9600EC05B1 /* libpq.5.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52439D8118747B9600EC05B1 /* libpq.5.6.dylib */; };
 		52439D8418747BAD00EC05B1 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52439D8318747BAD00EC05B1 /* libmysqlclient.18.dylib */; };
 		524B1E701543696800158F6E /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
@@ -238,7 +234,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5225ED3818791AE7002F13D0 /* libclntsh.dylib in Frameworks */,
 				52439D8418747BAD00EC05B1 /* libmysqlclient.18.dylib in Frameworks */,
 				52439D8218747B9600EC05B1 /* libpq.5.6.dylib in Frameworks */,
 				529F8EBE1775031E0067C40A /* libsqlite3.dylib in Frameworks */,
@@ -643,9 +638,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5225ED31187919B8002F13D0 /* OracleConnection.c in Sources */,
-				5225ED32187919B8002F13D0 /* OraclePreparedStatement.c in Sources */,
-				5225ED33187919B8002F13D0 /* OracleResultSet.c in Sources */,
 				5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */,
 				5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */,
 				5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */,
@@ -889,16 +881,11 @@
 					$SRCROOT/src/db,
 					/Applications/Postgres.app/Contents/Versions/9.3/include,
 					"/usr/local/mysql/include/**",
-					$SRCROOT/oci/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/mysql/lib,
-					/usr/local/mysql/lib,
-					/usr/local/mysql/lib,
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/9.3/lib",
-					"/usr/local/mysql-5.6.13-osx10.7-x86_64/lib",
-					"$(PROJECT_DIR)/oci/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -931,16 +918,11 @@
 					$SRCROOT/src/db,
 					/Applications/Postgres.app/Contents/Versions/9.3/include,
 					"/usr/local/mysql/include/**",
-					$SRCROOT/oci/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/mysql/lib,
-					/usr/local/mysql/lib,
-					/usr/local/mysql/lib,
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/9.3/lib",
-					"/usr/local/mysql-5.6.13-osx10.7-x86_64/lib",
-					"$(PROJECT_DIR)/oci/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;

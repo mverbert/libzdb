@@ -48,17 +48,17 @@
 #define MYSQL_OK 0
 
 const struct Pop_T mysqlpops = {
-        "mysql",
-        MysqlPreparedStatement_free,
-        MysqlPreparedStatement_setString,
-        MysqlPreparedStatement_setInt,
-        MysqlPreparedStatement_setLLong,
-        MysqlPreparedStatement_setDouble,
-        MysqlPreparedStatement_setTimestamp,
-        MysqlPreparedStatement_setBlob,
-        MysqlPreparedStatement_execute,
-        MysqlPreparedStatement_executeQuery,
-        MysqlPreparedStatement_rowsChanged
+        .name           = "mysql",
+        .free           = MysqlPreparedStatement_free,
+        .setString      = MysqlPreparedStatement_setString,
+        .setInt         = MysqlPreparedStatement_setInt,
+        .setLLong       = MysqlPreparedStatement_setLLong,
+        .setDouble      = MysqlPreparedStatement_setDouble,
+        .setTimestamp   = MysqlPreparedStatement_setTimestamp,
+        .setBlob        = MysqlPreparedStatement_setBlob,
+        .execute        = MysqlPreparedStatement_execute,
+        .executeQuery   = MysqlPreparedStatement_executeQuery,
+        .rowsChanged    = MysqlPreparedStatement_rowsChanged
 };
 
 typedef struct param_t {

@@ -46,17 +46,17 @@
 
 
 const struct Rop_T sqlite3rops = {
-	"sqlite",
-        SQLiteResultSet_free,
-        SQLiteResultSet_getColumnCount,
-        SQLiteResultSet_getColumnName,
-        SQLiteResultSet_getColumnSize,
-        SQLiteResultSet_next,
-        SQLiteResultSet_isnull,
-        SQLiteResultSet_getString,
-        SQLiteResultSet_getBlob,
-        SQLiteResultSet_getTimestamp,
-        SQLiteResultSet_getDateTime
+	.name           = "sqlite",
+        .free           = SQLiteResultSet_free,
+        .getColumnCount = SQLiteResultSet_getColumnCount,
+        .getColumnName  = SQLiteResultSet_getColumnName,
+        .getColumnSize  = SQLiteResultSet_getColumnSize,
+        .next           = SQLiteResultSet_next,
+        .isnull         = SQLiteResultSet_isnull,
+        .getString      = SQLiteResultSet_getString,
+        .getBlob        = SQLiteResultSet_getBlob,
+        .getTimestamp   = SQLiteResultSet_getTimestamp,
+        .getDateTime    = SQLiteResultSet_getDateTime
 };
 
 #define T ResultSetDelegate_T

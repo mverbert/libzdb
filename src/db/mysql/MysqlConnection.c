@@ -54,22 +54,22 @@
 
 
 const struct Cop_T mysqlcops = {
-        "mysql",
-        MysqlConnection_onstop,
-        MysqlConnection_new,
-        MysqlConnection_free,
-        MysqlConnection_setQueryTimeout,
-        MysqlConnection_setMaxRows,
-        MysqlConnection_ping,
-        MysqlConnection_beginTransaction,
-        MysqlConnection_commit,
-        MysqlConnection_rollback,
-        MysqlConnection_lastRowId,
-        MysqlConnection_rowsChanged,
-        MysqlConnection_execute,
-        MysqlConnection_executeQuery,
-        MysqlConnection_prepareStatement,
-        MysqlConnection_getLastError
+        .name 		 	= "mysql",
+        .onstop 	 	= MysqlConnection_onstop,
+        .new 		 	= MysqlConnection_new,
+        .free 		 	= MysqlConnection_free,
+        .setQueryTimeout 	= MysqlConnection_setQueryTimeout,
+        .setMaxRows 	 	= MysqlConnection_setMaxRows,
+        .ping		 	= MysqlConnection_ping,
+        .beginTransaction       = MysqlConnection_beginTransaction,
+        .commit			= MysqlConnection_commit,
+        .rollback		= MysqlConnection_rollback,
+        .lastRowId		= MysqlConnection_lastRowId,
+        .rowsChanged		= MysqlConnection_rowsChanged,
+        .execute		= MysqlConnection_execute,
+        .executeQuery		= MysqlConnection_executeQuery,
+        .prepareStatement	= MysqlConnection_prepareStatement,
+        .getLastError		= MysqlConnection_getLastError
 };
 
 #define T ConnectionDelegate_T
