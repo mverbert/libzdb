@@ -52,15 +52,15 @@
 
 
 const struct Rop_T oraclerops = {
-	.name           =  "oracle",
-        .free           =  OracleResultSet_free,
-        .getColumnCount =  OracleResultSet_getColumnCount,
-        .getColumnName  =  OracleResultSet_getColumnName,
-        .getColumnSize  =  OracleResultSet_getColumnSize,
-        .next           =  OracleResultSet_next,
-        .isnull         =  OracleResultSet_isnull,
-        .getString      =  OracleResultSet_getString,
-        .getBlob        =  OracleResultSet_getBlob
+	.name           = "oracle",
+        .free           = OracleResultSet_free,
+        .getColumnCount = OracleResultSet_getColumnCount,
+        .getColumnName  = OracleResultSet_getColumnName,
+        .getColumnSize  = OracleResultSet_getColumnSize,
+        .next           = OracleResultSet_next,
+        .isnull         = OracleResultSet_isnull,
+        .getString      = OracleResultSet_getString,
+        .getBlob        = OracleResultSet_getBlob
         // getTimestamp and getDateTime is handled in ResultSet
 };
 typedef struct column_t {
