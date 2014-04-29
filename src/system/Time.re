@@ -157,7 +157,8 @@ time_t Time_toTimestamp(const char *s) {
                 struct tm t = {};
                 if (Time_toDateTime(s, &t)) {
                         t.tm_year -= 1900;
-                        return timegm(&t);
+                        time_t offset = t.TM_GMTOFF;
+                        return timegm(&t) - offset;
                 }
         }
 	return 0;
@@ -191,7 +192,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                  dd     = [0-9][0-9];
                  yyyy   = [0-9]{4};
                  tz     = [-+]dd(.? dd)?;
-                 frac   = [.][0-9]+;
+                 frac   = [.,][0-9]+;
                  
                  yyyy x dd x dd
                  { // Date: YYYY-MM-DD
@@ -229,9 +230,9 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                  { // Timezone: +-HH:MM, +-HH or +-HHMM is offset from UTC in seconds
                         if (has_time) { // Only set timezone if time has been seen
                                 tm.TM_GMTOFF = _a2i(token + 1, 2) * 3600;
-                                if (token[3] >= '0' && token[3] <= '9')
+                                if (isdigit(token[3]))
                                         tm.TM_GMTOFF += _a2i(token + 3, 2) * 60;
-                                else if (token[4] >= '0' && token[4] <= '9')
+                                else if (isdigit(token[4]))
                                         tm.TM_GMTOFF += _a2i(token + 4, 2) * 60;
                                 if (token[0] == '-')
                                         tm.TM_GMTOFF *= -1;

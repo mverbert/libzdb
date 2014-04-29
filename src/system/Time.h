@@ -43,8 +43,13 @@
 
 /**
  * Returns a Unix timestamp representation of the parsed string in the
- * UTC timezone. I.e. any timezone information in the string is ignored.
- * @param s The Date String to parse. Time is expected to be in UTC
+ * GMT timezone. If the given string contains timezone offset the time
+ * is expected to be in local time and the offset is added to the returned
+ * timestamp to make the time UTC. If the string does not contain timezone
+ * information, the time is expected and assumed to be in the GTM timezone, 
+ * i.e. in UTC.
+ * @param s The Date String to parse. Time is expected to be in UTC, but
+ * local time with timezone information is also allowed.
  * @return A UTC time representation of <code>s</code> or 0 if
  * <code>s</code> is NULL
  * @exception SQLException If the parameter value cannot be converted

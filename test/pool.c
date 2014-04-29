@@ -661,11 +661,12 @@ static void testPool(const char *testURL) {
                         assert(timestampAsTm.tm_sec == 58);
                         assert(timestampAsTm.TM_GMTOFF == 0);
                         // Result
-                        printf("\tResult: Date: %s, Time: %s, DateTime: %s, Timestamp: %s\n",
+                        printf("\tDate: %s, Time: %s, DateTime: %s\n\tTimestamp as numeric: %ld, Timestamp as string: %s\n",
                                ResultSet_getString(r, 1),
                                ResultSet_getString(r, 2),
                                ResultSet_getString(r, 3),
-                               ResultSet_getString(r, 4)); // SQLite will show unix time, others will show a time string
+                               ResultSet_getTimestamp(r, 4),
+                               ResultSet_getString(r, 4)); // SQLite will show both as numeric
                 }
                 Connection_execute(con, "drop table zild_t;");
                 Connection_close(con);

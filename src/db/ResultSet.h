@@ -390,8 +390,8 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
 
 /**
  * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a Unix timestamp. The returned value is expected to be
- * in the UTC timezone and represent seconds since the <strong>epoch</strong>
+ * ResultSet object as a Unix timestamp. The returned value is in Coordinated
+ * Universal Time (UTC) and represent seconds since the <strong>epoch</strong>
  * (January 1, 1970, 00:00:00 GMT).
  *
  * Even though the underlying database might support timestamp ranges before
@@ -407,7 +407,7 @@ const void *ResultSet_getBlobByName(T R, const char *columnName, int *size);
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @return The column value as seconds since the epoch in the 
- * <i class="textinfo">UTC timezone</i>. If the value is SQL NULL, the
+ * <i class="textinfo">GMT timezone</i>. If the value is SQL NULL, the
  * value returned is 0, i.e. January 1, 1970, 00:00:00 GMT
  * @exception SQLException If a database access error occurs, if 
  * <code>columnIndex</code> is outside the range [1..ResultSet_getColumnCount()]
@@ -419,8 +419,8 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
 
 /**
  * Retrieves the value of the designated column in the current row of this
- * ResultSet object as a Unix timestamp. The returned value is expected to be
- * in the UTC timezone and represent seconds since the <strong>epoch</strong>
+ * ResultSet object as a Unix timestamp. The returned value is in Coordinated
+ * Universal Time (UTC) and represent seconds since the <strong>epoch</strong>
  * (January 1, 1970, 00:00:00 GMT).
  *
  * Even though the underlying database might support timestamp ranges before
@@ -436,7 +436,7 @@ time_t ResultSet_getTimestamp(T R, int columnIndex);
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
  * @return The column value as seconds since the epoch in the
- * <i class="textinfo">UTC timezone</i>. If the value is SQL NULL, the
+ * <i class="textinfo">GMT timezone</i>. If the value is SQL NULL, the
  * value returned is 0, i.e. January 1, 1970, 00:00:00 GMT
  * @exception SQLException If a database access error occurs, if 
  * <code>columnName</code> is not found or if the column value cannot be 
@@ -454,8 +454,8 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName);
  * for usage with mktime(3) where, tm_hour = hours since midnight [0-23],
  * tm_min = minutes after the hour [0-59], tm_sec = seconds after the minute
  * [0-60], tm_mday = day of the month [1-31] and tm_mon = months since January
- * <b class="textnote">[0-11]</b>. tm_gmtoff is set to the offset from UTC in
- * seconds if the column value contains timezone information, otherwise 
+ * <b class="textnote">[0-11]</b>. If the column value contains timezone 
+ * information, tm_gmtoff is set to the offset from UTC in seconds, otherwise
  * tm_gmtoff is set to 0. <i>On systems without tm_gmtoff, (Solaris), the 
  * member, tm_wday is set to gmt offset instead as this property is ignored 
  * by mktime on input.</i> The exception to the above is <b class="textnote">tm_year</b> 
@@ -485,8 +485,8 @@ struct tm ResultSet_getDateTime(T R, int columnIndex);
  * for usage with mktime(3) where, tm_hour = hours since midnight [0-23],
  * tm_min = minutes after the hour [0-59], tm_sec = seconds after the minute
  * [0-60], tm_mday = day of the month [1-31] and tm_mon = months since January
- * <b class="textnote">[0-11]</b>. tm_gmtoff is set to the offset from UTC in
- * seconds if the column value contains timezone information, otherwise
+ * <b class="textnote">[0-11]</b>. If the column value contains timezone
+ * information, tm_gmtoff is set to the offset from UTC in seconds, otherwise
  * tm_gmtoff is set to 0. <i>On systems without tm_gmtoff, (Solaris), the
  * member, tm_wday is set to gmt offset instead as this property is ignored
  * by mktime on input.</i> The exception to the above is <b class="textnote">tm_year</b>

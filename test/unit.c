@@ -283,20 +283,23 @@ static void testTime() {
         
         printf("=> Test5: Time_toTimestamp\n");
         {
-                // Time, fraction of second is ignored
+                // Time, fraction of second is ignored. No timezone in string means UTC
                 time_t t = Time_toTimestamp("2013-12-15 00:12:58.123456");
                 assert(t == 1387066378);
-                // TimeZone east, ignored. String is parsed as UTC
-                t = Time_toTimestamp("Tokyo timezone: 2013-12-15 00:12:58+09:00");
+                // TimeZone east
+                t = Time_toTimestamp("Tokyo timezone: 2013-12-15 09:12:58+09:00");
                 assert(t == 1387066378);
-                // TimeZone west, ignored. String is parsed as UTC
-                t = Time_toTimestamp("New York timezone: 2013-12-15 00:12:58-05:00");
+                // TimeZone west
+                t = Time_toTimestamp("New York timezone: 2013-12-14 19:12:58-05:00");
+                assert(t == 1387066378);
+                // TimeZone west with hour and minute offset
+                t = Time_toTimestamp("Nepal timezone: 2013-12-15 05:57:58+05:45");
                 assert(t == 1387066378);
                 // TimeZone Zulu
                 t = Time_toTimestamp("Grenwich timezone: 2013-12-15 00:12:58Z");
                 assert(t == 1387066378);
                 // Compressed
-                t = Time_toTimestamp("20131215001258-0500");
+                t = Time_toTimestamp("20131214191258-0500");
                 assert(t == 1387066378);
                 // Invalid timestamp string
                 TRY {
