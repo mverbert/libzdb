@@ -292,7 +292,7 @@ static void testTime() {
                 // TimeZone west
                 t = Time_toTimestamp("New York timezone: 2013-12-14 19:12:58-05:00");
                 assert(t == 1387066378);
-                // TimeZone west with hour and minute offset
+                // TimeZone east with hour and minute offset
                 t = Time_toTimestamp("Nepal timezone: 2013-12-15 05:57:58+05:45");
                 assert(t == 1387066378);
                 // TimeZone Zulu
