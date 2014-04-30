@@ -50,22 +50,22 @@
 
 
 const struct Cop_T sqlite3cops = {
-        "sqlite",
-        SQLiteConnection_onstop,
-        SQLiteConnection_new,
-        SQLiteConnection_free,
-        SQLiteConnection_setQueryTimeout,
-        SQLiteConnection_setMaxRows,
-        SQLiteConnection_ping,
-        SQLiteConnection_beginTransaction,
-        SQLiteConnection_commit,
-        SQLiteConnection_rollback,
-        SQLiteConnection_lastRowId,
-        SQLiteConnection_rowsChanged,
-        SQLiteConnection_execute,
-        SQLiteConnection_executeQuery,
-        SQLiteConnection_prepareStatement,
-        SQLiteConnection_getLastError
+        .name 		 	= "sqlite",
+        .onstop 	 	= SQLiteConnection_onstop,
+        .new 		 	= SQLiteConnection_new,
+        .free 		 	= SQLiteConnection_free,
+        .setQueryTimeout 	= SQLiteConnection_setQueryTimeout,
+        .setMaxRows 	 	= SQLiteConnection_setMaxRows,
+        .ping		 	= SQLiteConnection_ping,
+        .beginTransaction	= SQLiteConnection_beginTransaction,
+        .commit			= SQLiteConnection_commit,
+        .rollback		= SQLiteConnection_rollback,
+        .lastRowId		= SQLiteConnection_lastRowId,
+        .rowsChanged		= SQLiteConnection_rowsChanged,
+        .execute		= SQLiteConnection_execute,
+        .executeQuery		= SQLiteConnection_executeQuery,
+        .prepareStatement	= SQLiteConnection_prepareStatement,
+        .getLastError		= SQLiteConnection_getLastError
 };
 
 #define T ConnectionDelegate_T

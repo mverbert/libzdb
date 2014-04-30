@@ -50,22 +50,22 @@
 
 
 const struct Cop_T postgresqlcops = {
-        "postgresql",
-        PostgresqlConnection_onstop,
-        PostgresqlConnection_new,
-        PostgresqlConnection_free,
-        PostgresqlConnection_setQueryTimeout,
-        PostgresqlConnection_setMaxRows,
-        PostgresqlConnection_ping,
-        PostgresqlConnection_beginTransaction,
-        PostgresqlConnection_commit,
-        PostgresqlConnection_rollback,
-        PostgresqlConnection_lastRowId,
-        PostgresqlConnection_rowsChanged,
-        PostgresqlConnection_execute,
-        PostgresqlConnection_executeQuery,
-        PostgresqlConnection_prepareStatement,
-        PostgresqlConnection_getLastError
+        .name 		 	= "postgresql",
+        .onstop 	 	= PostgresqlConnection_onstop,
+        .new 		 	= PostgresqlConnection_new,
+        .free 		 	= PostgresqlConnection_free,
+        .setQueryTimeout 	= PostgresqlConnection_setQueryTimeout,
+        .setMaxRows 	 	= PostgresqlConnection_setMaxRows,
+        .ping		 	= PostgresqlConnection_ping,
+        .beginTransaction	= PostgresqlConnection_beginTransaction,
+        .commit			= PostgresqlConnection_commit,
+        .rollback		= PostgresqlConnection_rollback,
+        .lastRowId		= PostgresqlConnection_lastRowId,
+        .rowsChanged		= PostgresqlConnection_rowsChanged,
+        .execute		= PostgresqlConnection_execute,
+        .executeQuery		= PostgresqlConnection_executeQuery,
+        .prepareStatement	= PostgresqlConnection_prepareStatement,
+        .getLastError		= PostgresqlConnection_getLastError
 };
 
 #define T ConnectionDelegate_T

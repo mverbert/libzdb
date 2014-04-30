@@ -49,17 +49,17 @@
 
 
 const struct Pop_T postgresqlpops = {
-        "postgresql",
-        PostgresqlPreparedStatement_free,
-        PostgresqlPreparedStatement_setString,
-        PostgresqlPreparedStatement_setInt,
-        PostgresqlPreparedStatement_setLLong,
-        PostgresqlPreparedStatement_setDouble,
-        PostgresqlPreparedStatement_setTimestamp,
-        PostgresqlPreparedStatement_setBlob,
-        PostgresqlPreparedStatement_execute,
-        PostgresqlPreparedStatement_executeQuery,
-        PostgresqlPreparedStatement_rowsChanged
+        .name           = "postgresql",
+        .free           = PostgresqlPreparedStatement_free,
+        .setString      = PostgresqlPreparedStatement_setString,
+        .setInt         = PostgresqlPreparedStatement_setInt,
+        .setLLong       = PostgresqlPreparedStatement_setLLong,
+        .setDouble      = PostgresqlPreparedStatement_setDouble,
+        .setTimestamp   = PostgresqlPreparedStatement_setTimestamp,
+        .setBlob        = PostgresqlPreparedStatement_setBlob,
+        .execute        = PostgresqlPreparedStatement_execute,
+        .executeQuery   = PostgresqlPreparedStatement_executeQuery,
+        .rowsChanged    = PostgresqlPreparedStatement_rowsChanged
 };
 
 typedef struct param_t {

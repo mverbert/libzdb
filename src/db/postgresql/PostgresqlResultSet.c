@@ -47,17 +47,16 @@
 
 
 const struct Rop_T postgresqlrops = {
-        "postgresql",
-        PostgresqlResultSet_free,
-        PostgresqlResultSet_getColumnCount,
-        PostgresqlResultSet_getColumnName,
-        PostgresqlResultSet_getColumnSize,
-        PostgresqlResultSet_next,
-        PostgresqlResultSet_isnull,
-        PostgresqlResultSet_getString,
-        PostgresqlResultSet_getBlob,
-        NULL, // getTimestamp is handled in ResultSet
-        NULL  // getDateTime is handled in ResultSet
+	.name           = "postgresql",
+        .free           = PostgresqlResultSet_free,
+        .getColumnCount = PostgresqlResultSet_getColumnCount,
+        .getColumnName  = PostgresqlResultSet_getColumnName,
+        .getColumnSize  = PostgresqlResultSet_getColumnSize,
+        .next           = PostgresqlResultSet_next,
+        .isnull         = PostgresqlResultSet_isnull,
+        .getString      = PostgresqlResultSet_getString,
+        .getBlob        = PostgresqlResultSet_getBlob
+        // getTimestamp and getDateTime is handled in ResultSet
 };
 
 #define T ResultSetDelegate_T

@@ -49,17 +49,17 @@
 
 
 const struct Pop_T sqlite3pops = {
-        "sqlite",
-        SQLitePreparedStatement_free,
-        SQLitePreparedStatement_setString,
-        SQLitePreparedStatement_setInt,
-        SQLitePreparedStatement_setLLong,
-        SQLitePreparedStatement_setDouble,
-        SQLitePreparedStatement_setTimestamp,
-        SQLitePreparedStatement_setBlob,
-        SQLitePreparedStatement_execute,
-        SQLitePreparedStatement_executeQuery,
-        SQLitePreparedStatement_rowsChanged
+        .name           = "sqlite",
+        .free           = SQLitePreparedStatement_free,
+        .setString      = SQLitePreparedStatement_setString,
+        .setInt         = SQLitePreparedStatement_setInt,
+        .setLLong       = SQLitePreparedStatement_setLLong,
+        .setDouble      = SQLitePreparedStatement_setDouble,
+        .setTimestamp   = SQLitePreparedStatement_setTimestamp,
+        .setBlob        = SQLitePreparedStatement_setBlob,
+        .execute        = SQLitePreparedStatement_execute,
+        .executeQuery   = SQLitePreparedStatement_executeQuery,
+        .rowsChanged    = SQLitePreparedStatement_rowsChanged
 };
 
 #define T PreparedStatementDelegate_T
