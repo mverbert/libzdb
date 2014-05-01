@@ -86,7 +86,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t);
 /**
  * Returns an ISO-8601 date string for the given UTC time. (The 'T' separating
  * date and time is omitted) The returned string represent the specified time 
- * in UTC timezone. The submitted result buffer must be large enough to hold at
+ * in GMT timezone. The submitted result buffer must be large enough to hold at
  * least 20 bytes. Example:
  * <pre>
  *  Time_toString(1386951482, buf) -> "2013-12-13 16:18:02"

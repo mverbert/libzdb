@@ -183,7 +183,7 @@ static void testTime() {
                 char *t = Time_toString(1387010338, (char[20]){});
                 assert(Str_isEqual(t, "2013-12-14 08:38:58"));
                 printf("\tResult: %s\n", t);
-                // Assert time is converted in UTC timezone
+                // Assert time is converted to UTC
                 Time_toString(0, t);
                 assert(Str_isEqual(t, "1970-01-01 00:00:00"));
                 printf("\tResult: %s\n", t);
