@@ -20,9 +20,9 @@ int main(void) {
                         "Ichigo Kurosaki", "Rukia Kuchiki", "Orihime Inoue",  "Yasutora \"Chad\" Sado", 
                         "Kisuke Urahara", "Ury\u016b Ishida", "Renji Abarai", 0
                 };
-                for (int i = 0; bleach[i]; i++) {
+                for (time_t i = 0, t = time(0); bleach[i]; i++) {
                         PreparedStatement_setString(p, 1, bleach[i]);
-                        PreparedStatement_setTimestamp(p, 2, time(NULL) + i);
+                        PreparedStatement_setTimestamp(p, 2, t + i);
                         PreparedStatement_execute(p);
                 }
                 ResultSet_T r = Connection_executeQuery(con,
