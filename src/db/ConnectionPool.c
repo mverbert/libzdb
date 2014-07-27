@@ -158,6 +158,7 @@ T ConnectionPool_new(URL_T url) {
 #endif
 	NEW(P);
         P->url = url;
+        Sem_init(P->alarm);
 	Mutex_init(P->mutex);
 	P->maxConnections = SQL_DEFAULT_MAX_CONNECTIONS;
         P->pool = Vector_new(SQL_DEFAULT_MAX_CONNECTIONS);
@@ -175,6 +176,7 @@ void ConnectionPool_free(T *P) {
                 ConnectionPool_stop((*P));
         Vector_free(&pool);
 	Mutex_destroy((*P)->mutex);
+        Sem_destroy((*P)->alarm);
         FREE((*P)->error);
 	FREE(*P);
 }
@@ -284,7 +286,6 @@ void ConnectionPool_start(T P) {
                         P->filled = _fillPool(P);
                         if (P->filled && P->doSweep) {
                                 DEBUG("Starting Database reaper thread\n");
-                                Sem_init(P->alarm);
                                 Thread_create(P->reaper, _doSweep, P);
                         }
                 }
@@ -313,7 +314,6 @@ void ConnectionPool_stop(T P) {
                 DEBUG("Stopping Database reaper thread...\n");
                 Sem_signal(P->alarm);
                 Thread_join(P->reaper);
-                Sem_destroy(P->alarm);
         }
 }
 
