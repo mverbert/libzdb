@@ -47,7 +47,11 @@
  * is expected to be in local time and the offset is added to the returned
  * timestamp to make the time UTC. If the string does not contain timezone
  * information, the time is expected and assumed to be in the GTM timezone, 
- * i.e. in UTC.
+ * i.e. in UTC. Example:
+ * <pre>
+ *  Time_toTimestamp("2013-12-15 00:12:58Z") -> 1387066378
+ *  Time_toTimestamp("2013-12-14 19:12:58-05:00") -> 1387066378
+ * </pre>
  * @param s The Date String to parse. Time is expected to be in UTC, but
  * local time with timezone information is also allowed.
  * @return A UTC time representation of <code>s</code> or 0 if
@@ -102,7 +106,7 @@ char *Time_toString(time_t time, char result[20]);
 /**
  * Returns the time since the Epoch (00:00:00 UTC, January 1, 1970),
  * measured in seconds. 
- * @return A time_t representing the current local time since the epoch
+ * @return A time_t representing the system's notion of the current GMT time
  * @exception AssertException If time could not be obtained
  */
 time_t Time_now(void);
@@ -111,8 +115,8 @@ time_t Time_now(void);
 /**
  * Returns the time since the Epoch (00:00:00 UTC, January 1, 1970),
  * measured in milliseconds. 
- * @return A 64 bits long representing the current local time since 
- * the epoch in milliseconds
+ * @return A 64 bits long representing the system's notion of the 
+ * current GMT time in milliseconds
  * @exception AssertException If time could not be obtained
  */
 long long Time_milli(void);
