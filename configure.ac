@@ -302,18 +302,18 @@ AC_ARG_WITH([sqlite],
                         [
                                 svd_LDFLAGS=$LDFLAGS
                                 svd_CPPFLAGS=$CPPFLAGS
-                                LDFLAGS="-L$with_sqlite/lib $LDFLAGS -lsqlite3"
+                                LDFLAGS="-L$with_sqlite/lib $LDFLAGS"
                                 CPPFLAGS="-I$with_sqlite/include $CPPFLAGS"
                                 AC_SEARCH_LIBS([sqlite3_open], [sqlite3],
                                 [
                                         DBCPPFLAGS="$DBCPPFLAGS -I$with_sqlite/include"
                                         DBLDFLAGS="$DBLDFLAGS -L$with_sqlite/lib/ -lsqlite3"
-                                ],[sqlite="no"])
+                                ],[sqlite="no"],[-ldl])
                                 LDFLAGS=$svd_LDFLAGS
                                 CPPFLAGS=$svd_CPPFLAGS
    
                         ],
-                        AC_SEARCH_LIBS([sqlite3_open], [sqlite3], [], [sqlite="no"]))
+                        AC_SEARCH_LIBS([sqlite3_open], [sqlite3], [], [sqlite="no"], [-ldl]))
                 fi
         ], 
         [
