@@ -218,8 +218,8 @@ int StringBuffer_prepare4oracle(T S) {
 
 T StringBuffer_trim(T S) {
         assert(S);
-        // Right trim and remove trailing semicolon
-        while (S->used && ((S->buffer[S->used - 1] == ';') || isspace(S->buffer[S->used - 1]))) 
+        // Right trim
+        while (S->used && isspace(S->buffer[S->used - 1]))
                 S->buffer[--S->used] = 0;
         // Left trim
         if (isspace(*S->buffer)) {

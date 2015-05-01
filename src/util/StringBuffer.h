@@ -166,10 +166,10 @@ int StringBuffer_prepare4oracle(T S);
 
 
 /**
- * Remove (any) leading and trailing white space and semicolon [ \\t\\r\\n;]. Example
+ * Remove (any) leading and trailing white space [ \\t\\r\\n]. Example
  * <pre>
- * StringBuffer_T b = StringBuffer_new("\t select a from b; \n"); 
- * StringBuffer_trim(b) -> "select a from b"
+ * StringBuffer_T b = StringBuffer_new("\t select a from b; \n");
+ * StringBuffer_trim(b) -> "select a from b;"
  * </pre>
  * @param S StringBuffer object
  * @return a reference to this StringBuffer
