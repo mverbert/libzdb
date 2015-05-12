@@ -899,6 +899,7 @@
 					"-Wunused",
 					"-Wno-unused-label",
 					"-funsigned-char",
+					"-DDarwin",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = "";
@@ -936,6 +937,7 @@
 					"-Wunused",
 					"-Wno-unused-label",
 					"-funsigned-char",
+					"-DDarwin",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = "";

@@ -408,6 +408,35 @@ if test "x$GCC" = "xyes"; then
         AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
 fi
 
+# ------------------------------------------------------------------------
+# Architecture/OS
+# ------------------------------------------------------------------------
+
+case `uname` in
+Linux*)   
+	AC_DEFINE([LINUX], 1, [Define to 1 if the system is Linux])
+	;;
+FreeBSD*) 
+	AC_DEFINE([FREEBSD], 1, [Define to 1 if the system is FreeBSD])
+	;;
+OpenBSD*) 
+	AC_DEFINE([OPENBSD], 1, [Define to 1 if the system is OpenBSD])
+	;;
+Darwin*)  
+	AC_DEFINE([DARWIN], 1, [Define to 1 if the system is OSX])
+	;;
+SunOS*)   
+	AC_DEFINE([SOLARIS], 1, [Define to 1 if the system is SOLARIS])
+	;;
+NetBSD*)  
+	AC_DEFINE([NETBSD], 1, [Define to 1 if the system is NETBSD])
+	;;
+AIX*) 	  
+	AC_DEFINE([AIX], 1, [Define to 1 if the system is AIX])
+	;;
+esac
+
+
 # ---------------------------------------------------------------------------
 # Outputs
 # ---------------------------------------------------------------------------
