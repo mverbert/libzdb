@@ -867,16 +867,10 @@ static void testStringBuffer() {
                 assert(Str_isEqual(StringBuffer_toString(sb), "select a from b"));
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
-                // Remove last semicolon
-                sb = StringBuffer_new("select * from host;");
-                StringBuffer_trim(sb);
-                assert(Str_isEqual(StringBuffer_toString(sb), "select * from host"));
-                StringBuffer_free(&sb);
-                assert(sb == NULL);
-                // Remove trailing white space and last semicolons
+                // Remove white space
                 sb = StringBuffer_new("\t select a from b; \r\n");
                 StringBuffer_trim(sb);
-                assert(Str_isEqual(StringBuffer_toString(sb), "select a from b"));
+                assert(Str_isEqual(StringBuffer_toString(sb), "select a from b;"));
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
         }
