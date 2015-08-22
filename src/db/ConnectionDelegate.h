@@ -39,8 +39,6 @@ typedef struct T *T;
 
 typedef struct Cop_T {
         const char *name;
-        // Event handler class methods
-        void (*onstop)(void);
         // Methods
 	T (*new)(URL_T url, char **error);
 	void (*free)(T *C);

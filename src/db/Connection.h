@@ -121,13 +121,6 @@ time_t Connection_getLastAccessedTime(T C);
 int Connection_isInTransaction(T C);
 
 
-/**
- * On stop event handler called once by ConnectionPool_stop(). Can be used to 
- * gracefully finalise and release underlying libraries allocated resources.
- * @param pool The parent connection pool
- */
-void Connection_onstop(void *pool);
-
 //>> End Protected methods
 
 /** @name Properties */

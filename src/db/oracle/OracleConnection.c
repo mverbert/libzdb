@@ -54,7 +54,6 @@
 
 const struct Cop_T oraclesqlcops = {
         .name 		 	= "oracle",
-        .onstop 	 	= OracleConnection_onstop,
         .new 		 	= OracleConnection_new,
         .free 		 	= OracleConnection_free,
         .setQueryTimeout 	= OracleConnection_setQueryTimeout,
@@ -405,10 +404,6 @@ const char *OracleConnection_getLastError(T C) {
         return C->erb;
 }
 
-/* Oracle client library finalization */
-void OracleConnection_onstop(void) {
-        // Not needed, OracleConnection_free handle finalization
-}
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

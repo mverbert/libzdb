@@ -128,14 +128,6 @@ static void _freePrepared(T C) {
 #endif
 
 
-/* -------------------------------------------------------- event handlers */
-
-
-void Connection_onstop(void *pool) {
-        (_getOp(URL_getProtocol(ConnectionPool_getURL(pool))))->onstop();
-}
-
-
 /* ----------------------------------------------------- Protected methods */
 
 

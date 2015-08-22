@@ -12,6 +12,11 @@ Version 3.1
 * New: Honor timezone information if provided with date-time column
   values. Previous version assumed date-time information to be in UTC
   (which is the usual case).
+* Fixed: #7 Removed onstop handler which called third-party database
+  libraries shutdown method. This could cause a problem for MySQL and
+  SQLite if more than one Connection Pool was used as the onstop handler
+  was called in ConnectionPool_stop() and thereby would render other
+  live Connection Pools invalid as the underlying library was shutdown.
 
 Version 3.0
 -----------

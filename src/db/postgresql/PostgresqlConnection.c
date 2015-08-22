@@ -51,7 +51,6 @@
 
 const struct Cop_T postgresqlcops = {
         .name 		 	= "postgresql",
-        .onstop 	 	= PostgresqlConnection_onstop,
         .new 		 	= PostgresqlConnection_new,
         .free 		 	= PostgresqlConnection_free,
         .setQueryTimeout 	= PostgresqlConnection_setQueryTimeout,
@@ -291,10 +290,6 @@ const char *PostgresqlConnection_getLastError(T C) {
         return C->res ? PQresultErrorMessage(C->res) : "unknown error";
 }
 
-/* Postgres client library finalization */
-void  PostgresqlConnection_onstop(void) {
-        // Not needed, PostgresqlConnection_free handle finalization
-}
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop

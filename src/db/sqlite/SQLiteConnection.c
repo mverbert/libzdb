@@ -51,7 +51,6 @@
 
 const struct Cop_T sqlite3cops = {
         .name 		 	= "sqlite",
-        .onstop 	 	= SQLiteConnection_onstop,
         .new 		 	= SQLiteConnection_new,
         .free 		 	= SQLiteConnection_free,
         .setQueryTimeout 	= SQLiteConnection_setQueryTimeout,
@@ -301,13 +300,6 @@ const char *SQLiteConnection_getLastError(T C) {
 	return sqlite3_errmsg(C->db);
 }
 
-
-/* Class Method: SQLite3 client library finalization */
-void SQLiteConnection_onstop(void) {
-#if SQLITE_VERSION_NUMBER >= 3006000
-        sqlite3_shutdown();
-#endif
-}
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
