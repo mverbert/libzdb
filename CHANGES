@@ -9,9 +9,12 @@ Version 3.1
   brackets, e.g. mysql://[2001:db8:85a3::8a2e:370:7334]:3306/test
   Requires that linked database libs supports IPv6. MySQL 5.x, 
   Postgres 9.x and Oracle 11.x or later versions should be fine.
-* New: Honor timezone information if provided with date-time column
+* New: Honour timezone information if provided with date-time column
   values. Previous version assumed date-time information to be in UTC
   (which is the usual case).
+* Fixed: Issue #8 do not strip trailing SQL terminator character ';'.
+  Oracle would complain if certain statements did not include the SQL
+  termination character.
 
 Version 3.0
 -----------
