@@ -38,8 +38,6 @@ int SQLiteConnection_execute(T C, const char *sql, va_list ap);
 ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap);
 PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_list ap);
 const char *SQLiteConnection_getLastError(T C);
-/* Event handlers */
-void SQLiteConnection_onstop(void);
 #undef T
 #endif
 

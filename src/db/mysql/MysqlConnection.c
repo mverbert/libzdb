@@ -55,7 +55,6 @@
 
 const struct Cop_T mysqlcops = {
         .name 		 	= "mysql",
-        .onstop 	 	= MysqlConnection_onstop,
         .new 		 	= MysqlConnection_new,
         .free 		 	= MysqlConnection_free,
         .setQueryTimeout 	= MysqlConnection_setQueryTimeout,
@@ -314,14 +313,6 @@ const char *MysqlConnection_getLastError(T C) {
         return StringBuffer_toString(C->sb); // Either the statement itself or a statement error
 }
 
-
-/* Class method: MySQL client library finalization */
-void MysqlConnection_onstop(void) {
-        if (mysql_get_client_version() >= 50003)
-                mysql_library_end();
-        else
-                mysql_server_end();
-}
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
