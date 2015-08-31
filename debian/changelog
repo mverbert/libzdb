@@ -1,3 +1,9 @@
+libzdb (3.1) UNRELEASED; urgency=medium
+
+  * New upsteam release
+
+ -- Matthieu Verbert <matthieu.verbert@aitb.org>  Mon, 31 Aug 2015 21:45:20 +0200
+
 libzdb (3.0) UNRELEASED; urgency=low
 
   * New upsteam release
