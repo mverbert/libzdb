@@ -53,7 +53,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct Cop_T mysqlcops = {
+static const struct Cop_T mysqlcops = {
         .name 		 	= "mysql",
         .new 		 	= MysqlConnection_new,
         .free 		 	= MysqlConnection_free,
@@ -70,6 +70,11 @@ const struct Cop_T mysqlcops = {
         .prepareStatement	= MysqlConnection_prepareStatement,
         .getLastError		= MysqlConnection_getLastError
 };
+
+static void __attribute__ ((constructor (300))) register_mysql() {
+  ConnectionDelegate_register(&mysqlcops);
+}
+
 
 #define T ConnectionDelegate_T
 struct T {

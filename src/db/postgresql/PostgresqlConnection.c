@@ -49,7 +49,7 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct Cop_T postgresqlcops = {
+static const struct Cop_T postgresqlcops = {
         .name 		 	= "postgresql",
         .new 		 	= PostgresqlConnection_new,
         .free 		 	= PostgresqlConnection_free,
@@ -66,6 +66,10 @@ const struct Cop_T postgresqlcops = {
         .prepareStatement	= PostgresqlConnection_prepareStatement,
         .getLastError		= PostgresqlConnection_getLastError
 };
+
+static void __attribute__ ((constructor (300))) register_postgresql() {
+  ConnectionDelegate_register(&postgresqlcops);
+}
 
 #define T ConnectionDelegate_T
 struct T {

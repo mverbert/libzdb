@@ -27,7 +27,9 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <dlfcn.h>
 
+#include "StringBuffer.h"
 #include "URL.h"
 #include "Vector.h"
 #include "system/Time.h"
@@ -48,34 +50,11 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-#ifdef HAVE_LIBMYSQLCLIENT
-extern const struct Cop_T mysqlcops;
-#endif
-#ifdef HAVE_LIBPQ
-extern const struct Cop_T postgresqlcops;
-#endif
-#ifdef HAVE_LIBSQLITE3
-extern const struct Cop_T sqlite3cops;
-#endif
-#ifdef HAVE_ORACLE
-extern const struct Cop_T oraclesqlcops;
-#endif
+static Vector_T cops;
 
-static const struct Cop_T *cops[] = {
-#ifdef HAVE_LIBMYSQLCLIENT
-        &mysqlcops,
-#endif
-#ifdef HAVE_LIBPQ
-        &postgresqlcops,
-#endif
-#ifdef HAVE_LIBSQLITE3
-        &sqlite3cops,
-#endif
-#ifdef HAVE_ORACLE
-        &oraclesqlcops,
-#endif
-        NULL
-};
+static void __attribute__ ((constructor (200))) init_cops() {
+  cops = Vector_new(1);
+}
 
 #define T Connection_T
 struct Connection_S {
@@ -97,10 +76,32 @@ struct Connection_S {
 
 
 static Cop_T _getOp(const char *protocol) {
-        for (int i = 0; cops[i]; i++) 
-                if (Str_startsWith(protocol, cops[i]->name)) 
-                        return (Cop_T)cops[i];
-        return NULL;
+#ifdef HAVE_LIBDL
+  int e = 0;
+  do {
+#endif
+    for (int i = 0; i < Vector_size(cops); i++) {
+      Cop_T op = (Cop_T) Vector_get(cops, i);
+      if (Str_startsWith(protocol, op->name))
+        return op;
+    }
+#ifdef HAVE_LIBDL
+    if (e > 0)
+      break;
+    {
+      StringBuffer_T fn = StringBuffer_new(MODULESDIR "/");
+      StringBuffer_append(fn, "%s", protocol);
+      StringBuffer_append(fn, ".so");
+      void * lib = dlopen(StringBuffer_toString(fn), RTLD_LAZY);
+      StringBuffer_free(&fn);
+      if (lib)
+        e++;
+      else
+        break;
+    }
+  } while (true);
+#endif
+  return NULL;
 }
 
 
@@ -345,5 +346,11 @@ const char *Connection_getLastError(T C) {
 
 int Connection_isSupported(const char *url) {
         return (url ? (_getOp(url) != NULL) : false);
+}
+
+
+
+void ConnectionDelegate_register(Cop_T op) {
+  Vector_push(cops, op);
 }
 
