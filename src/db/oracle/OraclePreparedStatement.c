@@ -24,9 +24,11 @@
  */ 
 
 #include "Config.h"
+#include "Thread.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <math.h>
 
@@ -40,6 +42,7 @@
 #include "OraclePreparedStatement.h"
 #include "ConnectionDelegate.h"
 #include "OracleConnection.h"
+#include "OracleWatchdog.h"
 
 
 /**
@@ -80,6 +83,8 @@ typedef struct param_t {
 #define T PreparedStatementDelegate_T
 struct T {
         int         maxRows;
+        int         timeout;
+        int         countdown;
         ub4         paramCount;
         OCISession* usr;
         OCIStmt*    stmt;
@@ -88,10 +93,18 @@ struct T {
         OCISvcCtx*  svc;
         param_t     params;
         sword       lastError;
+        Thread_T    watchdog;
+        char        running;
         ub4         rowsChanged;
 };
 
 extern const struct Rop_T oraclerops;
+
+
+/* ------------------------------------------------------- Private methods */
+
+
+WATCHDOG(watchdog, T)
 
 
 /* ----------------------------------------------------- Protected methods */
@@ -101,7 +114,7 @@ extern const struct Rop_T oraclerops;
 #pragma GCC visibility push(hidden)
 #endif
 
-T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int max_row) {
+T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int max_row, int timeout) {
         T P;
         assert(stmt);
         assert(env);
@@ -114,6 +127,7 @@ T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIEr
         P->svc  = svc;
         P->usr  = usr; 
         P->maxRows = max_row;
+        P->timeout = timeout;
         P->lastError = OCI_SUCCESS;
         P->rowsChanged = 0;
         /* paramCount */
@@ -122,6 +136,8 @@ T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIEr
                 P->paramCount = 0; 
         if (P->paramCount)
                 P->params = CALLOC(P->paramCount, sizeof(struct param_t));
+        P->running = false;
+        Thread_create(P->watchdog, watchdog, P);
         return P;
 }
 
@@ -133,6 +149,8 @@ void OraclePreparedStatement_free(T *P) {
                 // (*P)->params[i].bind is freed implicitly when the statement handle is deallocated
                 FREE((*P)->params);
         }
+        (*P)->svc = NULL;
+        Thread_join((*P)->watchdog);
         FREE(*P);
 }
 
@@ -236,7 +254,10 @@ void OraclePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int
 void OraclePreparedStatement_execute(T P) {
         assert(P);
         P->rowsChanged = 0;
+        P->countdown = P->timeout;
+        P->running = true;
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 1, 0, NULL, NULL, OCI_DEFAULT);
+        P->running = false;
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
         P->lastError = OCIAttrGet( P->stmt, OCI_HTYPE_STMT, &P->rowsChanged, 0, OCI_ATTR_ROW_COUNT, P->err);
@@ -248,7 +269,10 @@ void OraclePreparedStatement_execute(T P) {
 ResultSet_T OraclePreparedStatement_executeQuery(T P) {
         assert(P);
         P->rowsChanged = 0;
+        P->countdown = P->timeout;
+        P->running = true;
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 0, 0, NULL, NULL, OCI_DEFAULT);
+        P->running = false;
         if (P->lastError == OCI_SUCCESS || P->lastError == OCI_SUCCESS_WITH_INFO)
                 return ResultSet_new(OracleResultSet_new(P->stmt, P->env, P->usr, P->err, P->svc, false, P->maxRows), (Rop_T)&oraclerops);
         THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
