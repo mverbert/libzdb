@@ -15,7 +15,7 @@ RE2CFLAGS       = -b
 FILTERH         = ./tools/bin/filterh
 
 AM_CPPFLAGS     = $(CPPFLAGS) $(DBCPPFLAGS)
-AM_CPPFLAGS     += -Isrc -Isrc/util -Isrc/net -Isrc/db -Isrc/exceptions
+AM_CPPFLAGS     += -Isrc -Isrc/util -Isrc/net -Isrc/db -Isrc/db/oracle -Isrc/exceptions
 
 pkgconfigdir 	= $(libdir)/pkgconfig
 pkgconfig_DATA 	= $(LIBRARY_NAME).pc
@@ -57,7 +57,7 @@ API_INTERFACES  = src/zdb.h src/db/ConnectionPool.h src/db/Connection.h \
 
 nobase_nodist_include_HEADERS = $(patsubst %, $(LIBRARY_NAME)/%, $(notdir $(API_INTERFACES)))
 
-libzdb_la_LDFLAGS = $(DBLDFLAGS) -version-info 11:0:0
+libzdb_la_LDFLAGS = $(DBLDFLAGS) -version-info 11:1:0
 
 BUILT_SOURCES   = $(nobase_nodist_include_HEADERS)
 

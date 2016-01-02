@@ -24,9 +24,11 @@
  */ 
 
 #include "Config.h"
+#include "Thread.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 
 #include <oci.h>
@@ -39,12 +41,11 @@
 #include "OraclePreparedStatement.h"
 #include "ConnectionDelegate.h"
 #include "OracleConnection.h"
+#include "OracleWatchdog.h"
 
 
 /**
  * Implementation of the Connection/Delegate interface for oracle. 
- * 
- * TODO: Query Timeout has no effect as this is not implemented. 
  *
  * @file
  */
@@ -85,9 +86,12 @@ struct T {
         char           erb[ERB_SIZE];
         int            maxRows;
         int            timeout;
+        int            countdown;
         sword          lastError;
         ub4            rowsChanged;
         StringBuffer_T sb;
+        Thread_T       watchdog;
+        char           running;
 };
 
 extern const struct Rop_T oraclerops;
@@ -158,6 +162,9 @@ static int _doConnect(T C, URL_T url, char**  error) {
 }
 
 
+WATCHDOG(watchdog, T)
+
+
 /* ----------------------------------------------------- Protected methods */
 
 
@@ -178,19 +185,25 @@ T OracleConnection_new(URL_T url, char **error) {
                 return NULL;
         }
         C->txnhp = NULL;
+        C->running = false;
+        Thread_create(C->watchdog, watchdog, C);
         return C;
 }
 
 
 void OracleConnection_free(T* C) {
         assert(C && *C);
-        if ((*C)->svc)
+        if ((*C)->svc) {
                 OCISessionEnd((*C)->svc, (*C)->err, (*C)->usr, OCI_DEFAULT);
+                (*C)->svc = NULL;
+        }
         if ((*C)->srv)
                 OCIServerDetach((*C)->srv, (*C)->err, OCI_DEFAULT);
         if ((*C)->env)
                 OCIHandleFree((*C)->env, OCI_HTYPE_ENV);
         StringBuffer_free(&(*C)->sb);
+        if ((*C)->watchdog)
+            Thread_join((*C)->watchdog);
         FREE(*C);
 }
 
@@ -298,7 +311,10 @@ int  OracleConnection_execute(T C, const char *sql, va_list ap) {
                 return false;
         }
         /* Execute */
+        C->countdown = C->timeout;
+        C->running = true;
         C->lastError = OCIStmtExecute(C->svc, stmtp, C->err, 1, 0, NULL, NULL, OCI_DEFAULT);
+        C->running = false;
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
                 ub4 parmcnt = 0;
                 OCIAttrGet(stmtp, OCI_HTYPE_STMT, &parmcnt, NULL, OCI_ATTR_PARSE_ERROR_OFFSET, C->err);
@@ -333,7 +349,10 @@ ResultSet_T OracleConnection_executeQuery(T C, const char *sql, va_list ap) {
                 return NULL;
         }
         /* Execute and create Result Set */
+        C->countdown = C->timeout;
+        C->running = true;
         C->lastError = OCIStmtExecute(C->svc, stmtp, C->err, 0, 0, NULL, NULL, OCI_DEFAULT);    
+        C->running = false;
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
                 ub4 parmcnt = 0;
                 OCIAttrGet(stmtp, OCI_HTYPE_STMT, &parmcnt, NULL, OCI_ATTR_PARSE_ERROR_OFFSET, C->err);
@@ -366,7 +385,7 @@ PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_l
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
-        return PreparedStatement_new(OraclePreparedStatement_new(stmtp, C->env, C->usr, C->err, C->svc, C->maxRows), (Pop_T)&oraclepops, paramCount);
+        return PreparedStatement_new(OraclePreparedStatement_new(stmtp, C->env, C->usr, C->err, C->svc, C->maxRows, C->timeout), (Pop_T)&oraclepops, paramCount);
 }
 
 
