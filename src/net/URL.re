@@ -440,7 +440,7 @@ char *URL_unescape(char *url) {
                         if ((url[x] = url[y]) == '+')
                                 url[x] = ' ';
                         else if (url[x] == '%') {
-                                if (! (url[x + 1] && url[x + 2]))
+                                if (! (url[y + 1] && url[y + 2]))
                                         break;
                                 url[x] = _x2b(url + y + 1);
                                 y += 2;
