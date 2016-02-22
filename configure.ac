@@ -2,7 +2,7 @@
 
 AC_PREREQ([2.53])
 
-AC_INIT([libzdb], [3.1], [bugs-libzdb@tildeslash.com])
+AC_INIT([libzdb], [3.1.1], [bugs-libzdb@tildeslash.com])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
@@ -81,8 +81,8 @@ AC_ARG_ENABLE(optimized,
                 [Build software optimized]),
     [
         if test "x$enableval" = "xyes" ; then
-		CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
-                CFLAGS=`echo $CFLAGS|sed 's/-g//'`
+                CFLAGS=`echo $CFLAGS|sed 's/-g[[^ ]]*//g'`
+                CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
                 CFLAGS="$CFLAGS -O3"
                 OPTIMIZED=1
         else

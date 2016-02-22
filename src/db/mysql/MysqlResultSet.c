@@ -130,8 +130,12 @@ T MysqlResultSet_new(void *stmt, int maxRows, int keep) {
                         R->columns[i].field = mysql_fetch_field_direct(R->meta, i);
                 }
                 if ((R->lastError = mysql_stmt_bind_result(R->stmt, R->bind))) {
-                        DEBUG("Warning: bind error - %s\n", mysql_stmt_error(stmt));
+                        DEBUG("Error: bind - %s\n", mysql_stmt_error(stmt));
                         R->stop = true;
+                }
+                // Store resultset client side, speeds up processing with > 10x at the cost of increased memory usage
+                if ((R->lastError = mysql_stmt_store_result(R->stmt))) {
+                        DEBUG("Warning: store result - %s\n", mysql_stmt_error(stmt));
                 }
         }
 	return R;
@@ -186,9 +190,7 @@ int MysqlResultSet_next(T R) {
                 /* Seems to need a cursor to work */
                 mysql_stmt_reset(R->stmt); 
 #else
-                /* Bhaa! Where's my cancel method? 
-                   Pencil neck mysql developers! */
-                while (mysql_stmt_fetch(R->stmt) == 0); 
+                while (mysql_stmt_fetch(R->stmt) == 0);
 #endif
                 return false;
         }
