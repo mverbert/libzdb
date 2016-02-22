@@ -254,8 +254,10 @@ void OraclePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int
 void OraclePreparedStatement_execute(T P) {
         assert(P);
         P->rowsChanged = 0;
-        P->countdown = P->timeout;
-        P->running = true;
+        if (P->timeout > 0) {
+                P->countdown = P->timeout;
+                P->running = true;
+        }
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 1, 0, NULL, NULL, OCI_DEFAULT);
         P->running = false;
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
@@ -269,8 +271,10 @@ void OraclePreparedStatement_execute(T P) {
 ResultSet_T OraclePreparedStatement_executeQuery(T P) {
         assert(P);
         P->rowsChanged = 0;
-        P->countdown = P->timeout;
-        P->running = true;
+        if (P->timeout > 0) {
+                P->countdown = P->timeout;
+                P->running = true;
+        }
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 0, 0, NULL, NULL, OCI_DEFAULT);
         P->running = false;
         if (P->lastError == OCI_SUCCESS || P->lastError == OCI_SUCCESS_WITH_INFO)
