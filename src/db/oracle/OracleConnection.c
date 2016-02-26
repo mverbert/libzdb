@@ -311,8 +311,10 @@ int  OracleConnection_execute(T C, const char *sql, va_list ap) {
                 return false;
         }
         /* Execute */
-        C->countdown = C->timeout;
-        C->running = true;
+        if (C->timeout > 0) {
+                C->countdown = C->timeout;
+                C->running = true;
+        }
         C->lastError = OCIStmtExecute(C->svc, stmtp, C->err, 1, 0, NULL, NULL, OCI_DEFAULT);
         C->running = false;
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
@@ -349,8 +351,10 @@ ResultSet_T OracleConnection_executeQuery(T C, const char *sql, va_list ap) {
                 return NULL;
         }
         /* Execute and create Result Set */
-        C->countdown = C->timeout;
-        C->running = true;
+        if (C->timeout > 0) {
+                C->countdown = C->timeout;
+                C->running = true;
+        }
         C->lastError = OCIStmtExecute(C->svc, stmtp, C->err, 0, 0, NULL, NULL, OCI_DEFAULT);    
         C->running = false;
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
