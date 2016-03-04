@@ -129,7 +129,7 @@ static int _doConnect(T C, char **error) {
                         ERROR("invalid connect timeout value");
                 END_TRY;
         } else
-                StringBuffer_append(C->sb, "connect_timeout=%d ", SQL_DEFAULT_TCP_TIMEOUT);
+                StringBuffer_append(C->sb, "connect_timeout=%d ", SQL_DEFAULT_TIMEOUT/MSEC_PER_SEC);
         if (URL_getParameter(C->url, "application-name"))
                 StringBuffer_append(C->sb, "application_name='%s' ", URL_getParameter(C->url, "application-name"));
         /* Connect */

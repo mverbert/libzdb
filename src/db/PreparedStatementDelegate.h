@@ -38,6 +38,7 @@ typedef struct T *T;
 
 typedef struct Pop_T {
 	const char *name;
+        T (*new)(void *delegator, void *stmt);
         void (*free)(T *P);
         void (*setString)(T P, int parameterIndex, const char *x);
         void (*setInt)(T P, int parameterIndex, int x);
@@ -48,6 +49,8 @@ typedef struct Pop_T {
         void (*execute)(T P);
         ResultSet_T (*executeQuery)(T P);
         long long (*rowsChanged)(T P);
+        int (*parameterCount)(T P);
+
 } *Pop_T;
 
 /**

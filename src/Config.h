@@ -106,10 +106,9 @@
 
 
 /**
- * Default TCP/IP Connection timeout in seconds, used when connecting to
- * a database server over a TCP/IP connection
+ * Default number of rows to prefetch from the database ResultSet
  */
-#define SQL_DEFAULT_TCP_TIMEOUT 3
+#define SQL_DEFAULT_PREFETCH_ROWS 100
 
 
 /**
@@ -140,18 +139,12 @@
 
 
 /**
- * Boolean truth value
+ * Milliseconds per second
  */
-#define true 1
+#define MSEC_PER_SEC 1000
 
 
 /**
- * Boolean false value
- */
-#define false 0
-
-
-/** 
  * Microseconds per second 
 */
 #define USEC_PER_SEC 1000000
@@ -191,6 +184,20 @@ typedef unsigned char uchar_t;
  * The internal 32 bits integer type
  */
 typedef  unsigned int uint32_t;
+
+
+/**
+ * The internal boolean integer type
+ */
+#ifndef HAVE_BOOLEAN_T
+typedef enum {
+        false = 0,
+        true
+} boolean_t;
+#else
+#define false 0
+#define true  1
+#endif
 
 
 /* -------------------------------------------------------------- Globals  */

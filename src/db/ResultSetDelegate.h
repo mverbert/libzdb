@@ -39,6 +39,7 @@ typedef struct T *T;
 
 typedef struct Rop_T {
         const char *name;
+        T (*new)(void *delegator, void *stmt, int keep);
         void (*free)(T *R);
         int (*getColumnCount)(T R);
         const char *(*getColumnName)(T R, int columnIndex);

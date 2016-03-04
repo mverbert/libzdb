@@ -82,8 +82,9 @@ struct Connection_S {
         Cop_T op;
         URL_T url;
 	int maxRows;
-	int timeout;
+        int fetchSize;
 	int isAvailable;
+        int queryTimeout;
         Vector_T prepared;
 	int isInTransaction;
         time_t lastAccessedTime;
@@ -110,7 +111,7 @@ static int _setDelegate(T C, char **error) {
                 *error = Str_cat("database protocol '%s' not supported", URL_getProtocol(C->url));
                 return false;
         }
-        C->D = C->op->new(C->url, error);
+        C->D = C->op->new(C, error);
         return (C->D != NULL);
 }
 
@@ -132,16 +133,17 @@ static void _freePrepared(T C) {
 
 
 T Connection_new(void *pool, char **error) {
-        T C;
         assert(pool);
+        T C;
 	NEW(C);
         C->parent = pool;
         C->isAvailable = true;
         C->isInTransaction = false;
         C->prepared = Vector_new(4);
-        C->timeout = SQL_DEFAULT_TIMEOUT;
-        C->url = ConnectionPool_getURL(pool);
         C->lastAccessedTime = Time_now();
+        C->url = ConnectionPool_getURL(pool);
+        C->queryTimeout = SQL_DEFAULT_TIMEOUT;
+        C->fetchSize = SQL_DEFAULT_PREFETCH_ROWS;
         if (! _setDelegate(C, error))
                 Connection_free(&C);
 	return C;
@@ -193,21 +195,19 @@ int Connection_isInTransaction(T C) {
 void Connection_setQueryTimeout(T C, int ms) {
         assert(C);
         assert(ms >= 0);
-        C->timeout = ms;
-        C->op->setQueryTimeout(C->D, ms);
+        C->queryTimeout = ms;
 }
 
 
 int Connection_getQueryTimeout(T C) {
         assert(C);
-        return C->timeout;
+        return C->queryTimeout;
 }
 
 
 void Connection_setMaxRows(T C, int max) {
         assert(C);
 	C->maxRows = max;
-        C->op->setMaxRows(C->D, max);
 }
 
 
@@ -220,6 +220,19 @@ int Connection_getMaxRows(T C) {
 URL_T Connection_getURL(T C) {
         assert(C);
         return C->url;
+}
+
+
+void Connection_setFetchSize(T C, int rows) {
+        assert(C);
+        assert(rows > 0);
+        C->fetchSize = rows;
+}
+
+
+int Connection_getFetchSize(T C) {
+        assert(C);
+        return C->fetchSize;
 }
 
 
@@ -236,11 +249,13 @@ void Connection_clear(T C) {
         assert(C);
         if (C->resultSet)
                 ResultSet_free(&C->resultSet);
-        if (C->maxRows)
-                Connection_setMaxRows(C, 0);
-        if (C->timeout != SQL_DEFAULT_TIMEOUT)
-                Connection_setQueryTimeout(C, SQL_DEFAULT_TIMEOUT);
         _freePrepared(C);
+        // Set properties back to default values
+        C->maxRows = 0;
+        C->queryTimeout = SQL_DEFAULT_TIMEOUT;
+        C->fetchSize = URL_getParameter(C->url, "fetch-size")
+                ? Str_parseInt(URL_getParameter(C->url, "fetch-size"))
+                : SQL_DEFAULT_PREFETCH_ROWS;
 }
 
 

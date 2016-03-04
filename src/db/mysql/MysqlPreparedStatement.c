@@ -29,10 +29,8 @@
 #include <string.h>
 #include <mysql.h>
 
-#include "ResultSet.h"
-#include "MysqlResultSet.h"
-#include "PreparedStatementDelegate.h"
-#include "MysqlPreparedStatement.h"
+#include "StringBuffer.h"
+#include "zdb.h"
 
 
 /**
@@ -42,24 +40,10 @@
  */
 
 
-/* ----------------------------------------------------------- Definitions */
+/* ------------------------------------------------------------- Definitions */
 
 
 #define MYSQL_OK 0
-
-const struct Pop_T mysqlpops = {
-        .name           = "mysql",
-        .free           = MysqlPreparedStatement_free,
-        .setString      = MysqlPreparedStatement_setString,
-        .setInt         = MysqlPreparedStatement_setInt,
-        .setLLong       = MysqlPreparedStatement_setLLong,
-        .setDouble      = MysqlPreparedStatement_setDouble,
-        .setTimestamp   = MysqlPreparedStatement_setTimestamp,
-        .setBlob        = MysqlPreparedStatement_setBlob,
-        .execute        = MysqlPreparedStatement_execute,
-        .executeQuery   = MysqlPreparedStatement_executeQuery,
-        .rowsChanged    = MysqlPreparedStatement_rowsChanged
-};
 
 typedef struct param_t {
         union {
@@ -73,7 +57,7 @@ typedef struct param_t {
 
 #define T PreparedStatementDelegate_T
 struct T {
-        int maxRows;
+        Connection_T delegator;
         int lastError;
         param_t params;
         MYSQL_STMT *stmt;
@@ -86,20 +70,17 @@ static my_bool yes = true;
 extern const struct Rop_T mysqlrops;
 
 
-/* ----------------------------------------------------- Protected methods */
+/* --------------------------------------- PreparedStatementDelegate methods */
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility push(hidden)
-#endif
-
-T MysqlPreparedStatement_new(void *stmt, int maxRows, int parameterCount) {
-        T P;
+static T MysqlPreparedStatement_new(void *delegator, void *stmt) {
+        assert(delegator);
         assert(stmt);
+        T P;
         NEW(P);
+        P->delegator = delegator;
         P->stmt = stmt;
-        P->maxRows = maxRows;
-        P->parameterCount = parameterCount;
+        P->parameterCount = (int)mysql_stmt_param_count(stmt);
         if (P->parameterCount > 0) {
                 P->params = CALLOC(P->parameterCount, sizeof(struct param_t));
                 P->bind = CALLOC(P->parameterCount, sizeof(MYSQL_BIND));
@@ -109,7 +90,7 @@ T MysqlPreparedStatement_new(void *stmt, int maxRows, int parameterCount) {
 }
 
 
-void MysqlPreparedStatement_free(T *P) {
+static void MysqlPreparedStatement_free(T *P) {
 	assert(P && *P);
         FREE((*P)->bind);
         mysql_stmt_free_result((*P)->stmt);
@@ -124,7 +105,7 @@ void MysqlPreparedStatement_free(T *P) {
 }
 
 
-void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
+static void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->bind[i].buffer_type = MYSQL_TYPE_STRING;
@@ -140,7 +121,7 @@ void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
 }
 
 
-void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
+static void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.integer = x;
@@ -150,7 +131,7 @@ void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
 }
 
 
-void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long x) {
+static void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.llong = x;
@@ -160,7 +141,7 @@ void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long x) {
 }
 
 
-void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
+static void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.real = x;
@@ -170,7 +151,7 @@ void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
 }
 
 
-void MysqlPreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
+static void MysqlPreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         struct tm ts = {.tm_isdst = -1};
@@ -187,7 +168,7 @@ void MysqlPreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
 }
 
 
-void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
+static void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->bind[i].buffer_type = MYSQL_TYPE_BLOB;
@@ -203,11 +184,12 @@ void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int 
 }
 
 
-void MysqlPreparedStatement_execute(T P) {
+static void MysqlPreparedStatement_execute(T P) {
         assert(P);
-        if (P->parameterCount > 0)
+        if (P->parameterCount > 0) {
                 if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
                         THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
+        }
 #if MYSQL_VERSION_ID >= 50002
         unsigned long cursor = CURSOR_TYPE_NO_CURSOR;
         mysql_stmt_attr_set(P->stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
@@ -221,30 +203,57 @@ void MysqlPreparedStatement_execute(T P) {
 }
 
 
-ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
+static ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
         assert(P);
-        if (P->parameterCount > 0)
+        if (P->parameterCount > 0) {
                 if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
                         THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
+        }
 #if MYSQL_VERSION_ID >= 50002
         unsigned long cursor = CURSOR_TYPE_READ_ONLY;
         mysql_stmt_attr_set(P->stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
 #endif
+        unsigned long fetchSize = Connection_getFetchSize(P->delegator);
+        if ((P->lastError = mysql_stmt_attr_set(P->stmt, STMT_ATTR_PREFETCH_ROWS, &fetchSize)))
+                THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         if ((P->lastError = mysql_stmt_execute(P->stmt)))
                 THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         if (P->lastError == MYSQL_OK)
-                return ResultSet_new(MysqlResultSet_new(P->stmt, P->maxRows, true), (Rop_T)&mysqlrops);
+                return ResultSet_new(mysqlrops.new(P->delegator, P->stmt, true), (Rop_T)&mysqlrops);
         THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         return NULL;
 }
 
 
-long long MysqlPreparedStatement_rowsChanged(T P) {
+static long long MysqlPreparedStatement_rowsChanged(T P) {
         assert(P);
         return (long long)mysql_stmt_affected_rows(P->stmt);
 }
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility pop
-#endif
+
+static int MysqlPreparedStatement_parameterCount(T P) {
+        assert(P);
+        return P->parameterCount;
+}
+
+
+/* ------------------------------ MySQL PreparedStatementDelegate Operations */
+
+
+const struct Pop_T mysqlpops = {
+        .name           = "mysql",
+        .new            = MysqlPreparedStatement_new,
+        .free           = MysqlPreparedStatement_free,
+        .setString      = MysqlPreparedStatement_setString,
+        .setInt         = MysqlPreparedStatement_setInt,
+        .setLLong       = MysqlPreparedStatement_setLLong,
+        .setDouble      = MysqlPreparedStatement_setDouble,
+        .setTimestamp   = MysqlPreparedStatement_setTimestamp,
+        .setBlob        = MysqlPreparedStatement_setBlob,
+        .execute        = MysqlPreparedStatement_execute,
+        .executeQuery   = MysqlPreparedStatement_executeQuery,
+        .rowsChanged    = MysqlPreparedStatement_rowsChanged,
+        .parameterCount = MysqlPreparedStatement_parameterCount
+
+};
 

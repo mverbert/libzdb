@@ -40,10 +40,8 @@ typedef struct T *T;
 typedef struct Cop_T {
         const char *name;
         // Methods
-	T (*new)(URL_T url, char **error);
+	T (*new)(Connection_T delegator, char **error);
 	void (*free)(T *C);
-	void (*setQueryTimeout)(T C, int ms);
-        void (*setMaxRows)(T C, int max);
         int (*ping)(T C);
         int (*beginTransaction)(T C);
         int (*commit)(T C);

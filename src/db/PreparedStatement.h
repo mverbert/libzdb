@@ -119,10 +119,9 @@ typedef struct PreparedStatement_S *T;
  * Create a new PreparedStatement.
  * @param D the delegate used by this PreparedStatement
  * @param op delegate operations
- * @param parameterCount number of parameters in this prepared statement
  * @return A new PreparedStatement object
  */
-T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op, int parameterCount);
+T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op);
 
 
 /**
