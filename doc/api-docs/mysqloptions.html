@@ -40,7 +40,7 @@
         </tr>
         <tr>
             <td >
-                connect-timeout
+                connect-timeout 
             </td>
             <td>
                 Connect timeout in seconds. Default is 3 seconds. It is a checked runtime error to use a value equal to or less than 0.
@@ -120,8 +120,9 @@
                 fetch-size
             </td>
             <td>
-                Specify the number of rows that should be fetched from the database when more rows are needed for ResultSet objects. Default is 100
-                rows. <p class="example">Example: fetch-size=10</p>
+                The number of rows that should be fetched from the database when more rows are needed for ResultSet objects. Default is 100 rows. Rows
+                are retrieved in-memory. A larger value will make libzdb use more memory. 
+                <p class="example">Example: fetch-size=10</p>
             </td>
             <td>
                 Number [1..int.max] 

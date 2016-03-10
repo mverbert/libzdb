@@ -58,11 +58,11 @@ typedef struct param_t {
 #define T PreparedStatementDelegate_T
 struct T {
         Connection_T delegator;
-        int lastError;
         param_t params;
         MYSQL_STMT *stmt;
         MYSQL_BIND *bind;
         int parameterCount;
+        int lastError;
 };
 
 static my_bool yes = true;

@@ -44,6 +44,8 @@ typedef struct Rop_T {
         int (*getColumnCount)(T R);
         const char *(*getColumnName)(T R, int columnIndex);
         long (*getColumnSize)(T R, int columnIndex);
+        void (*setFetchSize)(T R, int rows);
+        int (*getFetchSize)(T R);
         int (*next)(T R);
         int (*isnull)(T R, int columnIndex);
         const char *(*getString)(T R, int columnIndex);

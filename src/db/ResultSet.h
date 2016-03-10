@@ -161,6 +161,33 @@ const char *ResultSet_getColumnName(T R, int columnIndex);
  */
 long ResultSet_getColumnSize(T R, int columnIndex);
 
+
+/**
+ * Specify the number of rows that should be fetched from the database
+ * when more rows are needed for this ResultSet. ResultSet will prefetch
+ * rows in batches of #rows when ResultSet_next() is called to reduce the
+ * network roundtrip to the database.
+ * @param R A ResultSet object
+ * @param rows The number of rows to fetch (1..INT.MAX)
+ * @exception SQLException If <code>rows</code> is less than 1 or
+ * if a database error occurs
+ * @see Connection_setFetchSize
+ */
+void ResultSet_setFetchSize(T R, int rows);
+
+
+/**
+ * Get the number of rows that should be fetched from the database
+ * when more rows are needed for this ResultSet. Unless previously set
+ * with ResultSet_setFetchSize(), the returned value is the same as
+ * returned by Connection_getFetchSize()
+ * @param R A ResultSet object
+ * @return The number of rows to fetch
+ * @see Connection_getFetchSize
+ */
+int ResultSet_getFetchSize(T C);
+
+
 //@}
 
 /**
