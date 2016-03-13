@@ -172,9 +172,7 @@ static void MysqlResultSet_setFetchSize(T R, int rows) {
 
 static int MysqlResultSet_getFetchSize(T R) {
         assert(R);
-        if (R->fetchSize)
-                return R->fetchSize;
-        return Connection_getFetchSize(R->delegator);
+        return R->fetchSize ? R->fetchSize : Connection_getFetchSize(R->delegator);
 }
 
 

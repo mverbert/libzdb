@@ -165,12 +165,12 @@ long ResultSet_getColumnSize(T R, int columnIndex);
 /**
  * Specify the number of rows that should be fetched from the database
  * when more rows are needed for this ResultSet. ResultSet will prefetch
- * rows in batches of #rows when ResultSet_next() is called to reduce the
- * network roundtrip to the database.
+ * rows in batches of number of <code>rows</code> when ResultSet_next() 
+ * is called to reduce the network roundtrip to the database.
  * @param R A ResultSet object
  * @param rows The number of rows to fetch (1..INT.MAX)
- * @exception SQLException If <code>rows</code> is less than 1 or
- * if a database error occurs
+ * @exception SQLException If a database error occurs
+ * @exception AssertException If <code>rows</code> is less than 1
  * @see Connection_setFetchSize
  */
 void ResultSet_setFetchSize(T R, int rows);
@@ -185,7 +185,7 @@ void ResultSet_setFetchSize(T R, int rows);
  * @return The number of rows to fetch
  * @see Connection_getFetchSize
  */
-int ResultSet_getFetchSize(T C);
+int ResultSet_getFetchSize(T R);
 
 
 //@}
