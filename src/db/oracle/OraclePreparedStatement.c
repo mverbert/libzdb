@@ -296,28 +296,33 @@ long long OraclePreparedStatement_rowsChanged(T P) {
 */
 
 /* Key for the thread-specific buffer */
-static pthread_key_t error_msg_key;
+static ThreadData_T error_msg_key;
 
 /* Once-only initialisation of the key */
-static pthread_once_t error_msg_key_once = PTHREAD_ONCE_INIT;
+static ThreadDataControl_T error_msg_key_once = PTHREAD_ONCE_INIT;
 
 
 /* Return the thread-specific buffer */
 static char * get_err_buffer(void) {
-        return (char *) pthread_getspecific(error_msg_key);
+        char * err_buffer = (char *) ThreadData_get(error_msg_key);
+        if (err_buffer == NULL) {
+            err_buffer = malloc(STRLEN);
+            ThreadData_set(error_msg_key, err_buffer);
+        }
+
+        return err_buffer;
 }
 
 /* Allocate the key */
 static void error_msg_key_alloc() {
-        pthread_key_create(&error_msg_key, free);
-        pthread_setspecific(error_msg_key, malloc(STRLEN));
+        ThreadData_create(error_msg_key, free);
 }
 
 /* This is a general error function also used in OracleResultSet */
 const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp) {
         sb4 errcode;
         char* erb;
-        pthread_once(&error_msg_key_once, error_msg_key_alloc);
+        ThreadData_once(error_msg_key_once, error_msg_key_alloc);
         erb = get_err_buffer();
         assert(erb);
         assert(errhp);
