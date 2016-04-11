@@ -45,6 +45,7 @@
 struct ResultSet_S {
         Rop_T op;
         ResultSetDelegate_T D;
+        int fetchSize;
 };
 
 
@@ -108,6 +109,18 @@ const char *ResultSet_getColumnName(T R, int columnIndex) {
 long ResultSet_getColumnSize(T R, int columnIndex) {
 	assert(R);
 	return R->op->getColumnSize(R->D, columnIndex);
+}
+
+
+void ResultSet_setFetchSize(T R, int rows) {
+        assert(R);
+        R->op->setFetchSize(R->D, rows);
+}
+
+
+int ResultSet_getFetchSize(T R) {
+        assert(R);
+        return R->op->getFetchSize(R->D);
 }
 
 

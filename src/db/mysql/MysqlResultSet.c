@@ -56,17 +56,18 @@ typedef struct column_t {
 #define T ResultSetDelegate_T
 struct T {
         Connection_T delegator;
-        int stop;
-        int keep;
-        int maxRows;
-        int lastError;
-        int needRebind;
-	int currentRow;
-	int columnCount;
         MYSQL_RES *meta;
         MYSQL_BIND *bind;
-	MYSQL_STMT *stmt;
+        MYSQL_STMT *stmt;
         column_t columns;
+        int columnCount;
+        int needRebind;
+        int currentRow;
+        int fetchSize;
+        int lastError;
+        int maxRows;
+        int stop;
+        int keep;
 };
 
 
@@ -160,6 +161,21 @@ static long MysqlResultSet_getColumnSize(T R, int columnIndex) {
 }
 
 
+static void MysqlResultSet_setFetchSize(T R, int rows) {
+        assert(R);
+        assert(rows > 0);
+        if ((R->lastError = mysql_stmt_attr_set(R->stmt, STMT_ATTR_PREFETCH_ROWS, &rows)))
+                THROW(SQLException, "mysql_stmt_attr_set -- %s", mysql_stmt_error(R->stmt));
+        R->fetchSize = rows;
+}
+
+
+static int MysqlResultSet_getFetchSize(T R) {
+        assert(R);
+        return R->fetchSize ? R->fetchSize : Connection_getFetchSize(R->delegator);
+}
+
+
 static int MysqlResultSet_next(T R) {
 	assert(R);
         if (R->stop)
@@ -225,6 +241,8 @@ const struct Rop_T mysqlrops = {
         .getColumnCount = MysqlResultSet_getColumnCount,
         .getColumnName  = MysqlResultSet_getColumnName,
         .getColumnSize  = MysqlResultSet_getColumnSize,
+        .setFetchSize   = MysqlResultSet_setFetchSize,
+        .getFetchSize   = MysqlResultSet_getFetchSize,
         .next           = MysqlResultSet_next,
         .isnull         = MysqlResultSet_isnull,
         .getString      = MysqlResultSet_getString,
