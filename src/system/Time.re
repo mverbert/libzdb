@@ -210,7 +210,15 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                         has_date = true;
                         continue;
                  }
-                 dd x dd x dd frac?
+                dd x dd x yyyy
+                 { // Date: dd/mm/yyyy
+                        tm.tm_mday  = _a2i(token, 2);
+                        tm.tm_mon   = _a2i(token + 3, 2) - 1;
+                        tm.tm_year  = _a2i(token + 6, 4);
+                        has_date = true;
+                        continue;
+                 }
+                 dd ':' dd ':' dd frac?
                  { // Time: HH:MM:SS
                         tm.tm_hour = _a2i(token, 2);
                         tm.tm_min  = _a2i(token + 3, 2);
@@ -223,6 +231,14 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                         tm.tm_hour = _a2i(token, 2);
                         tm.tm_min  = _a2i(token + 2, 2);
                         tm.tm_sec  = _a2i(token + 4, 2);
+                        has_time = true;
+                        continue;
+                 }
+                 dd ':' dd
+                 { // Time: HH:MM
+                        tm.tm_hour = _a2i(token, 2);
+                        tm.tm_min  = _a2i(token + 3, 2);
+                        tm.tm_sec  = 0;
                         has_time = true;
                         continue;
                  }

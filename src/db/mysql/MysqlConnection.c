@@ -279,7 +279,7 @@ static const char *MysqlConnection_getLastError(T C) {
 }
 
 
-/* ------------------------------------- MySQL ConnectionDelegate Operations */
+/* ------------------------------------------------ MySQL ConnectionDelegate */
 
 
 const struct Cop_T mysqlcops = {

@@ -237,7 +237,7 @@ static int MysqlPreparedStatement_parameterCount(T P) {
 }
 
 
-/* ------------------------------ MySQL PreparedStatementDelegate Operations */
+/* ----------------------------------------- MySQL PreparedStatementDelegate */
 
 
 const struct Pop_T mysqlpops = {

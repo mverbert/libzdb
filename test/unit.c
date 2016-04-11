@@ -206,8 +206,13 @@ static void testTime() {
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
-                // Date
+                // Date ISO-8601
                 assert(Time_toDateTime("2013-12-14", &t));
+                assert(t.tm_year == 2013);
+                assert(t.tm_mon  == 11);
+                assert(t.tm_mday == 14);
+                // Old metric dd/mm/yyyy
+                assert(Time_toDateTime("14/12/2013", &t));
                 assert(t.tm_year == 2013);
                 assert(t.tm_mon  == 11);
                 assert(t.tm_mday == 14);
@@ -216,6 +221,11 @@ static void testTime() {
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
+                // Time without seconds
+                assert(Time_toDateTime("09:38", &t));
+                assert(t.tm_hour == 9);
+                assert(t.tm_min  == 38);
+                assert(t.tm_sec  == 0);
                 // Compressed DateTime
                 assert(Time_toDateTime(" 20131214093808", &t));
                 assert(t.tm_year == 2013);
@@ -268,7 +278,7 @@ static void testTime() {
                 assert(t.TM_GMTOFF == 0);
                 // Invalid date
                 TRY {
-                        Time_toDateTime("1901-123-45", &t);
+                        Time_toDateTime("1901-123-45 123:234", &t);
                         printf("\t Test Failed\n");
                         exit(1);
                 } CATCH (SQLException) {
@@ -301,9 +311,12 @@ static void testTime() {
                 // Compressed
                 t = Time_toTimestamp("20131214191258-0500");
                 assert(t == 1387066378);
+                // Old metric style
+                t = Time_toTimestamp("15/12/2013 00:12");
+                assert(t == 1387066320);
                 // Invalid timestamp string
                 TRY {
-                        Time_toTimestamp("1901-123-45 10:12:14");
+                        Time_toTimestamp("1901-123-45");
                         // Should not come here
                         printf("\t Test Failed\n");
                         exit(1);

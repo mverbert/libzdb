@@ -215,7 +215,7 @@ static const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
 }
 
 
-/* -------------------------------------- MySQL ResultSetDelegate Operations */
+/* ------------------------------------------------- MySQL ResultSetDelegate */
 
 
 const struct Rop_T mysqlrops = {
