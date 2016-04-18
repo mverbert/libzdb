@@ -51,9 +51,10 @@ libzdb_la_SOURCES += src/db/oracle/OracleConnection.c \
                      src/db/oracle/OraclePreparedStatement.c
 endif
 
-API_INTERFACES  = src/zdb.h src/db/ConnectionPool.h src/db/Connection.h \
-                  src/db/ResultSet.h src/net/URL.h src/db/PreparedStatement.h \
-                  src/exceptions/SQLException.h src/exceptions/Exception.h
+API_INTERFACES  = src/zdb.h src/Thread.h src/db/ConnectionPool.h \
+                  src/db/Connection.h src/db/ResultSet.h src/net/URL.h \
+                  src/db/PreparedStatement.h src/exceptions/SQLException.h \
+                  src/exceptions/Exception.h
 
 nobase_nodist_include_HEADERS = $(patsubst %, $(LIBRARY_NAME)/%, $(notdir $(API_INTERFACES)))
 

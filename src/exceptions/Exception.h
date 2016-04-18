@@ -194,7 +194,7 @@
 
 #define T Exception_T
 /** @cond hide */
-#include <pthread.h>
+#include "Thread.h"
 #ifndef CLANG_ANALYZER_NORETURN
 #if defined(__clang__)
 #define CLANG_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
@@ -202,9 +202,6 @@
 #define CLANG_ANALYZER_NORETURN
 #endif
 #endif
-#define ThreadData_T pthread_key_t
-#define ThreadData_set(key, value) pthread_setspecific((key), (value))
-#define ThreadData_get(key) pthread_getspecific((key))
 typedef struct T {
         const char *name;
 } T;
