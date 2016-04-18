@@ -37,6 +37,7 @@
 #define Thread_T pthread_t
 #define Sem_T   pthread_cond_t			  
 #define Mutex_T pthread_mutex_t
+#define Once_T pthread_once_t
 #define ThreadData_T pthread_key_t
 #define wrapper(F) do { int status=F; \
         if (status!=0 && status!=ETIMEDOUT) \
@@ -48,6 +49,7 @@
 #define Thread_detach(thread) wrapper(pthread_detach(thread))
 #define Thread_cancel(thread) wrapper(pthread_cancel(thread))
 #define Thread_join(thread) wrapper(pthread_join(thread, NULL))
+#define Thread_once(control, ctor) pthread_once(&(control), ctor)
 #define Sem_init(sem) wrapper(pthread_cond_init(&sem, NULL))
 #define Sem_wait(sem, mutex) wrapper(pthread_cond_wait(&sem, &mutex))
 #define Sem_signal(sem) wrapper(pthread_cond_signal(&sem))
@@ -62,7 +64,7 @@
 #define LOCK(mutex) do { Mutex_T *_yymutex=&(mutex); \
         wrapper(pthread_mutex_lock(_yymutex));
 #define END_LOCK wrapper(pthread_mutex_unlock(_yymutex)); } while (0)
-#define ThreadData_create(key) wrapper(pthread_key_create(&(key), NULL))
+#define ThreadData_create(key, dtor) wrapper(pthread_key_create(&(key), dtor))
 #define ThreadData_set(key, value) pthread_setspecific((key), (value))
 #define ThreadData_get(key) pthread_getspecific((key))
 
