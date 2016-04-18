@@ -299,7 +299,7 @@ long long OraclePreparedStatement_rowsChanged(T P) {
 static ThreadData_T error_msg_key;
 
 /* Once-only initialisation of the key */
-static ThreadDataControl_T error_msg_key_once = PTHREAD_ONCE_INIT;
+static Once_T error_msg_key_once = PTHREAD_ONCE_INIT;
 
 
 /* Return the thread-specific buffer */
@@ -322,7 +322,7 @@ static void error_msg_key_alloc() {
 const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp) {
         sb4 errcode;
         char* erb;
-        ThreadData_once(error_msg_key_once, error_msg_key_alloc);
+        Thread_once(error_msg_key_once, error_msg_key_alloc);
         erb = get_err_buffer();
         assert(erb);
         assert(errhp);

@@ -60,7 +60,7 @@ ThreadData_T Exception_stack;
 #ifdef ZILD_PACKAGE_PROTECTED
 #pragma GCC visibility pop
 #endif
-static ThreadDataControl_T once_control = PTHREAD_ONCE_INIT;
+static Once_T once_control = PTHREAD_ONCE_INIT;
 
 
 /* -------------------------------------------------------- Privat methods */
@@ -76,7 +76,7 @@ static void init_once(void) { ThreadData_create(Exception_stack, NULL); }
 #pragma GCC visibility push(hidden)
 #endif
 
-void Exception_init(void) { ThreadData_once(once_control, init_once); }
+void Exception_init(void) { Thread_once(once_control, init_once); }
 
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility pop
