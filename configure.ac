@@ -358,25 +358,37 @@ AC_HEADER_STDC
 # Functions 
 # ------------------------------------------------------------------------
 
+# The CFLAGS are set for all linked databases and SSL at this point, reset to basic for function testing:
+_CFLAGS=$CFLAGS
+_LDFLAGS=$LDFLAGS
+CFLAGS=""
+LDFLAGS=""
+
 # Require a working setjmp
-AC_RUN_IFELSE([AC_LANG_PROGRAM([[
-        #include <setjmp.h>
-        ]],
-        [[jmp_buf env; setjmp(env);]])], 
-        [], [AC_MSG_FAILURE([setjmp is required])]
-)
+AC_CACHE_CHECK([setjmp is available],
+               [libzdb_cv_setjmp_available],
+               [AC_RUN_IFELSE([AC_LANG_PROGRAM(
+                       [[#include <setjmp.h>]],
+                       [[jmp_buf env; setjmp(env);]])],
+                       [AC_MSG_RESULT(yes)],
+                       [AC_MSG_FAILURE([setjmp is required])],
+                       [AC_MSG_ERROR(cross-compiling: please set 'libzdb_cv_setjmp_available=[yes|no]')])])
 
 # Require that we have vsnprintf that conforms to c99. I.e. does bounds check
-AC_RUN_IFELSE([AC_LANG_PROGRAM([[
-        #include <stdarg.h> 
-        #include <stdio.h>
-        ]],
-        [[char t[1]; va_list ap; int n = vsnprintf(t, 1, "hello", ap); if(n == 5) return 0;return 1;]])], 
-        [], [AC_MSG_FAILURE([vsnprintf does not conform to c99])]
-)
+AC_CACHE_CHECK([vsnprintf is c99 conformant],
+               [libzdb_cv_vsnprintf_c99_conformant],
+               [AC_RUN_IFELSE([AC_LANG_PROGRAM(
+                        [[#include <stdarg.h>
+                          #include <stdio.h>]],
+                        [[char t[1]; va_list ap; int n = vsnprintf(t, 1, "hello", ap); if(n == 5) return 0;return 1;]])],
+                        [AC_MSG_RESULT(yes)],
+                        [AC_MSG_FAILURE([vsnprintf does not conform to c99])],
+                        [AC_MSG_ERROR(cross-compiling: please set 'libzdb_cv_vsnprintf_c99_conformant=[yes|no]')])])
 
 AC_CHECK_FUNCS([timegm])
 
+CFLAGS=$_CFLAGS
+LDFLAGS=$_LDFLAGS
 
 # ---------------------------------------------------------------------------
 # Data Types
