@@ -29,7 +29,6 @@
 #include <string.h>
 #include <mysql.h>
 
-#include "StringBuffer.h"
 #include "zdb.h"
 
 
