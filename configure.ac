@@ -11,7 +11,7 @@ AC_CONFIG_COMMANDS([libtool_patch],[test `uname` = "OpenBSD" && perl -p -i -e "s
 
 
 # ---------------------------------------------------------------------------
-# Programs 
+# Programs
 # ---------------------------------------------------------------------------
 
 AC_PROG_CC
@@ -50,7 +50,7 @@ fi
 test -f ./tools/bin/filterh || AC_MSG_ERROR([Failed to build tools])
 
 # ---------------------------------------------------------------------------
-# Libtool 
+# Libtool
 # ---------------------------------------------------------------------------
 
 AC_PROG_LIBTOOL
@@ -77,7 +77,7 @@ AC_ARG_ENABLE(profiling,
 )
 
 AC_ARG_ENABLE(optimized,
-        AS_HELP_STRING([--enable-optimized], 
+        AS_HELP_STRING([--enable-optimized],
                 [Build software optimized]),
     [
         if test "x$enableval" = "xyes" ; then
@@ -95,8 +95,8 @@ AC_ARG_ENABLE(optimized,
 )
 
 AC_ARG_ENABLE([zild],
-        AS_HELP_STRING([--enable-zild], 
-                [Reduce visibility of objects for linking with the zild app server. 
+        AS_HELP_STRING([--enable-zild],
+                [Reduce visibility of objects for linking with the zild app server.
                 Require gcc version >= 4.x or clang. This is an internal Tildeslash
                 build option and should NOT be used by a third-party]),
      [
@@ -112,11 +112,11 @@ AC_ARG_ENABLE([zild],
 AM_CONDITIONAL([WITH_ZILD], test "xtrue" = "x$zild_protect")
 
 AC_ARG_ENABLE([protected],
-        AS_HELP_STRING([--enable-protected], 
+        AS_HELP_STRING([--enable-protected],
         [Package protect non-API objects. Require gcc version >= 4.x or clang.
          This option hide objects in the DSO which are not part of the API and
          not to be exported. The rationale is to optimize the ABI and protect
-         non-public methods of the DSO and thereby reduce the potential for 
+         non-public methods of the DSO and thereby reduce the potential for
          namespace conflicts for clients linking with the library. Recommend]),
      [
         if test "x$enableval" = "xyes" ; then
@@ -129,9 +129,9 @@ AC_ARG_ENABLE([protected],
 )
 
 AC_ARG_ENABLE([openssl],
-        AS_HELP_STRING([--enable-openssl(=<path>)], 
+        AS_HELP_STRING([--enable-openssl(=<path>)],
                 [Link libzdb with openssl. If database libraries were linked static,
-                libzdb may have to link with openssl to support crypto and ssl 
+                libzdb may have to link with openssl to support crypto and ssl
                 functionality in SQL client libraries. An optional path argument may
                 be given to specify the top-level directory to search for openssl to
                 link with]),
@@ -158,8 +158,8 @@ AC_ARG_ENABLE([openssl],
 )
 
 AC_ARG_ENABLE(sqliteunlock,
-        AS_HELP_STRING([--enable-sqliteunlock], 
-                [Enable the SQLite unlock notification API (requires SQLite >= 3.6.12 
+        AS_HELP_STRING([--enable-sqliteunlock],
+                [Enable the SQLite unlock notification API (requires SQLite >= 3.6.12
                 compiled with the SQLITE_ENABLE_UNLOCK_NOTIFY C-preprocessor symbol).
                 Using this option will greatly improve SQLite concurrency when libzdb
                 and SQLite are used from a multi-threaded program.]),
@@ -187,36 +187,63 @@ else
 fi
 AC_SUBST(UNIT_TEST)
 
+# ------------------------------------------------------------------------
+# Functions
+# ------------------------------------------------------------------------
+
+# Require a working setjmp
+AC_CACHE_CHECK([setjmp is available],
+               [libzdb_cv_setjmp_available],
+               [AC_RUN_IFELSE([AC_LANG_PROGRAM(
+                       [[#include <setjmp.h>]],
+                       [[jmp_buf env; setjmp(env);]])],
+                       [AC_MSG_RESULT(yes)],
+                       [AC_MSG_FAILURE([setjmp is required])],
+                       [AC_MSG_ERROR(cross-compiling: please set 'libzdb_cv_setjmp_available=[yes|no]')])])
+
+# Require that we have vsnprintf that conforms to c99. I.e. does bounds check
+AC_CACHE_CHECK([vsnprintf is c99 conformant],
+               [libzdb_cv_vsnprintf_c99_conformant],
+               [AC_RUN_IFELSE([AC_LANG_PROGRAM(
+                        [[#include <stdarg.h>
+                          #include <stdio.h>]],
+                        [[char t[1]; va_list ap; int n = vsnprintf(t, 1, "hello", ap); if(n == 5) return 0;return 1;]])],
+                        [AC_MSG_RESULT(yes)],
+                        [AC_MSG_FAILURE([vsnprintf does not conform to c99])],
+                        [AC_MSG_ERROR(cross-compiling: please set 'libzdb_cv_vsnprintf_c99_conformant=[yes|no]')])])
+
+AC_CHECK_FUNCS([timegm])
+
 # ---------------------------------------------------------------------------
-# Libraries 
+# Libraries
 # ---------------------------------------------------------------------------
 
 AC_SEARCH_LIBS([pthread_create], [pthread], [], [AC_MSG_ERROR([POSIX thread library is required])])
 
-# Database Libraries 
+# Database Libraries
 
 mysql="yes"
-check_mysql_config() 
+check_mysql_config()
 {
         AC_PATH_PROG([MYSQLCONFIG], [mysql_config], [no], [$PATH:/usr/local/bin:/usr/local/mysql/bin])
-        if test "x$MYSQLCONFIG" = "xno" 
+        if test "x$MYSQLCONFIG" = "xno"
         then
                 AC_MSG_WARN([mysql_config is required to build libzdb with mysql])
                 mysql="no"
         fi
 }
 AC_MSG_CHECKING(for mysql)
-AC_ARG_WITH([mysql], 
-        AS_HELP_STRING([--with-mysql(=<path>)], 
+AC_ARG_WITH([mysql],
+        AS_HELP_STRING([--with-mysql(=<path>)],
                 [Path is optional and if given should specify the full path to the MySQL
-                 configure script, mysql_config. E.g. --with-mysql=/<path>/mysql_config]), 
+                 configure script, mysql_config. E.g. --with-mysql=/<path>/mysql_config]),
         [
                 if test "xno" = "x$with_mysql"; then
                         AC_MSG_RESULT([no])
                         mysql="no"
                 else
                         AC_MSG_RESULT([yes])
-                        AC_CHECK_FILE([$with_mysql], [MYSQLCONFIG=$with_mysql], [check_mysql_config])        
+                        AC_CHECK_FILE([$with_mysql], [MYSQLCONFIG=$with_mysql], [check_mysql_config])
                 fi
         ],
         [
@@ -241,7 +268,7 @@ fi
 AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
 
 postgresql="yes"
-check_postgres_config() 
+check_postgres_config()
 {
         AC_PATH_PROG([PGCONFIG], [pg_config], [no], [$PATH:/usr/local/bin:/usr/local/pgsql/bin])
         if test "x$PGCONFIG" = "xno"
@@ -251,10 +278,10 @@ check_postgres_config()
         fi
 }
 AC_MSG_CHECKING(for postgresql)
-AC_ARG_WITH([postgresql], 
-        AS_HELP_STRING([--with-postgresql(=<path>)], 
+AC_ARG_WITH([postgresql],
+        AS_HELP_STRING([--with-postgresql(=<path>)],
                 [Path is optional and if given should specify the full path to the PostgreSQL
-                 configure script, pg_config. E.g. --with-postgresql=/<path>/pg_config]), 
+                 configure script, pg_config. E.g. --with-postgresql=/<path>/pg_config]),
         [
                 if test "xno" = "x$with_postgresql"; then
                         AC_MSG_RESULT([no])
@@ -288,10 +315,10 @@ AM_CONDITIONAL([WITH_POSTGRESQL], test "xyes" = "x$postgresql")
 
 sqlite="yes"
 AC_MSG_CHECKING(for SQLite3)
-AC_ARG_WITH([sqlite], 
-        AS_HELP_STRING([--with-sqlite=<path>], 
-                [Path is optional and if given should specify the full path to the SQLite installation. 
-                 E.g. /usr/local/sqlite3]), 
+AC_ARG_WITH([sqlite],
+        AS_HELP_STRING([--with-sqlite=<path>],
+                [Path is optional and if given should specify the full path to the SQLite installation.
+                 E.g. /usr/local/sqlite3]),
         [
                 if test "xno" = "x$with_sqlite"; then
                         AC_MSG_RESULT([no])
@@ -311,11 +338,11 @@ AC_ARG_WITH([sqlite],
                                 ],[sqlite="no"],[-ldl])
                                 LDFLAGS=$svd_LDFLAGS
                                 CPPFLAGS=$svd_CPPFLAGS
-   
+
                         ],
                         AC_SEARCH_LIBS([sqlite3_open], [sqlite3], [], [sqlite="no"], [-ldl]))
                 fi
-        ], 
+        ],
         [
                 AC_MSG_RESULT([yes])
                 AC_SEARCH_LIBS([sqlite3_open], [sqlite3], [], [sqlite="no"])
@@ -349,46 +376,10 @@ AC_SUBST(DBLDFLAGS)
 AC_SUBST(DBCPPFLAGS)
 
 # ---------------------------------------------------------------------------
-# Header files 
+# Header files
 # ---------------------------------------------------------------------------
 
 AC_HEADER_STDC
-
-# ------------------------------------------------------------------------
-# Functions 
-# ------------------------------------------------------------------------
-
-# The CFLAGS are set for all linked databases and SSL at this point, reset to basic for function testing:
-_CFLAGS=$CFLAGS
-_LDFLAGS=$LDFLAGS
-CFLAGS=""
-LDFLAGS=""
-
-# Require a working setjmp
-AC_CACHE_CHECK([setjmp is available],
-               [libzdb_cv_setjmp_available],
-               [AC_RUN_IFELSE([AC_LANG_PROGRAM(
-                       [[#include <setjmp.h>]],
-                       [[jmp_buf env; setjmp(env);]])],
-                       [AC_MSG_RESULT(yes)],
-                       [AC_MSG_FAILURE([setjmp is required])],
-                       [AC_MSG_ERROR(cross-compiling: please set 'libzdb_cv_setjmp_available=[yes|no]')])])
-
-# Require that we have vsnprintf that conforms to c99. I.e. does bounds check
-AC_CACHE_CHECK([vsnprintf is c99 conformant],
-               [libzdb_cv_vsnprintf_c99_conformant],
-               [AC_RUN_IFELSE([AC_LANG_PROGRAM(
-                        [[#include <stdarg.h>
-                          #include <stdio.h>]],
-                        [[char t[1]; va_list ap; int n = vsnprintf(t, 1, "hello", ap); if(n == 5) return 0;return 1;]])],
-                        [AC_MSG_RESULT(yes)],
-                        [AC_MSG_FAILURE([vsnprintf does not conform to c99])],
-                        [AC_MSG_ERROR(cross-compiling: please set 'libzdb_cv_vsnprintf_c99_conformant=[yes|no]')])])
-
-AC_CHECK_FUNCS([timegm])
-
-CFLAGS=$_CFLAGS
-LDFLAGS=$_LDFLAGS
 
 # ---------------------------------------------------------------------------
 # Data Types
@@ -397,14 +388,14 @@ LDFLAGS=$_LDFLAGS
 AC_CHECK_MEMBERS([struct tm.tm_gmtoff], [], [], [[#include <time.h>]])
 
 # ---------------------------------------------------------------------------
-# Compiler 
+# Compiler
 # ---------------------------------------------------------------------------
 
 # Compiler characteristics
 AC_C_CONST
 AC_C_BIGENDIAN
 
-# If the compiler is gcc, tune warnings and make the char type unsigned 
+# If the compiler is gcc, tune warnings and make the char type unsigned
 # and enable C99 support
 if test "x$GCC" = "xyes"; then
         CFLAGS="$CFLAGS -Wall -Wunused -Wno-unused-label -funsigned-char";
@@ -413,7 +404,7 @@ if test "x$GCC" = "xyes"; then
         # does this compiler support -Wno-pointer-sign ?
         svd_CFLAGS="$CFLAGS"
         CFLAGS="-Wno-pointer-sign $CFLAGS"
-        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])        
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
         # does this compiler support -Wno-address ?
         svd_CFLAGS="$CFLAGS"
         CFLAGS="-Wno-address $CFLAGS"
@@ -425,25 +416,25 @@ fi
 # ------------------------------------------------------------------------
 
 case `uname` in
-Linux*)   
+Linux*)
 	AC_DEFINE([LINUX], 1, [Define to 1 if the system is Linux])
 	;;
-FreeBSD*) 
+FreeBSD*)
 	AC_DEFINE([FREEBSD], 1, [Define to 1 if the system is FreeBSD])
 	;;
-OpenBSD*) 
+OpenBSD*)
 	AC_DEFINE([OPENBSD], 1, [Define to 1 if the system is OpenBSD])
 	;;
-Darwin*)  
+Darwin*)
 	AC_DEFINE([DARWIN], 1, [Define to 1 if the system is OSX])
 	;;
-SunOS*)   
+SunOS*)
 	AC_DEFINE([SOLARIS], 1, [Define to 1 if the system is SOLARIS])
 	;;
-NetBSD*)  
+NetBSD*)
 	AC_DEFINE([NETBSD], 1, [Define to 1 if the system is NETBSD])
 	;;
-AIX*) 	  
+AIX*)
 	AC_DEFINE([AIX], 1, [Define to 1 if the system is AIX])
 	;;
 esac
@@ -468,7 +459,7 @@ cat <<EOT
 | GENERAL PUBLIC LICENSE, available in this distribution in  |
 | the file COPYING.                                          |
 |                                                            |
-| By continuing this installation process, you are bound by  | 
+| By continuing this installation process, you are bound by  |
 | the terms of this license agreement. If you do not agree   |
 | with the terms of this license, you must abort the         |
 | installation process at this point.                        |
