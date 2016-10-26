@@ -124,13 +124,12 @@ static void _freePrepared(T C) {
 }
 
 
+/* ----------------------------------------------------- Protected methods */
+
+
 #ifdef PACKAGE_PROTECTED
 #pragma GCC visibility push(hidden)
 #endif
-
-
-/* ----------------------------------------------------- Protected methods */
-
 
 T Connection_new(void *pool, char **error) {
         assert(pool);

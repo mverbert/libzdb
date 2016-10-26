@@ -139,7 +139,7 @@ time_t timegm(struct tm *tm)
 static inline int _a2i(const char *a, int l) {
         int n = 0;
         for (; *a && l--; a++)
-                n = n * 10 + (*a) - '0';
+                n = n * 10 + (*a - '0');
         return n;
 }
 
