@@ -79,7 +79,7 @@ T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op) {
 void PreparedStatement_free(T *P) {
 	assert(P && *P);
         _clearResultSet((*P));
-        (*P)->op->free(&(*P)->D);
+        (*P)->op->free(&((*P)->D));
 	FREE(*P);
 }
 

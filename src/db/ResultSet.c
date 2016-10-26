@@ -82,7 +82,7 @@ T ResultSet_new(ResultSetDelegate_T D, Rop_T op) {
 
 void ResultSet_free(T *R) {
 	assert(R && *R);
-        (*R)->op->free(&(*R)->D);
+        (*R)->op->free(&((*R)->D));
 	FREE(*R);
 }
 

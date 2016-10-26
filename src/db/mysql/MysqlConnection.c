@@ -3,12 +3,12 @@
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -29,6 +29,7 @@
 #include <string.h>
 #include <mysql.h>
 #include <errmsg.h>
+#include <ctype.h>
 
 #include "zdb.h"
 #include "ConnectionDelegate.h"
@@ -36,7 +37,7 @@
 
 
 /**
- * Implementation of the Connection/Delegate interface for mysql. 
+ * Implementation of the Connection/Delegate interface for mysql.
  *
  * TODO: Query Timeout has no effect as this is not implemented in MySQL.
  * MySQL does not provide a general way to do this. The MySQL
@@ -58,8 +59,8 @@
 #define T ConnectionDelegate_T
 struct T {
         Connection_T delegator;
-	MYSQL *db;
-	int lastError;
+        MYSQL *db;
+        int lastError;
         StringBuffer_T sb;
 };
 #define MYSQL_OK 0
@@ -93,7 +94,7 @@ static MYSQL *_doConnect(Connection_T delegator, char **error) {
         const char *host = URL_getHost(url);
         const char *unix_socket = URL_getParameter(url, "unix-socket");
         if (unix_socket) {
-		host = "localhost"; // Make sure host is localhost if unix socket is to be used
+                host = "localhost"; // Make sure host is localhost if unix socket is to be used
         } else if (! host)
                 ERROR("no host specified in URL");
         int port = URL_getPort(url);
@@ -126,6 +127,8 @@ static MYSQL *_doConnect(Connection_T delegator, char **error) {
         // Set Connection ResultSet fetch size if found in URL
         const char *fetchSize = URL_getParameter(url, "fetch-size");
         if (fetchSize) {
+                if (!isdigit(fetchSize[0]))
+                        ERROR("Invalid fetch-size value. Not a number");
                 int rows = Str_parseInt(fetchSize);
                 if (rows < 1)
                         ERROR("invalid fetch-size");
@@ -163,23 +166,23 @@ static int _prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
 static T MysqlConnection_new(Connection_T delegator, char **error) {
         assert(delegator);
         assert(error);
-	T C;
+        T C;
         MYSQL *db;
         if (! (db = _doConnect(delegator, error)))
                 return NULL;
-	NEW(C);
+        NEW(C);
         C->db = db;
         C->delegator = delegator;
         C->sb = StringBuffer_create(STRLEN);
-	return C;
+        return C;
 }
 
 
 static void MysqlConnection_free(T *C) {
-	assert(C && *C);
+        assert(C && *C);
         mysql_close((*C)->db);
-        StringBuffer_free(&(*C)->sb);
-	FREE(*C);
+        StringBuffer_free(&((*C)->sb));
+        FREE(*C);
 }
 
 
@@ -190,21 +193,21 @@ static int MysqlConnection_ping(T C) {
 
 
 static int MysqlConnection_beginTransaction(T C) {
-	assert(C);
+        assert(C);
         C->lastError = mysql_query(C->db, "START TRANSACTION;");
         return (C->lastError == MYSQL_OK);
 }
 
 
 static int MysqlConnection_commit(T C) {
-	assert(C);
+        assert(C);
         C->lastError = mysql_query(C->db, "COMMIT;");
         return (C->lastError == MYSQL_OK);
 }
 
 
 static int MysqlConnection_rollback(T C) {
-	assert(C);
+        assert(C);
         C->lastError = mysql_query(C->db, "ROLLBACK;");
         return (C->lastError == MYSQL_OK);
 }
@@ -229,7 +232,7 @@ static int MysqlConnection_execute(T C, const char *sql, va_list ap) {
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         C->lastError = mysql_real_query(C->db, StringBuffer_toString(C->sb), StringBuffer_length(C->sb));
-	return (C->lastError == MYSQL_OK);
+        return (C->lastError == MYSQL_OK);
 }
 
 
@@ -272,7 +275,7 @@ static PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql
 
 
 static const char *MysqlConnection_getLastError(T C) {
-	assert(C);
+        assert(C);
         if (mysql_errno(C->db))
                 return mysql_error(C->db);
         return StringBuffer_toString(C->sb); // Either the statement itself or a statement error

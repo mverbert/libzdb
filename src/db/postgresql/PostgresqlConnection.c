@@ -169,7 +169,7 @@ void PostgresqlConnection_free(T *C) {
                 PQclear((*C)->res);
         if ((*C)->db)
                 PQfinish((*C)->db);
-        StringBuffer_free(&(*C)->sb);
+        StringBuffer_free(&((*C)->sb));
 	FREE(*C);
 }
 

@@ -201,7 +201,7 @@ void OracleConnection_free(T* C) {
                 OCIServerDetach((*C)->srv, (*C)->err, OCI_DEFAULT);
         if ((*C)->env)
                 OCIHandleFree((*C)->env, OCI_HTYPE_ENV);
-        StringBuffer_free(&(*C)->sb);
+        StringBuffer_free(&((*C)->sb));
         if ((*C)->watchdog)
             Thread_join((*C)->watchdog);
         FREE(*C);

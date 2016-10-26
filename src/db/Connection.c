@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) Tildeslash Ltd. All rights reserved.
  *
@@ -152,9 +153,9 @@ T Connection_new(void *pool, char **error) {
 void Connection_free(T *C) {
         assert(C && *C);
         Connection_clear((*C));
-        Vector_free(&(*C)->prepared);
+        Vector_free(&((*C)->prepared));
         if ((*C)->D)
-                (*C)->op->free(&(*C)->D);
+                (*C)->op->free(&((*C)->D));
 	FREE(*C);
 }
 
@@ -252,9 +253,6 @@ void Connection_clear(T C) {
         // Set properties back to default values
         C->maxRows = 0;
         C->queryTimeout = SQL_DEFAULT_TIMEOUT;
-        C->fetchSize = URL_getParameter(C->url, "fetch-size")
-                ? Str_parseInt(URL_getParameter(C->url, "fetch-size"))
-                : SQL_DEFAULT_PREFETCH_ROWS;
 }
 
 

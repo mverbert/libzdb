@@ -182,7 +182,7 @@ void SQLiteConnection_free(T *C) {
 	assert(C && *C);
         while (sqlite3_close((*C)->db) == SQLITE_BUSY)
                Time_usleep(10);
-        StringBuffer_free(&(*C)->sb);
+        StringBuffer_free(&((*C)->sb));
 	FREE(*C);
 }
 
