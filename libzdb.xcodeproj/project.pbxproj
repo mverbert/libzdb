@@ -140,11 +140,8 @@
 		52788BE213E716A0002F3C7C /* ConnectionPool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = ConnectionPool.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52788BE313E716A0002F3C7C /* ConnectionPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ConnectionPool.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788BE513E716A0002F3C7C /* MysqlConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = MysqlConnection.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		52788BE613E716A0002F3C7C /* MysqlConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MysqlConnection.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = MysqlPreparedStatement.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		52788BE813E716A0002F3C7C /* MysqlPreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MysqlPreparedStatement.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788BE913E716A0002F3C7C /* MysqlResultSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = MysqlResultSet.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		52788BEA13E716A0002F3C7C /* MysqlResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MysqlResultSet.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788BEC13E716A0002F3C7C /* OracleConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = OracleConnection.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52788BED13E716A0002F3C7C /* OracleConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OracleConnection.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = OraclePreparedStatement.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -354,11 +351,8 @@
 			isa = PBXGroup;
 			children = (
 				52788BE513E716A0002F3C7C /* MysqlConnection.c */,
-				52788BE613E716A0002F3C7C /* MysqlConnection.h */,
 				52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */,
-				52788BE813E716A0002F3C7C /* MysqlPreparedStatement.h */,
 				52788BE913E716A0002F3C7C /* MysqlResultSet.c */,
-				52788BEA13E716A0002F3C7C /* MysqlResultSet.h */,
 			);
 			path = mysql;
 			sourceTree = "<group>";
