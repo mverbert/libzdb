@@ -49,7 +49,7 @@
  * information, the time is expected and assumed to be in the GTM timezone, 
  * i.e. in UTC. Example:
  * <pre>
- *  Time_toTimestamp("2013-12-15 00:12:58Z") -> 1387066378
+ *  Time_toTimestamp("2013-12-15 00:12:58") -> 1387066378
  *  Time_toTimestamp("2013-12-14 19:12:58-05:00") -> 1387066378
  * </pre>
  * @param s The ISO-8601 Date String to parse. Time is expected to be in UTC, 
