@@ -182,7 +182,10 @@
  * oracle:///servicename?user=scott&password=tiger
  * </code></dd></dt>
  * \endhtmlonly
- *  
+ *
+ * See <a href="oracleoptions.html">oracle options</a> for all properties that
+ * can be set for a oracle connection URL.
+ *
  * <h2>Example:</h2>
  * To obtain a connection pool for a MySQL database, the code below can be
  * used. The exact same code can be used for PostgreSQL, SQLite and Oracle, 
