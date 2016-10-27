@@ -88,6 +88,7 @@ struct Connection_S {
         int queryTimeout;
         Vector_T prepared;
 	int isInTransaction;
+        int fetchSizeDefault;
         time_t lastAccessedTime;
         ResultSet_T resultSet;
         ConnectionDelegate_T D;
@@ -146,6 +147,8 @@ T Connection_new(void *pool, char **error) {
         C->fetchSize = SQL_DEFAULT_PREFETCH_ROWS;
         if (! _setDelegate(C, error))
                 Connection_free(&C);
+        // If URL parameter has fetch-size, C->fetchSize is modified, save it as the default
+        C->fetchSizeDefault = C->fetchSize;
 	return C;
 }
 
@@ -253,6 +256,7 @@ void Connection_clear(T C) {
         // Set properties back to default values
         C->maxRows = 0;
         C->queryTimeout = SQL_DEFAULT_TIMEOUT;
+        C->fetchSize = C->fetchSizeDefault;
 }
 
 
