@@ -145,10 +145,11 @@ T Connection_new(void *pool, char **error) {
         C->url = ConnectionPool_getURL(pool);
         C->queryTimeout = SQL_DEFAULT_TIMEOUT;
         C->fetchSize = SQL_DEFAULT_PREFETCH_ROWS;
-        if (! _setDelegate(C, error))
+        if (! _setDelegate(C, error)) {
                 Connection_free(&C);
-        // If URL parameter has fetch-size, C->fetchSize is modified, save it as the default
-        C->fetchSizeDefault = C->fetchSize;
+        } else {
+                C->fetchSizeDefault = C->fetchSize;
+        }
 	return C;
 }
 

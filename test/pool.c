@@ -295,7 +295,7 @@ static void testPool(const char *testURL) {
                 printf("success\n");
                 
                 // fetch-size
-                printf("\tResult: Test fetch-size");
+                printf("\tResult: check fetch-size..");
                 assert(Connection_getFetchSize(con) == SQL_DEFAULT_PREFETCH_ROWS);
                 Connection_setFetchSize(con, 50);
                 assert(Connection_getFetchSize(con) == 50);
