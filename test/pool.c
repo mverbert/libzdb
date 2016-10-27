@@ -294,6 +294,21 @@ static void testPool(const char *testURL) {
                 assert(i==12);
                 printf("success\n");
                 
+                // fetch-size
+                printf("\tResult: Test fetch-size");
+                assert(Connection_getFetchSize(con) == SQL_DEFAULT_PREFETCH_ROWS);
+                Connection_setFetchSize(con, 50);
+                assert(Connection_getFetchSize(con) == 50);
+                ResultSet_T fs = Connection_executeQuery(con, "select * from zild_t;");
+                assert(fs);
+                // Assert that result set inherits Connection fetch-size
+                assert(ResultSet_getFetchSize(fs) == 50);
+                // Set fetch-size for this ResultSet
+                ResultSet_setFetchSize(fs, 12);
+                while (ResultSet_next(fs));
+                assert(ResultSet_getFetchSize(fs) == 12);
+                printf("success\n");
+
                 /* Need to close and release statements before
                    we can drop the table, sqlite need this */
                 Connection_clear(con);
