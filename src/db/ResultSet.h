@@ -210,9 +210,9 @@ int ResultSet_next(T R);
 /**
  * Returns true if the value of the designated column in the current row of
  * this ResultSet object is SQL NULL, otherwise false. If the column value is 
- * SQL NULL, a Result Set returns the NULL pointer for string and blob values
- * and 0 for primitive data types. Use this method if you need to differ 
- * between SQL NULL and the value NULL/0.
+ * SQL NULL, a Result Set returns the NULL pointer for reference types and 0
+ * for value types. Use this method if you need to differ between SQL NULL and
+ * the value NULL/0.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @return True if column value is SQL NULL, otherwise false
