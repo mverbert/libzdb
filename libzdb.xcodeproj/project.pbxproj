@@ -186,6 +186,8 @@
 		528554131CC525540086FECD /* libmysqlclient.20.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.20.dylib; path = "/usr/local/mysql-5.7.12-osx10.11-x86_64/lib/libmysqlclient.20.dylib"; sourceTree = "<absolute>"; };
 		528847031DC1215F00D0BB40 /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "../../../../usr/local/mysql-5.5.19-osx10.6-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<group>"; };
 		528F4D3C145A5AA3002CD67D /* libzdb.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libzdb.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		52931A3D1DC2D6710032240D /* oracleoptions.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = oracleoptions.html; sourceTree = "<group>"; };
+		52931A3E1DC2D6710032240D /* libzdboptions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = libzdboptions.css; sourceTree = "<group>"; };
 		529F8EBD1775031E0067C40A /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		529F8EC1177503520067C40A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		52C32EE9145BA3A500C72758 /* Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
@@ -254,9 +256,9 @@
 				52788C2413E716A0002F3C7C /* tools */,
 				526B7ABD13E7564B008E2CB1 /* libs */,
 				528F4D43145A5AB9002CD67D /* Products */,
-				524ACAE41B87D68100A4F85B /* select */,
 				524ACAE51B87D68100A4F85B /* unit */,
 				524ACAE61B87D68100A4F85B /* pool */,
+				524ACAE41B87D68100A4F85B /* select */,
 				528847021DC1215F00D0BB40 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -300,8 +302,10 @@
 			children = (
 				52788BD513E716A0002F3C7C /* database.png */,
 				52E79D72168EA4FC00E510BF /* libzdb.css */,
+				52931A3E1DC2D6710032240D /* libzdboptions.css */,
 				52788BD613E716A0002F3C7C /* mysqloptions.html */,
 				52788BD713E716A0002F3C7C /* postgresoptions.html */,
+				52931A3D1DC2D6710032240D /* oracleoptions.html */,
 			);
 			path = "api-docs";
 			sourceTree = "<group>";
@@ -588,6 +592,12 @@
 			attributes = {
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Tildeslash Ltd.";
+				TargetAttributes = {
+					52F236FD13E724D600D24B82 = {
+						DevelopmentTeam = Z7D8RDKK69;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 521CF21A13E71619004A7291 /* Build configuration list for PBXProject "libzdb" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -873,10 +883,12 @@
 		52F2370013E724D600D24B82 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Z7D8RDKK69;
 				EXECUTABLE_PREFIX = "";
-				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -895,7 +907,6 @@
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/9.3/lib",
 					"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",
@@ -913,9 +924,11 @@
 		52F2370113E724D600D24B82 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = Z7D8RDKK69;
 				EXECUTABLE_PREFIX = "";
-				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
@@ -933,7 +946,6 @@
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/9.3/lib",
 					"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-pointer-sign",

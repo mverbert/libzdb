@@ -49,27 +49,9 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct Cop_T sqlite3cops = {
-        .name 		 	= "sqlite",
-        .new 		 	= SQLiteConnection_new,
-        .free 		 	= SQLiteConnection_free,
-        .setQueryTimeout 	= SQLiteConnection_setQueryTimeout,
-        .setMaxRows 	 	= SQLiteConnection_setMaxRows,
-        .ping		 	= SQLiteConnection_ping,
-        .beginTransaction	= SQLiteConnection_beginTransaction,
-        .commit			= SQLiteConnection_commit,
-        .rollback		= SQLiteConnection_rollback,
-        .lastRowId		= SQLiteConnection_lastRowId,
-        .rowsChanged		= SQLiteConnection_rowsChanged,
-        .execute		= SQLiteConnection_execute,
-        .executeQuery		= SQLiteConnection_executeQuery,
-        .prepareStatement	= SQLiteConnection_prepareStatement,
-        .getLastError		= SQLiteConnection_getLastError
-};
-
 #define T ConnectionDelegate_T
 struct T {
-        URL_T url;
+        Connection_T delegator;
 	sqlite3 *db;
 	int maxRows;
 	int timeout;
@@ -84,10 +66,10 @@ extern const struct Pop_T sqlite3pops;
 /* ------------------------------------------------------- Private methods */
 
 
-static sqlite3 *_doConnect(URL_T url, char **error) {
+static sqlite3 *_doConnect(Connection_T delegator, char **error) {
         int status;
 	sqlite3 *db;
-        const char *path = URL_getPath(url);
+        const char *path = URL_getPath(Connection_getURL(delegator));
         if (! path) {
                 *error = Str_dup("no database specified in URL");
                 return NULL;
@@ -128,20 +110,21 @@ static inline void _executeSQL(T C, const char *sql) {
 
 
 static int _setProperties(T C, char **error) {
-        const char **properties = URL_getParameterNames(C->url);
+        URL_T url = Connection_getURL(delegator);
+        const char **properties = URL_getParameterNames(url);
         if (properties) {
                 StringBuffer_clear(C->sb);
                 for (int i = 0; properties[i]; i++) {
                         if (IS(properties[i], "heap_limit")) // There is no PRAGMA for heap limit as of sqlite-3.7.0, so we make it a configurable property using "heap_limit" [kB]
                                 #if defined(HAVE_SQLITE3_SOFT_HEAP_LIMIT64)
-                                sqlite3_soft_heap_limit64(Str_parseInt(URL_getParameter(C->url, properties[i])) * 1024);
+                                sqlite3_soft_heap_limit64(Str_parseInt(URL_getParameter(url, properties[i])) * 1024);
                                 #elif defined(HAVE_SQLITE3_SOFT_HEAP_LIMIT)
-                                sqlite3_soft_heap_limit(Str_parseInt(URL_getParameter(C->url, properties[i])) * 1024);
+                                sqlite3_soft_heap_limit(Str_parseInt(URL_getParameter(url, properties[i])) * 1024);
                                 #else
                                 DEBUG("heap_limit not supported by your sqlite3 version, please consider upgrading sqlite3\n");
                                 #endif
                         else
-                                StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(C->url, properties[i]));
+                                StringBuffer_append(C->sb, "PRAGMA %s = %s; ", properties[i], URL_getParameter(url, properties[i]));
                 }
                 _executeSQL(C, StringBuffer_toString(C->sb));
                 if (C->lastError != SQLITE_OK) {
@@ -153,24 +136,21 @@ static int _setProperties(T C, char **error) {
 }
 
 
-/* ----------------------------------------------------- Protected methods */
+/* ---------------------------------------------- ConnectionDelegate methods */
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility push(hidden)
-#endif
-
-T SQLiteConnection_new(URL_T url, char **error) {
+static T SQLiteConnection_new(Connection_T delegator, char **error) {
+        assert(delegator);
+        assert(error);
 	T C;
         sqlite3 *db;
-	assert(url);
-        assert(error);
-        if (! (db = _doConnect(url, error)))
+        if (! (db = _doConnect(delegator, error)))
                 return NULL;
 	NEW(C);
         C->db = db;
-        C->url = url;
+        C->delegator = delegator;
         C->timeout = SQL_DEFAULT_TIMEOUT;
+        sqlite3_busy_timeout(C->db, C->timeout);
         C->sb = StringBuffer_create(STRLEN);
         if (! _setProperties(C, error))
                 SQLiteConnection_free(&C);
@@ -178,7 +158,7 @@ T SQLiteConnection_new(URL_T url, char **error) {
 }
 
 
-void SQLiteConnection_free(T *C) {
+static void SQLiteConnection_free(T *C) {
 	assert(C && *C);
         while (sqlite3_close((*C)->db) == SQLITE_BUSY)
                Time_usleep(10);
@@ -187,62 +167,49 @@ void SQLiteConnection_free(T *C) {
 }
 
 
-void SQLiteConnection_setQueryTimeout(T C, int ms) {
-	assert(C);
-        C->timeout = ms;
-	sqlite3_busy_timeout(C->db, C->timeout);
-}
-
-
-void SQLiteConnection_setMaxRows(T C, int max) {
-	assert(C);
-	C->maxRows = max;
-}
-
-
-int SQLiteConnection_ping(T C) {
+static int SQLiteConnection_ping(T C) {
         assert(C);
         _executeSQL(C, "select 1;");
         return (C->lastError == SQLITE_OK);
 }
 
 
-int SQLiteConnection_beginTransaction(T C) {
+static int SQLiteConnection_beginTransaction(T C) {
 	assert(C);
         _executeSQL(C, "BEGIN TRANSACTION;");
         return (C->lastError == SQLITE_OK);
 }
 
 
-int SQLiteConnection_commit(T C) {
+static int SQLiteConnection_commit(T C) {
 	assert(C);
         _executeSQL(C, "COMMIT TRANSACTION;");
         return (C->lastError == SQLITE_OK);
 }
 
 
-int SQLiteConnection_rollback(T C) {
+static int SQLiteConnection_rollback(T C) {
 	assert(C);
         _executeSQL(C, "ROLLBACK TRANSACTION;");
         return (C->lastError == SQLITE_OK);
 }
 
 
-long long SQLiteConnection_lastRowId(T C) {
+static long long SQLiteConnection_lastRowId(T C) {
         assert(C);
         return sqlite3_last_insert_rowid(C->db);
 }
 
 
-long long SQLiteConnection_rowsChanged(T C) {
+static long long SQLiteConnection_rowsChanged(T C) {
         assert(C);
         return (long long)sqlite3_changes(C->db);
 }
 
 
-int SQLiteConnection_execute(T C, const char *sql, va_list ap) {
+static int SQLiteConnection_execute(T C, const char *sql, va_list ap) {
+        assert(C);
         va_list ap_copy;
-	assert(C);
         va_copy(ap_copy, ap);
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
@@ -251,7 +218,7 @@ int SQLiteConnection_execute(T C, const char *sql, va_list ap) {
 }
 
 
-ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
+static ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
         va_list ap_copy;
         const char *tail;
 	sqlite3_stmt *stmt;
@@ -272,7 +239,7 @@ ResultSet_T SQLiteConnection_executeQuery(T C, const char *sql, va_list ap) {
 }
 
 
-PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_list ap) {
+static PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_list ap) {
         va_list ap_copy;
         const char *tail;
         sqlite3_stmt *stmt;
@@ -295,12 +262,28 @@ PreparedStatement_T SQLiteConnection_prepareStatement(T C, const char *sql, va_l
 }
 
 
-const char *SQLiteConnection_getLastError(T C) {
+static const char *SQLiteConnection_getLastError(T C) {
 	assert(C);
 	return sqlite3_errmsg(C->db);
 }
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility pop
-#endif
+/* ----------------------------------------------- SQLite ConnectionDelegate */
+
+
+const struct Cop_T sqlite3cops = {
+        .name 		 	= "sqlite",
+        .new 		 	= SQLiteConnection_new,
+        .free 		 	= SQLiteConnection_free,
+        .ping		 	= SQLiteConnection_ping,
+        .beginTransaction	= SQLiteConnection_beginTransaction,
+        .commit			= SQLiteConnection_commit,
+        .rollback		= SQLiteConnection_rollback,
+        .lastRowId		= SQLiteConnection_lastRowId,
+        .rowsChanged		= SQLiteConnection_rowsChanged,
+        .execute		= SQLiteConnection_execute,
+        .executeQuery		= SQLiteConnection_executeQuery,
+        .prepareStatement	= SQLiteConnection_prepareStatement,
+        .getLastError		= SQLiteConnection_getLastError
+};
+

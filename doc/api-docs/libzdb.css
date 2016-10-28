@@ -1,21 +1,35 @@
-body { 
-    background-color:#fbfbfb;
-    margin:0 auto;
-    font-family: "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 1.7;
-    color:#333;
+body {background-color:white;}
+body,div,p,dl,.memname, .params, .exception {
+    font: normal normal normal 16px/22px "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;
 }
-h1 {  color: #333;
-    font-size: 62px;
-    letter-spacing: -0.03em;
-    font-weight: 300;
-    text-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px;
+#nav-path {display:none;}
+h2:first-of-type {margin-top:2px; border:none;}
+h2.groupheader {font-size:26px; line-height:28px;color:#286796;}
+h2.desc {font-weight:100; margin-top:1em;}
+div.groupheader { font-weight:600; font-size:18px;color: rgb(51, 51, 51);}
+h3 {font-size:20px;color: rgb(51, 51, 51);}
+div.header { background-image:none; background-color: #3b96d7; color:white;}
+div.title {text-align:center;font-size: 28px; font-weight:100;}
+.summary {display:none;}
+dl.section {border:none;}
+.memproto > *, .memitem > * {
+    box-shadow: none!important;
+    background-image:none!important;
 }
-body {margin: 6em;}
-.example {color:#555;}
-table {border-collapse: collapse;}
-table, th, td {border: 1px solid #ccc; padding:0.5em;}
-th {text-align:left;}
-td:first-child {white-space:nowrap;color:maroon;}
+.memproto {
+    border-bottom: 1px #b8c8e9 solid;
+    background-color: #f7fcff;
+}
+pre {white-space: pre-wrap;padding-left:1em;}
+.textinfo {color: #428bca;}
+.textnote {color: #a94442;}
+p > code {padding-left:1em;}
+a.back {
+    font-size:48px; 
+    font-size: 28px;
+    text-decoration:none;
+    color:white;
+    position:absolute;
+    top: 20px;
+    left: 20px;
+}

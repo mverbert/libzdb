@@ -3,30 +3,6 @@
 <title>$title</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
-<style type="text/css" media="screen">
-    body {background-color:white;}
-    body,div,p,dl,.memname, .params, .exception {font: normal normal normal 16px/22px "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;}
-    #nav-path {display:none;}
-    h2:first-of-type {margin-top:2px; border:none;}
-    h2.groupheader {font-size:26px; line-height:28px;color:#286796;}
-    div.groupheader { font-weight:600; font-size:18px;color: rgb(51, 51, 51);}
-    h3 {font-size:20px;color: rgb(51, 51, 51);}
-    div.header { background-image:none; background-color: #3b96d7; color:white;}
-    div.title {text-align:center;font-size: 28px; font-weight:100;}
-    .summary {display:none;}
-    dl.section {border:none;}
-    .memproto > *, .memitem > * {
-            box-shadow: none!important;
-            -moz-box-shadow: none!important;
-            -webkit-box-shadow: none!important;
-            background-image:none!important;
-    }
-    .memproto {
-            border-bottom: 1px #b8c8e9 solid;
-            background-color: #f7fcff;
-    }
-    pre {white-space: pre-wrap;}
-    .textinfo {color: #428bca;}
-    .textnote {color: #a94442;}
-</style>
+<link rel="stylesheet" href="libzdb.css">
 </head><body>
+<a href="" class="back" onclick="history.back();return false;">⬅</a>

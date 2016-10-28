@@ -58,7 +58,7 @@
  * result set. For columns that are NOT explicitly named in the query,
  * it is best to use column indices.
  *
- * <h3>Example</h3>
+ * <h2 class="desc">Example</h2>
  * The following examples demonstrate how to obtain a ResultSet and 
  * how to get values from the set:
  * <pre>
@@ -78,7 +78,7 @@
  * printf("Number of employees: %s\n", ResultSet_next(r) ? ResultSet_getString(r, 1) : "none");
  * </pre>
  *
- * <h3>Automatic type conversions</h3>
+ * <h2 class="desc">Automatic type conversions</h2>
  * A ResultSet store values internally as bytes and convert values 
  * on-the-fly to numeric types when requested, such as when ResultSet_getInt()
  * or one of the other numeric get-methods are called. In the above example, 
@@ -87,7 +87,7 @@
  * ResultSet_getInt() to get the value as an integer. In the latter case, note
  * that if the column value cannot be converted to a number, an SQLException is thrown.
  *
- * <h3>Date and Time</h3>
+ * <h2 class="desc">Date and Time</h2>
  * Result Set provides two principal methods for retrieving temporal column
  * values as C types. ResultSet_getTimestamp() converts a SQL timestamp value
  * to a <code>time_t</code> and ResultSet_getDateTime() returns a 

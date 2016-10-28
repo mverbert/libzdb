@@ -52,12 +52,12 @@
  * methods ConnectionPool_setInitialConnections() and 
  * ConnectionPool_setMaxConnections(). 
  *
- * <h2>Supported database systems:</h2>
+ * <h2 class="desc">Supported database systems:</h2>
  * This library may be built with support for many different database 
  * systems. To test if a particular system is supported use the method 
  * Connection_isSupported().  
  *
- * <h2>Life-cycle methods:</h2>
+ * <h2 class="desc">Life-cycle methods:</h2>
  * Clients should call ConnectionPool_start() to establish the connection pool 
  * against the database server before using the pool. To shutdown 
  * connections from the database server use ConnectionPool_stop(). Set
@@ -69,17 +69,15 @@
  * size of the pool
  
  *
- * <h2>Connection URL:</h2>
+ * <h2 class="desc">Connection URL:</h2>
  * The URL given to a Connection Pool at creation time specify a database 
  * connection on the standard URL format. The format of the connection URL 
  * is defined as:
  *
- * \htmlonly
- * <center><code>
+ * <code>
  * database://[user:password@][host][:port]/database[?propertyName1][=propertyValue1][&propertyName2][=propertyValue2]...
- * </code></center>
- * \endhtmlonly
- * 
+ * </code>
+ *
  * The property names <code>user</code> and <code>password</code> are always
  * recognized and specify how to login to the database. Other properties 
  * depends on the database server in question. User name and password can 
@@ -91,21 +89,17 @@
  * Here is an example on how to connect to a <a href="http://www.mysql.org/">
  * MySQL</a> database server:
  *
- * \htmlonly
- * <dt><dd><code>
+ * <code>
  * mysql://localhost:3306/test?user=root&password=swordfish<br/>
- * </code></dd></dt>
- * \endhtmlonly
+ * </code>
  *
  * In this case the username, <code>root</code> and password, <code>swordfish
  * </code> are specified as properties to the URL. An alternative is to 
  * use the auth-part of the URL to specify authentication information:
  *
- * \htmlonly
- * <dt><dd><code>
- * mysql://root:swordfish@localhost:3306/test
- * </code></dd></dt>
- * \endhtmlonly
+ * <code>
+ * mysql://root:swordfish\@localhost:3306/test
+ * </code>
  *
  * See <a href="mysqloptions.html">mysql options</a> for all properties that
  * can be set for a mysql connection URL.
@@ -127,33 +121,27 @@
  * An URL for 
  * connecting to a SQLite database might look like:
  *
- * \htmlonly
- * <dt><dd><code>
+ * <code>
  * sqlite:///var/sqlite/test.db?synchronous=normal&heap_limit=8000&foreign_keys=on
- * </code></dd></dt>
- * \endhtmlonly
+ * </code>
  *
  * <h4>PostgreSQL:</h4>
  *
  * The URL for connecting to a <a href="http://www.postgresql.org/">
  * PostgreSQL</a> database server might look like:
  *
- * \htmlonly
- * <dt><dd><code>
+ * <code>
  * postgresql://localhost:5432/test?user=root&password=swordfish<br/>
- * </code></dd></dt>
- * \endhtmlonly
+ * </code>
  *
  * As with the MySQL URL, the username and password are specified as 
  * properties to the URL. Likewise, the auth-part of the URL can be used 
  * instead to specify the username and the password:
  *
- * \htmlonly
- * <dt><dd><code>
- * postgresql://root:swordfish@localhost/test?use-ssl=true
- * </code></dd></dt>
- * \endhtmlonly
- * 
+ * <code>
+ * postgresql://root:swordfish\@localhost/test?use-ssl=true
+ * </code>
+ *
  * In this example we have also omitted the port number to the server, in
  * which case the default port number, <i>5432</i>, for PostgreSQL is used. In
  * addition we have added an extra parameter to the URL, so connection to 
@@ -167,34 +155,28 @@
  * The URL for connecting to an <a href="http://www.oracle.com/">
  * Oracle</a> database server might look like:
  *
- * \htmlonly
- * <dt><dd><code>
+ * <code>
  * oracle://localhost:1521/test?user=scott&password=tiger<br/>
- * </code></dd></dt>
- * \endhtmlonly
+ * </code>
  *
  * The auth-part of the URL can be used instead to specify the username 
  * and the password. In addition, you may specify a service name in the URL
  * instead if you have setup a <code>tnsnames.ora</code> configuration file.
  *
- * \htmlonly
- * <dt><dd><code>
+ * <code>
  * oracle:///servicename?user=scott&password=tiger
- * </code></dd></dt>
- * \endhtmlonly
+ * </code>
  *
  * See <a href="oracleoptions.html">oracle options</a> for all properties that
  * can be set for a oracle connection URL.
  *
- * <h2>Example:</h2>
+ * <h2 class="desc">Example:</h2>
  * To obtain a connection pool for a MySQL database, the code below can be
  * used. The exact same code can be used for PostgreSQL, SQLite and Oracle, 
  * the only change needed is to modify the Connection URL. Here we connect
  * to the database test on localhost and start the pool with the default 5
  * initial connections.
  *
- * \htmlonly
- * <dt><dd><code>
  * <pre>
  * URL_T url = URL_new("mysql://localhost/test?user=root&password=swordfish");
  * ConnectionPool_T pool = ConnectionPool_new(url);
@@ -215,10 +197,8 @@
  * ConnectionPool_free(&pool);
  * URL_free(&url);
  * </pre>
- * </code></dd></dt>
- * \endhtmlonly
- * 
- * <h2>Optimizing the pool size:</h2>
+ *
+ * <h2 class="desc">Optimizing the pool size:</h2>
  * The pool can be setup to dynamically change the number of active 
  * Connections in the pool depending on the load. A single <code>reaper</code> 
  * thread can be activated at startup to sweep through the pool at a regular
@@ -236,7 +216,7 @@
  * It is recommended to start the pool with a reaper-thread, especially if
  * the pool maintains TCP/IP Connections.
  *
- * <h2>Realtime inspection:</h2>
+ * <h2 class="desc">Realtime inspection:</h2>
  * Two methods can be used to inspect the pool at runtime. The method 
  * ConnectionPool_size() returns the number of connections in the pool, that is,
  * both active and inactive connections. The method ConnectionPool_active() 
