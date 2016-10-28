@@ -96,6 +96,7 @@ distclean-local::
 cleanall: clean distclean
 	-rm -f Makefile.in test/Makefile.in configure aclocal.m4 \
         libzdb-[0-9].*tar.gz conf/config.* $(pkgconfig_DATA)
+	git clean -fxd
 
 verify: libzdb.la
 	cd $(srcdir)/test && $(MAKE) verify	
