@@ -74,9 +74,9 @@
  * connection on the standard URL format. The format of the connection URL 
  * is defined as:
  *
- * <code>
+ * <pre>
  * database://[user:password@][host][:port]/database[?propertyName1][=propertyValue1][&propertyName2][=propertyValue2]...
- * </code>
+ * </pre>
  *
  * The property names <code>user</code> and <code>password</code> are always
  * recognized and specify how to login to the database. Other properties 
@@ -89,17 +89,17 @@
  * Here is an example on how to connect to a <a href="http://www.mysql.org/">
  * MySQL</a> database server:
  *
- * <code>
- * mysql://localhost:3306/test?user=root&password=swordfish<br/>
- * </code>
+ * <pre>
+ * mysql://localhost:3306/test?user=root&password=swordfish
+ * </pre>
  *
  * In this case the username, <code>root</code> and password, <code>swordfish
  * </code> are specified as properties to the URL. An alternative is to 
  * use the auth-part of the URL to specify authentication information:
  *
- * <code>
+ * <pre>
  * mysql://root:swordfish\@localhost:3306/test
- * </code>
+ * </pre>
  *
  * See <a href="mysqloptions.html">mysql options</a> for all properties that
  * can be set for a mysql connection URL.
@@ -121,26 +121,26 @@
  * An URL for 
  * connecting to a SQLite database might look like:
  *
- * <code>
+ * <pre>
  * sqlite:///var/sqlite/test.db?synchronous=normal&heap_limit=8000&foreign_keys=on
- * </code>
+ * </pre>
  *
  * <h4>PostgreSQL:</h4>
  *
  * The URL for connecting to a <a href="http://www.postgresql.org/">
  * PostgreSQL</a> database server might look like:
  *
- * <code>
- * postgresql://localhost:5432/test?user=root&password=swordfish<br/>
- * </code>
+ * <pre>
+ * postgresql://localhost:5432/test?user=root&password=swordfish
+ * </pre>
  *
  * As with the MySQL URL, the username and password are specified as 
  * properties to the URL. Likewise, the auth-part of the URL can be used 
  * instead to specify the username and the password:
  *
- * <code>
+ * <pre>
  * postgresql://root:swordfish\@localhost/test?use-ssl=true
- * </code>
+ * </pre>
  *
  * In this example we have also omitted the port number to the server, in
  * which case the default port number, <i>5432</i>, for PostgreSQL is used. In
@@ -155,17 +155,17 @@
  * The URL for connecting to an <a href="http://www.oracle.com/">
  * Oracle</a> database server might look like:
  *
- * <code>
- * oracle://localhost:1521/test?user=scott&password=tiger<br/>
- * </code>
+ * <pre>
+ * oracle://localhost:1521/test?user=scott&password=tiger
+ * </pre>
  *
  * The auth-part of the URL can be used instead to specify the username 
  * and the password. In addition, you may specify a service name in the URL
  * instead if you have setup a <code>tnsnames.ora</code> configuration file.
  *
- * <code>
+ * <pre>
  * oracle:///servicename?user=scott&password=tiger
- * </code>
+ * </pre>
  *
  * See <a href="oracleoptions.html">oracle options</a> for all properties that
  * can be set for a oracle connection URL.

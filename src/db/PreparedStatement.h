@@ -220,9 +220,9 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
  * is expected to be in the GMT timezone. For instance, a value returned by
  * time(3) which represents the system's notion of the current Greenwich time.
  * <i class="textinfo">SQLite</i> does not have temporal SQL data types per se
- * and using this method with SQLite will store the timestamp value as a numerical
- * type, as-is. This is usually what you want anyway, it is fast, compact and
- * unambiguous.
+ * and using this method with SQLite will store the timestamp value as a 
+ * numerical type, as-is. This is usually what you want; it is fast, compact 
+ * and unambiguous.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The GMT timestamp value to set. E.g. a value returned by time(3)

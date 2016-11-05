@@ -489,7 +489,7 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName);
  * which contains the year literal and <i>not years since 1900</i> which is the
  * convention. All other fields in the structure are set to zero. If the 
  * column type is DateTime or Timestamp all the fields mentioned above are 
- * set, if it is a Date or Time, only the relevant fields are set.
+ * set, if it is a Date or a Time, only the relevant fields are set.
  *
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
@@ -520,7 +520,7 @@ struct tm ResultSet_getDateTime(T R, int columnIndex);
  * which contains the year literal and <i>not years since 1900</i> which is the
  * convention. All other fields in the structure are set to zero. If the
  * column type is DateTime or Timestamp all the fields mentioned above are
- * set, if it is a Date or Time, only the relevant fields are set.
+ * set, if it is a Date or a Time, only the relevant fields are set.
  *
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
