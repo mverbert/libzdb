@@ -27,7 +27,6 @@
 #define CONNECTION_INCLUDED
 
 
-
 /**
  * A <b>Connection</b> represent a connection to a SQL database system.
  *
@@ -131,8 +130,8 @@ int Connection_isInTransaction(T C);
  * Sets the number of milliseconds the Connection should wait for a
  * SQL statement to finish if the database is busy. If the limit is
  * exceeded, then the <code>execute</code> methods will return
- * immediately with an error. The default timeout is <code>3
- * seconds</code>.
+ * immediately with an error. The default timeout is <code>3000</code>
+ * milliseconds (i.e. 3 seconds).
  * @param C A Connection object
  * @param ms The query timeout limit in milliseconds; zero means
  * there is no limit

@@ -29,11 +29,8 @@
 #include <time.h>
 #include <sqlite3.h>
 
-#include "system/Time.h"
-#include "ResultSet.h"
-#include "SQLiteResultSet.h"
-#include "PreparedStatementDelegate.h"
-#include "SQLitePreparedStatement.h"
+#include "zdb.h"
+#include "SQLiteDefs.h"
 
 
 /**
@@ -159,7 +156,7 @@ void SQLitePreparedStatement_execute(T P) {
 #if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
         P->lastError = sqlite3_blocking_step(P->stmt);
 #else
-        EXEC_SQLITE(P->lastError, sqlite3_step(P->stmt), SQL_DEFAULT_TIMEOUT);
+        EXEC_SQLITE(P, sqlite3_step(P->stmt));
 #endif
         switch (P->lastError)
         {

@@ -26,6 +26,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Thread.h"
+#include "system/Time.h"
+
+#include "StringBuffer.h"
 
 
 #if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
@@ -51,20 +54,16 @@ static inline int wait_for_unlock_notify(sqlite3 *db){
         un.fired = 0;
         Mutex_init(un.mutex);
         Sem_init(un.cond);
-
         int rc = sqlite3_unlock_notify(db, unlock_notify_cb, (void *)&un);
         assert(rc == SQLITE_LOCKED || rc == SQLITE_OK);
-
         if (rc == SQLITE_OK) {
                 Mutex_lock(un.mutex);
                 if (! un.fired)
                         Sem_wait(un.cond, un.mutex);
                 Mutex_unlock(un.mutex);
         }
-
         Sem_destroy(un.cond);
         Mutex_destroy(un.mutex);
-
         return rc;
 }
 
@@ -98,31 +97,23 @@ static inline int sqlite3_blocking_exec(sqlite3 *db, const char *zSql, int (*cal
         }
         return rc;
 }
+
+static inline void _executeSQL(ConnectionDelegate_T C, const char *sql) {
+        C->lastError = sqlite3_blocking_exec(C->db, sql, NULL, NULL, NULL);
+}
+
 #else
 /* SQLite timed retry macro */
-#define EXEC_SQLITE(status, action, timeout) \
-        do {\
-                long t = (timeout * USEC_PER_MSEC);\
-                int x = 0;\
-                do {\
-                        status = (action);\
-                } while (((status == SQLITE_BUSY) || (status == SQLITE_LOCKED)) && (x++ <= 9) && ((Time_usleep(t/(rand() % 10 + 100)))));\
-        } while (0)
+#define EXEC_SQLITE(T, F) do { \
+        int steps = 10; long sleep = Connection_getQueryTimeout(T->delegator) * USEC_PER_MSEC / steps; \
+        for (int i = 0; i < steps; i++) { T->lastError = (F); \
+        if ((T->lastError != SQLITE_BUSY) && (T->lastError != SQLITE_LOCKED)) break; \
+        Time_usleep(sleep); sleep += 97; }} while(0)
+
+static inline void _executeSQL(T C, const char *sql) {
+        EXEC_SQLITE(C, sqlite3_exec(C->db, sql, NULL, NULL, NULL));
+}
+
 #endif
 
-
-#define T ResultSetDelegate_T
-T SQLiteResultSet_new(void *stmt, int maxRows, int keep);
-void SQLiteResultSet_free(T *R);
-int SQLiteResultSet_getColumnCount(T R);
-const char *SQLiteResultSet_getColumnName(T R, int columnIndex);
-long SQLiteResultSet_getColumnSize(T R, int columnIndex);
-int SQLiteResultSet_next(T R);
-int SQLiteResultSet_isnull(T R, int columnIndex);
-const char *SQLiteResultSet_getString(T R, int columnIndex);
-const void *SQLiteResultSet_getBlob(T R, int columnIndex, int *size);
-time_t SQLiteResultSet_getTimestamp(T R, int columnIndex);
-struct tm *SQLiteResultSet_getDateTime(T R, int columnIndex, struct tm *tm);
-
-#undef T
 #endif

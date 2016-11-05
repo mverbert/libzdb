@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5215D6441DC38B8800A87C67 /* libmysqlclient.20.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528554131CC525540086FECD /* libmysqlclient.20.dylib */; };
 		52439D8218747B9600EC05B1 /* libpq.5.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52439D8118747B9600EC05B1 /* libpq.5.6.dylib */; };
 		524B1E701543696800158F6E /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE513E716A0002F3C7C /* MysqlConnection.c */; };
 		5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */; };
 		5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE913E716A0002F3C7C /* MysqlResultSet.c */; };
 		527B1E9D1B88A5B300B431F5 /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = 527B1E9C1B88A5B300B431F5 /* Thread.h */; };
-		528847041DC1215F00D0BB40 /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528847031DC1215F00D0BB40 /* libmysqlclient.18.dylib */; };
 		528F4D58145A5C8A002CD67D /* select.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2213E716A0002F3C7C /* select.c */; };
 		529239C114B7AD0100DFC3A1 /* pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2113E716A0002F3C7C /* pool.c */; };
 		529239C214B7AD2100DFC3A1 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
@@ -155,11 +155,9 @@
 		52788BFD13E716A0002F3C7C /* ResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ResultSet.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788BFE13E716A0002F3C7C /* ResultSetDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ResultSetDelegate.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788C0013E716A0002F3C7C /* SQLiteConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = SQLiteConnection.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		52788C0113E716A0002F3C7C /* SQLiteConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SQLiteConnection.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788C0213E716A0002F3C7C /* SQLitePreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = SQLitePreparedStatement.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		52788C0313E716A0002F3C7C /* SQLitePreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SQLitePreparedStatement.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788C0413E716A0002F3C7C /* SQLiteResultSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = SQLiteResultSet.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		52788C0513E716A0002F3C7C /* SQLiteResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SQLiteResultSet.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		52788C0513E716A0002F3C7C /* SQLiteDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SQLiteDefs.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788C0713E716A0002F3C7C /* assert.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = assert.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52788C0813E716A0002F3C7C /* assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = assert.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788C0913E716A0002F3C7C /* AssertException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AssertException.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -229,7 +227,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				528847041DC1215F00D0BB40 /* libmysqlclient.18.dylib in Frameworks */,
+				5215D6441DC38B8800A87C67 /* libmysqlclient.20.dylib in Frameworks */,
 				52439D8218747B9600EC05B1 /* libpq.5.6.dylib in Frameworks */,
 				529F8EBE1775031E0067C40A /* libsqlite3.dylib in Frameworks */,
 			);
@@ -387,11 +385,9 @@
 			isa = PBXGroup;
 			children = (
 				52788C0013E716A0002F3C7C /* SQLiteConnection.c */,
-				52788C0113E716A0002F3C7C /* SQLiteConnection.h */,
 				52788C0213E716A0002F3C7C /* SQLitePreparedStatement.c */,
-				52788C0313E716A0002F3C7C /* SQLitePreparedStatement.h */,
 				52788C0413E716A0002F3C7C /* SQLiteResultSet.c */,
-				52788C0513E716A0002F3C7C /* SQLiteResultSet.h */,
+				52788C0513E716A0002F3C7C /* SQLiteDefs.h */,
 			);
 			path = sqlite;
 			sourceTree = "<group>";
@@ -905,7 +901,7 @@
 					"$(inherited)",
 					/usr/local/mysql/lib,
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/9.3/lib",
-					"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib",
+					"/usr/local/mysql-5.7.12-osx10.11-x86_64/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
@@ -944,7 +940,7 @@
 					"$(inherited)",
 					/usr/local/mysql/lib,
 					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/9.3/lib",
-					"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib",
+					"/usr/local/mysql-5.7.12-osx10.11-x86_64/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (

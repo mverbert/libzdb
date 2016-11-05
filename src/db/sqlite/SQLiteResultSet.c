@@ -29,9 +29,8 @@
 #include <string.h>
 #include <sqlite3.h>
 
-#include "system/Time.h"
-#include "ResultSetDelegate.h"
-#include "SQLiteResultSet.h"
+#include "zdb.h"
+#include "SQLiteDefs.h"
 
 
 /**
@@ -63,6 +62,7 @@ const struct Rop_T sqlite3rops = {
 struct T {
         int keep;
         int maxRows;
+        int lastError;
 	int currentRow;
 	int columnCount;
 	sqlite3_stmt *stmt;
@@ -120,23 +120,22 @@ long SQLiteResultSet_getColumnSize(T R, int columnIndex) {
 
 
 int SQLiteResultSet_next(T R) {
-        int status;
 	assert(R);
         if (R->maxRows && (R->currentRow++ >= R->maxRows))
                 return false;
 #if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
-	status = sqlite3_blocking_step(R->stmt);
+	R->lastError = sqlite3_blocking_step(R->stmt);
 #else
-        EXEC_SQLITE(status, sqlite3_step(R->stmt), SQL_DEFAULT_TIMEOUT);
+        EXEC_SQLITE(R, sqlite3_step(R->stmt));
 #endif
-        if (status != SQLITE_ROW && status != SQLITE_DONE) {
+        if (R->lastError != SQLITE_ROW && R->lastError != SQLITE_DONE) {
 #ifdef HAVE_SQLITE3_ERRSTR
-                THROW(SQLException, "sqlite3_step -- %s", sqlite3_errstr(status));
+                THROW(SQLException, "sqlite3_step -- %s", sqlite3_errstr(R->lastError));
 #else
-                THROW(SQLException, "sqlite3_step -- error code: %d", status);
+                THROW(SQLException, "sqlite3_step -- error code: %d", R->lastError);
 #endif
         }
-        return (status == SQLITE_ROW);
+        return (R->lastError == SQLITE_ROW);
 }
 
 
