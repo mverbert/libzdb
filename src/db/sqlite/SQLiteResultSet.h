@@ -74,7 +74,7 @@ static inline int sqlite3_blocking_step(sqlite3_stmt *pStmt) {
                 rc = wait_for_unlock_notify(sqlite3_db_handle(pStmt));
                 if (rc != SQLITE_OK)
                         break;
-#if defined SQLITE_VERSION_NUMBER < 3070000
+#if defined SQLITE_VERSION_NUMBER < 3070000 || defined SQLITE_OMIT_AUTORESET
                 sqlite3_reset(pStmt);
 #endif
         }
