@@ -25,7 +25,7 @@
 
 #ifndef SQLEXCEPTION_INCLUDED
 #define SQLEXCEPTION_INCLUDED
-#include <Exception.h>
+#include "Exception.h"
 
 
 /**
