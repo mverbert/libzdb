@@ -4,8 +4,10 @@
 
 Version 3.2
 -----------
-* New: Support prefetch rows for MySQL and Oracle. Postgres, by default
-  retrieve the result of a query at once, but can be made to limit the
+* New: Support prefetch rows for MySQL and Oracle. Postgres or rather
+  libpq which libzdb uses, retrieves the full result of a query. There
+  is no way to break the Result Set into number of rows that are fetched
+  in chunks. , but can be made to limit the
   size of the Result Set by declaring a cursor and use FETCH in SQL.
   SQLite is a client side database and has no concept of prefetch.
   Thanks to jianlinlong (abc100m) for the suggestion and pull request
