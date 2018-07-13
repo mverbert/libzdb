@@ -433,12 +433,15 @@ void ConnectionPool_returnConnection(T P, Connection_T connection);
 
 /**
  * Close all inactive Connections in the pool, down to initial connections. 
- * Inactive Connection are closed if and only if its 
- * <code>connectionTimeout</code> has expired <i>or</i> if the Connection 
+ * An inactive Connection is closed if and only if its
+ * <code>connectionTimeout</code> has expired <i>or</i> if the Connection
  * failed the ping test against the database. Active Connections are 
  * <i>not</i> closed by this method. 
  * @param P A ConnectionPool object
  * @return The number of Connections that was closed
+ * @see ConnectionPool_setConnectionTimeout
+ * @see ConnectionPool_setInitialConnections
+ * @see Connection_ping
  */
 int ConnectionPool_reapConnections(T P);
 

@@ -204,7 +204,7 @@ URL_T Connection_getURL(T C);
 //@}
 
 /**
- * Ping the database server and returns true if this Connection is 
+ * Ping the database server and return true if this Connection is 
  * alive, otherwise false in which case the Connection should be closed. 
  * @param C A Connection object
  * @return true if Connection is connected to a database server 
