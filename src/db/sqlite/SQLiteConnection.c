@@ -70,17 +70,7 @@ static sqlite3 *_doConnect(Connection_T delegator, char **error) {
         }
         /* Shared cache mode help reduce database lock problems if libzdb is used with many threads */
 #if SQLITE_VERSION_NUMBER >= 3005000
-#ifndef DARWIN
-        /*
-         SQLite doc e.al.: "sqlite3_enable_shared_cache is disabled on MacOS X 10.7 and iOS version 5.0 and
-         will always return SQLITE_MISUSE. On those systems, shared cache mode should be enabled
-         per-database connection via sqlite3_open_v2() with SQLITE_OPEN_SHAREDCACHE".
-         As of OS X 10.10.4 this method is still deprecated and it is unclear if the recomendation above
-         holds as SQLite from 3.5 requires that both sqlite3_enable_shared_cache() _and_
-         sqlite3_open_v2(SQLITE_OPEN_SHAREDCACHE) is used to enable shared cache (!).
-         */
         sqlite3_enable_shared_cache(true);
-#endif
         status = sqlite3_open_v2(path, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_SHAREDCACHE, NULL);
 #else
         status = sqlite3_open(path, &db);

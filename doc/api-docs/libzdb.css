@@ -16,9 +16,18 @@ dl.section {border:none;}
     box-shadow: none!important;
     background-image:none!important;
 }
+.memtitle {
+    display: none;
+}
 .memproto {
+    border-top-left-radius: 5px;
     border-bottom: 1px #b8c8e9 solid;
-    background-color: #f7fcff;
+    background-color: #E4F1FE;
+}
+.memname {
+    color: #2c3e50!important;
+    text-shadow: none;
+    font-weight: 600 !important;
 }
 pre {white-space: pre-wrap;padding-left:1em;}
 .textinfo {color: #428bca;}
