@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		521AF74A20F82CED00030C4F /* libmysqlclient.18.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 521AF74920F82CED00030C4F /* libmysqlclient.18.dylib */; };
 		52439D8218747B9600EC05B1 /* libpq.5.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52439D8118747B9600EC05B1 /* libpq.5.6.dylib */; };
 		524B1E701543696800158F6E /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE513E716A0002F3C7C /* MysqlConnection.c */; };
 		5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */; };
 		5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE913E716A0002F3C7C /* MysqlResultSet.c */; };
 		527B1E9D1B88A5B300B431F5 /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = 527B1E9C1B88A5B300B431F5 /* Thread.h */; };
-		528554141CC525540086FECD /* libmysqlclient.20.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528554131CC525540086FECD /* libmysqlclient.20.dylib */; };
 		528F4D58145A5C8A002CD67D /* select.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2213E716A0002F3C7C /* select.c */; };
 		529239C114B7AD0100DFC3A1 /* pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2113E716A0002F3C7C /* pool.c */; };
 		529239C214B7AD2100DFC3A1 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
@@ -110,6 +110,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		521AF74920F82CED00030C4F /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "../../../../usr/local/mysql-5.5.19-osx10.6-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<group>"; };
 		52439D8118747B9600EC05B1 /* libpq.5.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.5.6.dylib; path = /Applications/Postgres.app/Contents/Versions/9.3/lib/libpq.5.6.dylib; sourceTree = "<absolute>"; };
 		524ACAE41B87D68100A4F85B /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
 		524ACAE51B87D68100A4F85B /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,7 +236,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				528554141CC525540086FECD /* libmysqlclient.20.dylib in Frameworks */,
+				521AF74A20F82CED00030C4F /* libmysqlclient.18.dylib in Frameworks */,
 				52439D8218747B9600EC05B1 /* libpq.5.6.dylib in Frameworks */,
 				529F8EBE1775031E0067C40A /* libsqlite3.dylib in Frameworks */,
 			);
@@ -244,6 +245,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		521AF74820F82CED00030C4F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				521AF74920F82CED00030C4F /* libmysqlclient.18.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		521CF21513E71619004A7291 = {
 			isa = PBXGroup;
 			children = (
@@ -265,6 +274,7 @@
 				524ACAE41B87D68100A4F85B /* select */,
 				524ACAE51B87D68100A4F85B /* unit */,
 				524ACAE61B87D68100A4F85B /* pool */,
+				521AF74820F82CED00030C4F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -888,13 +898,14 @@
 					$SRCROOT/src/util,
 					$SRCROOT/src/exceptions,
 					$SRCROOT/src/db,
-					/Applications/Postgres.app/Contents/Versions/9.3/include,
+					/Applications/Postgres.app/Contents/Versions/latest/include,
 					"/usr/local/mysql/include/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/mysql/lib,
-					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/9.3/lib",
+					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/latest/lib",
+					"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -925,13 +936,14 @@
 					$SRCROOT/src/util,
 					$SRCROOT/src/exceptions,
 					$SRCROOT/src/db,
-					/Applications/Postgres.app/Contents/Versions/9.3/include,
+					/Applications/Postgres.app/Contents/Versions/latest/include,
 					"/usr/local/mysql/include/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/mysql/lib,
-					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/9.3/lib",
+					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/latest/lib",
+					"/usr/local/mysql-5.5.19-osx10.6-x86_64/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "";
 				ONLY_ACTIVE_ARCH = YES;
