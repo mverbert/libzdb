@@ -23,8 +23,8 @@
  */
 
 
-#ifndef SQLITEEXEC_INCLUDED
-#define SQLITEEXEC_INCLUDED
+#ifndef SQLITEDEFS_INCLUDED
+#define SQLITEDEFS_INCLUDED
 
 #include <sqlite3.h>
 
