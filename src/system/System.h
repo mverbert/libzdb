@@ -36,6 +36,12 @@
 
 
 /**
+ * Initialize program
+ */
+void System_init(void);
+
+
+/**
  * Returns a String describing the last system error
  * @return The last error message
  */

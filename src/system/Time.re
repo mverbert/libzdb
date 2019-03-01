@@ -265,7 +265,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
 }
 
 
-char *Time_toString(time_t time, char result[20]) {
+char *Time_toString(time_t time, char result[static 20]) {
         assert(result);
         char x[2];
         struct tm ts = {.tm_isdst = -1};

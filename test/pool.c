@@ -303,10 +303,11 @@ static void testPool(const char *testURL) {
                 assert(fs);
                 // Assert that result set inherits Connection fetch-size
                 assert(ResultSet_getFetchSize(fs) == 50);
-                // Set fetch-size for this ResultSet
                 ResultSet_setFetchSize(fs, 12);
                 while (ResultSet_next(fs));
-                assert(ResultSet_getFetchSize(fs) == 12);
+                // Test fetch-size for this ResultSet unless database is SQLite
+                if (!Str_startsWith(testURL, "sqlite"))
+                        assert(ResultSet_getFetchSize(fs) == 12);
                 printf("success\n");
 
                 /* Need to close and release statements before
@@ -711,7 +712,7 @@ int main(void) {
         printf("This test will create and drop a table called zild_t in the database\n");
 	printf("%s", help);
 	while (fgets(buf, BSIZE, stdin)) {
-		if (*buf == '.')
+		if (*buf == '.' || *buf == 'q')
                         break;
 		if (*buf == '\r' || *buf == '\n' || *buf == 0) 
 			goto next;

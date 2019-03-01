@@ -43,7 +43,8 @@ endif
 if WITH_SQLITE
 libzdb_la_SOURCES += src/db/sqlite/SQLiteConnection.c \
                      src/db/sqlite/SQLiteResultSet.c \
-                     src/db/sqlite/SQLitePreparedStatement.c
+                     src/db/sqlite/SQLitePreparedStatement.c \
+                     src/db/sqlite/SQLiteDefs.c
 endif
 if WITH_ORACLE
 libzdb_la_SOURCES += src/db/oracle/OracleConnection.c \

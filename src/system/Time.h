@@ -100,7 +100,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t);
  * @return a pointer to the result buffer
  * @exception AssertException if result is NULL
  */
-char *Time_toString(time_t time, char result[20]);
+char *Time_toString(time_t time, char result[static 20]);
 
 
 /**

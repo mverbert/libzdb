@@ -164,7 +164,7 @@ long ResultSet_getColumnSize(T R, int columnIndex);
 
 /**
  * Specify the number of rows that should be fetched from the database
- * when more rows are needed for this ResultSet. ResultSet will prefetch
+ * when more rows are needed for <b>this</b> ResultSet. ResultSet will prefetch
  * rows in batches of number of <code>rows</code> when ResultSet_next() 
  * is called to reduce the network roundtrip to the database.
  * @param R A ResultSet object
