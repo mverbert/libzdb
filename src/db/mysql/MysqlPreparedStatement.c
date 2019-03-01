@@ -72,7 +72,7 @@ extern const struct Rop_T mysqlrops;
 /* --------------------------------------- PreparedStatementDelegate methods */
 
 
-static T MysqlPreparedStatement_new(void *delegator, void *stmt) {
+static T _new(void *delegator, void *stmt) {
         assert(delegator);
         assert(stmt);
         T P;
@@ -89,7 +89,7 @@ static T MysqlPreparedStatement_new(void *delegator, void *stmt) {
 }
 
 
-static void MysqlPreparedStatement_free(T *P) {
+static void _free(T *P) {
 	assert(P && *P);
         FREE((*P)->bind);
         mysql_stmt_free_result((*P)->stmt);
@@ -104,7 +104,7 @@ static void MysqlPreparedStatement_free(T *P) {
 }
 
 
-static void MysqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
+static void _setString(T P, int parameterIndex, const char *x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->bind[i].buffer_type = MYSQL_TYPE_STRING;
@@ -120,7 +120,7 @@ static void MysqlPreparedStatement_setString(T P, int parameterIndex, const char
 }
 
 
-static void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
+static void _setInt(T P, int parameterIndex, int x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.integer = x;
@@ -130,7 +130,7 @@ static void MysqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
 }
 
 
-static void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long x) {
+static void _setLLong(T P, int parameterIndex, long long x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.llong = x;
@@ -140,7 +140,7 @@ static void MysqlPreparedStatement_setLLong(T P, int parameterIndex, long long x
 }
 
 
-static void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
+static void _setDouble(T P, int parameterIndex, double x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.real = x;
@@ -150,7 +150,7 @@ static void MysqlPreparedStatement_setDouble(T P, int parameterIndex, double x) 
 }
 
 
-static void MysqlPreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
+static void _setTimestamp(T P, int parameterIndex, time_t x) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         struct tm ts = {.tm_isdst = -1};
@@ -167,7 +167,7 @@ static void MysqlPreparedStatement_setTimestamp(T P, int parameterIndex, time_t 
 }
 
 
-static void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
+static void _setBlob(T P, int parameterIndex, const void *x, int size) {
         assert(P);
         int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->bind[i].buffer_type = MYSQL_TYPE_BLOB;
@@ -183,7 +183,7 @@ static void MysqlPreparedStatement_setBlob(T P, int parameterIndex, const void *
 }
 
 
-static void MysqlPreparedStatement_execute(T P) {
+static void _execute(T P) {
         assert(P);
         if (P->parameterCount > 0) {
                 if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
@@ -202,7 +202,7 @@ static void MysqlPreparedStatement_execute(T P) {
 }
 
 
-static ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
+static ResultSet_T _executeQuery(T P) {
         assert(P);
         if (P->parameterCount > 0) {
                 if ((P->lastError = mysql_stmt_bind_param(P->stmt, P->bind)))
@@ -224,13 +224,13 @@ static ResultSet_T MysqlPreparedStatement_executeQuery(T P) {
 }
 
 
-static long long MysqlPreparedStatement_rowsChanged(T P) {
+static long long _rowsChanged(T P) {
         assert(P);
         return (long long)mysql_stmt_affected_rows(P->stmt);
 }
 
 
-static int MysqlPreparedStatement_parameterCount(T P) {
+static int _parameterCount(T P) {
         assert(P);
         return P->parameterCount;
 }
@@ -241,18 +241,18 @@ static int MysqlPreparedStatement_parameterCount(T P) {
 
 const struct Pop_T mysqlpops = {
         .name           = "mysql",
-        .new            = MysqlPreparedStatement_new,
-        .free           = MysqlPreparedStatement_free,
-        .setString      = MysqlPreparedStatement_setString,
-        .setInt         = MysqlPreparedStatement_setInt,
-        .setLLong       = MysqlPreparedStatement_setLLong,
-        .setDouble      = MysqlPreparedStatement_setDouble,
-        .setTimestamp   = MysqlPreparedStatement_setTimestamp,
-        .setBlob        = MysqlPreparedStatement_setBlob,
-        .execute        = MysqlPreparedStatement_execute,
-        .executeQuery   = MysqlPreparedStatement_executeQuery,
-        .rowsChanged    = MysqlPreparedStatement_rowsChanged,
-        .parameterCount = MysqlPreparedStatement_parameterCount
+        .new            = _new,
+        .free           = _free,
+        .setString      = _setString,
+        .setInt         = _setInt,
+        .setLLong       = _setLLong,
+        .setDouble      = _setDouble,
+        .setTimestamp   = _setTimestamp,
+        .setBlob        = _setBlob,
+        .execute        = _execute,
+        .executeQuery   = _executeQuery,
+        .rowsChanged    = _rowsChanged,
+        .parameterCount = _parameterCount
 
 };
 

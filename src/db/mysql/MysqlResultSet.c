@@ -90,7 +90,7 @@ static inline void _ensureCapacity(T R, int i) {
 /* -------------------------------------------------------- Delegate methods */
 
 
-static T MysqlResultSet_new(void *delegator, void *stmt, int keep) {
+static T _new(void *delegator, void *stmt, int keep) {
 	T R;
 	assert(stmt);
 	NEW(R);
@@ -123,7 +123,7 @@ static T MysqlResultSet_new(void *delegator, void *stmt, int keep) {
 }
 
 
-static void MysqlResultSet_free(T *R) {
+static void _free(T *R) {
 	assert(R && *R);
         for (int i = 0; i < (*R)->columnCount; i++)
                 FREE((*R)->columns[i].buffer);
@@ -138,13 +138,13 @@ static void MysqlResultSet_free(T *R) {
 }
 
 
-static int MysqlResultSet_getColumnCount(T R) {
+static int _getColumnCount(T R) {
 	assert(R);
 	return R->columnCount;
 }
 
 
-static const char *MysqlResultSet_getColumnName(T R, int columnIndex) {
+static const char *_getColumnName(T R, int columnIndex) {
 	assert(R);
 	columnIndex--;
 	if (R->columnCount <= 0 || columnIndex < 0 || columnIndex > R->columnCount)
@@ -153,7 +153,7 @@ static const char *MysqlResultSet_getColumnName(T R, int columnIndex) {
 }
 
 
-static long MysqlResultSet_getColumnSize(T R, int columnIndex) {
+static long _getColumnSize(T R, int columnIndex) {
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].is_null)
                 return 0;
@@ -161,7 +161,7 @@ static long MysqlResultSet_getColumnSize(T R, int columnIndex) {
 }
 
 
-static void MysqlResultSet_setFetchSize(T R, int rows) {
+static void _setFetchSize(T R, int rows) {
         assert(R);
         assert(rows > 0);
         if ((R->lastError = mysql_stmt_attr_set(R->stmt, STMT_ATTR_PREFETCH_ROWS, &rows)))
@@ -170,13 +170,13 @@ static void MysqlResultSet_setFetchSize(T R, int rows) {
 }
 
 
-static int MysqlResultSet_getFetchSize(T R) {
+static int _getFetchSize(T R) {
         assert(R);
         return R->fetchSize ? R->fetchSize : Connection_getFetchSize(R->delegator);
 }
 
 
-static int MysqlResultSet_next(T R) {
+static int _next(T R) {
 	assert(R);
         if (R->stop)
                 return false;
@@ -202,14 +202,14 @@ static int MysqlResultSet_next(T R) {
 }
 
 
-static int MysqlResultSet_isnull(T R, int columnIndex) {
+static int _isnull(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         return R->columns[i].is_null;
 }
 
 
-static const char *MysqlResultSet_getString(T R, int columnIndex) {
+static const char *_getString(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].is_null)
@@ -220,7 +220,7 @@ static const char *MysqlResultSet_getString(T R, int columnIndex) {
 }
 
 
-static const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
+static const void *_getBlob(T R, int columnIndex, int *size) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].is_null)
@@ -236,17 +236,17 @@ static const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
 
 const struct Rop_T mysqlrops = {
         .name           = "mysql",
-        .new            = MysqlResultSet_new,
-        .free           = MysqlResultSet_free,
-        .getColumnCount = MysqlResultSet_getColumnCount,
-        .getColumnName  = MysqlResultSet_getColumnName,
-        .getColumnSize  = MysqlResultSet_getColumnSize,
-        .setFetchSize   = MysqlResultSet_setFetchSize,
-        .getFetchSize   = MysqlResultSet_getFetchSize,
-        .next           = MysqlResultSet_next,
-        .isnull         = MysqlResultSet_isnull,
-        .getString      = MysqlResultSet_getString,
-        .getBlob        = MysqlResultSet_getBlob
+        .new            = _new,
+        .free           = _free,
+        .getColumnCount = _getColumnCount,
+        .getColumnName  = _getColumnName,
+        .getColumnSize  = _getColumnSize,
+        .setFetchSize   = _setFetchSize,
+        .getFetchSize   = _getFetchSize,
+        .next           = _next,
+        .isnull         = _isnull,
+        .getString      = _getString,
+        .getBlob        = _getBlob
         // getTimestamp and getDateTime is handled in ResultSet
 };
 

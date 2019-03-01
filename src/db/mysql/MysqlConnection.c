@@ -163,7 +163,7 @@ static int _prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
 /* ---------------------------------------------- ConnectionDelegate methods */
 
 
-static T MysqlConnection_new(Connection_T delegator, char **error) {
+static T _new(Connection_T delegator, char **error) {
         assert(delegator);
         assert(error);
         T C;
@@ -178,7 +178,7 @@ static T MysqlConnection_new(Connection_T delegator, char **error) {
 }
 
 
-static void MysqlConnection_free(T *C) {
+static void _free(T *C) {
         assert(C && *C);
         mysql_close((*C)->db);
         StringBuffer_free(&((*C)->sb));
@@ -186,46 +186,46 @@ static void MysqlConnection_free(T *C) {
 }
 
 
-static int MysqlConnection_ping(T C) {
+static int _ping(T C) {
         assert(C);
         return (mysql_ping(C->db) == 0);
 }
 
 
-static int MysqlConnection_beginTransaction(T C) {
+static int _beginTransaction(T C) {
         assert(C);
         C->lastError = mysql_query(C->db, "START TRANSACTION;");
         return (C->lastError == MYSQL_OK);
 }
 
 
-static int MysqlConnection_commit(T C) {
+static int _commit(T C) {
         assert(C);
         C->lastError = mysql_query(C->db, "COMMIT;");
         return (C->lastError == MYSQL_OK);
 }
 
 
-static int MysqlConnection_rollback(T C) {
+static int _rollback(T C) {
         assert(C);
         C->lastError = mysql_query(C->db, "ROLLBACK;");
         return (C->lastError == MYSQL_OK);
 }
 
 
-static long long MysqlConnection_lastRowId(T C) {
+static long long _lastRowId(T C) {
         assert(C);
         return (long long)mysql_insert_id(C->db);
 }
 
 
-static long long MysqlConnection_rowsChanged(T C) {
+static long long _rowsChanged(T C) {
         assert(C);
         return (long long)mysql_affected_rows(C->db);
 }
 
 
-static int MysqlConnection_execute(T C, const char *sql, va_list ap) {
+static int _execute(T C, const char *sql, va_list ap) {
         assert(C);
         va_list ap_copy;
         va_copy(ap_copy, ap);
@@ -236,7 +236,7 @@ static int MysqlConnection_execute(T C, const char *sql, va_list ap) {
 }
 
 
-static ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap) {
+static ResultSet_T _executeQuery(T C, const char *sql, va_list ap) {
         assert(C);
         va_list ap_copy;
         va_copy(ap_copy, ap);
@@ -260,7 +260,7 @@ static ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap
 }
 
 
-static PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_list ap) {
+static PreparedStatement_T _prepareStatement(T C, const char *sql, va_list ap) {
         assert(C);
         va_list ap_copy;
         va_copy(ap_copy, ap);
@@ -274,7 +274,7 @@ static PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql
 }
 
 
-static const char *MysqlConnection_getLastError(T C) {
+static const char *_getLastError(T C) {
         assert(C);
         if (mysql_errno(C->db))
                 return mysql_error(C->db);
@@ -286,18 +286,18 @@ static const char *MysqlConnection_getLastError(T C) {
 
 
 const struct Cop_T mysqlcops = {
-        .name 		 	= "mysql",
-        .new 		 	= MysqlConnection_new,
-        .free 		 	= MysqlConnection_free,
-        .ping		 	= MysqlConnection_ping,
-        .beginTransaction       = MysqlConnection_beginTransaction,
-        .commit			= MysqlConnection_commit,
-        .rollback		= MysqlConnection_rollback,
-        .lastRowId		= MysqlConnection_lastRowId,
-        .rowsChanged		= MysqlConnection_rowsChanged,
-        .execute		= MysqlConnection_execute,
-        .executeQuery		= MysqlConnection_executeQuery,
-        .prepareStatement	= MysqlConnection_prepareStatement,
-        .getLastError		= MysqlConnection_getLastError
+        .name 		  = "mysql",
+        .new 		  = _new,
+        .free 		  = _free,
+        .ping		  = _ping,
+        .beginTransaction = _beginTransaction,
+        .commit		  = _commit,
+        .rollback	  = _rollback,
+        .lastRowId	  = _lastRowId,
+        .rowsChanged	  = _rowsChanged,
+        .execute	  = _execute,
+        .executeQuery     = _executeQuery,
+        .prepareStatement = _prepareStatement,
+        .getLastError     = _getLastError
 };
 
