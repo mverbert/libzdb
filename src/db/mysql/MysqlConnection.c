@@ -32,8 +32,8 @@
 #include <ctype.h>
 
 #include "zdb.h"
-#include "ConnectionDelegate.h"
 #include "StringBuffer.h"
+#include "ConnectionDelegate.h"
 
 
 /**
@@ -58,13 +58,12 @@
 
 #define T ConnectionDelegate_T
 struct T {
-        Connection_T delegator;
         MYSQL *db;
         int lastError;
         StringBuffer_T sb;
+        Connection_T delegator;
 };
 #define MYSQL_OK 0
-
 extern const struct Rop_T mysqlrops;
 extern const struct Pop_T mysqlpops;
 

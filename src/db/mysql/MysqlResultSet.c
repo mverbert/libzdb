@@ -45,29 +45,27 @@
 
 
 #define MYSQL_OK 0
-
 typedef struct column_t {
+        char *buffer;
         my_bool is_null;
         MYSQL_FIELD *field;
         unsigned long real_length;
-        char *buffer;
 } *column_t;
-
 #define T ResultSetDelegate_T
 struct T {
-        Connection_T delegator;
+        int stop;
+        int keep;
+        int maxRows;
+        int fetchSize;
+        int lastError;
+        int needRebind;
+        int currentRow;
+        int columnCount;
         MYSQL_RES *meta;
         MYSQL_BIND *bind;
         MYSQL_STMT *stmt;
         column_t columns;
-        int columnCount;
-        int needRebind;
-        int currentRow;
-        int fetchSize;
-        int lastError;
-        int maxRows;
-        int stop;
-        int keep;
+        Connection_T delegator;
 };
 
 

@@ -43,29 +43,25 @@
 
 
 #define MYSQL_OK 0
-
 typedef struct param_t {
         union {
+                double real;
                 int integer;
                 long long llong;
-                double real;
                 MYSQL_TIME timestamp;
         } type;
         long length;
 } *param_t;
-
 #define T PreparedStatementDelegate_T
 struct T {
-        Connection_T delegator;
+        int lastError;
         param_t params;
         MYSQL_STMT *stmt;
         MYSQL_BIND *bind;
         int parameterCount;
-        int lastError;
+        Connection_T delegator;
 };
-
 static my_bool yes = true;
-
 extern const struct Rop_T mysqlrops;
 
 
