@@ -27,7 +27,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include<stdatomic.h>
+#include <stdatomic.h>
 
 #include "PostgresqlAdapter.h"
 #include "StringBuffer.h"
@@ -52,7 +52,7 @@ struct T {
         Connection_T delegator;
 	ExecStatusType lastError;
 };
-static _Atomic(uint32_t) statementid = 0;
+static _Atomic(uint32_t) kStatementID = 0;
 extern const struct Rop_T postgresqlrops;
 extern const struct Pop_T postgresqlpops;
 
@@ -201,9 +201,9 @@ static long long _rowsChanged(T C) {
 
 
 static int _execute(T C, const char *sql, va_list ap) {
-        va_list ap_copy;
 	assert(C);
         PQclear(C->res);
+        va_list ap_copy;
         va_copy(ap_copy, ap);
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
@@ -214,9 +214,9 @@ static int _execute(T C, const char *sql, va_list ap) {
 
 
 static ResultSet_T _executeQuery(T C, const char *sql, va_list ap) {
-        va_list ap_copy;
 	assert(C);
         PQclear(C->res);
+        va_list ap_copy;
         va_copy(ap_copy, ap);
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
@@ -229,18 +229,16 @@ static ResultSet_T _executeQuery(T C, const char *sql, va_list ap) {
 
 
 static PreparedStatement_T _prepareStatement(T C, const char *sql, va_list ap) {
-        char *name;
-        int paramCount = 0;
-        va_list ap_copy;
         assert(C);
         assert(sql);
         PQclear(C->res);
+        va_list ap_copy;
         va_copy(ap_copy, ap);
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
-        paramCount = StringBuffer_prepare4postgres(C->sb);
-        uint32_t t = statementid++; // increment is atomic
-        name = Str_cat("__libzdb-%d", t);
+        int paramCount = StringBuffer_prepare4postgres(C->sb);
+        uint32_t t = kStatementID++; // increment is atomic
+        char *name = Str_cat("__libzdb-%d", t);
         C->res = PQprepare(C->db, name, StringBuffer_toString(C->sb), 0, NULL);
         C->lastError = C->res ? PQresultStatus(C->res) : PGRES_FATAL_ERROR;
         if (C->lastError == PGRES_EMPTY_QUERY || C->lastError == PGRES_COMMAND_OK || C->lastError == PGRES_TUPLES_OK)

@@ -137,8 +137,7 @@ static void _setBlob(T P, int parameterIndex, const void *x, int size) {
 static void _execute(T P) {
         assert(P);
         P->lastError = zdb_sqlite3_step(P->stmt);
-        switch (P->lastError)
-        {
+        switch (P->lastError) {
                 case SQLITE_DONE:
                         P->lastError = sqlite3_reset(P->stmt);
                         break;
