@@ -210,7 +210,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                         have_date = true;
                         continue;
                  }
-                dd x dd x yyyy
+                 dd x dd x yyyy
                  { // Date: dd/mm/yyyy
                         tm.tm_mday  = _a2i(token, 2);
                         tm.tm_mon   = _a2i(token + 3, 2) - 1;

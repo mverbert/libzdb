@@ -27,13 +27,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <libpq-fe.h>
 
 #include "system/Time.h"
-#include "ResultSet.h"
-#include "PostgresqlResultSet.h"
-#include "PreparedStatementDelegate.h"
-#include "PostgresqlPreparedStatement.h"
+#include "PostgresqlAdapter.h"
 
 
 /**
@@ -48,79 +44,63 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct Pop_T postgresqlpops = {
-        .name           = "postgresql",
-        .free           = PostgresqlPreparedStatement_free,
-        .setString      = PostgresqlPreparedStatement_setString,
-        .setInt         = PostgresqlPreparedStatement_setInt,
-        .setLLong       = PostgresqlPreparedStatement_setLLong,
-        .setDouble      = PostgresqlPreparedStatement_setDouble,
-        .setTimestamp   = PostgresqlPreparedStatement_setTimestamp,
-        .setBlob        = PostgresqlPreparedStatement_setBlob,
-        .execute        = PostgresqlPreparedStatement_execute,
-        .executeQuery   = PostgresqlPreparedStatement_executeQuery,
-        .rowsChanged    = PostgresqlPreparedStatement_rowsChanged
-};
-
 typedef struct param_t {
         char s[65];
 } *param_t;
 #define T PreparedStatementDelegate_T
 struct T {
-        int maxRows;
         int lastError;
         char *stmt;
         PGconn *db;
         PGresult *res;
-        int paramCount;
+        param_t params;
+        int parameterCount;
         char **paramValues; 
         int *paramLengths; 
         int *paramFormats;
-        param_t params;
+        Connection_T delegator;
 };
-
 extern const struct Rop_T postgresqlrops;
 
 
-/* ----------------------------------------------------- Protected methods */
+/* ------------------------------------------------------------- Constructor */
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility push(hidden)
-#endif
-
-T PostgresqlPreparedStatement_new(PGconn *db, int maxRows, char *stmt, int paramCount) {
+T PostgresqlPreparedStatement_new(Connection_T delegator, PGconn *db, char *stmt, int parameterCount) {
         T P;
         assert(db);
         assert(stmt);
         NEW(P);
+        P->delegator = delegator;
         P->db = db;
         P->stmt = stmt;
-        P->maxRows = maxRows;
-        P->paramCount = paramCount;
+        P->parameterCount = parameterCount;
         P->lastError = PGRES_COMMAND_OK;
-        if (P->paramCount) {
-                P->paramValues = CALLOC(P->paramCount, sizeof(char *));
-                P->paramLengths = CALLOC(P->paramCount, sizeof(int));
-                P->paramFormats = CALLOC(P->paramCount, sizeof(int));
-                P->params = CALLOC(P->paramCount, sizeof(struct param_t));
+        if (P->parameterCount) {
+                P->paramValues = CALLOC(P->parameterCount, sizeof(char *));
+                P->paramLengths = CALLOC(P->parameterCount, sizeof(int));
+                P->paramFormats = CALLOC(P->parameterCount, sizeof(int));
+                P->params = CALLOC(P->parameterCount, sizeof(struct param_t));
         }
         return P;
 }
 
 
-void PostgresqlPreparedStatement_free(T *P) {
-        char stmt[STRLEN];
+/* -------------------------------------------------------- Delegate Methods */
+
+
+static void _free(T *P) {
 	assert(P && *P);
         /* NOTE: there is no C API function for explicit statement
          * deallocation (postgres-8.1.x) - the DEALLOCATE statement
          * has to be used. The postgres documentation mentiones such
          * function as a possible future extension */
+        char stmt[STRLEN];
         snprintf(stmt, STRLEN, "DEALLOCATE \"%s\";", (*P)->stmt);
         PQclear(PQexec((*P)->db, stmt));
         PQclear((*P)->res);
 	FREE((*P)->stmt);
-        if ((*P)->paramCount) {
+        if ((*P)->parameterCount) {
 	        FREE((*P)->paramValues);
 	        FREE((*P)->paramLengths);
 	        FREE((*P)->paramFormats);
@@ -130,18 +110,18 @@ void PostgresqlPreparedStatement_free(T *P) {
 }
 
 
-void PostgresqlPreparedStatement_setString(T P, int parameterIndex, const char *x) {
+static void _setString(T P, int parameterIndex, const char *x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->paramValues[i] = (char *)x;
         P->paramLengths[i] = 0;
         P->paramFormats[i] = 0;
 }
 
 
-void PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
+static void _setInt(T P, int parameterIndex, int x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         snprintf(P->params[i].s, 64, "%d", x);
         P->paramValues[i] =  P->params[i].s;
         P->paramLengths[i] = 0;
@@ -149,9 +129,9 @@ void PostgresqlPreparedStatement_setInt(T P, int parameterIndex, int x) {
 }
 
 
-void PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long x) {
+static void _setLLong(T P, int parameterIndex, long long x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         snprintf(P->params[i].s, 64, "%lld", x);
         P->paramValues[i] =  P->params[i].s;
         P->paramLengths[i] = 0; 
@@ -159,9 +139,9 @@ void PostgresqlPreparedStatement_setLLong(T P, int parameterIndex, long long x) 
 }
 
 
-void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
+static void _setDouble(T P, int parameterIndex, double x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         snprintf(P->params[i].s, 64, "%lf", x);
         P->paramValues[i] =  P->params[i].s;
         P->paramLengths[i] = 0;
@@ -169,54 +149,74 @@ void PostgresqlPreparedStatement_setDouble(T P, int parameterIndex, double x) {
 }
 
 
-void PostgresqlPreparedStatement_setTimestamp(T P, int parameterIndex, time_t x) {
+static void _setTimestamp(T P, int parameterIndex, time_t x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->paramValues[i] = Time_toString(x, P->params[i].s);
         P->paramLengths[i] = 0;
         P->paramFormats[i] = 0;
 }
 
 
-void PostgresqlPreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
+static void _setBlob(T P, int parameterIndex, const void *x, int size) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->paramValues[i] = (char *)x;
         P->paramLengths[i] = (x) ? size : 0;
         P->paramFormats[i] = 1;
 }
 
 
-void PostgresqlPreparedStatement_execute(T P) {
+static void _execute(T P) {
         assert(P);
         PQclear(P->res);
-        P->res = PQexecPrepared(P->db, P->stmt, P->paramCount, (const char **)P->paramValues, P->paramLengths, P->paramFormats, 0);
+        P->res = PQexecPrepared(P->db, P->stmt, P->parameterCount, (const char **)P->paramValues, P->paramLengths, P->paramFormats, 0);
         P->lastError = P->res ? PQresultStatus(P->res) : PGRES_FATAL_ERROR;
         if (P->lastError != PGRES_COMMAND_OK)
                 THROW(SQLException, "%s", PQresultErrorMessage(P->res));
 }
 
 
-ResultSet_T PostgresqlPreparedStatement_executeQuery(T P) {
+static ResultSet_T _executeQuery(T P) {
         assert(P);
         PQclear(P->res);
-        P->res = PQexecPrepared(P->db, P->stmt, P->paramCount, (const char **)P->paramValues, P->paramLengths, P->paramFormats, 0);
+        P->res = PQexecPrepared(P->db, P->stmt, P->parameterCount, (const char **)P->paramValues, P->paramLengths, P->paramFormats, 0);
         P->lastError = P->res ? PQresultStatus(P->res) : PGRES_FATAL_ERROR;
         if (P->lastError == PGRES_TUPLES_OK)
-                return ResultSet_new(PostgresqlResultSet_new(P->res, P->maxRows), (Rop_T)&postgresqlrops);
+                return ResultSet_new(PostgresqlResultSet_new(P->delegator, P->res), (Rop_T)&postgresqlrops);
         THROW(SQLException, "%s", PQresultErrorMessage(P->res));
         return NULL;
 }
 
 
-long long PostgresqlPreparedStatement_rowsChanged(T P) {
+static long long _rowsChanged(T P) {
         assert(P);
         char *changes = PQcmdTuples(P->res);
         return changes ? Str_parseLLong(changes) : 0;
 }
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility pop
-#endif
+static int _parameterCount(T P) {
+        assert(P);
+        return P->parameterCount;
+}
+
+
+/* ------------------------------------------------------------------------- */
+
+
+const struct Pop_T postgresqlpops = {
+        .name           = "postgresql",
+        .free           = _free,
+        .setString      = _setString,
+        .setInt         = _setInt,
+        .setLLong       = _setLLong,
+        .setDouble      = _setDouble,
+        .setTimestamp   = _setTimestamp,
+        .setBlob        = _setBlob,
+        .execute        = _execute,
+        .executeQuery   = _executeQuery,
+        .rowsChanged    = _rowsChanged,
+        .parameterCount = _parameterCount
+};
 

@@ -27,9 +27,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <mysql.h>
 
-#include "zdb.h"
+#include "MysqlAdapter.h"
 
 
 /**
@@ -65,10 +64,10 @@ static my_bool yes = true;
 extern const struct Rop_T mysqlrops;
 
 
-/* --------------------------------------- PreparedStatementDelegate methods */
+/* ------------------------------------------------------------- Constructor */
 
 
-static T _new(void *delegator, void *stmt) {
+T MysqlPreparedStatement_new(Connection_T delegator, MYSQL_STMT *stmt) {
         assert(delegator);
         assert(stmt);
         T P;
@@ -83,6 +82,9 @@ static T _new(void *delegator, void *stmt) {
         P->lastError = MYSQL_OK;
         return P;
 }
+
+
+/* -------------------------------------------------------- Delegate Methods */
 
 
 static void _free(T *P) {
@@ -214,7 +216,7 @@ static ResultSet_T _executeQuery(T P) {
         if ((P->lastError = mysql_stmt_execute(P->stmt)))
                 THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         if (P->lastError == MYSQL_OK)
-                return ResultSet_new(mysqlrops.new(P->delegator, P->stmt, true), (Rop_T)&mysqlrops);
+                return ResultSet_new(MysqlResultSet_new(P->delegator, P->stmt, true), (Rop_T)&mysqlrops);
         THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         return NULL;
 }
@@ -232,12 +234,11 @@ static int _parameterCount(T P) {
 }
 
 
-/* ----------------------------------------- MySQL PreparedStatementDelegate */
+/* ------------------------------------------------------------------------- */
 
 
 const struct Pop_T mysqlpops = {
         .name           = "mysql",
-        .new            = _new,
         .free           = _free,
         .setString      = _setString,
         .setInt         = _setInt,

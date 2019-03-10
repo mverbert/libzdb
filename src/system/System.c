@@ -50,10 +50,10 @@
 #endif
 
 void System_init(void) {
-        srandom((int)(Time_now()));
 #ifdef ZILD_PACKAGE_PROTECTED
         Exception_init();
 #endif
+        srandom((unsigned)(Time_now()));
 }
 
 

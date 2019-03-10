@@ -7,19 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		521899BB222A0445003EAC09 /* libpq.5.11.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 521899BA222A0445003EAC09 /* libpq.5.11.dylib */; };
 		524978B02228501700A65D6C /* libmysqlclient.20.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 524978AF2228501700A65D6C /* libmysqlclient.20.dylib */; };
 		524978B62228E09000A65D6C /* libsqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 524978B52228E09000A65D6C /* libsqlite3.a */; };
 		524B1E701543696800158F6E /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE513E716A0002F3C7C /* MysqlConnection.c */; };
 		5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */; };
 		5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE913E716A0002F3C7C /* MysqlResultSet.c */; };
-		527116AA2224B0E400F2263B /* SQLiteConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C0013E716A0002F3C7C /* SQLiteConnection.c */; };
-		527116AB2224B0E400F2263B /* SQLitePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C0213E716A0002F3C7C /* SQLitePreparedStatement.c */; };
-		527116AC2224B0E400F2263B /* SQLiteResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C0413E716A0002F3C7C /* SQLiteResultSet.c */; };
-		527116B022256CD600F2263B /* SQLiteDefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 527116AE22256CD600F2263B /* SQLiteDefs.h */; };
-		527116B122256CD600F2263B /* SQLiteDefs.c in Sources */ = {isa = PBXBuildFile; fileRef = 527116AF22256CD600F2263B /* SQLiteDefs.c */; };
+		527116B022256CD600F2263B /* SQLiteAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 527116AE22256CD600F2263B /* SQLiteAdapter.h */; };
+		527116B122256CD600F2263B /* SQLiteAdapter.c in Sources */ = {isa = PBXBuildFile; fileRef = 527116AF22256CD600F2263B /* SQLiteAdapter.c */; };
 		527B1E9D1B88A5B300B431F5 /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = 527B1E9C1B88A5B300B431F5 /* Thread.h */; };
-		5287D32F20FB7845008F1FD2 /* libpq.5.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5287D32E20FB7845008F1FD2 /* libpq.5.9.dylib */; };
 		528F4D58145A5C8A002CD67D /* select.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2213E716A0002F3C7C /* select.c */; };
 		529239C114B7AD0100DFC3A1 /* pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2113E716A0002F3C7C /* pool.c */; };
 		529239C214B7AD2100DFC3A1 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
@@ -29,6 +26,13 @@
 		52C32F54145BABE200C72758 /* unit.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2313E716A0002F3C7C /* unit.c */; };
 		52C32F55145BABEC00C72758 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
 		52C32F58145BD12800C72758 /* Mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 52C32F56145BD12800C72758 /* Mem.c */; };
+		52DE1E052232ED8C00173D1B /* PostgresqlAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 52DE1E032232ED8C00173D1B /* PostgresqlAdapter.h */; };
+		52DE1E08223489BE00173D1B /* SQLiteConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C0013E716A0002F3C7C /* SQLiteConnection.c */; };
+		52DE1E09223489BE00173D1B /* SQLitePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C0213E716A0002F3C7C /* SQLitePreparedStatement.c */; };
+		52DE1E0A223489BE00173D1B /* SQLiteResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C0413E716A0002F3C7C /* SQLiteResultSet.c */; };
+		52DE1E0B2234929000173D1B /* PostgresqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF313E716A0002F3C7C /* PostgresqlConnection.c */; };
+		52DE1E0C2234929000173D1B /* PostgresqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF513E716A0002F3C7C /* PostgresqlPreparedStatement.c */; };
+		52DE1E0D2234929000173D1B /* PostgresqlResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF713E716A0002F3C7C /* PostgresqlResultSet.c */; };
 		52F2370213E7256200D24B82 /* Connection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BDF13E716A0002F3C7C /* Connection.c */; };
 		52F2370313E7256200D24B82 /* ConnectionPool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE213E716A0002F3C7C /* ConnectionPool.c */; };
 		52F2370713E7256200D24B82 /* PreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF913E716A0002F3C7C /* PreparedStatement.c */; };
@@ -109,6 +113,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		521899B8222A03DC003EAC09 /* Postgres.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Postgres.app; path = ../../../../Applications/Postgres.app; sourceTree = "<group>"; };
+		521899BA222A0445003EAC09 /* libpq.5.11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.5.11.dylib; path = ../../../../Applications/Postgres.app/Contents/Versions/11/lib/libpq.5.11.dylib; sourceTree = "<group>"; };
 		52439D8118747B9600EC05B1 /* libpq.5.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.5.6.dylib; path = /Applications/Postgres.app/Contents/Versions/9.3/lib/libpq.5.6.dylib; sourceTree = "<absolute>"; };
 		524978AF2228501700A65D6C /* libmysqlclient.20.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.20.dylib; path = "../../../../usr/local/mysql-5.7.21-macos10.13-x86_64/lib/libmysqlclient.20.dylib"; sourceTree = "<group>"; };
 		524978B12228DF5400A65D6C /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -119,8 +125,8 @@
 		524ACAE61B87D68100A4F85B /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
 		524B24A6185E40D4004B6730 /* lex.yy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lex.yy.c; sourceTree = "<group>"; };
 		525CF56D14BFD3C600650C7D /* zdb.pc.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zdb.pc.in; sourceTree = "<group>"; };
-		527116AE22256CD600F2263B /* SQLiteDefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQLiteDefs.h; sourceTree = "<group>"; };
-		527116AF22256CD600F2263B /* SQLiteDefs.c */ = {isa = PBXFileReference; indentWidth = 8; lastKnownFileType = sourcecode.c.c; path = SQLiteDefs.c; sourceTree = "<group>"; tabWidth = 8; };
+		527116AE22256CD600F2263B /* SQLiteAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQLiteAdapter.h; sourceTree = "<group>"; };
+		527116AF22256CD600F2263B /* SQLiteAdapter.c */ = {isa = PBXFileReference; indentWidth = 8; lastKnownFileType = sourcecode.c.c; path = SQLiteAdapter.c; sourceTree = "<group>"; tabWidth = 8; };
 		52788BC613E716A0002F3C7C /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		52788BC713E716A0002F3C7C /* bootstrap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = bootstrap; sourceTree = "<group>"; };
 		52788BC813E716A0002F3C7C /* CHANGES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGES; sourceTree = "<group>"; };
@@ -154,11 +160,8 @@
 		52788BF013E716A0002F3C7C /* OracleResultSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = OracleResultSet.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52788BF113E716A0002F3C7C /* OracleResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = OracleResultSet.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788BF313E716A0002F3C7C /* PostgresqlConnection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = PostgresqlConnection.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		52788BF413E716A0002F3C7C /* PostgresqlConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostgresqlConnection.h; sourceTree = "<group>"; };
 		52788BF513E716A0002F3C7C /* PostgresqlPreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PostgresqlPreparedStatement.c; sourceTree = "<group>"; };
-		52788BF613E716A0002F3C7C /* PostgresqlPreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostgresqlPreparedStatement.h; sourceTree = "<group>"; };
 		52788BF713E716A0002F3C7C /* PostgresqlResultSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PostgresqlResultSet.c; sourceTree = "<group>"; };
-		52788BF813E716A0002F3C7C /* PostgresqlResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostgresqlResultSet.h; sourceTree = "<group>"; };
 		52788BF913E716A0002F3C7C /* PreparedStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = PreparedStatement.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52788BFA13E716A0002F3C7C /* PreparedStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PreparedStatement.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52788BFB13E716A0002F3C7C /* PreparedStatementDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PreparedStatementDelegate.h; sourceTree = "<group>"; tabWidth = 8; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -207,6 +210,8 @@
 		52C32F56145BD12800C72758 /* Mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Mem.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		52C32F57145BD12800C72758 /* Mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Mem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52D4A0221877B7C10016B6A3 /* libclntsh.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libclntsh.dylib; path = oci/lib/libclntsh.dylib; sourceTree = "<group>"; };
+		52DE1E032232ED8C00173D1B /* PostgresqlAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostgresqlAdapter.h; sourceTree = "<group>"; };
+		52DE1E07223478A800173D1B /* MysqlAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MysqlAdapter.h; sourceTree = "<group>"; };
 		52E79D72168EA4FC00E510BF /* libzdb.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = libzdb.css; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -239,9 +244,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				521899BB222A0445003EAC09 /* libpq.5.11.dylib in Frameworks */,
 				524978B62228E09000A65D6C /* libsqlite3.a in Frameworks */,
 				524978B02228501700A65D6C /* libmysqlclient.20.dylib in Frameworks */,
-				5287D32F20FB7845008F1FD2 /* libpq.5.9.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,9 +345,9 @@
 			isa = PBXGroup;
 			children = (
 				52788BE413E716A0002F3C7C /* mysql */,
+				52788BFF13E716A0002F3C7C /* sqlite */,
 				52788BEB13E716A0002F3C7C /* oracle */,
 				52788BF213E716A0002F3C7C /* postgresql */,
-				52788BFF13E716A0002F3C7C /* sqlite */,
 				52788BDF13E716A0002F3C7C /* Connection.c */,
 				52788BE013E716A0002F3C7C /* Connection.h */,
 				52788BE113E716A0002F3C7C /* ConnectionDelegate.h */,
@@ -361,6 +366,7 @@
 		52788BE413E716A0002F3C7C /* mysql */ = {
 			isa = PBXGroup;
 			children = (
+				52DE1E07223478A800173D1B /* MysqlAdapter.h */,
 				52788BE513E716A0002F3C7C /* MysqlConnection.c */,
 				52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */,
 				52788BE913E716A0002F3C7C /* MysqlResultSet.c */,
@@ -384,12 +390,10 @@
 		52788BF213E716A0002F3C7C /* postgresql */ = {
 			isa = PBXGroup;
 			children = (
+				52DE1E032232ED8C00173D1B /* PostgresqlAdapter.h */,
 				52788BF313E716A0002F3C7C /* PostgresqlConnection.c */,
-				52788BF413E716A0002F3C7C /* PostgresqlConnection.h */,
 				52788BF513E716A0002F3C7C /* PostgresqlPreparedStatement.c */,
-				52788BF613E716A0002F3C7C /* PostgresqlPreparedStatement.h */,
 				52788BF713E716A0002F3C7C /* PostgresqlResultSet.c */,
-				52788BF813E716A0002F3C7C /* PostgresqlResultSet.h */,
 			);
 			path = postgresql;
 			sourceTree = "<group>";
@@ -397,11 +401,11 @@
 		52788BFF13E716A0002F3C7C /* sqlite */ = {
 			isa = PBXGroup;
 			children = (
+				527116AE22256CD600F2263B /* SQLiteAdapter.h */,
+				527116AF22256CD600F2263B /* SQLiteAdapter.c */,
 				52788C0013E716A0002F3C7C /* SQLiteConnection.c */,
 				52788C0213E716A0002F3C7C /* SQLitePreparedStatement.c */,
 				52788C0413E716A0002F3C7C /* SQLiteResultSet.c */,
-				527116AE22256CD600F2263B /* SQLiteDefs.h */,
-				527116AF22256CD600F2263B /* SQLiteDefs.c */,
 			);
 			path = sqlite;
 			sourceTree = "<group>";
@@ -482,6 +486,8 @@
 		528847021DC1215F00D0BB40 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				521899BA222A0445003EAC09 /* libpq.5.11.dylib */,
+				521899B8222A03DC003EAC09 /* Postgres.app */,
 				524978B52228E09000A65D6C /* libsqlite3.a */,
 				524978B32228E01500A65D6C /* libsqlite3.0.dylib */,
 				524978B12228DF5400A65D6C /* libsqlite3.tbd */,
@@ -507,8 +513,8 @@
 				52C32F57145BD12800C72758 /* Mem.h */,
 				52C32EEB145BA3F900C72758 /* System.c */,
 				52C32EEC145BA3FA00C72758 /* System.h */,
-				52C32EED145BA3FA00C72758 /* Time.re */,
 				52C32EE9145BA3A500C72758 /* Time.h */,
+				52C32EED145BA3FA00C72758 /* Time.re */,
 			);
 			path = system;
 			sourceTree = "<group>";
@@ -521,7 +527,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				527B1E9D1B88A5B300B431F5 /* Thread.h in Headers */,
-				527116B022256CD600F2263B /* SQLiteDefs.h in Headers */,
+				527116B022256CD600F2263B /* SQLiteAdapter.h in Headers */,
+				52DE1E052232ED8C00173D1B /* PostgresqlAdapter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -664,9 +671,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				527116AA2224B0E400F2263B /* SQLiteConnection.c in Sources */,
-				527116AB2224B0E400F2263B /* SQLitePreparedStatement.c in Sources */,
-				527116AC2224B0E400F2263B /* SQLiteResultSet.c in Sources */,
+				52DE1E0B2234929000173D1B /* PostgresqlConnection.c in Sources */,
+				52DE1E0C2234929000173D1B /* PostgresqlPreparedStatement.c in Sources */,
+				52DE1E0D2234929000173D1B /* PostgresqlResultSet.c in Sources */,
+				527116B122256CD600F2263B /* SQLiteAdapter.c in Sources */,
+				52DE1E08223489BE00173D1B /* SQLiteConnection.c in Sources */,
+				52DE1E09223489BE00173D1B /* SQLitePreparedStatement.c in Sources */,
+				52DE1E0A223489BE00173D1B /* SQLiteResultSet.c in Sources */,
 				5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */,
 				5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */,
 				5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */,
@@ -676,7 +687,6 @@
 				52F2370713E7256200D24B82 /* PreparedStatement.c in Sources */,
 				52F2370813E7256200D24B82 /* ResultSet.c in Sources */,
 				52F2370C13E7256200D24B82 /* assert.c in Sources */,
-				527116B122256CD600F2263B /* SQLiteDefs.c in Sources */,
 				52F2370D13E7256200D24B82 /* Exception.c in Sources */,
 				52F2371013E7256200D24B82 /* Str.c in Sources */,
 				52F2371113E7256200D24B82 /* StringBuffer.c in Sources */,
@@ -940,7 +950,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/mysql/lib,
-					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/latest/lib",
+					/Applications/Postgres.app/Contents/Versions/latest/lib,
 					"/usr/local/mysql-5.7.21-macos10.13-x86_64/lib",
 					/opt/local/lib,
 				);
@@ -980,7 +990,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/mysql/lib,
-					"$(SYSTEM_APPS_DIR)/Postgres.app/Contents/Versions/latest/lib",
+					/Applications/Postgres.app/Contents/Versions/latest/lib,
 					"/usr/local/mysql-5.7.21-macos10.13-x86_64/lib",
 					/opt/local/lib,
 				);

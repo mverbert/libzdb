@@ -27,11 +27,10 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <mysql.h>
 #include <errmsg.h>
 #include <ctype.h>
 
-#include "zdb.h"
+#include "MysqlAdapter.h"
 #include "StringBuffer.h"
 #include "ConnectionDelegate.h"
 
@@ -159,7 +158,7 @@ static int _prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
 }
 
 
-/* ---------------------------------------------- ConnectionDelegate methods */
+/* -------------------------------------------------------- Delegate Methods */
 
 
 static T _new(Connection_T delegator, char **error) {
@@ -253,7 +252,7 @@ static ResultSet_T _executeQuery(T C, const char *sql, va_list ap) {
                         StringBuffer_set(C->sb, "%s", mysql_stmt_error(stmt));
                         mysql_stmt_close(stmt);
                 } else
-                        return ResultSet_new(mysqlrops.new(C->delegator, stmt, false), (Rop_T)&mysqlrops);
+                        return ResultSet_new(MysqlResultSet_new(C->delegator, stmt, false), (Rop_T)&mysqlrops);
         }
         return NULL;
 }
@@ -267,7 +266,7 @@ static PreparedStatement_T _prepareStatement(T C, const char *sql, va_list ap) {
         va_end(ap_copy);
         MYSQL_STMT *stmt = NULL;
         if (_prepare(C, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt)) {
-                return PreparedStatement_new(mysqlpops.new(C->delegator, stmt), (Pop_T)&mysqlpops);
+                return PreparedStatement_new(MysqlPreparedStatement_new(C->delegator, stmt), (Pop_T)&mysqlpops);
         }
         return NULL;
 }
@@ -281,7 +280,7 @@ static const char *_getLastError(T C) {
 }
 
 
-/* ------------------------------------------------ MySQL ConnectionDelegate */
+/* ------------------------------------------------------------------------- */
 
 
 const struct Cop_T mysqlcops = {

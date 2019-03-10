@@ -27,10 +27,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <mysql.h>
 #include <errmsg.h>
 
-#include "zdb.h"
+#include "MysqlAdapter.h"
 
 
 /**
@@ -85,14 +84,14 @@ static inline void _ensureCapacity(T R, int i) {
 }
 
 
-/* -------------------------------------------------------- Delegate methods */
+/* ------------------------------------------------------------- Constructor */
 
 
-static T _new(void *delegator, void *stmt, int keep) {
-	T R;
-	assert(stmt);
-	NEW(R);
-	R->stmt = stmt;
+T MysqlResultSet_new(Connection_T delegator, MYSQL_STMT *stmt, int keep) {
+        T R;
+        assert(stmt);
+        NEW(R);
+        R->stmt = stmt;
         R->keep = keep;
         R->delegator = delegator;
         R->maxRows = Connection_getMaxRows(delegator);
@@ -117,8 +116,11 @@ static T _new(void *delegator, void *stmt, int keep) {
                         R->stop = true;
                 }
         }
-	return R;
+        return R;
 }
+
+
+/* -------------------------------------------------------- Delegate Methods */
 
 
 static void _free(T *R) {
@@ -229,12 +231,11 @@ static const void *_getBlob(T R, int columnIndex, int *size) {
 }
 
 
-/* ------------------------------------------------- MySQL ResultSetDelegate */
+/* ------------------------------------------------------------------------- */
 
 
 const struct Rop_T mysqlrops = {
         .name           = "mysql",
-        .new            = _new,
         .free           = _free,
         .getColumnCount = _getColumnCount,
         .getColumnName  = _getColumnName,
