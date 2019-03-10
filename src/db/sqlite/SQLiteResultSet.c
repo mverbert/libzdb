@@ -27,11 +27,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <sqlite3.h>
 
-#include "zdb.h"
 #include "system/Time.h"
-#include "SQLiteDefs.h"
+#include "SQLiteAdapter.h"
 
 
 /**
@@ -47,21 +45,21 @@
 
 #define T ResultSetDelegate_T
 struct T {
-        Connection_T delegator;
-        sqlite3_stmt *stmt;
         sqlite3 *db;
         int keep;
         int maxRows;
         int lastError;
         int currentRow;
         int columnCount;
+        sqlite3_stmt *stmt;
+        Connection_T delegator;
 };
 
 
-/* ----------------------------------------------- ResultSetDelegate methods */
+/* ------------------------------------------------------------- Constructor */
 
 
-static T _new(void *delegator, void *stmt, int keep) {
+T SQLiteResultSet_new(Connection_T delegator, sqlite3_stmt *stmt, int keep) {
         T R;
         assert(stmt);
         NEW(R);
@@ -73,6 +71,9 @@ static T _new(void *delegator, void *stmt, int keep) {
         R->columnCount = sqlite3_column_count(R->stmt);
         return R;
 }
+
+
+/* -------------------------------------------------------- Delegate Methods */
 
 
 static void _free(T *R) {
@@ -181,12 +182,11 @@ static struct tm *_getDateTime(T R, int columnIndex, struct tm *tm) {
 }
 
 
-/* ------------------------------------------------ SQLite ResultSetDelegate */
+/* ------------------------------------------------------------------------- */
 
 
 const struct Rop_T sqlite3rops = {
         .name           = "sqlite",
-        .new            = _new,
         .free           = _free,
         .getColumnCount = _getColumnCount,
         .getColumnName  = _getColumnName,

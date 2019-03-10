@@ -26,11 +26,9 @@
 #include "Config.h"
 
 #include <stdio.h>
-#include <sqlite3.h>
 
-#include "zdb.h"
-#include "SQLiteDefs.h"
 #include "StringBuffer.h"
+#include "SQLiteAdapter.h"
 #include "ConnectionDelegate.h"
 
 
@@ -46,14 +44,13 @@
 
 #define T ConnectionDelegate_T
 struct T {
-        Connection_T delegator;
         sqlite3 *db;
         int maxRows;
-        int timeout;
         int lastError;
         StringBuffer_T sb;
+        Connection_T delegator;
 };
-
+static int kQueryTimeoutDelta = 5;
 extern const struct Rop_T sqlite3rops;
 extern const struct Pop_T sqlite3pops;
 
@@ -112,7 +109,7 @@ static int _setProperties(T C, char **error) {
 }
 
 
-/* ---------------------------------------------- ConnectionDelegate methods */
+/* -------------------------------------------------------- Delegate Methods */
 
 
 static void _free(T *C) {
@@ -134,12 +131,21 @@ static T _new(Connection_T delegator, char **error) {
         NEW(C);
         C->db = db;
         C->delegator = delegator;
-        C->timeout = SQL_DEFAULT_TIMEOUT;
-        sqlite3_busy_timeout(C->db, C->timeout);
+        // Set a minimal timeout to install a busy_timeout handler. Actual concurrency timeout is handled by
+        // SQLiteAdapter.h methods using either unlock notify or a backoff retry strategy
+        sqlite3_busy_timeout(C->db, kQueryTimeoutDelta);
         C->sb = StringBuffer_create(STRLEN);
         if (! _setProperties(C, error))
                 _free(&C);
         return C;
+}
+
+
+static void _setQueryTimeout(T C, int ms) {
+        assert(C);
+        if (ms <= 0)
+                ms = kQueryTimeoutDelta; // Ensure a minimal timeout value for a busy_handler to be installed
+        sqlite3_busy_timeout(C->db, ms);
 }
 
 
@@ -202,10 +208,9 @@ static ResultSet_T _executeQuery(T C, const char *sql, va_list ap) {
         va_copy(ap_copy, ap);
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
-        C->timeout = Connection_getQueryTimeout(C->delegator);
         C->lastError = zdb_sqlite3_prepare_v2(C->db, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), &stmt, &tail);
         if (C->lastError == SQLITE_OK)
-                return ResultSet_new(sqlite3rops.new(C->delegator, stmt, false), (Rop_T)&sqlite3rops);
+                return ResultSet_new(SQLiteResultSet_new(C->delegator, stmt, false), (Rop_T)&sqlite3rops);
         return NULL;
 }
 
@@ -218,10 +223,9 @@ static PreparedStatement_T _prepareStatement(T C, const char *sql, va_list ap) {
         va_copy(ap_copy, ap);
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
-        C->timeout = Connection_getQueryTimeout(C->delegator);
         C->lastError = zdb_sqlite3_prepare_v2(C->db, StringBuffer_toString(C->sb), -1, &stmt, &tail);
         if (C->lastError == SQLITE_OK) {
-                return PreparedStatement_new(sqlite3pops.new(C->delegator, stmt), (Pop_T)&sqlite3pops);
+                return PreparedStatement_new(SQLitePreparedStatement_new(C->delegator, stmt), (Pop_T)&sqlite3pops);
         }
         return NULL;
 }
@@ -233,20 +237,21 @@ static const char *_getLastError(T C) {
 }
 
 
-/* ----------------------------------------------- SQLite ConnectionDelegate */
+/* ------------------------------------------------------------------------- */
 
 
 const struct Cop_T sqlite3cops = {
-        .name 		      = "sqlite",
-        .new 		      = _new,
-        .free 		      = _free,
-        .ping		      = _ping,
+        .name 		  = "sqlite",
+        .new 		  = _new,
+        .free 		  = _free,
+        .ping		  = _ping,
+        .setQueryTimeout  = _setQueryTimeout,
         .beginTransaction = _beginTransaction,
         .commit           = _commit,
-        .rollback	      = _rollback,
-        .lastRowId	      = _lastRowId,
+        .rollback	  = _rollback,
+        .lastRowId	  = _lastRowId,
         .rowsChanged	  = _rowsChanged,
-        .execute	      = _execute,
+        .execute	  = _execute,
         .executeQuery	  = _executeQuery,
         .prepareStatement = _prepareStatement,
         .getLastError	  = _getLastError

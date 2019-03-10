@@ -28,10 +28,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
-#include <sqlite3.h>
 
-#include "zdb.h"
-#include "SQLiteDefs.h"
+#include "SQLiteAdapter.h"
 
 
 /**
@@ -48,19 +46,18 @@
 
 #define T PreparedStatementDelegate_T
 struct T {
-        Connection_T delegator;
-        sqlite3_stmt *stmt;
         sqlite3 *db;
         int lastError;
+        sqlite3_stmt *stmt;
+        Connection_T delegator;
 };
-
 extern const struct Rop_T sqlite3rops;
 
 
-/* --------------------------------------- PreparedStatementDelegate methods */
+/* ------------------------------------------------------------- Constructor */
 
 
-static T _new(void *delegator, void *stmt) {
+T SQLitePreparedStatement_new(Connection_T delegator, sqlite3_stmt *stmt) {
         T P;
         assert(stmt);
         NEW(P);
@@ -70,6 +67,9 @@ static T _new(void *delegator, void *stmt) {
         P->lastError = SQLITE_OK;
         return P;
 }
+
+
+/* -------------------------------------------------------- Delegate Methods */
 
 
 static void _free(T *P) {
@@ -157,7 +157,7 @@ static void _execute(T P) {
 static ResultSet_T _executeQuery(T P) {
         assert(P);
         if (P->lastError == SQLITE_OK)
-                return ResultSet_new(sqlite3rops.new(P->delegator, P->stmt, true), (Rop_T)&sqlite3rops);
+                return ResultSet_new(SQLiteResultSet_new(P->delegator, P->stmt, true), (Rop_T)&sqlite3rops);
         THROW(SQLException, "%s", sqlite3_errmsg(P->db));
         return NULL;
 }
@@ -175,12 +175,11 @@ static int _parameterCount(T P) {
 }
 
 
-/* ---------------------------------------- SQLite PreparedStatementDelegate */
+/* ------------------------------------------------------------------------- */
 
 
 const struct Pop_T sqlite3pops = {
         .name           = "sqlite",
-        .new            = _new,
         .free           = _free,
         .setString      = _setString,
         .setInt         = _setInt,

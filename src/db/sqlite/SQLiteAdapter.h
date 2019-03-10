@@ -28,14 +28,14 @@
 
 #include <sqlite3.h>
 
-#if defined SQLITEUNLOCK && SQLITE_VERSION_NUMBER >= 3006012
-    int zdb_sqlite3_step(sqlite3_stmt *pStmt);
-    int zdb_sqlite3_prepare_v2(sqlite3 *db, const char *zSql, int nSql, sqlite3_stmt **ppStmt, const char **pz);
-    int zdb_sqlite3_exec(sqlite3 *db, const char *sql);
-#else
-    #define zdb_sqlite3_step sqlite3_step
-    #define zdb_sqlite3_prepare_v2 sqlite3_prepare_v2
-    int zdb_sqlite3_exec(sqlite3 *db, const char *sql);
-#endif
+#include "zdb.h"
+
+int zdb_sqlite3_step(sqlite3_stmt *pStmt);
+int zdb_sqlite3_prepare_v2(sqlite3 *db, const char *zSql, int nSql, sqlite3_stmt **ppStmt, const char **pz);
+int zdb_sqlite3_exec(sqlite3 *db, const char *sql);
+
+ResultSetDelegate_T SQLiteResultSet_new(Connection_T delegator, sqlite3_stmt *stmt, int keep) __attribute__ ((visibility("hidden")));
+PreparedStatementDelegate_T SQLitePreparedStatement_new(Connection_T delegator, sqlite3_stmt *stmt)
+ __attribute__ ((visibility("hidden")));
 
 #endif

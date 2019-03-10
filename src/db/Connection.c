@@ -143,7 +143,6 @@ T Connection_new(void *pool, char **error) {
         C->prepared = Vector_new(4);
         C->lastAccessedTime = Time_now();
         C->url = ConnectionPool_getURL(pool);
-        C->queryTimeout = SQL_DEFAULT_TIMEOUT;
         C->fetchSize = SQL_DEFAULT_PREFETCH_ROWS;
         if (! _setDelegate(C, error)) {
                 Connection_free(&C);
@@ -200,6 +199,8 @@ void Connection_setQueryTimeout(T C, int ms) {
         assert(C);
         assert(ms >= 0);
         C->queryTimeout = ms;
+        if (C->op->setQueryTimeout)
+                C->op->setQueryTimeout(C->D, ms);
 }
 
 
@@ -256,7 +257,8 @@ void Connection_clear(T C) {
         _freePrepared(C);
         // Set properties back to default values
         C->maxRows = 0;
-        C->queryTimeout = SQL_DEFAULT_TIMEOUT;
+        if (C->queryTimeout != 0)
+                Connection_setQueryTimeout(C, 0);
         C->fetchSize = C->fetchSizeDefault;
 }
 

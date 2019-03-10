@@ -43,6 +43,7 @@ typedef struct Cop_T {
         T (*new)(Connection_T delegator, char **error);
         void (*free)(T *C);
         int (*ping)(T C);
+        void (*setQueryTimeout)(T C, int ms);
         int (*beginTransaction)(T C);
         int (*commit)(T C);
         int (*rollback)(T C);
