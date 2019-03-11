@@ -75,7 +75,7 @@ static int _doConnect(T C, char **error) {
                 StringBuffer_append(C->sb, "password='%s' ", URL_getPassword(url));
         else if (URL_getParameter(url, "password"))
                 StringBuffer_append(C->sb, "password='%s' ", URL_getParameter(url, "password"));
-        else
+        else if (! URL_getParameter(url, "unix-socket"))
                 ERROR("no password specified in URL");
         /* Host */
         if (URL_getParameter(url, "unix-socket")) {
@@ -149,8 +149,7 @@ static T _new(Connection_T delegator, char **error) {
 static void _setQueryTimeout(T C, int ms) {
 	assert(C);
         StringBuffer_set(C->sb, "SET statement_timeout TO %d;", ms);
-        PGresult *res = PQexec(C->db, StringBuffer_toString(C->sb));
-        PQclear(res);
+        PQclear(PQexec(C->db, StringBuffer_toString(C->sb)));
 }
 
 
