@@ -144,7 +144,7 @@ static T _new(Connection_T delegator, char **error) {
 static void _setQueryTimeout(T C, int ms) {
         assert(C);
         if (ms <= 0)
-                ms = kQueryTimeoutDelta; // Ensure a minimal timeout value for a busy_handler to be installed
+                ms = kQueryTimeoutDelta; // Ensure a minimal timeout to install a busy_timeout handler
         sqlite3_busy_timeout(C->db, ms);
 }
 

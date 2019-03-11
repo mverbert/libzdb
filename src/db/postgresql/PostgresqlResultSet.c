@@ -48,7 +48,6 @@
 struct T {
         int maxRows;
         int rowCount;
-        int fetchSize;
         int currentRow;
         int columnCount;
         PGresult *res;
@@ -166,20 +165,6 @@ static long _getColumnSize(T R, int columnIndex) {
 }
 
 
-static void _setFetchSize(T R, int rows) {
-        assert(R);
-        assert(rows > 0);
-        // TODO
-        R->fetchSize = rows;
-}
-
-
-static int _getFetchSize(T R) {
-        assert(R);
-        return R->fetchSize ? R->fetchSize : Connection_getFetchSize(R->delegator);
-}
-
-
 static int _next(T R) {
         assert(R);
         return (! ((R->currentRow++ >= (R->rowCount - 1)) || (R->maxRows && (R->currentRow >= R->maxRows))));
@@ -226,12 +211,11 @@ const struct Rop_T postgresqlrops = {
         .getColumnCount = _getColumnCount,
         .getColumnName  = _getColumnName,
         .getColumnSize  = _getColumnSize,
-        .setFetchSize   = _setFetchSize,
-        .getFetchSize   = _getFetchSize,
         .next           = _next,
         .isnull         = _isnull,
         .getString      = _getString,
         .getBlob        = _getBlob
+        // get/setFetchSize is not applicable for Postgres or rather libpq
         // getTimestamp and getDateTime is handled in ResultSet
 };
 

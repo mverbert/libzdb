@@ -106,18 +106,6 @@ static long _getColumnSize(T R, int columnIndex) {
         return sqlite3_column_bytes(R->stmt, i);
 }
 
-static void _setFetchSize(T R, int rows) {
-        assert(R);
-        assert(rows > 0);
-        // Does nothing. N/A for SQLite
-}
-
-
-static int _getFetchSize(T R) {
-        assert(R);
-        return Connection_getFetchSize(R->delegator);
-}
-
 
 static int _next(T R) {
         assert(R);
@@ -191,13 +179,12 @@ const struct Rop_T sqlite3rops = {
         .getColumnCount = _getColumnCount,
         .getColumnName  = _getColumnName,
         .getColumnSize  = _getColumnSize,
-        .setFetchSize   = _setFetchSize,
-        .getFetchSize   = _getFetchSize,
         .next           = _next,
         .isnull         = _isnull,
         .getString      = _getString,
         .getBlob        = _getBlob,
         .getTimestamp   = _getTimestamp,
         .getDateTime    = _getDateTime
+        // get/setFetchSize is not applicable for SQLite
 };
 

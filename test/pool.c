@@ -294,22 +294,22 @@ static void testPool(const char *testURL) {
                 assert(i==12);
                 printf("success\n");
                 
-                // fetch-size
-                printf("\tResult: check fetch-size..");
-                assert(Connection_getFetchSize(con) == SQL_DEFAULT_PREFETCH_ROWS);
-                Connection_setFetchSize(con, 50);
-                assert(Connection_getFetchSize(con) == 50);
-                ResultSet_T fs = Connection_executeQuery(con, "select * from zild_t;");
-                assert(fs);
-                // Assert that result set inherits Connection fetch-size
-                assert(ResultSet_getFetchSize(fs) == 50);
-                ResultSet_setFetchSize(fs, 12);
-                while (ResultSet_next(fs));
-                // Test fetch-size for this ResultSet unless database is SQLite
-                if (!Str_startsWith(testURL, "sqlite"))
+                // Test prefetch unless database is SQLite or Postgres for which prefetch is n/a
+                if (Str_startsWith(testURL, "mysql") || Str_startsWith(testURL, "oracle")) {
+                        printf("\tResult: check fetch-size..");
+                        assert(Connection_getFetchSize(con) == SQL_DEFAULT_PREFETCH_ROWS);
+                        Connection_setFetchSize(con, 50);
+                        assert(Connection_getFetchSize(con) == 50);
+                        ResultSet_T fs = Connection_executeQuery(con, "select * from zild_t;");
+                        assert(fs);
+                        // Assert that result set inherits Connection fetch-size
+                        assert(ResultSet_getFetchSize(fs) == 50);
+                        ResultSet_setFetchSize(fs, 12);
+                        while (ResultSet_next(fs));
                         assert(ResultSet_getFetchSize(fs) == 12);
-                printf("success\n");
-
+                        printf("success\n");
+                }
+                
                 /* Need to close and release statements before
                    we can drop the table, sqlite need this */
                 Connection_clear(con);

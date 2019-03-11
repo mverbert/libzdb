@@ -166,7 +166,8 @@ long ResultSet_getColumnSize(T R, int columnIndex);
  * Specify the number of rows that should be fetched from the database
  * when more rows are needed for <b>this</b> ResultSet. ResultSet will prefetch
  * rows in batches of number of <code>rows</code> when ResultSet_next() 
- * is called to reduce the network roundtrip to the database.
+ * is called to reduce the network roundtrip to the database. This method
+ * is only applicable to MySQL and Oracle.
  * @param R A ResultSet object
  * @param rows The number of rows to fetch (1..INT.MAX)
  * @exception SQLException If a database error occurs
@@ -182,7 +183,7 @@ void ResultSet_setFetchSize(T R, int rows);
  * with ResultSet_setFetchSize(), the returned value is the same as
  * returned by Connection_getFetchSize()
  * @param R A ResultSet object
- * @return The number of rows to fetch
+ * @return The number of rows to fetch or 0 if N/A
  * @see Connection_getFetchSize
  */
 int ResultSet_getFetchSize(T R);

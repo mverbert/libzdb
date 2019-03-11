@@ -114,13 +114,15 @@ long ResultSet_getColumnSize(T R, int columnIndex) {
 
 void ResultSet_setFetchSize(T R, int rows) {
         assert(R);
-        R->op->setFetchSize(R->D, rows);
+        assert(rows > 0);
+        if (R->op->setFetchSize)
+                R->op->setFetchSize(R->D, rows);
 }
 
 
 int ResultSet_getFetchSize(T R) {
         assert(R);
-        return R->op->getFetchSize(R->D);
+        return R->op->getFetchSize ? R->op->getFetchSize(R->D) : 0;
 }
 
 

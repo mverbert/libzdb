@@ -163,7 +163,6 @@ static long _getColumnSize(T R, int columnIndex) {
 
 static void _setFetchSize(T R, int rows) {
         assert(R);
-        assert(rows > 0);
         if ((R->lastError = mysql_stmt_attr_set(R->stmt, STMT_ATTR_PREFETCH_ROWS, &rows)))
                 THROW(SQLException, "mysql_stmt_attr_set -- %s", mysql_stmt_error(R->stmt));
         R->fetchSize = rows;
