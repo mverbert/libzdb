@@ -196,8 +196,6 @@
 		527B1E9C1B88A5B300B431F5 /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thread.h; sourceTree = "<group>"; };
 		528554131CC525540086FECD /* libmysqlclient.20.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.20.dylib; path = "/usr/local/mysql-5.7.12-osx10.11-x86_64/lib/libmysqlclient.20.dylib"; sourceTree = "<absolute>"; };
 		5287A4021F561BF50097C39D /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		5287D32E20FB7845008F1FD2 /* libpq.5.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.5.9.dylib; path = ../../../../Applications/Postgres.app/Contents/Versions/9.6/lib/libpq.5.9.dylib; sourceTree = "<group>"; };
-		528847031DC1215F00D0BB40 /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "../../../../usr/local/mysql-5.5.19-osx10.6-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<group>"; };
 		528F4D3C145A5AA3002CD67D /* libzdb.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libzdb.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		52931A3D1DC2D6710032240D /* oracleoptions.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = oracleoptions.html; sourceTree = "<group>"; };
 		52931A3E1DC2D6710032240D /* libzdboptions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = libzdboptions.css; sourceTree = "<group>"; };
@@ -272,8 +270,8 @@
 				52788C2413E716A0002F3C7C /* tools */,
 				526B7ABD13E7564B008E2CB1 /* libs */,
 				528F4D43145A5AB9002CD67D /* Products */,
-				524ACAE51B87D68100A4F85B /* unit */,
 				524ACAE61B87D68100A4F85B /* pool */,
+				524ACAE51B87D68100A4F85B /* unit */,
 				524ACAE41B87D68100A4F85B /* select */,
 				528847021DC1215F00D0BB40 /* Frameworks */,
 			);
@@ -492,8 +490,6 @@
 				524978B32228E01500A65D6C /* libsqlite3.0.dylib */,
 				524978B12228DF5400A65D6C /* libsqlite3.tbd */,
 				524978AF2228501700A65D6C /* libmysqlclient.20.dylib */,
-				5287D32E20FB7845008F1FD2 /* libpq.5.9.dylib */,
-				528847031DC1215F00D0BB40 /* libmysqlclient.18.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

@@ -165,7 +165,8 @@ static long _getColumnSize(T R, int columnIndex) {
 
 static int _next(T R) {
         assert(R);
-        return (! ((R->currentRow++ >= (R->rowCount - 1)) || (R->maxRows && (R->currentRow >= R->maxRows))));
+        R->currentRow += 1;
+        return (! ((R->currentRow >= R->rowCount) || (R->maxRows && (R->currentRow >= R->maxRows))));
 }
 
 

@@ -47,7 +47,7 @@
 /**
  * The libzdb URL
  */
-#define LIBZDB_URL	"http://tildeslash.com/libzdb/"
+#define LIBZDB_URL	"https://tildeslash.com/libzdb/"
 
 
 /**
@@ -165,8 +165,8 @@
 /* ---------------------------------------------------------- Build macros */
 
 
-/* Mask out GCC __attribute__ extension for non-gcc compilers. */
-#ifndef __GNUC__
+/* Mask out __attribute__ extension for non- GCC/llvm-clang compilers. */
+#if (! (defined(__GNUC__) || defined(__clang__)))
 #define __attribute__(x)
 #endif
 
