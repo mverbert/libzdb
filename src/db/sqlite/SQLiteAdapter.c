@@ -113,7 +113,6 @@ int zdb_sqlite3_prepare_v2(sqlite3 *db, const char *zSql, int nSql, sqlite3_stmt
 }
 
 
-// Blocking exec
 int zdb_sqlite3_exec(sqlite3 *db, const char *sql) {
         return sqlite3_blocking_exec(db, sql, NULL, NULL, NULL);
 }
@@ -122,9 +121,9 @@ int zdb_sqlite3_exec(sqlite3 *db, const char *sql) {
 #else
 
 // Exponential backoff https://en.wikipedia.org/wiki/Exponential_backoff
-// Expected mean backoff time: (2^10 - 1)/2 × slot = 1.82 sec
+// Expected mean backoff time: (2^10 - 1)/2 × slot = 2.6 seconds
 static inline void _backoff(int step) {
-        static int slot = 51 * 70;
+        static int slot = 51 * 100;
         switch (step) {
                 case 0:
                         Time_usleep(slot * (random() % 2));
