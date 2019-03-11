@@ -162,9 +162,9 @@ static int _prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
 
 
 static T _new(Connection_T delegator, char **error) {
+        T C;
         assert(delegator);
         assert(error);
-        T C;
         MYSQL *db;
         if (! (db = _doConnect(delegator, error)))
                 return NULL;

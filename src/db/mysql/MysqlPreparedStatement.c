@@ -68,9 +68,9 @@ extern const struct Rop_T mysqlrops;
 
 
 T MysqlPreparedStatement_new(Connection_T delegator, MYSQL_STMT *stmt) {
+        T P;
         assert(delegator);
         assert(stmt);
-        T P;
         NEW(P);
         P->delegator = delegator;
         P->stmt = stmt;
