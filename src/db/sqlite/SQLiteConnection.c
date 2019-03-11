@@ -122,9 +122,9 @@ static void _free(T *C) {
 
 
 static T _new(Connection_T delegator, char **error) {
+        T C;
         assert(delegator);
         assert(error);
-        T C;
         sqlite3 *db;
         if (! (db = _doConnect(delegator, error)))
                 return NULL;
