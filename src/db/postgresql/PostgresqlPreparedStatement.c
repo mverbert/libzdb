@@ -91,10 +91,10 @@ T PostgresqlPreparedStatement_new(Connection_T delegator, PGconn *db, char *stmt
 
 static void _free(T *P) {
 	assert(P && *P);
-        /* NOTE: there is no C API function for explicit statement
-         * deallocation (postgres-8.1.x) - the DEALLOCATE statement
-         * has to be used. The postgres documentation mentiones such
-         * function as a possible future extension */
+        /* There is no C API function for explicit statement
+         deallocation as of postgres v. 11 - the DEALLOCATE statement
+         has to be used. The postgres documentation mentiones such a
+         function as a possible future extension */
         char stmt[STRLEN];
         snprintf(stmt, STRLEN, "DEALLOCATE \"%s\";", (*P)->stmt);
         PQclear(PQexec((*P)->db, stmt));

@@ -82,9 +82,7 @@ static inline const void *_unescape_bytea(uchar_t *s, int len, int *r) {
                         0,  0,  0,  0,  0,  0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                 };
                 for (i = 0, j = 2; j < len; j++) {
-                        /*
-                         According to the doc, whitespace between hex pairs are allowed. Blarg!!
-                         */
+                        // Whitespace between hex pairs is allowed 🤔
                         if (isxdigit(s[j])) {
                                 s[i] = hex[s[j]] << 4;
                                 s[i] |= hex[s[j + 1]];
