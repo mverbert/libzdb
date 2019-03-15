@@ -898,6 +898,22 @@ static void testStringBuffer() {
                 StringBuffer_trim(sb);
                 assert(Str_isEqual(StringBuffer_toString(sb), "declare blabla END;"));
                 StringBuffer_free(&sb);
+                sb = StringBuffer_new("select * from x order by id; \t\n");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "select * from x order by id"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new("end;");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "end;"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new("and; \t\n");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "and"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new("nd;");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "nd"));
+                StringBuffer_free(&sb);
                 assert(sb == NULL);
                 // Remove white space
                 sb = StringBuffer_new("\t select a from b; \r\n");
