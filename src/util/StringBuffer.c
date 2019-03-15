@@ -219,7 +219,8 @@ int StringBuffer_prepare4oracle(T S) {
 T StringBuffer_trim(T S) {
         assert(S);
         // Right trim
-        while (S->used && isspace(S->buffer[S->used - 1]))
+        while (S->used && (isspace(S->buffer[S->used - 1])
+                           || (S->buffer[S->used - 1] == ';' && tolower(S->buffer[S->used - 2]) != 'd'))) // Remove terminating ';' unless it's part of END;
                 S->buffer[--S->used] = 0;
         // Left trim
         if (isspace(*S->buffer)) {

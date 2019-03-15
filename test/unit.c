@@ -880,10 +880,29 @@ static void testStringBuffer() {
                 assert(Str_isEqual(StringBuffer_toString(sb), "select a from b"));
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
+                // Remove last semicolon
+                sb = StringBuffer_new("select * from host;");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "select * from host"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new(";");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), ""));
+                StringBuffer_free(&sb);
+                // Test don't remove last semicolon if part of 'end;'
+                sb = StringBuffer_new("DECLARE blabla END; \n");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "DECLARE blabla END;"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new("declare blabla end; \t\n");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "declare blabla END;"));
+                StringBuffer_free(&sb);
+                assert(sb == NULL);
                 // Remove white space
                 sb = StringBuffer_new("\t select a from b; \r\n");
                 StringBuffer_trim(sb);
-                assert(Str_isEqual(StringBuffer_toString(sb), "select a from b;"));
+                assert(Str_isEqual(StringBuffer_toString(sb), "select a from b"));
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
         }
