@@ -128,12 +128,10 @@ int Connection_isInTransaction(T C);
 
 /**
  * Sets the number of milliseconds the Connection should wait for a
- * SQL statement to finish if the database is busy. If the limit is
+ * SQL (select) statement to finish if the database is busy. If the limit is
  * exceeded, the statement will return immediately with an error.
- * The timeout is set per connection and not all database systems
- * supports query timeout. Ymmv, but usually it is best not to set a
- * query timeout as it might incur some overhead. The default is no
- * query timeout.
+ * The timeout is set per connection/session. Not all database systems
+ * supports query timeout. The default is no query timeout.
  * @param C A Connection object
  * @param ms The query timeout limit in milliseconds; zero means
  * there is no timeout limit. Zero is the default value.
