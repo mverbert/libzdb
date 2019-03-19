@@ -147,16 +147,16 @@ static T _new(Connection_T delegator, char **error) {
 }
 
 
-static void _setQueryTimeout(T C, int ms) {
-	assert(C);
-        StringBuffer_set(C->sb, "SET statement_timeout TO %d;", ms);
-        PQclear(PQexec(C->db, StringBuffer_toString(C->sb)));
-}
-
-
 static int _ping(T C) {
         assert(C);
         return (PQstatus(C->db) == CONNECTION_OK);
+}
+
+
+static void _setQueryTimeout(T C, int ms) {
+        assert(C);
+        StringBuffer_set(C->sb, "SET statement_timeout TO %d;", ms);
+        PQclear(PQexec(C->db, StringBuffer_toString(C->sb)));
 }
 
 
