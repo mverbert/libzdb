@@ -60,7 +60,7 @@ struct T {
         int parameterCount;
         Connection_T delegator;
 };
-static my_bool yes = true;
+static bool yes = true;
 extern const struct Rop_T mysqlrops;
 
 

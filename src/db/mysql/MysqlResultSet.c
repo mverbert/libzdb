@@ -46,7 +46,7 @@
 #define MYSQL_OK 0
 typedef struct column_t {
         char *buffer;
-        my_bool is_null;
+        bool is_null;
         MYSQL_FIELD *field;
         unsigned long real_length;
 } *column_t;

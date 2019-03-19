@@ -73,7 +73,7 @@ extern const struct Pop_T mysqlpops;
 static MYSQL *_doConnect(Connection_T delegator, char **error) {
 #define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
         URL_T url = Connection_getURL(delegator);
-        my_bool yes = 1, no = 0;
+        bool yes = 1;
         int connectTimeout = SQL_DEFAULT_TIMEOUT / MSEC_PER_SEC;
         unsigned long clientFlags = CLIENT_MULTI_STATEMENTS;
         MYSQL *db = mysql_init(NULL);
@@ -108,10 +108,13 @@ static MYSQL *_doConnect(Connection_T delegator, char **error) {
                 clientFlags |= CLIENT_COMPRESS;
         if (IS(URL_getParameter(url, "use-ssl"), "true"))
                 mysql_ssl_set(db, 0,0,0,0,0);
-        if (IS(URL_getParameter(url, "secure-auth"), "true"))
-                mysql_options(db, MYSQL_SECURE_AUTH, (const char*)&yes);
-        else
-                mysql_options(db, MYSQL_SECURE_AUTH, (const char*)&no);
+#if MYSQL_VERSION_ID < 80000
+        mysql_options(db, MYSQL_SECURE_AUTH, &yes);
+#else
+        if (URL_getParameter(url, "auth")) {
+                mysql_options(db, MYSQL_DEFAULT_AUTH, URL_getParameter(url, "auth"));
+        }
+#endif
         const char *timeout = URL_getParameter(url, "connect-timeout");
         if (timeout)
                 connectTimeout = Str_parseInt(timeout);
@@ -120,7 +123,7 @@ static MYSQL *_doConnect(Connection_T delegator, char **error) {
         if (charset)
                 mysql_options(db, MYSQL_SET_CHARSET_NAME, charset);
 #if MYSQL_VERSION_ID >= 50013
-        mysql_options(db, MYSQL_OPT_RECONNECT, (const char*)&yes);
+        mysql_options(db, MYSQL_OPT_RECONNECT, &yes);
 #endif
         // Set Connection ResultSet fetch size if found in URL
         const char *fetchSize = URL_getParameter(url, "fetch-size");
@@ -187,6 +190,15 @@ static void _free(T *C) {
 static int _ping(T C) {
         assert(C);
         return (mysql_ping(C->db) == 0);
+}
+
+
+static void _setQueryTimeout(T C, int ms) {
+        assert(C);
+#if MYSQL_VERSION_ID >= 50704
+        C->lastError = mysql_query(C->db, StringBuffer_toString(
+                        StringBuffer_set(C->sb, "SET SESSION MAX_EXECUTION_TIME=%d;", ms)));
+#endif
 }
 
 
@@ -288,6 +300,7 @@ const struct Cop_T mysqlcops = {
         .new 		  = _new,
         .free 		  = _free,
         .ping		  = _ping,
+        .setQueryTimeout  = _setQueryTimeout,
         .beginTransaction = _beginTransaction,
         .commit		  = _commit,
         .rollback	  = _rollback,
