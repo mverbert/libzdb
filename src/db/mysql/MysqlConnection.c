@@ -109,10 +109,13 @@ static MYSQL *_doConnect(Connection_T delegator, char **error) {
         if (IS(URL_getParameter(url, "use-ssl"), "true"))
                 mysql_ssl_set(db, 0,0,0,0,0);
 #if MYSQL_VERSION_ID < 80000
-        mysql_options(db, MYSQL_SECURE_AUTH, &yes);
+        if (IS(URL_getParameter(url, "secure-auth"), "true"))
+                mysql_options(db, MYSQL_SECURE_AUTH, (const char*)&yes);
+        else
+                mysql_options(db, MYSQL_SECURE_AUTH, (const char*)&no);
 #else
-        if (URL_getParameter(url, "auth")) {
-                mysql_options(db, MYSQL_DEFAULT_AUTH, URL_getParameter(url, "auth"));
+        if (URL_getParameter(url, "auth-plugin")) {
+                mysql_options(db, MYSQL_DEFAULT_AUTH, URL_getParameter(url, "auth-plugin"));
         }
 #endif
         const char *timeout = URL_getParameter(url, "connect-timeout");
