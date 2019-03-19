@@ -39,7 +39,7 @@ a.back {
     color:white;
     position:fixed;
     top: 10px;
-    right:20px;
+    left:20px;
     padding: 10px 20px;
     background-color: rgba(59,150,215, 0.4);
     cursor:pointer;
