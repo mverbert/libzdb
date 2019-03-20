@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2010-2013 Volodymyr Tarasenko <tvntsr@yahoo.com>
- *              2010      Sergey Pavlov <sergey.pavlov@gmail.com>
- *              2010      PortaOne Inc.
+ *               2010      Sergey Pavlov <sergey.pavlov@gmail.com>
+ *               2010      PortaOne Inc.
  * Copyright (C) Tildeslash Ltd. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,16 +29,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <oci.h>
-
-#include "URL.h"
-#include "ResultSet.h"
+#include "OracleAdapter.h"
 #include "StringBuffer.h"
-#include "PreparedStatement.h"
-#include "OracleResultSet.h"
-#include "OraclePreparedStatement.h"
-#include "ConnectionDelegate.h"
-#include "OracleConnection.h"
 
 
 /**
@@ -51,18 +43,6 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct Rop_T oraclerops = {
-	.name           = "oracle",
-        .free           = OracleResultSet_free,
-        .getColumnCount = OracleResultSet_getColumnCount,
-        .getColumnName  = OracleResultSet_getColumnName,
-        .getColumnSize  = OracleResultSet_getColumnSize,
-        .next           = OracleResultSet_next,
-        .isnull         = OracleResultSet_isnull,
-        .getString      = OracleResultSet_getString,
-        .getBlob        = OracleResultSet_getBlob
-        // getTimestamp and getDateTime is handled in ResultSet
-};
 typedef struct column_t {
         OCIDefine *def;
         int isNull;
@@ -75,8 +55,9 @@ typedef struct column_t {
 #define T ResultSetDelegate_T
 struct T {
         int         columnCount;
-        int         row;
-        ub4         maxRow;
+        int         currentRow;
+        int         fetchSize;
+        ub4         maxRows;
         OCIStmt*    stmt;
         OCIEnv*     env;
         OCISession* usr;
@@ -85,8 +66,8 @@ struct T {
         column_t    columns;
         sword       lastError;
         int         freeStatement;
+        Connection_T delegator;
 };
-
 #ifndef ORACLE_COLUMN_NAME_LOWERCASE
 #define ORACLE_COLUMN_NAME_LOWERCASE 2
 #endif
@@ -207,46 +188,42 @@ static int _toString(T R, int i)
 }
 
 
-/* ----------------------------------------------------- Protected methods */
+/* ------------------------------------------------------------- Constructor */
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility push(hidden)
-#endif
-
-T OracleResultSet_new(OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int need_free, int max_row) {
+T OracleResultSet_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int need_free) {
         T R;
         assert(stmt);
         assert(env);
         assert(err);
         assert(svc);
         NEW(R);
+        R->delegator = delegator;
         R->stmt = stmt;
         R->env  = env;
         R->err  = err;
         R->svc  = svc;
         R->usr  = usr;
+        R->maxRows = Connection_getMaxRows(delegator);
+        R->fetchSize = Connection_getFetchSize(R->delegator);
         R->freeStatement = need_free;
-        R->row = 0;
-        R->lastError = OCIAttrGet(R->stmt, OCI_HTYPE_STMT, &R->maxRow, NULL, OCI_ATTR_ROW_COUNT/*OCI_ATTR_ROWS_FETCHED*/, R->err);
-        if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
-                DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
         /* Get the number of columns in the select list */
         R->lastError = OCIAttrGet (R->stmt, OCI_HTYPE_STMT, &R->columnCount, NULL, OCI_ATTR_PARAM_COUNT, R->err);
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
-                DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
+                DEBUG("_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
         R->columns = CALLOC(R->columnCount, sizeof (struct column_t));
         if (!_initaleDefiningBuffers(R)) {
-                DEBUG("OracleResultSet_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
-                R->row = -1;
+                DEBUG("_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
+                R->currentRow = -1;
         }
-        if ((max_row != 0) && ((R->maxRow > max_row) ||(R->maxRow == 0))) 
-                R->maxRow = max_row;
         return R;
 }
 
 
-void OracleResultSet_free(T *R) {
+/* -------------------------------------------------------- Delegate Methods */
+
+
+static void _free(T *R) {
         assert(R && *R);
         if ((*R)->freeStatement)
                 OCIHandleFree((*R)->stmt, OCI_HTYPE_STMT);
@@ -263,13 +240,13 @@ void OracleResultSet_free(T *R) {
 }
 
 
-int OracleResultSet_getColumnCount(T R) {
+static int _getColumnCount(T R) {
         assert(R);
         return R->columnCount;
 }
 
 
-const char *OracleResultSet_getColumnName(T R, int column) {
+static const char *_getColumnName(T R, int column) {
         assert(R);
         if (R->columnCount < column)
                 return NULL;
@@ -277,7 +254,7 @@ const char *OracleResultSet_getColumnName(T R, int column) {
 }
 
 
-long OracleResultSet_getColumnSize(T R, int columnIndex) {
+static long _getColumnSize(T R, int columnIndex) {
         OCIParam* pard = NULL;
         ub4 char_semantics = 0;
         sb4 status;
@@ -300,9 +277,24 @@ long OracleResultSet_getColumnSize(T R, int columnIndex) {
 }
 
 
-int OracleResultSet_next(T R) {
+static void _setFetchSize(T R, int rows) {
         assert(R);
-        if ((R->row < 0) || ((R->maxRow > 0) && (R->row >= R->maxRow)))
+        R->lastError = OCIAttrSet(R->stmt, OCI_HTYPE_STMT, (void*)&rows, (ub4)sizeof(ub4), OCI_ATTR_PREFETCH_ROWS, R->err);
+        if (R->lastError != OCI_SUCCESS)
+                THROW(SQLException, "OCIAttrSet -- %s", OraclePreparedStatement_getLastError(R->lastError, R->err));
+        R->fetchSize = rows;
+}
+
+
+static int _getFetchSize(T R) {
+        assert(R);
+        return R->fetchSize ? R->fetchSize : Connection_getFetchSize(R->delegator);
+}
+
+
+static int _next(T R) {
+        assert(R);
+        if ((R->maxRows > 0) && (R->currentRow >= R->maxRows))
                 return false;
         R->lastError = OCIStmtFetch2(R->stmt, R->err, 1, OCI_FETCH_NEXT, 0, OCI_DEFAULT);
         if (R->lastError == OCI_NO_DATA) 
@@ -310,20 +302,20 @@ int OracleResultSet_next(T R) {
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
         if (R->lastError == OCI_SUCCESS_WITH_INFO)
-                DEBUG("OracleResultSet_next Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError, R->err));
-        R->row++;
+                DEBUG("_next Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError, R->err));
+        R->currentRow++;
         return ((R->lastError == OCI_SUCCESS) || (R->lastError == OCI_SUCCESS_WITH_INFO));
 }
 
 
-int OracleResultSet_isnull(T R, int columnIndex) {
+static int _isnull(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
-        return R->columns[i].isNull;
+        return R->columns[i].isNull != 0;
 }
 
 
-const char *OracleResultSet_getString(T R, int columnIndex) {
+static const char *_getString(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].isNull)
@@ -341,7 +333,7 @@ const char *OracleResultSet_getString(T R, int columnIndex) {
 }
 
 
-const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
+static const void *_getBlob(T R, int columnIndex, int *size) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].isNull)
@@ -374,6 +366,22 @@ const void *OracleResultSet_getBlob(T R, int columnIndex, int *size) {
         return (const void *)R->columns[i].buffer;
 }
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility pop
-#endif
+
+/* ------------------------------------------------------------------------- */
+
+
+const struct Rop_T oraclerops = {
+        .name           = "oracle",
+        .free           = _free,
+        .getColumnCount = _getColumnCount,
+        .getColumnName  = _getColumnName,
+        .getColumnSize  = _getColumnSize,
+        .setFetchSize   = _setFetchSize,
+        .getFetchSize   = _getFetchSize,
+        .next           = _next,
+        .isnull         = _isnull,
+        .getString      = _getString,
+        .getBlob        = _getBlob
+        // getTimestamp and getDateTime is handled in ResultSet
+};
+

@@ -156,7 +156,7 @@
  * Oracle</a> database server might look like:
  *
  * <pre>
- * oracle://localhost:1521/test?user=scott&password=tiger
+ * oracle://localhost:1521/servicename?user=scott&password=tiger
  * </pre>
  *
  * The auth-part of the URL can be used instead to specify the username 

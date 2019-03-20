@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2010-2013 Volodymyr Tarasenko <tvntsr@yahoo.com>
- *              2010      Sergey Pavlov <sergey.pavlov@gmail.com>
- *              2010      PortaOne Inc.
+ *               2010      Sergey Pavlov <sergey.pavlov@gmail.com>
+ *               2010      PortaOne Inc.
  * Copyright (C) Tildeslash Ltd. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,17 +32,9 @@
 #include <string.h>
 #include <math.h>
 
-#include <oci.h>
+#include "OracleAdapter.h"
 
-#include "URL.h"
-#include "ResultSet.h"
 #include "StringBuffer.h"
-#include "PreparedStatement.h"
-#include "OracleResultSet.h"
-#include "OraclePreparedStatement.h"
-#include "ConnectionDelegate.h"
-#include "OracleConnection.h"
-#include "OracleWatchdog.h"
 
 
 /**
@@ -55,19 +47,6 @@
 /* ----------------------------------------------------------- Definitions */
 
 
-const struct Pop_T oraclepops = {
-        .name           = "oracle",
-        .free           = OraclePreparedStatement_free,
-        .setString      = OraclePreparedStatement_setString,
-        .setInt         = OraclePreparedStatement_setInt,
-        .setLLong       = OraclePreparedStatement_setLLong,
-        .setDouble      = OraclePreparedStatement_setDouble,
-        .setTimestamp   = OraclePreparedStatement_setTimestamp,
-        .setBlob        = OraclePreparedStatement_setBlob,
-        .execute        = OraclePreparedStatement_execute,
-        .executeQuery   = OraclePreparedStatement_executeQuery,
-        .rowsChanged    = OraclePreparedStatement_rowsChanged
-};
 typedef struct param_t {
         union {
                 double real;
@@ -77,15 +56,15 @@ typedef struct param_t {
                 OCINumber number;
                 OCIDateTime* date;
         } type;
+        OCIInd is_null;
         int length;
         OCIBind* bind;
 } *param_t;
 #define T PreparedStatementDelegate_T
 struct T {
-        int         maxRows;
         int         timeout;
         int         countdown;
-        ub4         paramCount;
+        ub4         parameterCount;
         OCISession* usr;
         OCIStmt*    stmt;
         OCIEnv*     env;
@@ -96,53 +75,52 @@ struct T {
         Thread_T    watchdog;
         char        running;
         ub4         rowsChanged;
+        Connection_T delegator;
 };
-
 extern const struct Rop_T oraclerops;
 
 
-/* ------------------------------------------------------- Private methods */
+/* --------------------------------------------------------- Private methods */
 
 
 WATCHDOG(watchdog, T)
 
 
-/* ----------------------------------------------------- Protected methods */
+/* ------------------------------------------------------------- Constructor */
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility push(hidden)
-#endif
-
-T OraclePreparedStatement_new(OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int max_row, int timeout) {
+T OraclePreparedStatement_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int timeout) {
         T P;
         assert(stmt);
         assert(env);
         assert(err);
         assert(svc);
         NEW(P);
+        P->delegator = delegator;
         P->stmt = stmt;
         P->env  = env;
         P->err  = err;
         P->svc  = svc;
         P->usr  = usr; 
-        P->maxRows = max_row;
         P->timeout = timeout;
         P->lastError = OCI_SUCCESS;
         P->rowsChanged = 0;
-        /* paramCount */
-        P->lastError = OCIAttrGet(P->stmt, OCI_HTYPE_STMT, &P->paramCount, NULL, OCI_ATTR_BIND_COUNT, P->err);
+        /* parameterCount */
+        P->lastError = OCIAttrGet(P->stmt, OCI_HTYPE_STMT, &P->parameterCount, NULL, OCI_ATTR_BIND_COUNT, P->err);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
-                P->paramCount = 0; 
-        if (P->paramCount)
-                P->params = CALLOC(P->paramCount, sizeof(struct param_t));
+                P->parameterCount = 0;
+        if (P->parameterCount)
+                P->params = CALLOC(P->parameterCount, sizeof(struct param_t));
         P->running = false;
         Thread_create(P->watchdog, watchdog, P);
         return P;
 }
 
 
-void OraclePreparedStatement_free(T *P) {
+/* -------------------------------------------------------- Delegate Methods */
+
+
+static void _free(T *P) {
         assert(P && *P);
         OCIHandleFree((*P)->stmt, OCI_HTYPE_STMT);
         if ((*P)->params) {
@@ -155,23 +133,29 @@ void OraclePreparedStatement_free(T *P) {
 }
 
 
-void OraclePreparedStatement_setString(T P, int parameterIndex, const char *x) {
+static void _setString(T P, int parameterIndex, const char *x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.string = x;
-        P->params[i].length = x ? (int)strlen(x) : 0;
-        P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, (char *)P->params[i].type.string, 
-                                    (int)P->params[i].length, SQLT_CHR, 0, 0, 0, 0, 0, OCI_DEFAULT);
+        if (x) {
+                P->params[i].length = (int)strlen(x);
+                P->params[i].is_null = OCI_IND_NOTNULL;
+        } else {
+                P->params[i].length = 0;
+                P->params[i].is_null = OCI_IND_NULL;
+        }
+        P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, (char *)P->params[i].type.string,
+                                    (int)P->params[i].length, SQLT_CHR, &P->params[i].is_null, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }
 
 
-void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, time_t time) {
+static void _setTimestamp(T P, int parameterIndex, time_t time) {
         assert(P);
         struct tm ts = {.tm_isdst = -1};
         ub4   valid;
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
 
         P->lastError = OCIDescriptorAlloc((dvoid *)P->env, (dvoid **) &(P->params[i].type.date),
                                           (ub4) OCI_DTYPE_TIMESTAMP,
@@ -201,9 +185,9 @@ void OraclePreparedStatement_setTimestamp(T P, int parameterIndex, time_t time) 
 }
 
 
-void OraclePreparedStatement_setInt(T P, int parameterIndex, int x) {
+static void _setInt(T P, int parameterIndex, int x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.integer = x;
         P->params[i].length = sizeof(x);
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].type.integer,
@@ -213,9 +197,9 @@ void OraclePreparedStatement_setInt(T P, int parameterIndex, int x) {
 }
 
 
-void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long x) {
+static void _setLLong(T P, int parameterIndex, long long x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].length = sizeof(P->params[i].type.number);
         P->lastError = OCINumberFromInt(P->err, &x, sizeof(x), OCI_NUMBER_SIGNED, &P->params[i].type.number);
         if (P->lastError != OCI_SUCCESS)
@@ -227,9 +211,9 @@ void OraclePreparedStatement_setLLong(T P, int parameterIndex, long long x) {
 }
 
 
-void OraclePreparedStatement_setDouble(T P, int parameterIndex, double x) {
+static void _setDouble(T P, int parameterIndex, double x) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.real = x;
         P->params[i].length = sizeof(x);
         P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, &P->params[i].type.real, 
@@ -239,19 +223,25 @@ void OraclePreparedStatement_setDouble(T P, int parameterIndex, double x) {
 }
 
 
-void OraclePreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size) {
+static void _setBlob(T P, int parameterIndex, const void *x, int size) {
         assert(P);
-        int i = checkAndSetParameterIndex(parameterIndex, P->paramCount);
+        int i = checkAndSetParameterIndex(parameterIndex, P->parameterCount);
         P->params[i].type.blob = x;
-        P->params[i].length = (x) ? size : 0;
-        P->lastError = OCIBindByPos(P->stmt, &P->params[i].bind, P->err, parameterIndex, (void *)P->params[i].type.blob, 
-                                    (int)P->params[i].length, SQLT_LNG, 0, 0, 0, 0, 0, OCI_DEFAULT);
+        if (x) {
+                P->params[i].length = size;
+                P->params[i].is_null = OCI_IND_NOTNULL;
+        } else {
+                P->params[i].length = size;
+                P->params[i].is_null = OCI_IND_NULL;
+        }
+        P->lastError = OCIBindByPos2(P->stmt, &P->params[i].bind, P->err, parameterIndex, (void *)P->params[i].type.blob,
+                                    (int)P->params[i].length, SQLT_LNG, &P->params[i].is_null, 0, 0, 0, 0, OCI_DEFAULT);
         if (P->lastError != OCI_SUCCESS && P->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
 }
 
 
-void OraclePreparedStatement_execute(T P) {
+static void _execute(T P) {
         assert(P);
         P->rowsChanged = 0;
         if (P->timeout > 0) {
@@ -268,7 +258,7 @@ void OraclePreparedStatement_execute(T P) {
 }
 
 
-ResultSet_T OraclePreparedStatement_executeQuery(T P) {
+static ResultSet_T _executeQuery(T P) {
         assert(P);
         P->rowsChanged = 0;
         if (P->timeout > 0) {
@@ -278,86 +268,39 @@ ResultSet_T OraclePreparedStatement_executeQuery(T P) {
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 0, 0, NULL, NULL, OCI_DEFAULT);
         P->running = false;
         if (P->lastError == OCI_SUCCESS || P->lastError == OCI_SUCCESS_WITH_INFO)
-                return ResultSet_new(OracleResultSet_new(P->stmt, P->env, P->usr, P->err, P->svc, false, P->maxRows), (Rop_T)&oraclerops);
+                return ResultSet_new(OracleResultSet_new(P->delegator, P->stmt, P->env, P->usr, P->err, P->svc, false), (Rop_T)&oraclerops);
         THROW(SQLException, "%s", OraclePreparedStatement_getLastError(P->lastError, P->err));
         return NULL;
 }
 
 
-long long OraclePreparedStatement_rowsChanged(T P) {
+static long long _rowsChanged(T P) {
         assert(P);
         return P->rowsChanged;
 }
 
 
-/* Error handling: Oracle requires a buffer to store
-   error message, to keep error handling thread safe
-   TSD is used
-*/
-
-/* Key for the thread-specific buffer */
-static ThreadData_T error_msg_key;
-
-/* Once-only initialisation of the key */
-static Once_T error_msg_key_once = PTHREAD_ONCE_INIT;
-
-
-/* Return the thread-specific buffer */
-static char * get_err_buffer(void) {
-        char * err_buffer = (char *) ThreadData_get(error_msg_key);
-        if (err_buffer == NULL) {
-            err_buffer = malloc(STRLEN);
-            ThreadData_set(error_msg_key, err_buffer);
-        }
-
-        return err_buffer;
+static int _parameterCount(T P) {
+        assert(P);
+        return P->parameterCount;
 }
 
-/* Allocate the key */
-static void error_msg_key_alloc() {
-        ThreadData_create(error_msg_key, free);
-}
 
-/* This is a general error function also used in OracleResultSet */
-const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp) {
-        sb4 errcode;
-        char* erb;
-        Thread_once(error_msg_key_once, error_msg_key_alloc);
-        erb = get_err_buffer();
-        assert(erb);
-        assert(errhp);
-        switch (err)
-        {
-                case OCI_SUCCESS:
-                        return "";
-                case OCI_SUCCESS_WITH_INFO:
-                        return "Error - OCI_SUCCESS_WITH_INFO";
-                        break;
-                case OCI_NEED_DATA:
-                        return "Error - OCI_NEED_DATA";
-                        break;
-                case OCI_NO_DATA:
-                        return "Error - OCI_NODATA";
-                        break;
-                case OCI_ERROR:
-                        OCIErrorGet(errhp, 1, NULL, &errcode, erb, STRLEN, OCI_HTYPE_ERROR);
-                        return erb;
-                        break;
-                case OCI_INVALID_HANDLE:
-                        return "Error - OCI_INVALID_HANDLE";
-                        break;
-                case OCI_STILL_EXECUTING:
-                        return "Error - OCI_STILL_EXECUTE";
-                        break;
-                case OCI_CONTINUE:
-                        return "Error - OCI_CONTINUE";
-                        break;
-                default:
-                        break;
-        }
-        return erb;
-}
+/* ------------------------------------------------------------------------- */
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility pop
-#endif
+
+const struct Pop_T oraclepops = {
+        .name           = "oracle",
+        .free           = _free,
+        .setString      = _setString,
+        .setInt         = _setInt,
+        .setLLong       = _setLLong,
+        .setDouble      = _setDouble,
+        .setTimestamp   = _setTimestamp,
+        .setBlob        = _setBlob,
+        .execute        = _execute,
+        .executeQuery   = _executeQuery,
+        .rowsChanged    = _rowsChanged,
+        .parameterCount = _parameterCount
+};
+

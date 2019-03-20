@@ -709,7 +709,7 @@ int main(void) {
                     "E.g. sqlite:///tmp/sqlite.db?synchronous=off&heap_limit=2000\n"
                     "E.g. mysql://localhost:3306/test?user=root&password=root\n"
                     "E.g. postgresql://localhost:5432/test?user=root&password=root\n"
-                    "E.g. oracle://localhost:1521/test?user=scott&password=tiger\n"
+                    "E.g. oracle://scott:tiger@localhost:1521/servicename\n"
                     "To exit, enter '.' on a single line\n\nConnection URL> ";
         ZBDEBUG = true;
         Exception_init();
