@@ -218,7 +218,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                         have_date = true;
                         continue;
                  }
-                 dd ':' dd ':' dd frac?
+                 dd x dd x dd frac?
                  { // Time: HH:MM:SS
                         tm.tm_hour = _a2i(token, 2);
                         tm.tm_min  = _a2i(token + 3, 2);
