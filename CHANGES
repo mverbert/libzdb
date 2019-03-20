@@ -6,16 +6,16 @@ Version 3.2
 -----------
 * New: Support prefetch rows for MySQL and Oracle. Thanks to dragon
   jiang <jianlinlong@gmail.com> for the suggestion and pull request
-* New: MySQL 5.7 and later. Added session query execution timeout
-  accessible via Connection_setQueryTimeout()
+* New: MySQL 5.7 and later. Added session query timeout accessible
+  via Connection_setQueryTimeout()
 * New: MySQL 8. Added new URL option 'auth-plugin' which
-  specify the authentication_plugin to be used.
-* New: Oracle: URL option 'sysdba' for connecting with sysdba
+  specify the authentication_plugin to use.
+* New: Oracle: New URL option 'sysdba' for connecting with sysdba
   privileges.
 * Fixed: Remove last SQL terminator character ';' in statements, except
-  if preceeded with END; to allow for ending a pl/sql block.
-* Fixed: Oracle: Fixed setting null value in prepared statement
-* Fixed: Oracle: Handle date/time values
+  if preceded with END; to allow for ending a pl/sql block.
+* Fixed: Oracle: Set SQL null value in prepared statement
+* Fixed: Oracle: Handle date/time literal values
 
 Version 3.1
 -----------
