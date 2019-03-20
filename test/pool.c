@@ -25,7 +25,7 @@
 #define SCHEMA_MYSQL      "CREATE TABLE zild_t(id INTEGER AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), percent REAL, image BLOB);"
 #define SCHEMA_POSTGRESQL "CREATE TABLE zild_t(id SERIAL PRIMARY KEY, name VARCHAR(255), percent REAL, image BYTEA);"
 #define SCHEMA_SQLITE     "CREATE TABLE zild_t(id INTEGER PRIMARY KEY, name VARCHAR(255), percent REAL, image BLOB);"
-#define SCHEMA_ORACLE     "CREATE TABLE zild_t(id NUMBER , name VARCHAR(255), percent REAL, image CLOB);"
+#define SCHEMA_ORACLE     "CREATE TABLE zild_t(id NUMBER GENERATED AS IDENTITY, name VARCHAR(255), percent REAL, image CLOB);"
 
 #if HAVE_STRUCT_TM_TM_GMTOFF
 #define TM_GMTOFF tm_gmtoff
@@ -181,8 +181,6 @@ static void testPool(const char *testURL) {
                         PreparedStatement_setInt(pre, 2, i + 1);
                         PreparedStatement_execute(pre);
                 }
-                // The last execute changed one row only
-                assert(PreparedStatement_rowsChanged(pre) == 1);
                 /* Add a database null blob value for id = 5 */
                 PreparedStatement_setBlob(pre, 1, NULL, 0);
                 PreparedStatement_setInt(pre, 2, 5);
@@ -209,13 +207,9 @@ static void testPool(const char *testURL) {
         {
                 int i;
                 int imagesize = 0;
-                Connection_T con;
-                ResultSet_T rset;
-                ResultSet_T names;
-                PreparedStatement_T pre;
-                con = ConnectionPool_getConnection(pool);
+                Connection_T con = ConnectionPool_getConnection(pool);
                 assert(con);
-                rset = Connection_executeQuery(con, "select id, name, percent, image from zild_t where id < %d order by id;", 100);
+                ResultSet_T rset = Connection_executeQuery(con, "select id, name, percent, image from zild_t where id < %d order by id;", 100);
                 assert(rset);
                 printf("\tResult:\n");
                 printf("\tNumber of columns in resultset: %d\n\t", ResultSet_getColumnCount(rset));
@@ -241,8 +235,11 @@ static void testPool(const char *testURL) {
                 while (ResultSet_next(rset)) {
                         const char *image = ResultSet_getStringByName(rset, "image");
                         const void *blob = ResultSet_getBlobByName(rset, "image", &imagesize);
-                        assert(image && blob);
-                        assert(strlen(image) + 1 == 8192);
+                        // Oracle does not support getting blob as string
+                        if (! Str_startsWith(testURL, "oracle")) {
+                                assert(image && blob);
+                                assert(strlen(image) + 1 == 8192);
+                        }
                         assert(imagesize == 8192);
                 }
                 
@@ -268,10 +265,10 @@ static void testPool(const char *testURL) {
                 
                 printf("\tResult: check prepared statement resultset..");
                 Connection_setMaxRows(con, 0);
-                pre = Connection_prepareStatement(con, "select name from zild_t where id=?");
+                PreparedStatement_T pre = Connection_prepareStatement(con, "select name from zild_t where id=?");
                 assert(pre);
                 PreparedStatement_setInt(pre, 1, 2);
-                names = PreparedStatement_executeQuery(pre);
+                ResultSet_T names = PreparedStatement_executeQuery(pre);
                 assert(names);
                 assert(ResultSet_next(names));
                 assert(Str_isEqual("Leela", ResultSet_getString(names, 1)));
@@ -630,12 +627,19 @@ static void testPool(const char *testURL) {
                 if (Str_startsWith(testURL, "postgres"))
                         Connection_execute(con, "create table zild_t(d date, t time, dt timestamp, ts timestamp)");
                 else if (Str_startsWith(testURL, "oracle"))
-                        Connection_execute(con, "create table zild_t(d date, t time, dt date, ts timestamp)");
+                        Connection_execute(con, "create table zild_t(d date, t date, dt date, ts timestamp)");
                 else
-                        Connection_execute(con, "create table zild_t(d date, t time, dt datetime, ts timestamp)");
-                PreparedStatement_T p = Connection_prepareStatement(con, "insert into zild_t values (?, ?, ?, ?)");
-                PreparedStatement_setString(p, 1, "2013-12-28");
-                PreparedStatement_setString(p, 2, "10:12:42");
+                        Connection_execute(con, "create table zild_t(d date, t time, dt datetime, ts timestamp);");
+                PreparedStatement_T p = Connection_prepareStatement(con, "insert into zild_t values(?, ?, ?, ?);");
+                if (Str_startsWith(testURL, "oracle")) { // Oracle does not have a pure time data type 
+                        Connection_execute(con, "alter session set nls_date_format='YYYY-MM-DD HH24:MI:SS';");
+                        Connection_execute(con, "alter session set nls_timestamp_format='YYYY-MM-DD HH24:MI:SS';");
+                        PreparedStatement_setString(p, 1, "2013-12-28 00:00:00");
+                        PreparedStatement_setString(p, 2, "2013-12-28 10:12:42");
+                } else {
+                        PreparedStatement_setString(p, 1, "2013-12-28");
+                        PreparedStatement_setString(p, 2, "10:12:42");
+                }
                 PreparedStatement_setString(p, 3, "2013-12-28 10:12:42");
                 PreparedStatement_setTimestamp(p, 4, 1387066378);
                 PreparedStatement_execute(p);
@@ -653,7 +657,8 @@ static void testPool(const char *testURL) {
                         assert(date.tm_mday == 28);
                         assert(date.TM_GMTOFF == 0);
                         // Check Time
-                        assert(time.tm_year == 0);
+                        if (! Str_startsWith(testURL, "oracle"))
+                                assert(time.tm_year == 0);
                         assert(time.tm_hour == 10);
                         assert(time.tm_min == 12);
                         assert(time.tm_sec == 42);
@@ -704,7 +709,7 @@ int main(void) {
                     "E.g. sqlite:///tmp/sqlite.db?synchronous=off&heap_limit=2000\n"
                     "E.g. mysql://localhost:3306/test?user=root&password=root\n"
                     "E.g. postgresql://localhost:5432/test?user=root&password=root\n"
-                    "E.g. oracle://localhost:1526/test?user=scott&password=tiger\n"
+                    "E.g. oracle://localhost:1521/test?user=scott&password=tiger\n"
                     "To exit, enter '.' on a single line\n\nConnection URL> ";
         ZBDEBUG = true;
         Exception_init();
