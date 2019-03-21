@@ -722,17 +722,9 @@
 		52788C2413E716A0002F3C7C /* tools */ = {
 			isa = PBXGroup;
 			children = (
-				52788C2513E716A0002F3C7C /* bin */,
 				52788C2613E716A0002F3C7C /* filterh */,
 			);
 			path = tools;
-			sourceTree = "<group>";
-		};
-		52788C2513E716A0002F3C7C /* bin */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = bin;
 			sourceTree = "<group>";
 		};
 		52788C2613E716A0002F3C7C /* filterh */ = {
