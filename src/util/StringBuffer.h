@@ -167,8 +167,8 @@ int StringBuffer_prepare4oracle(T S);
 
 /**
  * Remove (any) leading and trailing white space and semicolon [ \\t\\r\\n;].
- * Trailing semicolon is not removed iff immediately preceded with 'D' to allow
- * for an 'END;' closing pl/sql block. Example
+ * Trailing semicolon is not removed iff immediately preceded with 'END' to allow
+ * for 'END;' to close a pl/sql block. Example
  * <pre>
  * StringBuffer_T a = StringBuffer_new("\t select a from b; \n");
  * StringBuffer_trim(a) -> "select a from b"
