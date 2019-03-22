@@ -4,8 +4,10 @@
 
 Version 3.2
 -----------
-* New: Support prefetch rows for MySQL and Oracle. Thanks to dragon
-  jiang <jianlinlong@gmail.com> for the suggestion and pull request
+* New: Support prefetch rows for MySQL and Oracle. Either programatically
+  via Connection_setFetchSize() and ResultSet_setFetchSize() or via a new
+  'fetch-size' URL option. 'Thanks to dragon jiang <jianlinlong@gmail.com>
+  for the suggestion and initial pull request.
 * New: MySQL 5.7 and later. Added session query timeout accessible
   via Connection_setQueryTimeout()
 * New: MySQL 8. Added new URL option 'auth-plugin' which

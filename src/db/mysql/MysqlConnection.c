@@ -121,8 +121,6 @@ static MYSQL *_doConnect(Connection_T delegator, char **error) {
         // Set Connection ResultSet fetch size if found in URL
         const char *fetchSize = URL_getParameter(url, "fetch-size");
         if (fetchSize) {
-                if (!isdigit(fetchSize[0]))
-                        ERROR("Invalid fetch-size value. Not a number");
                 int rows = Str_parseInt(fetchSize);
                 if (rows < 1)
                         ERROR("invalid fetch-size");

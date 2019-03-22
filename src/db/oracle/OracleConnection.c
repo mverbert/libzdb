@@ -81,7 +81,7 @@ static const char *_getErrorDescription(T C) {
                 case OCI_SUCCESS:
                         return "";
                 case OCI_SUCCESS_WITH_INFO:
-                        return "Error - OCI_SUCCESS_WITH_INFO";
+                        return "Info - OCI_SUCCESS_WITH_INFO";
                         break;
                 case OCI_NEED_DATA:
                         return "Error - OCI_NEED_DATA";
