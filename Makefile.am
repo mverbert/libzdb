@@ -43,12 +43,14 @@ endif
 if WITH_SQLITE
 libzdb_la_SOURCES += src/db/sqlite/SQLiteConnection.c \
                      src/db/sqlite/SQLiteResultSet.c \
-                     src/db/sqlite/SQLitePreparedStatement.c
+                     src/db/sqlite/SQLitePreparedStatement.c \
+                     src/db/sqlite/SQLiteAdapter.c
 endif
 if WITH_ORACLE
 libzdb_la_SOURCES += src/db/oracle/OracleConnection.c \
                      src/db/oracle/OracleResultSet.c \
-                     src/db/oracle/OraclePreparedStatement.c
+                     src/db/oracle/OraclePreparedStatement.c \
+                     src/db/oracle/OracleAdapter.c
 endif
 
 API_INTERFACES  = src/zdb.h src/Thread.h src/db/ConnectionPool.h \
@@ -96,6 +98,7 @@ distclean-local::
 cleanall: clean distclean
 	-rm -f Makefile.in test/Makefile.in configure aclocal.m4 \
         libzdb-[0-9].*tar.gz conf/config.* $(pkgconfig_DATA)
+	git clean -fxd
 
 verify: libzdb.la
 	cd $(srcdir)/test && $(MAKE) verify	

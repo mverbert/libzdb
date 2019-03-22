@@ -1,0 +1,70 @@
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>libzdb | Oracle Options</title>
+    <link rel="stylesheet" href="libzdboptions.css">
+</head>
+<body>
+    <h1>
+        Oracle <i>URL</i> properties
+    </h1>
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+            <th>Type</th>
+        </tr>
+        <tr>
+            <td >
+                user
+            </td>
+            <td>
+                The Oracle login ID. This property is required unless the auth-part of the URL was used.
+                <p class="example">Example: user=root</p>
+            </td>
+            <td>
+                String
+            </td>
+        </tr>
+        <tr>
+            <td >
+                password
+            </td>
+            <td>
+                The password for user. This property is required unless the auth-part of the URL was used. 
+                <p class="example">Example: password=swordfish</p>
+            </td>
+            <td>
+                String
+            </td>
+        </tr>
+        <tr>
+            <td>
+                fetch-size
+            </td>
+            <td>
+                The number of rows that should be fetched from the database when more rows are needed for ResultSet objects. Default is 100 rows. Rows
+                are retrieved in-memory. A larger value will make libzdb use more memory. 
+                <p class="example">Example: fetch-size=10</p>
+            </td>
+            <td>
+                Number [1..int.max] 
+            </td>
+        </tr>
+        <tr>
+            <td>
+                sysdba
+            </td>
+            <td>
+                Set to true if connection should be done as sysdba with system privilege. The
+                user specified, typically <strong>sys</strong>, must have SYSDBA privileges.
+                Default is false
+                <p class="example">Example: sysdba=true</p>
+            </td>
+            <td>
+                Boolean (true/false)
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

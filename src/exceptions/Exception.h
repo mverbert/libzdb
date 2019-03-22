@@ -126,7 +126,7 @@
  * statements in a try block must do a return, they <b>must</b> do so with 
  * this macro instead of the usual C return statement. 
  * 
- * <h3>Exception details</h3>
+ * <h2 class="desc">Exception details</h2>
  * Inside an exception handler, details about an exception is
  * available in the variable <code>Exception_frame</code>. The following
  * demonstrate usage of this variable to provide detailed logging of an 
@@ -152,7 +152,7 @@
  * END_TRY;
  * </pre>
  *
- * <h3>Volatile and assignment inside a try-block</h3>
+ * <h2 class="desc">Volatile and assignment inside a try-block</h2>
  * 
  * A variable declared outside a try-block and assigned a value inside said
  * block should be declared <code>volatile</code> if the variable will be 
@@ -175,7 +175,7 @@
  * assert(i == 1); // i will be 1 here regardless if it is declared volatile or not 
  * </pre>
  * 
- * <h3>Thread-safe</h3>
+ * <h2 class="desc">Thread-safe</h2>
  *
  * <p>The Exception stack is stored in a thread-specific variable so Exceptions
  * are made thread-safe. <i>This means that Exceptions are thread local and an

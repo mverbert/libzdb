@@ -2,7 +2,7 @@
 
 AC_PREREQ([2.53])
 
-AC_INIT([libzdb], [3.1.1], [bugs-libzdb@tildeslash.com])
+AC_INIT([libzdb], [3.2], [bugs-libzdb@tildeslash.com])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
@@ -231,16 +231,16 @@ AC_CACHE_CHECK([setjmp is available],
                        [AC_MSG_FAILURE([setjmp is required])],
                        [AC_MSG_ERROR(cross-compiling: please set 'libzdb_cv_setjmp_available=[yes|no]')])])
 
-# Require that we have vsnprintf that conforms to c99. I.e. does bounds check
-AC_CACHE_CHECK([vsnprintf is c99 conformant],
-               [libzdb_cv_vsnprintf_c99_conformant],
+# Require that we have vsnprintf that conforms to c11. I.e. does bounds check
+AC_CACHE_CHECK([vsnprintf is c11 conformant],
+               [libzdb_cv_vsnprintf_c11_conformant],
                [AC_RUN_IFELSE([AC_LANG_PROGRAM(
                         [[#include <stdarg.h>
                           #include <stdio.h>]],
                         [[char t[1]; va_list ap; int n = vsnprintf(t, 1, "hello", ap); if(n == 5) return 0;return 1;]])],
                         [AC_MSG_RESULT(yes)],
-                        [AC_MSG_FAILURE([vsnprintf does not conform to c99])],
-                        [AC_MSG_ERROR(cross-compiling: please set 'libzdb_cv_vsnprintf_c99_conformant=[yes|no]')])])
+                        [AC_MSG_FAILURE([vsnprintf does not conform to c11])],
+                        [AC_MSG_ERROR(cross-compiling: please set 'libzdb_cv_vsnprintf_c11_conformant=[yes|no]')])])
 
 AC_CHECK_FUNCS([timegm])
 
@@ -426,11 +426,11 @@ AC_C_CONST
 AC_C_BIGENDIAN
 
 # If the compiler is gcc, tune warnings and make the char type unsigned
-# and enable C99 support
+# and enable C11 support
 if test "x$GCC" = "xyes"; then
         CFLAGS="$CFLAGS -Wall -Wunused -Wno-unused-label -funsigned-char";
-        # Add C99 support, but with gnu extensions to include timegm and struct tm.tm_gmtoff
-        CFLAGS="$CFLAGS -std=gnu99"
+        # Add C11 support, but with gnu extensions to include timegm and struct tm.tm_gmtoff
+        CFLAGS="$CFLAGS -std=gnu11"
         # does this compiler support -Wno-pointer-sign ?
         svd_CFLAGS="$CFLAGS"
         CFLAGS="-Wno-pointer-sign $CFLAGS"

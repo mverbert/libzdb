@@ -58,7 +58,7 @@
  * result set. For columns that are NOT explicitly named in the query,
  * it is best to use column indices.
  *
- * <h3>Example</h3>
+ * <h2 class="desc">Example</h2>
  * The following examples demonstrate how to obtain a ResultSet and 
  * how to get values from the set:
  * <pre>
@@ -78,7 +78,7 @@
  * printf("Number of employees: %s\n", ResultSet_next(r) ? ResultSet_getString(r, 1) : "none");
  * </pre>
  *
- * <h3>Automatic type conversions</h3>
+ * <h2 class="desc">Automatic type conversions</h2>
  * A ResultSet store values internally as bytes and convert values 
  * on-the-fly to numeric types when requested, such as when ResultSet_getInt()
  * or one of the other numeric get-methods are called. In the above example, 
@@ -87,7 +87,7 @@
  * ResultSet_getInt() to get the value as an integer. In the latter case, note
  * that if the column value cannot be converted to a number, an SQLException is thrown.
  *
- * <h3>Date and Time</h3>
+ * <h2 class="desc">Date and Time</h2>
  * Result Set provides two principal methods for retrieving temporal column
  * values as C types. ResultSet_getTimestamp() converts a SQL timestamp value
  * to a <code>time_t</code> and ResultSet_getDateTime() returns a 
@@ -161,6 +161,34 @@ const char *ResultSet_getColumnName(T R, int columnIndex);
  */
 long ResultSet_getColumnSize(T R, int columnIndex);
 
+
+/**
+ * Specify the number of rows that should be fetched from the database
+ * when more rows are needed for <b>this</b> ResultSet. ResultSet will prefetch
+ * rows in batches of number of <code>rows</code> when ResultSet_next() 
+ * is called to reduce the network roundtrip to the database. This method
+ * is only applicable to MySQL and Oracle.
+ * @param R A ResultSet object
+ * @param rows The number of rows to fetch (1..INT.MAX)
+ * @exception SQLException If a database error occurs
+ * @exception AssertException If <code>rows</code> is less than 1
+ * @see Connection_setFetchSize
+ */
+void ResultSet_setFetchSize(T R, int rows);
+
+
+/**
+ * Get the number of rows that should be fetched from the database
+ * when more rows are needed for this ResultSet. Unless previously set
+ * with ResultSet_setFetchSize(), the returned value is the same as
+ * returned by Connection_getFetchSize()
+ * @param R A ResultSet object
+ * @return The number of rows to fetch or 0 if N/A
+ * @see Connection_getFetchSize
+ */
+int ResultSet_getFetchSize(T R);
+
+
 //@}
 
 /**
@@ -183,9 +211,9 @@ int ResultSet_next(T R);
 /**
  * Returns true if the value of the designated column in the current row of
  * this ResultSet object is SQL NULL, otherwise false. If the column value is 
- * SQL NULL, a Result Set returns the NULL pointer for string and blob values
- * and 0 for primitive data types. Use this method if you need to differ 
- * between SQL NULL and the value NULL/0.
+ * SQL NULL, a Result Set returns the NULL pointer for reference types and 0
+ * for value types. Use this method if you need to differ between SQL NULL and
+ * the value NULL/0.
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
  * @return True if column value is SQL NULL, otherwise false
@@ -462,7 +490,7 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName);
  * which contains the year literal and <i>not years since 1900</i> which is the
  * convention. All other fields in the structure are set to zero. If the 
  * column type is DateTime or Timestamp all the fields mentioned above are 
- * set, if it is a Date or Time, only the relevant fields are set.
+ * set, if it is a Date or a Time, only the relevant fields are set.
  *
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
@@ -493,7 +521,7 @@ struct tm ResultSet_getDateTime(T R, int columnIndex);
  * which contains the year literal and <i>not years since 1900</i> which is the
  * convention. All other fields in the structure are set to zero. If the
  * column type is DateTime or Timestamp all the fields mentioned above are
- * set, if it is a Date or Time, only the relevant fields are set.
+ * set, if it is a Date or a Time, only the relevant fields are set.
  *
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>

@@ -56,7 +56,7 @@
  * <b>must</b> not "disappear" before either PreparedStatement_execute()
  * or PreparedStatement_executeQuery() is called. 
  * 
- * <h3>Example:</h3>
+ * <h2 class="desc">Example:</h2>
  * To summarize, here is the code in context. 
  * <pre>
  * PreparedStatement_T p = Connection_prepareStatement(con, "INSERT INTO employee(name, picture) VALUES(?, ?)");
@@ -64,7 +64,7 @@
  * PreparedStatement_setBlob(p, 2, jpeg, jpeg_size);
  * PreparedStatement_execute(p);
  * </pre>
- * <h3>Reuse:</h3>
+ * <h2 class="desc">Reuse:</h2>
  * A PreparedStatement can be reused. That is, the method 
  * PreparedStatement_execute() can be called one or more times to execute 
  * the same statement. Clients can also set new <i>in</i> parameter values and
@@ -78,7 +78,7 @@
  *        PreparedStatement_execute(p);
  * }
  * </pre>
- * <h3>Result Sets:</h3>
+ * <h2 class="desc">Result Sets:</h2>
  * Here is another example where we use a Prepared Statement to execute a query
  * which returns a Result Set:
  * 
@@ -94,7 +94,7 @@
  * the Prepared Statement is executed again or until the Connection is
  * returned to the Connection Pool. 
  *
- * <h3>Date and Time</h3>
+ * <h2 class="desc">Date and Time</h2>
  * PreparedStatement provides PreparedStatement_setTimestamp() for setting a
  * Unix timestamp value. To set SQL Date, Time or DateTime values, simply use
  * PreparedStatement_setString() with a time string format understood by your
@@ -119,10 +119,9 @@ typedef struct PreparedStatement_S *T;
  * Create a new PreparedStatement.
  * @param D the delegate used by this PreparedStatement
  * @param op delegate operations
- * @param parameterCount number of parameters in this prepared statement
  * @return A new PreparedStatement object
  */
-T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op, int parameterCount);
+T PreparedStatement_new(PreparedStatementDelegate_T D, Pop_T op);
 
 
 /**
@@ -221,9 +220,9 @@ void PreparedStatement_setBlob(T P, int parameterIndex, const void *x, int size)
  * is expected to be in the GMT timezone. For instance, a value returned by
  * time(3) which represents the system's notion of the current Greenwich time.
  * <i class="textinfo">SQLite</i> does not have temporal SQL data types per se
- * and using this method with SQLite will store the timestamp value as a numerical
- * type as-is. This is usually what you want anyway, since it is fast, compact and
- * unambiguous.
+ * and using this method with SQLite will store the timestamp value as a 
+ * numerical type, as-is. This is usually what you want; it is fast, compact 
+ * and unambiguous.
  * @param P A PreparedStatement object
  * @param parameterIndex The first parameter is 1, the second is 2,..
  * @param x The GMT timestamp value to set. E.g. a value returned by time(3)

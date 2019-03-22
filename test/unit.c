@@ -206,8 +206,13 @@ static void testTime() {
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
-                // Date
+                // Date ISO-8601
                 assert(Time_toDateTime("2013-12-14", &t));
+                assert(t.tm_year == 2013);
+                assert(t.tm_mon  == 11);
+                assert(t.tm_mday == 14);
+                // Old metric dd/mm/yyyy
+                assert(Time_toDateTime("14/12/2013", &t));
                 assert(t.tm_year == 2013);
                 assert(t.tm_mon  == 11);
                 assert(t.tm_mday == 14);
@@ -216,6 +221,11 @@ static void testTime() {
                 assert(t.tm_hour == 9);
                 assert(t.tm_min  == 38);
                 assert(t.tm_sec  == 8);
+                // Time without seconds
+                assert(Time_toDateTime("09:38", &t));
+                assert(t.tm_hour == 9);
+                assert(t.tm_min  == 38);
+                assert(t.tm_sec  == 0);
                 // Compressed DateTime
                 assert(Time_toDateTime(" 20131214093808", &t));
                 assert(t.tm_year == 2013);
@@ -268,7 +278,7 @@ static void testTime() {
                 assert(t.TM_GMTOFF == 0);
                 // Invalid date
                 TRY {
-                        Time_toDateTime("1901-123-45", &t);
+                        Time_toDateTime("1901-123-45 123:234", &t);
                         printf("\t Test Failed\n");
                         exit(1);
                 } CATCH (SQLException) {
@@ -301,9 +311,12 @@ static void testTime() {
                 // Compressed
                 t = Time_toTimestamp("20131214191258-0500");
                 assert(t == 1387066378);
+                // Old metric style
+                t = Time_toTimestamp("15/12/2013 00:12");
+                assert(t == 1387066320);
                 // Invalid timestamp string
                 TRY {
-                        Time_toTimestamp("1901-123-45 10:12:14");
+                        Time_toTimestamp("1901-123-45");
                         // Should not come here
                         printf("\t Test Failed\n");
                         exit(1);
@@ -867,10 +880,45 @@ static void testStringBuffer() {
                 assert(Str_isEqual(StringBuffer_toString(sb), "select a from b"));
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
+                // Remove last semicolon
+                sb = StringBuffer_new("select * from host;");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "select * from host"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new(";");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), ""));
+                StringBuffer_free(&sb);
+                // Test don't remove last semicolon if part of 'end;'
+                sb = StringBuffer_new("DECLARE blabla END; \n");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "DECLARE blabla END;"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new("declare blabla end; \t\n");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "declare blabla END;"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new("select * from x order by id; \t\n");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "select * from x order by id"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new("end;");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "end;"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new("and; \t\n");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "and"));
+                StringBuffer_free(&sb);
+                sb = StringBuffer_new("nd;");
+                StringBuffer_trim(sb);
+                assert(Str_isEqual(StringBuffer_toString(sb), "nd"));
+                StringBuffer_free(&sb);
+                assert(sb == NULL);
                 // Remove white space
                 sb = StringBuffer_new("\t select a from b; \r\n");
                 StringBuffer_trim(sb);
-                assert(Str_isEqual(StringBuffer_toString(sb), "select a from b;"));
+                assert(Str_isEqual(StringBuffer_toString(sb), "select a from b"));
                 StringBuffer_free(&sb);
                 assert(sb == NULL);
         }

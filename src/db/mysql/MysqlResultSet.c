@@ -27,11 +27,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <mysql.h>
 #include <errmsg.h>
 
-#include "ResultSetDelegate.h"
-#include "MysqlResultSet.h"
+#include "MysqlAdapter.h"
 
 
 /**
@@ -42,48 +40,35 @@
  */
 
 
-/* ----------------------------------------------------------- Definitions */
+/* ------------------------------------------------------------- Definitions */
 
 
 #define MYSQL_OK 0
-
-const struct Rop_T mysqlrops = {
-	.name           = "mysql",
-        .free           = MysqlResultSet_free,
-        .getColumnCount = MysqlResultSet_getColumnCount,
-        .getColumnName  = MysqlResultSet_getColumnName,
-        .getColumnSize  = MysqlResultSet_getColumnSize,
-        .next           = MysqlResultSet_next,
-        .isnull         = MysqlResultSet_isnull,
-        .getString      = MysqlResultSet_getString,
-        .getBlob        = MysqlResultSet_getBlob
-        // getTimestamp and getDateTime is handled in ResultSet
-};
-
 typedef struct column_t {
-        my_bool is_null;
+        char *buffer;
+        bool is_null;
         MYSQL_FIELD *field;
         unsigned long real_length;
-        char *buffer;
 } *column_t;
-
 #define T ResultSetDelegate_T
 struct T {
         int stop;
         int keep;
         int maxRows;
+        int fetchSize;
         int lastError;
         int needRebind;
-	int currentRow;
-	int columnCount;
+        int currentRow;
+        int columnCount;
         MYSQL_RES *meta;
         MYSQL_BIND *bind;
-	MYSQL_STMT *stmt;
+        MYSQL_STMT *stmt;
         column_t columns;
+        Connection_T delegator;
 };
 
 
-/* ------------------------------------------------------- Private methods */
+/* --------------------------------------------------------- Private methods */
 
 
 static inline void _ensureCapacity(T R, int i) {
@@ -99,20 +84,17 @@ static inline void _ensureCapacity(T R, int i) {
 }
 
 
-/* ----------------------------------------------------- Protected methods */
+/* ------------------------------------------------------------- Constructor */
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility push(hidden)
-#endif
-
-T MysqlResultSet_new(void *stmt, int maxRows, int keep) {
-	T R;
-	assert(stmt);
-	NEW(R);
-	R->stmt = stmt;
+T MysqlResultSet_new(Connection_T delegator, MYSQL_STMT *stmt, int keep) {
+        T R;
+        assert(stmt);
+        NEW(R);
+        R->stmt = stmt;
         R->keep = keep;
-        R->maxRows = maxRows;
+        R->delegator = delegator;
+        R->maxRows = Connection_getMaxRows(delegator);
         R->columnCount = mysql_stmt_field_count(R->stmt);
         if ((R->columnCount <= 0) || ! (R->meta = mysql_stmt_result_metadata(R->stmt))) {
                 DEBUG("Warning: column error - %s\n", mysql_stmt_error(stmt));
@@ -133,16 +115,15 @@ T MysqlResultSet_new(void *stmt, int maxRows, int keep) {
                         DEBUG("Error: bind - %s\n", mysql_stmt_error(stmt));
                         R->stop = true;
                 }
-                // Store resultset client side, speeds up processing with > 10x at the cost of increased memory usage
-                if ((R->lastError = mysql_stmt_store_result(R->stmt))) {
-                        DEBUG("Warning: store result - %s\n", mysql_stmt_error(stmt));
-                }
         }
-	return R;
+        return R;
 }
 
 
-void MysqlResultSet_free(T *R) {
+/* -------------------------------------------------------- Delegate Methods */
+
+
+static void _free(T *R) {
 	assert(R && *R);
         for (int i = 0; i < (*R)->columnCount; i++)
                 FREE((*R)->columns[i].buffer);
@@ -157,13 +138,13 @@ void MysqlResultSet_free(T *R) {
 }
 
 
-int MysqlResultSet_getColumnCount(T R) {
+static int _getColumnCount(T R) {
 	assert(R);
 	return R->columnCount;
 }
 
 
-const char *MysqlResultSet_getColumnName(T R, int columnIndex) {
+static const char *_getColumnName(T R, int columnIndex) {
 	assert(R);
 	columnIndex--;
 	if (R->columnCount <= 0 || columnIndex < 0 || columnIndex > R->columnCount)
@@ -172,7 +153,7 @@ const char *MysqlResultSet_getColumnName(T R, int columnIndex) {
 }
 
 
-long MysqlResultSet_getColumnSize(T R, int columnIndex) {
+static long _getColumnSize(T R, int columnIndex) {
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].is_null)
                 return 0;
@@ -180,7 +161,21 @@ long MysqlResultSet_getColumnSize(T R, int columnIndex) {
 }
 
 
-int MysqlResultSet_next(T R) {
+static void _setFetchSize(T R, int rows) {
+        assert(R);
+        if ((R->lastError = mysql_stmt_attr_set(R->stmt, STMT_ATTR_PREFETCH_ROWS, &rows)))
+                THROW(SQLException, "mysql_stmt_attr_set -- %s", mysql_stmt_error(R->stmt));
+        R->fetchSize = rows;
+}
+
+
+static int _getFetchSize(T R) {
+        assert(R);
+        return R->fetchSize ? R->fetchSize : Connection_getFetchSize(R->delegator);
+}
+
+
+static int _next(T R) {
 	assert(R);
         if (R->stop)
                 return false;
@@ -206,14 +201,14 @@ int MysqlResultSet_next(T R) {
 }
 
 
-int MysqlResultSet_isnull(T R, int columnIndex) {
+static int _isnull(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         return R->columns[i].is_null;
 }
 
 
-const char *MysqlResultSet_getString(T R, int columnIndex) {
+static const char *_getString(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].is_null)
@@ -224,7 +219,7 @@ const char *MysqlResultSet_getString(T R, int columnIndex) {
 }
 
 
-const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
+static const void *_getBlob(T R, int columnIndex, int *size) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].is_null)
@@ -235,7 +230,21 @@ const void *MysqlResultSet_getBlob(T R, int columnIndex, int *size) {
 }
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility pop
-#endif
+/* ------------------------------------------------------------------------- */
+
+
+const struct Rop_T mysqlrops = {
+        .name           = "mysql",
+        .free           = _free,
+        .getColumnCount = _getColumnCount,
+        .getColumnName  = _getColumnName,
+        .getColumnSize  = _getColumnSize,
+        .setFetchSize   = _setFetchSize,
+        .getFetchSize   = _getFetchSize,
+        .next           = _next,
+        .isnull         = _isnull,
+        .getString      = _getString,
+        .getBlob        = _getBlob
+        // getTimestamp and getDateTime is handled in ResultSet
+};
 

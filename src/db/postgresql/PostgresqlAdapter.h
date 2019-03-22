@@ -3,12 +3,12 @@
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -21,23 +21,15 @@
  * You must obey the GNU General Public License in all respects
  * for all of the code used other than OpenSSL.
  */
-#ifndef MYSQLCONNECTION_INCLUDED
-#define MYSQLCONNECTION_INCLUDED
-#define T ConnectionDelegate_T
-T MysqlConnection_new(URL_T url, char **error);
-void MysqlConnection_free(T *C);
-void MysqlConnection_setQueryTimeout(T C, int ms);
-void MysqlConnection_setMaxRows(T C, int max);
-int MysqlConnection_ping(T C);
-int MysqlConnection_beginTransaction(T C);
-int MysqlConnection_commit(T C);
-int MysqlConnection_rollback(T C);
-long long MysqlConnection_lastRowId(T C);
-long long MysqlConnection_rowsChanged(T C);
-int MysqlConnection_execute(T C, const char *sql, va_list ap);
-ResultSet_T MysqlConnection_executeQuery(T C, const char *sql, va_list ap);
-PreparedStatement_T MysqlConnection_prepareStatement(T C, const char *sql, va_list ap);
-const char *MysqlConnection_getLastError(T C);
-#undef T
-#endif
 
+#ifndef POSTGRESQLADAPTER_INCLUDED
+#define POSTGRESQLADAPTER_INCLUDED
+
+#include <libpq-fe.h>
+
+#include "zdb.h"
+
+ResultSetDelegate_T PostgresqlResultSet_new(Connection_T delegator, PGresult *res) __attribute__ ((visibility("hidden")));
+PreparedStatementDelegate_T PostgresqlPreparedStatement_new(Connection_T delegator, PGconn *db, char *stmt, int parameterCount) __attribute__ ((visibility("hidden")));
+
+#endif

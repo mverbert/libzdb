@@ -139,7 +139,7 @@ time_t timegm(struct tm *tm)
 static inline int _a2i(const char *a, int l) {
         int n = 0;
         for (; *a && l--; a++)
-                n = n * 10 + (*a) - '0';
+                n = n * 10 + (*a - '0');
         return n;
 }
 
@@ -169,11 +169,11 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
         assert(t);
         assert(s);
         struct tm tm = {.tm_isdst = -1}; 
-        int has_date = false, has_time = false;
+        int have_date = false, have_time = false;
         const char *limit = s + strlen(s), *marker, *token, *cursor = s;
 	while (true) {
 		if (cursor >= limit) {
-                        if (has_date || has_time) {
+                        if (have_date || have_time) {
                                 *(struct tm*)t = tm;
                                 return t;
                         }
@@ -199,7 +199,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                         tm.tm_year  = _a2i(token, 4);
                         tm.tm_mon   = _a2i(token + 5, 2) - 1;
                         tm.tm_mday  = _a2i(token + 8, 2);
-                        has_date = true;
+                        have_date = true;
                         continue;
                  }
                  yyyy dd dd
@@ -207,7 +207,15 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                         tm.tm_year  = _a2i(token, 4);
                         tm.tm_mon   = _a2i(token + 4, 2) - 1;
                         tm.tm_mday  = _a2i(token + 6, 2);
-                        has_date = true;
+                        have_date = true;
+                        continue;
+                 }
+                 dd x dd x yyyy
+                 { // Date: dd/mm/yyyy
+                        tm.tm_mday  = _a2i(token, 2);
+                        tm.tm_mon   = _a2i(token + 3, 2) - 1;
+                        tm.tm_year  = _a2i(token + 6, 4);
+                        have_date = true;
                         continue;
                  }
                  dd x dd x dd frac?
@@ -215,7 +223,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                         tm.tm_hour = _a2i(token, 2);
                         tm.tm_min  = _a2i(token + 3, 2);
                         tm.tm_sec  = _a2i(token + 6, 2);
-                        has_time = true;
+                        have_time = true;
                         continue;
                  }
                  dd dd dd frac?
@@ -223,12 +231,20 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
                         tm.tm_hour = _a2i(token, 2);
                         tm.tm_min  = _a2i(token + 2, 2);
                         tm.tm_sec  = _a2i(token + 4, 2);
-                        has_time = true;
+                        have_time = true;
+                        continue;
+                 }
+                 dd ':' dd
+                 { // Time: HH:MM
+                        tm.tm_hour = _a2i(token, 2);
+                        tm.tm_min  = _a2i(token + 3, 2);
+                        tm.tm_sec  = 0;
+                        have_time = true;
                         continue;
                  }
                  tz
                  { // Timezone: +-HH:MM, +-HH or +-HHMM is offset from UTC in seconds
-                        if (has_time) { // Only set timezone if time has been seen
+                        if (have_time) { // Only set timezone if we have parsed time
                                 tm.TM_GMTOFF = _a2i(token + 1, 2) * 3600;
                                 if (isdigit(token[3]))
                                         tm.TM_GMTOFF += _a2i(token + 3, 2) * 60;
@@ -249,7 +265,7 @@ struct tm *Time_toDateTime(const char *s, struct tm *t) {
 }
 
 
-char *Time_toString(time_t time, char result[20]) {
+char *Time_toString(time_t time, char result[static 20]) {
         assert(result);
         char x[2];
         struct tm ts = {.tm_isdst = -1};

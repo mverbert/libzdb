@@ -1,6 +1,23 @@
-                         CHANGES version 3.1
+                         CHANGES version 3.2
 
               This file summarizes changes made since 1.0
+
+Version 3.2
+-----------
+* New: Support prefetch rows for MySQL and Oracle. Either programatically
+  via Connection_setFetchSize() and ResultSet_setFetchSize() or via a new
+  'fetch-size' URL option. 'Thanks to dragon jiang <jianlinlong@gmail.com>
+  for the suggestion and initial pull request.
+* New: MySQL 5.7 and later. Added session query timeout accessible
+  via Connection_setQueryTimeout()
+* New: MySQL 8. Added new URL option 'auth-plugin' which
+  specify the authentication_plugin to use.
+* New: Oracle: New URL option 'sysdba' for connecting with sysdba
+  privileges.
+* Fixed: Remove last SQL terminator character ';' in statements, except
+  if preceded with END; to allow for ending a pl/sql block.
+* Fixed: Oracle: Set SQL null value in prepared statement
+* Fixed: Oracle: Handle date/time literal values
 
 Version 3.1
 -----------

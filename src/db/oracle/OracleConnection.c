@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2010-2013 Volodymyr Tarasenko <tvntsr@yahoo.com>
- *              2010      Sergey Pavlov <sergey.pavlov@gmail.com>
- *              2010      PortaOne Inc.
+ *               2010      Sergey Pavlov <sergey.pavlov@gmail.com>
+ *               2010      PortaOne Inc.
  * Copyright (C) Tildeslash Ltd. All rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,17 +31,9 @@
 #include <unistd.h>
 #include <string.h>
 
-#include <oci.h>
-
-#include "URL.h"
-#include "ResultSet.h"
+#include "OracleAdapter.h"
 #include "StringBuffer.h"
-#include "PreparedStatement.h"
-#include "OracleResultSet.h"
-#include "OraclePreparedStatement.h"
 #include "ConnectionDelegate.h"
-#include "OracleConnection.h"
-#include "OracleWatchdog.h"
 
 
 /**
@@ -53,30 +45,12 @@
 
 /* ----------------------------------------------------------- Definitions */
 
-const struct Cop_T oraclesqlcops = {
-        .name 		 	= "oracle",
-        .new 		 	= OracleConnection_new,
-        .free 		 	= OracleConnection_free,
-        .setQueryTimeout 	= OracleConnection_setQueryTimeout,
-        .setMaxRows 	 	= OracleConnection_setMaxRows,
-        .ping		 	= OracleConnection_ping,
-        .beginTransaction       = OracleConnection_beginTransaction,
-        .commit			= OracleConnection_commit,
-        .rollback		= OracleConnection_rollback,
-        .lastRowId		= OracleConnection_lastRowId,
-        .rowsChanged		= OracleConnection_rowsChanged,
-        .execute		= OracleConnection_execute,
-        .executeQuery		= OracleConnection_executeQuery,
-        .prepareStatement	= OracleConnection_prepareStatement,
-        .getLastError		= OracleConnection_getLastError
-};
 
 #define ERB_SIZE 152
 #define ORACLE_TRANSACTION_PERIOD 10
-
 #define T ConnectionDelegate_T
 struct T {
-        URL_T          url;
+        Connection_T   delegator;
         OCIEnv*        env;
         OCIError*      err;
         OCISvcCtx*     svc;
@@ -93,7 +67,6 @@ struct T {
         Thread_T       watchdog;
         char           running;
 };
-
 extern const struct Rop_T oraclerops;
 extern const struct Pop_T oraclepops;
 
@@ -101,10 +74,46 @@ extern const struct Pop_T oraclepops;
 /* ------------------------------------------------------- Private methods */
 
 
-static int _doConnect(T C, URL_T url, char**  error) {
+static const char *_getErrorDescription(T C) {
+        sb4 errcode;
+        switch (C->lastError)
+        {
+                case OCI_SUCCESS:
+                        return "";
+                case OCI_SUCCESS_WITH_INFO:
+                        return "Info - OCI_SUCCESS_WITH_INFO";
+                        break;
+                case OCI_NEED_DATA:
+                        return "Error - OCI_NEED_DATA";
+                        break;
+                case OCI_NO_DATA:
+                        return "Error - OCI_NODATA";
+                        break;
+                case OCI_ERROR:
+                        (void) OCIErrorGet(C->err, 1, NULL, &errcode, C->erb, (ub4)ERB_SIZE, OCI_HTYPE_ERROR);
+                        return C->erb;
+                        break;
+                case OCI_INVALID_HANDLE:
+                        return "Error - OCI_INVALID_HANDLE";
+                        break;
+                case OCI_STILL_EXECUTING:
+                        return "Error - OCI_STILL_EXECUTE";
+                        break;
+                case OCI_CONTINUE:
+                        return "Error - OCI_CONTINUE";
+                        break;
+                default:
+                        break;
+        }
+        return C->erb;
+}
+
+
+static int _doConnect(T C, char**  error) {
 #define ERROR(e) do {*error = Str_dup(e); return false;} while (0)
-#define ORAERROR(e) do{ *error = Str_dup(OracleConnection_getLastError(e)); return false;} while(0)
-        const char *database, *username, *password;
+#define ORAERROR(e) do{ *error = Str_dup(_getErrorDescription(e)); return false;} while(0)
+        URL_T url = Connection_getURL(C->delegator);
+        const char *servicename, *username, *password;
         const char *host = URL_getHost(url);
         int port = URL_getPort(url);
         if (! (username = URL_getUser(url)))
@@ -113,9 +122,9 @@ static int _doConnect(T C, URL_T url, char**  error) {
         if (! (password = URL_getPassword(url)))
                 if (! (password = URL_getParameter(url, "password")))
                         ERROR("no password specified in URL");
-        if (! (database = URL_getPath(url)))
-                ERROR("no database specified in URL");
-        ++database;
+        if (! (servicename = URL_getPath(url)))
+                ERROR("no Service Name specified in URL");
+        ++servicename;
         /* Create a thread-safe OCI environment with N' substitution turned on. */
         if (OCIEnvCreate(&C->env, OCI_THREADED | OCI_OBJECT | OCI_NCHAR_LITERAL_REPLACE_ON, 0, 0, 0, 0, 0, 0))
                 ERROR("Create a OCI environment failed");
@@ -134,11 +143,11 @@ static int _doConnect(T C, URL_T url, char**  error) {
                 StringBuffer_append(C->sb, "//%s", host);
                 if (port > 0)
                         StringBuffer_append(C->sb, ":%d", port);
-                StringBuffer_append(C->sb, "/%s", database);
+                StringBuffer_append(C->sb, "/%s", servicename);
         } else /* Or just service name */
-                StringBuffer_append(C->sb, "%s", database);
+                StringBuffer_append(C->sb, "%s", servicename);
         /* Create a server context */
-        C->lastError = OCIServerAttach(C->srv, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), 0);
+        C->lastError = OCIServerAttach(C->srv, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), OCI_DEFAULT);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
                 ORAERROR(C);
         /* Set attribute server context in the service context */
@@ -154,7 +163,11 @@ static int _doConnect(T C, URL_T url, char**  error) {
         C->lastError = OCIAttrSet(C->usr, OCI_HTYPE_SESSION, (dvoid *)password, (int)strlen(password), OCI_ATTR_PASSWORD, C->err);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
                 ORAERROR(C);
-        C->lastError = OCISessionBegin(C->svc, C->err, C->usr, OCI_CRED_RDBMS, OCI_DEFAULT);
+        ub4 sessionFlags = OCI_DEFAULT;
+        if (IS(URL_getParameter(url, "sysdba"), "true")) {
+                sessionFlags |= OCI_SYSDBA;
+        }
+        C->lastError = OCISessionBegin(C->svc, C->err, C->usr, OCI_CRED_RDBMS, sessionFlags);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
                 ORAERROR(C);
         OCIAttrSet(C->svc, OCI_HTYPE_SVCCTX, C->usr, 0, OCI_ATTR_SESSION, C->err);
@@ -165,33 +178,14 @@ static int _doConnect(T C, URL_T url, char**  error) {
 WATCHDOG(watchdog, T)
 
 
-/* ----------------------------------------------------- Protected methods */
+/* -------------------------------------------------------- Delegate Methods */
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility push(hidden)
-#endif
-
-T OracleConnection_new(URL_T url, char **error) {
-        T C;
-        assert(url);
-        assert(error);
-        NEW(C);
-        C->url = url;
-        C->sb = StringBuffer_create(STRLEN);
-        C->timeout = SQL_DEFAULT_TIMEOUT;
-        if (! _doConnect(C, url, error)) {
-                OracleConnection_free(&C);
-                return NULL;
-        }
-        C->txnhp = NULL;
-        C->running = false;
-        Thread_create(C->watchdog, watchdog, C);
-        return C;
+static const char *_getLastError(T C) {
+        return _getErrorDescription(C);
 }
 
-
-void OracleConnection_free(T* C) {
+static void _free(T* C) {
         assert(C && *C);
         if ((*C)->svc) {
                 OCISessionEnd((*C)->svc, (*C)->err, (*C)->usr, OCI_DEFAULT);
@@ -201,33 +195,40 @@ void OracleConnection_free(T* C) {
                 OCIServerDetach((*C)->srv, (*C)->err, OCI_DEFAULT);
         if ((*C)->env)
                 OCIHandleFree((*C)->env, OCI_HTYPE_ENV);
-        StringBuffer_free(&(*C)->sb);
+        StringBuffer_free(&((*C)->sb));
         if ((*C)->watchdog)
             Thread_join((*C)->watchdog);
         FREE(*C);
 }
 
 
-void OracleConnection_setQueryTimeout(T C, int ms) {
-        assert(C);
-        C->timeout = ms;
+static T _new(Connection_T delegator, char **error) {
+        T C;
+        assert(delegator);
+        assert(error);
+        NEW(C);
+        C->delegator = delegator;
+        C->sb = StringBuffer_create(STRLEN);
+        C->timeout = SQL_DEFAULT_TIMEOUT;
+        if (! _doConnect(C, error)) {
+                _free(&C);
+                return NULL;
+        }
+        C->txnhp = NULL;
+        C->running = false;
+        Thread_create(C->watchdog, watchdog, C);
+        return C;
 }
 
 
-void OracleConnection_setMaxRows(T C, int max) {
-        assert(C);
-        C->maxRows = max;
-}
-
-
-int  OracleConnection_ping(T C) {
+static int _ping(T C) {
         assert(C);
         C->lastError = OCIPing(C->svc, C->err, OCI_DEFAULT);
         return (C->lastError == OCI_SUCCESS);
 }
 
 
-int  OracleConnection_beginTransaction(T C) {
+static int _beginTransaction(T C) {
         assert(C);
         if (C->txnhp == NULL) /* Allocate handler only once, if it is necessary */
         {
@@ -242,21 +243,21 @@ int  OracleConnection_beginTransaction(T C) {
 }
 
 
-int  OracleConnection_commit(T C) {
+static int _commit(T C) {
         assert(C);
         C->lastError = OCITransCommit(C->svc, C->err, OCI_DEFAULT);
         return C->lastError == OCI_SUCCESS;
 }
 
 
-int  OracleConnection_rollback(T C) {
+static int _rollback(T C) {
         assert(C);
         C->lastError = OCITransRollback(C->svc, C->err, OCI_DEFAULT);
         return C->lastError == OCI_SUCCESS;
 }
 
 
-long long OracleConnection_lastRowId(T C) {
+static long long _lastRowId(T C) {
         /*:FIXME:*/
         /*
          Oracle's RowID can be mapped on string only
@@ -286,13 +287,13 @@ long long OracleConnection_lastRowId(T C) {
 }
 
 
-long long OracleConnection_rowsChanged(T C) {
+static long long _rowsChanged(T C) {
         assert(C);
         return C->rowsChanged;
 }
 
 
-int  OracleConnection_execute(T C, const char *sql, va_list ap) {
+static int _execute(T C, const char *sql, va_list ap) {
         OCIStmt* stmtp;
         va_list ap_copy;
         assert(C);
@@ -320,19 +321,19 @@ int  OracleConnection_execute(T C, const char *sql, va_list ap) {
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
                 ub4 parmcnt = 0;
                 OCIAttrGet(stmtp, OCI_HTYPE_STMT, &parmcnt, NULL, OCI_ATTR_PARSE_ERROR_OFFSET, C->err);
-                DEBUG("Error occured in StmtExecute %d (%s), offset is %d\n", C->lastError, OracleConnection_getLastError(C), parmcnt);
+                DEBUG("Error occured in StmtExecute %d (%s), offset is %d\n", C->lastError, _getLastError(C), parmcnt);
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return false;
         }
         C->lastError = OCIAttrGet(stmtp, OCI_HTYPE_STMT, &C->rowsChanged, 0, OCI_ATTR_ROW_COUNT, C->err);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
-                DEBUG("OracleConnection_execute: Error in OCIAttrGet %d (%s)\n", C->lastError, OracleConnection_getLastError(C));
+                DEBUG("OracleConnection_execute: Error in OCIAttrGet %d (%s)\n", C->lastError, _getLastError(C));
         OCIHandleFree(stmtp, OCI_HTYPE_STMT);
         return C->lastError == OCI_SUCCESS;
 }
 
 
-ResultSet_T OracleConnection_executeQuery(T C, const char *sql, va_list ap) {
+static ResultSet_T _executeQuery(T C, const char *sql, va_list ap) {
         OCIStmt* stmtp;
         va_list  ap_copy;
         assert(C);
@@ -350,28 +351,35 @@ ResultSet_T OracleConnection_executeQuery(T C, const char *sql, va_list ap) {
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
+        unsigned long fetchSize = Connection_getFetchSize(C->delegator);
+        C->lastError = OCIAttrSet(stmtp, OCI_HTYPE_STMT, (void*)&fetchSize, (ub4)sizeof(ub4), OCI_ATTR_PREFETCH_ROWS, C->err);
+        if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
+                DEBUG("Error in OCIAttrSet(OCI_ATTR_PREFETCH_ROWS)\n");
+                OCIHandleFree(stmtp, OCI_HTYPE_STMT);
+                return NULL;
+        }
         /* Execute and create Result Set */
         if (C->timeout > 0) {
                 C->countdown = C->timeout;
                 C->running = true;
         }
-        C->lastError = OCIStmtExecute(C->svc, stmtp, C->err, 0, 0, NULL, NULL, OCI_DEFAULT);    
+        C->lastError = OCIStmtExecute(C->svc, stmtp, C->err, 0, 0, NULL, NULL, OCI_DEFAULT);
         C->running = false;
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
                 ub4 parmcnt = 0;
                 OCIAttrGet(stmtp, OCI_HTYPE_STMT, &parmcnt, NULL, OCI_ATTR_PARSE_ERROR_OFFSET, C->err);
-                DEBUG("Error occured in StmtExecute %d (%s), offset is %d\n", C->lastError, OracleConnection_getLastError(C), parmcnt);
+                DEBUG("Error occured in StmtExecute %d (%s), offset is %d\n", C->lastError, _getLastError(C), parmcnt);
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
         C->lastError = OCIAttrGet(stmtp, OCI_HTYPE_STMT, &C->rowsChanged, 0, OCI_ATTR_ROW_COUNT, C->err);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
-                DEBUG("OracleConnection_execute: Error in OCIAttrGet %d (%s)\n", C->lastError, OracleConnection_getLastError(C));
-        return ResultSet_new(OracleResultSet_new(stmtp, C->env, C->usr, C->err, C->svc, true, C->maxRows), (Rop_T)&oraclerops);
+                DEBUG("OracleConnection_execute: Error in OCIAttrGet %d (%s)\n", C->lastError, _getLastError(C));
+        return ResultSet_new(OracleResultSet_new(C->delegator, stmtp, C->env, C->usr, C->err, C->svc, true), (Rop_T)&oraclerops);
 }
 
 
-PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_list ap) {
+static PreparedStatement_T _prepareStatement(T C, const char *sql, va_list ap) {
         OCIStmt *stmtp;
         va_list ap_copy;
         assert(C);
@@ -379,7 +387,7 @@ PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_l
         StringBuffer_vset(C->sb, sql, ap_copy);
         va_end(ap_copy);
         StringBuffer_trim(C->sb);
-        int paramCount = StringBuffer_prepare4oracle(C->sb);
+        StringBuffer_prepare4oracle(C->sb);
         /* Build statement */
         C->lastError = OCIHandleAlloc(C->env, (void **)&stmtp, OCI_HTYPE_STMT, 0, 0);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
@@ -389,45 +397,25 @@ PreparedStatement_T OracleConnection_prepareStatement(T C, const char *sql, va_l
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
-        return PreparedStatement_new(OraclePreparedStatement_new(stmtp, C->env, C->usr, C->err, C->svc, C->maxRows, C->timeout), (Pop_T)&oraclepops, paramCount);
+        return PreparedStatement_new(OraclePreparedStatement_new(C->delegator, stmtp, C->env, C->usr, C->err, C->svc, C->timeout), (Pop_T)&oraclepops);
 }
 
 
-const char *OracleConnection_getLastError(T C) {
-        sb4 errcode;
-        switch (C->lastError)
-        {
-                case OCI_SUCCESS:
-                        return "";
-                case OCI_SUCCESS_WITH_INFO:
-                        return "Error - OCI_SUCCESS_WITH_INFO";
-                        break;
-                case OCI_NEED_DATA:
-                        return "Error - OCI_NEED_DATA";
-                        break;
-                case OCI_NO_DATA:
-                        return "Error - OCI_NODATA";
-                        break;
-                case OCI_ERROR:
-                        (void) OCIErrorGet(C->err, 1, NULL, &errcode, C->erb, (ub4)ERB_SIZE, OCI_HTYPE_ERROR);
-                        return C->erb;
-                        break;
-                case OCI_INVALID_HANDLE:
-                        return "Error - OCI_INVALID_HANDLE";
-                        break;
-                case OCI_STILL_EXECUTING:
-                        return "Error - OCI_STILL_EXECUTE";
-                        break;
-                case OCI_CONTINUE:
-                        return "Error - OCI_CONTINUE";
-                        break;
-                default:
-                        break;
-        }
-        return C->erb;
-}
+/* ------------------------------------------------------------------------- */
 
 
-#ifdef PACKAGE_PROTECTED
-#pragma GCC visibility pop
-#endif
+const struct Cop_T oraclesqlcops = {
+        .name             = "oracle",
+        .new              = _new,
+        .free             = _free,
+        .ping             = _ping,
+        .beginTransaction = _beginTransaction,
+        .commit           = _commit,
+        .rollback         = _rollback,
+        .lastRowId        = _lastRowId,
+        .rowsChanged      = _rowsChanged,
+        .execute          = _execute,
+        .executeQuery     = _executeQuery,
+        .prepareStatement = _prepareStatement,
+        .getLastError     = _getLastError
+};

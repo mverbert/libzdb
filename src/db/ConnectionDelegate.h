@@ -3,12 +3,12 @@
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -28,11 +28,11 @@
 
 
 /**
- * This interface defines the <b>contract</b> for the concrete database 
+ * This interface defines the <b>contract</b> for the concrete database
  * implementation used for delegation in the Connection class.
  *
  * @file
- */ 
+ */
 
 #define T ConnectionDelegate_T
 typedef struct T *T;
@@ -40,18 +40,17 @@ typedef struct T *T;
 typedef struct Cop_T {
         const char *name;
         // Methods
-	T (*new)(URL_T url, char **error);
-	void (*free)(T *C);
-	void (*setQueryTimeout)(T C, int ms);
-        void (*setMaxRows)(T C, int max);
+        T (*new)(Connection_T delegator, char **error);
+        void (*free)(T *C);
         int (*ping)(T C);
+        void (*setQueryTimeout)(T C, int ms);
         int (*beginTransaction)(T C);
         int (*commit)(T C);
-	int (*rollback)(T C);
-	long long (*lastRowId)(T C);
-	long long (*rowsChanged)(T C);
-	int (*execute)(T C, const char *sql, va_list ap);
-	ResultSet_T (*executeQuery)(T C, const char *sql, va_list ap);
+        int (*rollback)(T C);
+        long long (*lastRowId)(T C);
+        long long (*rowsChanged)(T C);
+        int (*execute)(T C, const char *sql, va_list ap);
+        ResultSet_T (*executeQuery)(T C, const char *sql, va_list ap);
         PreparedStatement_T (*prepareStatement)(T C, const char *sql, va_list ap);
         const char *(*getLastError)(T C);
 } *Cop_T;

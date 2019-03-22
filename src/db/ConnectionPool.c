@@ -153,9 +153,7 @@ static void *_doSweep(void *args) {
 T ConnectionPool_new(URL_T url) {
         T P;
 	assert(url);
-#ifdef ZILD_PACKAGE_PROTECTED
-        Exception_init();
-#endif
+        System_init();
 	NEW(P);
         P->url = url;
         Sem_init(P->alarm);
@@ -284,9 +282,11 @@ void ConnectionPool_start(T P) {
                 P->stopped = false;
                 if (! P->filled) {
                         P->filled = _fillPool(P);
-                        if (P->filled && P->doSweep) {
-                                DEBUG("Starting Database reaper thread\n");
-                                Thread_create(P->reaper, _doSweep, P);
+                        if (P->filled) {
+                                if (P->doSweep) {
+                                        DEBUG("Starting Database reaper thread\n");
+                                        Thread_create(P->reaper, _doSweep, P);
+                                }
                         }
                 }
         }
@@ -325,10 +325,12 @@ Connection_T ConnectionPool_getConnection(T P) {
                 int size = Vector_size(P->pool);
                 for (int i = 0; i < size; i++) {
                         con = Vector_get(P->pool, i);
-                        if (Connection_isAvailable(con) && Connection_ping(con)) {
-                                Connection_setAvailable(con, false);
-                                goto done;
-                        } 
+                        if (Connection_isAvailable(con)) {
+                                if (Connection_ping(con)) {
+                                        Connection_setAvailable(con, false);
+                                        goto done;
+                                }
+                        }
                 }
                 con = NULL;
                 if (size < P->maxConnections) {

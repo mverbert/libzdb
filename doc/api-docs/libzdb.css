@@ -1,22 +1,53 @@
-body { 
-    background-color:#fbfbfb;
-    width: 960px; 
-    margin:0 auto;
-    font-family: "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;
-    font-size: 14px;
-    font-weight: normal;
-    line-height: 16px;
-    color:#333;
+body {background-color:white;}
+body,div,p,dl,.memname, .params, .exception {
+    font: normal normal normal 16px/22px "HelveticaNeue", Helvetica, "Arial Narrow", Arial, sans-serif;
 }
-h1 {  color: #333;
-    line-height: 64px;
-    font-size: 48px;
-    letter-spacing: -0.03em;
-    text-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px;
-    padding-top:30px;
+#nav-path {display:none;}
+h2:first-of-type {margin-top:2px; border:none;}
+h2.groupheader {font-size:26px; line-height:28px;color:#286796;}
+h2.desc {font-weight:100; margin-top:1em;}
+div.groupheader { font-weight:600; font-size:18px;color: rgb(51, 51, 51);}
+h3 {font-size:20px;color: rgb(51, 51, 51);}
+div.header { background-image:none; background-color: #3498db; color:white; position: fixed;width: 100%;top: 0;}
+div.contents {margin-top: 80px;}
+div.title {text-align:center;font-size: 28px; font-weight:100;}
+.summary {display:none;}
+dl.section {border:none;}
+.memproto > *, .memitem > * {
+    box-shadow: none!important;
+    background-image:none!important;
 }
-.example {color:#555;}
-table {border-collapse:collapse;}
-table, th, td {border: 1px solid #ccc; padding:5px;}
-th {text-align:left;}
-td:first-child {white-space:nowrap;color:maroon;}
+.memtitle {
+    display: none;
+}
+.memproto {
+    border-top-left-radius: 5px;
+    border-bottom: 1px #b8c8e9 solid;
+    background-color: #E4F1FE;
+}
+.memname {
+    color: #2c3e50!important;
+    text-shadow: none;
+    font-weight: 600 !important;
+}
+pre {white-space: pre-wrap;padding-left:1em;}
+.textinfo {color: #428bca;}
+.textnote {color: #a94442;}
+a.back {
+    font-size: 28px;
+    text-decoration:none;
+    color:white;
+    position:fixed;
+    top: 10px;
+    left:20px;
+    padding: 10px 20px;
+    background-color: rgba(59,150,215, 0.4);
+    cursor:pointer;
+    transition: all 0.25s ease;
+    z-index:20;
+}
+a.back:hover {
+    padding-left:15px;
+    padding-right:25px;
+    background-color:#2980b9;
+}

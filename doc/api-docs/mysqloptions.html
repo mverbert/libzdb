@@ -2,11 +2,11 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>libzdb | MySQL Options</title>
-    <link rel="stylesheet" href="libzdb.css">
+    <link rel="stylesheet" href="libzdboptions.css">
 </head>
 <body>
     <h1>
-        MySQL URL properties
+        MySQL <i>URL</i> properties
     </h1>
     <table>
         <tr>
@@ -31,7 +31,7 @@
                 password
             </td>
             <td>
-                The password for user. This property is required unless the auth-part of the URL was used. 
+                The password for user. This property is required unless the auth-part of the URL was used.
                 <p class="example">Example: password=swordfish</p>
             </td>
             <td>
@@ -68,10 +68,10 @@
                 use-ssl
             </td>
             <td>
-                Used for establishing secure connections using SSL. OpenSSL support 
+                Used for establishing secure connections using SSL. OpenSSL support
                 must be enabled/linked in the client library. Default is false.
                 <p class="example">Example: use-ssl=true</p>
-                
+
             </td>
             <td>
                 Boolean (true/false)
@@ -91,10 +91,23 @@
         </tr>
         <tr>
             <td>
+                auth-plugin
+            </td>
+            <td>
+                The name of the authentication plugin to use. For MySQL 8 or later
+                <p class="example">Example: auth-plugin=mysql_native_password</p>
+            </td>
+            <td>
+                String
+            </td>
+        </tr>
+        <tr>
+            <td>
                 secure-auth
             </td>
             <td>
                 Whether to connect to a server that does not support the password hashing used in MySQL 4.1.1 and later. Default is false.
+                Not applicable to MySQL 8 or later
                 <p class="example">Example: secure-auth=true</p>
             </td>
             <td>
@@ -115,6 +128,20 @@
                 String (file path)
             </td>
         </tr>
+        <tr>
+            <td>
+                fetch-size
+            </td>
+            <td>
+                The number of rows that should be fetched from the database when more rows are needed for ResultSet objects. Default is 100 rows. Rows
+                are retrieved in-memory. A larger value will make libzdb use more memory.
+                <p class="example">Example: fetch-size=10</p>
+            </td>
+            <td>
+                Number [1..int.max]
+            </td>
+        </tr>
+
     </table>
 </body>
 </html>
