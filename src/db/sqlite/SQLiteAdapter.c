@@ -118,12 +118,12 @@ int zdb_sqlite3_exec(sqlite3 *db, const char *sql) {
 }
 
 
-#else
+#else // NOT SQLITEUNLOCK
 
 // Exponential backoff https://en.wikipedia.org/wiki/Exponential_backoff
 // Expected mean backoff time: (2^10 - 1)/2 × slot = 2.6 seconds
 static inline void _backoff(int step) {
-        static int slot = 51 * 100;
+        static int slot = 51 * 100; // µs
         switch (step) {
                 case 0:
                         Time_usleep(slot * (random() % 2));
@@ -140,25 +140,25 @@ static inline void _backoff(int step) {
 
 // MARK: - Backoff API
 
-#define _exec_or_backoff(STMT) do { \
+#define _exec_or_backoff(S) do { \
         for (int i = 0, steps = 10; i < steps; i++) { \
-        int status = STMT; \
+        int status = S; \
         if ((status != SQLITE_BUSY) && (status != SQLITE_LOCKED)) return status; \
-        _backoff(i); } return STMT; } while(0)
+        _backoff(i); } return S; } while(0)
 
 
 int zdb_sqlite3_step(sqlite3_stmt *pStmt) {
-        _exec_or_backoff((sqlite3_step(pStmt)));
+        _exec_or_backoff(sqlite3_step(pStmt));
 }
 
 
 int zdb_sqlite3_prepare_v2(sqlite3 *db, const char *zSql, int nSql, sqlite3_stmt **ppStmt, const char **pz) {
-        _exec_or_backoff((sqlite3_prepare_v2(db, zSql, nSql, ppStmt, pz)));
+        _exec_or_backoff(sqlite3_prepare_v2(db, zSql, nSql, ppStmt, pz));
 }
 
 
 int zdb_sqlite3_exec(sqlite3 *db, const char *sql) {
-        _exec_or_backoff((sqlite3_exec(db, sql, NULL, NULL, NULL)));
+        _exec_or_backoff(sqlite3_exec(db, sql, NULL, NULL, NULL));
 }
 
 
