@@ -26,7 +26,7 @@
 #define MYSQLADAPTER_INCLUDED
 
 #include <mysql.h>
-
+#include <stdbool.h>
 #include "zdb.h"
 
 ResultSetDelegate_T MysqlResultSet_new(Connection_T delegator, MYSQL_STMT *stmt, int keep) __attribute__ ((visibility("hidden")));
