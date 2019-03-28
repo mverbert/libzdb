@@ -159,12 +159,14 @@
  * oracle://localhost:1521/servicename?user=scott&password=tiger
  * </pre>
  *
+ * Instead of a database name, Oracle uses a service name which you
+ * typically specify in a <code>tnsnames.ora</code> configuration file.
  * The auth-part of the URL can be used instead to specify the username 
- * and the password. In addition, you may specify a service name in the URL
- * instead if you have setup a <code>tnsnames.ora</code> configuration file.
+ * and the password as in the example below. Here we also specify that
+ * we want to connect to Oracle with the SYSDBA role.
  *
  * <pre>
- * oracle:///servicename?user=scott&password=tiger
+ * oracle://sys:password@localhost:1521/servicename?sysdba=true
  * </pre>
  *
  * See <a href="oracleoptions.html">oracle options</a> for all properties that
