@@ -135,7 +135,7 @@
 /* Begin PBXFileReference section */
 		521899BA222A0445003EAC09 /* libpq.5.11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.5.11.dylib; path = ../../../../Applications/Postgres.app/Contents/Versions/11/lib/libpq.5.11.dylib; sourceTree = "<group>"; };
 		523EC72F22387F180066C878 /* libclntsh.dylib.18.1 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libclntsh.dylib.18.1; path = ../oci/lib/libclntsh.dylib.18.1; sourceTree = "<group>"; };
-		523FDB952243864B00B3C767 /* zdbpp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zdbpp.h; sourceTree = "<group>"; };
+		523FDB952243864B00B3C767 /* zdbpp.h */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = zdbpp.h; sourceTree = "<group>"; tabWidth = 4; };
 		523FDB9622438C5400B3C767 /* zdbpp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zdbpp.cpp; sourceTree = "<group>"; };
 		523FDBB12243A82200B3C767 /* zdbpp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = zdbpp; sourceTree = BUILT_PRODUCTS_DIR; };
 		524ACAE41B87D68100A4F85B /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };

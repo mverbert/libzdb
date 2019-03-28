@@ -36,23 +36,27 @@ static void testCreateSchema(ConnectionPool& pool) {
 static void testPrepared(ConnectionPool& pool) {
         double rows = 0.12;
         Connection con = pool.getConnection();
-        // Plan prepared statement
+        // A plain explicit prepared statement
         PreparedStatement p1 = con.prepareStatement("insert into zild_t (name, percent, image) values(?, ?, ?);");
         con.beginTransaction();
         for (const auto &[name, img] : data) {
                 rows += 1 + rows / 7;
                 p1.bind(1, name);
                 p1.bind(2, rows);
-                p1.setBlob(3, img.c_str(), int(img.length() + 1)); // include terminating \0
+                p1.bind(3, img.c_str(), int(img.length() + 1)); // include terminating \0
                 p1.execute();
         }
-        // Implicit prepared statement. Set a SQL null value. Must use nullptr, not NULL
+        // Implicit prepared statement. Any execute or executeQuery statement which
+        // takes parameters are automatically translated into a prepared statement.
+        // Here we also demonstrate how to set a SQL null value by using nullptr which
+        // must be used instead of NULL
         con.execute("update zild_t set image = ? where id = ?", nullptr, 11);
         con.commit();
 }
 
 static void testQuery(ConnectionPool& pool) {
         Connection con = pool.getConnection();
+        // Also translated into a prepared statement because use of parameter
         ResultSet result = con.executeQuery("select id, name, percent, image from zild_t where id < ? order by id;", 100);
         result.setFetchSize(100);
         assert(result.columnCount() == 4);
