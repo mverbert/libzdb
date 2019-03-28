@@ -71,20 +71,18 @@ static void testQuery(ConnectionPool& pool) {
 }
 
 static void testDropSchema(ConnectionPool& pool) {
-        Connection con = pool.getConnection();
-        con.execute("drop table zild_t;");
+        pool.getConnection().execute("drop table zild_t;");
 }
 
 int main(void) {
         auto help =
-        "C++17 zdbpp.h Interface Test\n\n"
         "Please enter a valid database connection URL and press ENTER\n"
         "E.g. sqlite:///tmp/sqlite.db?synchronous=off&heap_limit=2000\n"
         "E.g. mysql://localhost:3306/test?user=root&password=root\n"
         "E.g. postgresql://localhost:5432/test?user=root&password=root\n"
         "E.g. oracle://scott:tiger@localhost:1521/servicename\n"
         "To exit, enter '.' on a single line\n\nConnection URL> ";
-        std::cout << std::string(80, '=') + "\n" << help;
+        std::cout << std::string(80, '=') + "\n" << "C++17 zdbpp.h Interface Test\n\n" << help;
         for (std::string line; std::getline(std::cin, line);) {
                 if (line == "q" || line == ".")
                         break;
