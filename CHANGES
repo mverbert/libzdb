@@ -4,6 +4,9 @@
 
 Version 3.2
 -----------
+* New: C++17 support. A new header file, zdbpp.h, is distributed
+  with libzdb for a more idiomatic use of libzdb from C++. Thanks
+  to dragon jiang <jianlinlong@gmail.com>.
 * New: Support prefetch rows for MySQL and Oracle. Either programatically
   via Connection_setFetchSize() and ResultSet_setFetchSize() or via a new
   'fetch-size' URL option. 'Thanks to dragon jiang <jianlinlong@gmail.com>

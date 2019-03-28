@@ -29,6 +29,10 @@
 #include <utility>
 #include <stdexcept>
 
+#if __cplusplus < 201703L
+#error "C++17 or later is required"
+#endif
+
 namespace zdb {
 
 class sql_exception : public std::runtime_error
@@ -202,12 +206,15 @@ public:
                 except_wrapper( return ResultSet_getDoubleByName(t_, columnName) );
         }
         
-        const void *getBlob(int columnIndex, int *size) {
-                except_wrapper( return ResultSet_getBlob(t_, columnIndex, size) );
-        }
-        
-        const void *getBlob(const char *columnName, int *size) {
-                except_wrapper( return ResultSet_getBlobByName(t_, columnName, size) );
+        template <typename T>
+        std::tuple<const void*, int> getBlob(T i) {
+                int size = 0;
+                const void *blob = NULL;
+                if constexpr (std::is_integral<T>::value)
+                        except_wrapper( blob = ResultSet_getBlob(t_, i, &size));
+                else
+                        except_wrapper( blob = ResultSet_getBlobByName(t_, i, &size));
+                return {blob, size};
         }
         
         time_t getTimestamp(int columnIndex) {
@@ -384,7 +391,7 @@ public:
                 except_wrapper( return Connection_getFetchSize(t_) );
         }
         
-        //not support
+        //not supported
         //URL_T Connection_getURL(T C);
         
         int ping() {
@@ -445,7 +452,7 @@ public:
         
         template<typename ...Args>
         ResultSet executeQuery(const char *sql, Args ... args) {
-                PreparedStatement p {this->prepareStatement(sql, args...)};
+                PreparedStatement p(this->prepareStatement(sql, args...));
                 return p.executeQuery();
         }
         
@@ -458,7 +465,7 @@ public:
         template<typename ...Args>
         PreparedStatement prepareStatement(const char *sql, Args ... args) {
                 except_wrapper(
-                               PreparedStatement p {this->prepareStatement(sql)};
+                               PreparedStatement p(this->prepareStatement(sql));
                                int i = 1;
                                (p.bind(i++, args), ...);
                                return p;
