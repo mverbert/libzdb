@@ -34,16 +34,16 @@ static void testCreateSchema(ConnectionPool& pool) {
 }
 
 static void testPrepared(ConnectionPool& pool) {
-        double rows = 0.12;
+        double percent = 0.12;
         Connection con = pool.getConnection();
         // A plain explicit prepared statement
         PreparedStatement p1 = con.prepareStatement("insert into zild_t (name, percent, image) values(?, ?, ?);");
         con.beginTransaction();
-        for (const auto &[name, img] : data) {
-                rows += 1 + rows / 7;
+        for (const auto &[name, image] : data) {
+                percent += 1 + percent / 7;
                 p1.bind(1, name);
-                p1.bind(2, rows);
-                p1.bind(3, std::tuple<const void*, int>(img.c_str(), int(img.length() + 1))); // include terminating \0
+                p1.bind(2, percent);
+                p1.bind(3, std::tuple<const void*, int>(image.c_str(), int(image.length() + 1))); // include terminating \0
                 p1.execute();
         }
         // Implicit prepared statement. Any execute or executeQuery statement which
