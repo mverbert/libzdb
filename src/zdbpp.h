@@ -332,8 +332,9 @@ namespace zdb {
         }
         
         //blob
-        void bind(int parameterIndex, const void *x, int size) {
-            this->setBlob(parameterIndex, x, size);
+        void bind(int parameterIndex, std::tuple<const void *, int> x) {
+            auto [blob, size] = x;
+            this->setBlob(parameterIndex, blob, size);
         }
         
     private:

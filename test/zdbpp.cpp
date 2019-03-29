@@ -43,7 +43,7 @@ static void testPrepared(ConnectionPool& pool) {
                 rows += 1 + rows / 7;
                 p1.bind(1, name);
                 p1.bind(2, rows);
-                p1.bind(3, img.c_str(), int(img.length() + 1)); // include terminating \0
+                p1.bind(3, std::tuple<const void*, int>(img.c_str(), int(img.length() + 1))); // include terminating \0
                 p1.execute();
         }
         // Implicit prepared statement. Any execute or executeQuery statement which
