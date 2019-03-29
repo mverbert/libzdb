@@ -548,13 +548,11 @@ namespace zdb {
         }
         
         Connection getConnection() {
-            except_wrapper(
-                           Connection_T C = ConnectionPool_getConnection(t_);
-                           if (!C) {
-                               throw sql_exception("maxConnection is reached(got null connection)!");
-                           }
-                           RETURN Connection(C);
-                           );
+            Connection_T C = ConnectionPool_getConnection(t_);
+            if (!C) {
+                throw sql_exception("maxConnection is reached (got null connection)!");
+            }
+            return Connection(C);
         }
         
         void returnConnection(Connection& con) {
