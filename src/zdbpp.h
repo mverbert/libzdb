@@ -155,55 +155,55 @@ namespace zdb {
         
     public:
         int columnCount() {
-            except_wrapper( return ResultSet_getColumnCount(t_) );
+            except_wrapper( RETURN ResultSet_getColumnCount(t_) );
         }
         
         const char *columnName(int columnIndex) {
-            except_wrapper( return ResultSet_getColumnName(t_, columnIndex) );
+            except_wrapper( RETURN ResultSet_getColumnName(t_, columnIndex) );
         }
         
         long columnSize(int columnIndex) {
-            except_wrapper( return ResultSet_getColumnSize(t_, columnIndex) );
+            except_wrapper( RETURN ResultSet_getColumnSize(t_, columnIndex) );
         }
         
         int next() {
-            except_wrapper( return ResultSet_next(t_) );
+            except_wrapper( RETURN ResultSet_next(t_) );
         }
         
         int isnull(int columnIndex) {
-            except_wrapper( return ResultSet_isnull(t_, columnIndex) );
+            except_wrapper( RETURN ResultSet_isnull(t_, columnIndex) );
         }
         
         const char *getString(int columnIndex) {
-            except_wrapper( return ResultSet_getString(t_, columnIndex) );
+            except_wrapper( RETURN ResultSet_getString(t_, columnIndex) );
         }
         
         const char *getString(const char *columnName) {
-            except_wrapper( return ResultSet_getStringByName(t_, columnName) );
+            except_wrapper( RETURN ResultSet_getStringByName(t_, columnName) );
         }
         
         int getInt(int columnIndex) {
-            except_wrapper( return ResultSet_getInt(t_, columnIndex) );
+            except_wrapper( RETURN ResultSet_getInt(t_, columnIndex) );
         }
         
         int getInt(const char *columnName) {
-            except_wrapper( return ResultSet_getIntByName(t_, columnName) );
+            except_wrapper( RETURN ResultSet_getIntByName(t_, columnName) );
         }
         
         long long getLLong(int columnIndex) {
-            except_wrapper( return ResultSet_getLLong(t_, columnIndex) );
+            except_wrapper( RETURN ResultSet_getLLong(t_, columnIndex) );
         }
         
         long long getLLong(const char *columnName) {
-            except_wrapper( return ResultSet_getLLongByName(t_, columnName) );
+            except_wrapper( RETURN ResultSet_getLLongByName(t_, columnName) );
         }
         
         double getDouble(int columnIndex) {
-            except_wrapper( return ResultSet_getDouble(t_, columnIndex) );
+            except_wrapper( RETURN ResultSet_getDouble(t_, columnIndex) );
         }
         
         double getDouble(const char *columnName) {
-            except_wrapper( return ResultSet_getDoubleByName(t_, columnName) );
+            except_wrapper( RETURN ResultSet_getDoubleByName(t_, columnName) );
         }
         
         template <typename T>
@@ -218,19 +218,19 @@ namespace zdb {
         }
         
         time_t getTimestamp(int columnIndex) {
-            except_wrapper( return ResultSet_getTimestamp(t_, columnIndex) );
+            except_wrapper( RETURN ResultSet_getTimestamp(t_, columnIndex) );
         }
         
         time_t getTimestamp(const char *columnName) {
-            except_wrapper( return ResultSet_getTimestampByName(t_, columnName) );
+            except_wrapper( RETURN ResultSet_getTimestampByName(t_, columnName) );
         }
         
         struct tm getDateTime(int columnIndex) {
-            except_wrapper( return ResultSet_getDateTime(t_, columnIndex) );
+            except_wrapper( RETURN ResultSet_getDateTime(t_, columnIndex) );
         }
         
         struct tm getDateTime(const char *columnName) {
-            except_wrapper( return ResultSet_getDateTimeByName(t_, columnName) );
+            except_wrapper( RETURN ResultSet_getDateTimeByName(t_, columnName) );
         }
         
         void setFetchSize(int prefetch_rows) {
@@ -238,7 +238,7 @@ namespace zdb {
         }
         
         int getFetchSize() {
-            except_wrapper( return ResultSet_getFetchSize(t_) );
+            except_wrapper( RETURN ResultSet_getFetchSize(t_) );
         }
         
     private:
@@ -295,17 +295,15 @@ namespace zdb {
         }
         
         ResultSet executeQuery() {
-            except_wrapper(
-                           return ResultSet(PreparedStatement_executeQuery(t_));
-                           );
+            except_wrapper( RETURN ResultSet(PreparedStatement_executeQuery(t_)) );
         }
         
         long long rowsChanged() {
-            except_wrapper( return PreparedStatement_rowsChanged(t_) );
+            except_wrapper( RETURN PreparedStatement_rowsChanged(t_) );
         }
         
         int getParameterCount() {
-            except_wrapper( return PreparedStatement_getParameterCount(t_) );
+            except_wrapper( RETURN PreparedStatement_getParameterCount(t_) );
         }
         
     public:
@@ -372,7 +370,7 @@ namespace zdb {
         }
         
         int getQueryTimeout() {
-            except_wrapper( return Connection_getQueryTimeout(t_) );
+            except_wrapper( RETURN Connection_getQueryTimeout(t_) );
         }
         
         void setMaxRows(int max) {
@@ -380,22 +378,22 @@ namespace zdb {
         }
         
         int getMaxRows() {
-            except_wrapper( return Connection_getMaxRows(t_) );
+            except_wrapper( RETURN Connection_getMaxRows(t_) );
         }
         
         void setFetchSize(int prefetch_rows) {
-            except_wrapper( return Connection_setFetchSize(t_, prefetch_rows) );
+            except_wrapper( RETURN Connection_setFetchSize(t_, prefetch_rows) );
         }
         
         int getFetchSize() {
-            except_wrapper( return Connection_getFetchSize(t_) );
+            except_wrapper( RETURN Connection_getFetchSize(t_) );
         }
         
         //not supported
         //URL_T Connection_getURL(T C);
         
         int ping() {
-            except_wrapper( return Connection_ping(t_) );
+            except_wrapper( RETURN Connection_ping(t_) );
         }
         
         void clear() {
@@ -423,19 +421,15 @@ namespace zdb {
         }
         
         long long lastRowId() {
-            except_wrapper( return Connection_lastRowId(t_) );
+            except_wrapper( RETURN Connection_lastRowId(t_) );
         }
         
         long long rowsChanged() {
-            except_wrapper(
-                           return Connection_rowsChanged(t_);
-                           );
+            except_wrapper( RETURN Connection_rowsChanged(t_) );
         }
         
         void execute(const char *sql) {
-            except_wrapper(
-                           Connection_execute(t_, "%s", sql);
-                           );
+            except_wrapper( Connection_execute(t_, "%s", sql) );
         }
         
         template <typename ...Args>
@@ -445,9 +439,7 @@ namespace zdb {
         }
         
         ResultSet executeQuery(const char *sql) {
-            except_wrapper(
-                           return ResultSet(Connection_executeQuery(t_, "%s", sql));
-                           );
+            except_wrapper( RETURN ResultSet(Connection_executeQuery(t_, "%s", sql)) );
         }
         
         template <typename ...Args>
@@ -457,9 +449,7 @@ namespace zdb {
         }
         
         PreparedStatement prepareStatement(const char *sql) {
-            except_wrapper(
-                           return PreparedStatement(Connection_prepareStatement(t_, "%s", sql));
-                           );
+            except_wrapper( RETURN PreparedStatement(Connection_prepareStatement(t_, "%s", sql)) );
         }
         
         template <typename ...Args>
@@ -468,16 +458,16 @@ namespace zdb {
                            PreparedStatement p(this->prepareStatement(sql));
                            int i = 1;
                            (p.bind(i++, args), ...);
-                           return p;
+                           RETURN p;
                            );
         }
         
         const char *getLastError() {
-            except_wrapper( return Connection_getLastError(t_) );
+            except_wrapper( RETURN Connection_getLastError(t_) );
         }
         
         static int isSupported(const char *url) {
-            except_wrapper( return Connection_isSupported(url) );
+            except_wrapper( RETURN Connection_isSupported(url) );
         }
         
     private:
@@ -514,7 +504,7 @@ namespace zdb {
         }
         
         int getInitialConnections() {
-            except_wrapper( return ConnectionPool_getInitialConnections(t_) );
+            except_wrapper( RETURN ConnectionPool_getInitialConnections(t_) );
         }
         
         void setMaxConnections(int maxConnections) {
@@ -522,7 +512,7 @@ namespace zdb {
         }
         
         int getMaxConnections() {
-            except_wrapper( return ConnectionPool_getMaxConnections(t_) );
+            except_wrapper( RETURN ConnectionPool_getMaxConnections(t_) );
         }
         
         void setConnectionTimeout(int connectionTimeout) {
@@ -530,7 +520,7 @@ namespace zdb {
         }
         
         int getConnectionTimeout() {
-            except_wrapper( return ConnectionPool_getConnectionTimeout(t_) );
+            except_wrapper( RETURN ConnectionPool_getConnectionTimeout(t_) );
         }
         
         void setAbortHandler(void(*abortHandler)(const char *error)) {
@@ -542,11 +532,11 @@ namespace zdb {
         }
         
         int size() {
-            except_wrapper( return ConnectionPool_size(t_) );
+            except_wrapper( RETURN ConnectionPool_size(t_) );
         }
         
         int active() {
-            except_wrapper( return ConnectionPool_active(t_) );
+            except_wrapper( RETURN ConnectionPool_active(t_) );
         }
         
         void start() {
@@ -560,10 +550,10 @@ namespace zdb {
         Connection getConnection() {
             except_wrapper(
                            Connection_T C = ConnectionPool_getConnection(t_);
-                           if (NULL == C) {
+                           if (!C) {
                                throw sql_exception("maxConnection is reached(got null connection)!");
                            }
-                           return Connection(C);
+                           RETURN Connection(C);
                            );
         }
         
@@ -572,11 +562,11 @@ namespace zdb {
         }
         
         int reapConnections() {
-            except_wrapper( return ConnectionPool_reapConnections(t_) );
+            except_wrapper( RETURN ConnectionPool_reapConnections(t_) );
         }
         
         static const char *version(void) {
-            except_wrapper( return ConnectionPool_version() );
+            except_wrapper( RETURN ConnectionPool_version() );
         }
         
     private:
