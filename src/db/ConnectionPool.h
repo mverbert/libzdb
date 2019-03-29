@@ -166,7 +166,7 @@
  * we want to connect to Oracle with the SYSDBA role.
  *
  * <pre>
- * oracle://sys:password@localhost:1521/servicename?sysdba=true
+ * oracle://sys:password\@localhost:1521/servicename?sysdba=true
  * </pre>
  *
  * See <a href="oracleoptions.html">oracle options</a> for all properties that
