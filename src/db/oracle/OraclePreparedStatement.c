@@ -89,7 +89,7 @@ WATCHDOG(watchdog, T)
 /* ------------------------------------------------------------- Constructor */
 
 
-T OraclePreparedStatement_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int timeout) {
+T OraclePreparedStatement_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc) {
         T P;
         assert(stmt);
         assert(env);
@@ -102,7 +102,7 @@ T OraclePreparedStatement_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env
         P->err  = err;
         P->svc  = svc;
         P->usr  = usr; 
-        P->timeout = timeout;
+        P->timeout = Connection_getQueryTimeout(P->delegator);
         P->lastError = OCI_SUCCESS;
         P->rowsChanged = 0;
         /* parameterCount */
@@ -112,7 +112,9 @@ T OraclePreparedStatement_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env
         if (P->parameterCount)
                 P->params = CALLOC(P->parameterCount, sizeof(struct param_t));
         P->running = false;
-        Thread_create(P->watchdog, watchdog, P);
+        if (P->timeout > 0) {
+                Thread_create(P->watchdog, watchdog, P);
+        }
         return P;
 }
 
@@ -128,7 +130,8 @@ static void _free(T *P) {
                 FREE((*P)->params);
         }
         (*P)->svc = NULL;
-        Thread_join((*P)->watchdog);
+        if ((*P)->watchdog)
+                Thread_join((*P)->watchdog);
         FREE(*P);
 }
 

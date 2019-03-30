@@ -209,14 +209,12 @@ static T _new(Connection_T delegator, char **error) {
         NEW(C);
         C->delegator = delegator;
         C->sb = StringBuffer_create(STRLEN);
-        C->timeout = SQL_DEFAULT_TIMEOUT;
         if (! _doConnect(C, error)) {
                 _free(&C);
                 return NULL;
         }
         C->txnhp = NULL;
         C->running = false;
-        Thread_create(C->watchdog, watchdog, C);
         return C;
 }
 
@@ -225,6 +223,26 @@ static int _ping(T C) {
         assert(C);
         C->lastError = OCIPing(C->svc, C->err, OCI_DEFAULT);
         return (C->lastError == OCI_SUCCESS);
+}
+
+
+static void _setQueryTimeout(T C, int ms) {
+        assert(C);
+        assert(ms >= 0);
+        C->timeout = ms;
+        if (ms > 0) {
+                if (!C->watchdog) {
+                        Thread_create(C->watchdog, watchdog, C);
+                }
+        } else {
+                if (C->watchdog) {
+                        OCISvcCtx* t = C->svc;
+                        C->svc = NULL;
+                        Thread_join(C->watchdog);
+                        C->svc = t;
+                        C->watchdog = NULL;
+                }
+        }
 }
 
 
@@ -397,7 +415,7 @@ static PreparedStatement_T _prepareStatement(T C, const char *sql, va_list ap) {
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
-        return PreparedStatement_new(OraclePreparedStatement_new(C->delegator, stmtp, C->env, C->usr, C->err, C->svc, C->timeout), (Pop_T)&oraclepops);
+        return PreparedStatement_new(OraclePreparedStatement_new(C->delegator, stmtp, C->env, C->usr, C->err, C->svc), (Pop_T)&oraclepops);
 }
 
 
@@ -409,6 +427,7 @@ const struct Cop_T oraclesqlcops = {
         .new              = _new,
         .free             = _free,
         .ping             = _ping,
+        .setQueryTimeout  = _setQueryTimeout,
         .beginTransaction = _beginTransaction,
         .commit           = _commit,
         .rollback         = _rollback,
