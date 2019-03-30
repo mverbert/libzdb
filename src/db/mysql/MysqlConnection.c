@@ -189,8 +189,8 @@ static int _ping(T C) {
 static void _setQueryTimeout(T C, int ms) {
         assert(C);
 #if MYSQL_VERSION_ID >= 50704
-        C->lastError = mysql_query(C->db, StringBuffer_toString(
-                        StringBuffer_set(C->sb, "SET SESSION MAX_EXECUTION_TIME=%d;", ms)));
+        StringBuffer_set(C->sb, "SET SESSION MAX_EXECUTION_TIME=%d;", ms);
+        C->lastError = mysql_query(C->db, StringBuffer_toString(C->sb));
 #endif
 }
 
