@@ -82,6 +82,7 @@ static inline void _ensureCapacity(T R, int i) {
                 R->needRebind = true;
         }
 }
+static void _setFetchSize(T R, int rows);
 
 
 /* ------------------------------------------------------------- Constructor */
@@ -94,7 +95,7 @@ T MysqlResultSet_new(Connection_T delegator, MYSQL_STMT *stmt, int keep) {
         R->stmt = stmt;
         R->keep = keep;
         R->delegator = delegator;
-        R->maxRows = Connection_getMaxRows(delegator);
+        R->maxRows = Connection_getMaxRows(R->delegator);
         R->columnCount = mysql_stmt_field_count(R->stmt);
         if ((R->columnCount <= 0) || ! (R->meta = mysql_stmt_result_metadata(R->stmt))) {
                 DEBUG("Warning: column error - %s\n", mysql_stmt_error(stmt));
@@ -115,6 +116,9 @@ T MysqlResultSet_new(Connection_T delegator, MYSQL_STMT *stmt, int keep) {
                         DEBUG("Error: bind - %s\n", mysql_stmt_error(stmt));
                         R->stop = true;
                 }
+        }
+        if (!R->stop) {
+                _setFetchSize(R, Connection_getFetchSize(R->delegator));
         }
         return R;
 }
@@ -163,15 +167,16 @@ static long _getColumnSize(T R, int columnIndex) {
 
 static void _setFetchSize(T R, int rows) {
         assert(R);
+        assert(rows > 0);
         if ((R->lastError = mysql_stmt_attr_set(R->stmt, STMT_ATTR_PREFETCH_ROWS, &rows)))
-                THROW(SQLException, "mysql_stmt_attr_set -- %s", mysql_stmt_error(R->stmt));
+                DEBUG("mysql_stmt_attr_set -- %s", mysql_stmt_error(R->stmt));
         R->fetchSize = rows;
 }
 
 
 static int _getFetchSize(T R) {
         assert(R);
-        return R->fetchSize ? R->fetchSize : Connection_getFetchSize(R->delegator);
+        return R->fetchSize;
 }
 
 
@@ -179,7 +184,7 @@ static int _next(T R) {
 	assert(R);
         if (R->stop)
                 return false;
-        if (R->maxRows && (R->currentRow++ >= R->maxRows)) {
+        if ((R->maxRows > 0) && (R->currentRow >= R->maxRows)) {
                 R->stop = true;
 #if MYSQL_VERSION_ID >= 50002
                 /* Seems to need a cursor to work */
@@ -197,6 +202,7 @@ static int _next(T R) {
         R->lastError = mysql_stmt_fetch(R->stmt);
         if (R->lastError == 1)
                 THROW(SQLException, "mysql_stmt_fetch -- %s", mysql_stmt_error(R->stmt));
+        R->currentRow++;
         return ((R->lastError == MYSQL_OK) || (R->lastError == MYSQL_DATA_TRUNCATED));
 }
 

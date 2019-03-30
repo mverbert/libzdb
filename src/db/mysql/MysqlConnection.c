@@ -251,9 +251,7 @@ static ResultSet_T _executeQuery(T C, const char *sql, va_list ap) {
                 unsigned long cursor = CURSOR_TYPE_READ_ONLY;
                 mysql_stmt_attr_set(stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
 #endif
-                unsigned long fetchSize = Connection_getFetchSize(C->delegator);
-                if ((C->lastError = mysql_stmt_attr_set(stmt, STMT_ATTR_PREFETCH_ROWS, &fetchSize))
-                    || (C->lastError = mysql_stmt_execute(stmt))) {
+                if ((C->lastError = mysql_stmt_execute(stmt))) {
                         StringBuffer_set(C->sb, "%s", mysql_stmt_error(stmt));
                         mysql_stmt_close(stmt);
                 } else

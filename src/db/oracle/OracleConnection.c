@@ -146,6 +146,14 @@ static int _doConnect(T C, char**  error) {
                 StringBuffer_append(C->sb, "/%s", servicename);
         } else /* Or just service name */
                 StringBuffer_append(C->sb, "%s", servicename);
+        // Set Connection ResultSet fetch size if found in URL
+        const char *fetchSize = URL_getParameter(url, "fetch-size");
+        if (fetchSize) {
+                int rows = Str_parseInt(fetchSize);
+                if (rows < 1)
+                        ERROR("invalid fetch-size");
+                Connection_setFetchSize(C->delegator, rows);
+        }
         /* Create a server context */
         C->lastError = OCIServerAttach(C->srv, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), OCI_DEFAULT);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
@@ -366,13 +374,6 @@ static ResultSet_T _executeQuery(T C, const char *sql, va_list ap) {
                 return NULL;
         C->lastError = OCIStmtPrepare(stmtp, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), OCI_NTV_SYNTAX, OCI_DEFAULT);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
-                OCIHandleFree(stmtp, OCI_HTYPE_STMT);
-                return NULL;
-        }
-        unsigned long fetchSize = Connection_getFetchSize(C->delegator);
-        C->lastError = OCIAttrSet(stmtp, OCI_HTYPE_STMT, (void*)&fetchSize, (ub4)sizeof(ub4), OCI_ATTR_PREFETCH_ROWS, C->err);
-        if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
-                DEBUG("Error in OCIAttrSet(OCI_ATTR_PREFETCH_ROWS)\n");
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }

@@ -21,7 +21,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- */ 
+ */
 
 #include "Config.h"
 
@@ -34,8 +34,8 @@
 
 
 /**
- * Implementation of the ResulSet/Delegate interface for oracle. 
- * 
+ * Implementation of the ResulSet/Delegate interface for oracle.
+ *
  * @file
  */
 
@@ -50,7 +50,7 @@ typedef struct column_t {
         char *name;
         unsigned long length;
         OCILobLocator *lob_loc;
-        OCIDateTime   *date; 
+        OCIDateTime   *date;
 } *column_t;
 #define T ResultSetDelegate_T
 struct T {
@@ -85,42 +85,42 @@ static int _initaleDefiningBuffers(T R) {
         OCIParam* pard = NULL;
         sword status;
         for (int i = 1; i <= R->columnCount; i++) {
-                 deptlen = 0;
+                deptlen = 0;
                 /* The next two statements describe the select-list item, dname, and
                  return its length */
                 R->lastError = OCIParamGet(R->stmt, OCI_HTYPE_STMT, R->err, (void **)&pard, i);
-                if (R->lastError != OCI_SUCCESS) 
+                if (R->lastError != OCI_SUCCESS)
                         return false;
                 R->lastError = OCIAttrGet(pard, OCI_DTYPE_PARAM, &deptlen, &sizelen, OCI_ATTR_DATA_SIZE, R->err);
-                if (R->lastError != OCI_SUCCESS) { 
+                if (R->lastError != OCI_SUCCESS) {
                         // cannot get column's size, cleaning and returning
                         OCIDescriptorFree(pard, OCI_DTYPE_PARAM);
                         return false;
                 }
-                OCIAttrGet(pard, OCI_DTYPE_PARAM, &dtype, 0, OCI_ATTR_DATA_TYPE, R->err); 
+                OCIAttrGet(pard, OCI_DTYPE_PARAM, &dtype, 0, OCI_ATTR_DATA_TYPE, R->err);
                 /* Use the retrieved length of dname to allocate an output buffer, and
                  then define the output variable. */
                 deptlen +=1;
                 R->columns[i-1].length = deptlen;
                 R->columns[i-1].isNull = 0;
-                switch(dtype) 
+                switch(dtype)
                 {
                         case SQLT_BLOB:
                                 R->columns[i-1].buffer = NULL;
                                 status = OCIDescriptorAlloc((dvoid *)R->env, (dvoid **) &(R->columns[i-1].lob_loc),
-                                                (ub4) OCI_DTYPE_LOB,
-                                                (size_t) 0, (dvoid **) 0);
-                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, 
-                                        &(R->columns[i-1].lob_loc), deptlen, SQLT_BLOB, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
+                                                            (ub4) OCI_DTYPE_LOB,
+                                                            (size_t) 0, (dvoid **) 0);
+                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i,
+                                                              &(R->columns[i-1].lob_loc), deptlen, SQLT_BLOB, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
                                 break;
-
-                        case SQLT_CLOB: 
+                                
+                        case SQLT_CLOB:
                                 R->columns[i-1].buffer = NULL;
                                 status = OCIDescriptorAlloc((dvoid *)R->env, (dvoid **) &(R->columns[i-1].lob_loc),
-                                                (ub4) OCI_DTYPE_LOB,
-                                                (size_t) 0, (dvoid **) 0);
-                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, 
-                                        &(R->columns[i-1].lob_loc), deptlen, SQLT_CLOB, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
+                                                            (ub4) OCI_DTYPE_LOB,
+                                                            (size_t) 0, (dvoid **) 0);
+                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i,
+                                                              &(R->columns[i-1].lob_loc), deptlen, SQLT_CLOB, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
                                 break;
                         case SQLT_DAT:
                         case SQLT_DATE:
@@ -129,22 +129,22 @@ static int _initaleDefiningBuffers(T R) {
                         case SQLT_TIMESTAMP_LTZ:
                                 R->columns[i-1].buffer = NULL;
                                 status = OCIDescriptorAlloc((dvoid *)R->env, (dvoid **) &(R->columns[i-1].date),
-                                                (ub4) OCI_DTYPE_TIMESTAMP,
-                                                (size_t) 0, (dvoid **) 0);
-                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, 
-                                        &(R->columns[i-1].date), sizeof(R->columns[i-1].date), SQLT_TIMESTAMP, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
+                                                            (ub4) OCI_DTYPE_TIMESTAMP,
+                                                            (size_t) 0, (dvoid **) 0);
+                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i,
+                                                              &(R->columns[i-1].date), sizeof(R->columns[i-1].date), SQLT_TIMESTAMP, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
                                 break;
                         default:
                                 R->columns[i-1].lob_loc = NULL;
                                 R->columns[i-1].buffer = ALLOC(deptlen + 1);
-                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i, 
-                                        R->columns[i-1].buffer, deptlen, SQLT_STR, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
+                                R->lastError = OCIDefineByPos(R->stmt, &R->columns[i-1].def, R->err, i,
+                                                              R->columns[i-1].buffer, deptlen, SQLT_STR, &(R->columns[i-1].isNull), 0, 0, OCI_DEFAULT);
                 }
                 {
                         char *col_name;
                         ub4   col_name_len;
                         char* tmp_buffer;
-
+                        
                         R->lastError = OCIAttrGet(pard, OCI_DTYPE_PARAM, &col_name, &col_name_len, OCI_ATTR_NAME, R->err);
                         if (R->lastError != OCI_SUCCESS)
                                 continue;
@@ -171,14 +171,14 @@ static int _initaleDefiningBuffers(T R) {
 static int _toString(T R, int i)
 {
         const char fmt[] = "IYYY-MM-DD HH24.MI.SS"; // "YYYY-MM-DD HH24:MI:SS TZR TZD"
-
+        
         R->columns[i].length = DATE_STR_BUF_SIZE;
         if (R->columns[i].buffer)
                 FREE(R->columns[i].buffer);
-
+        
         R->columns[i].buffer = ALLOC(R->columns[i].length + 1);
-        R->lastError = OCIDateTimeToText(R->usr, 
-                                         R->err, 
+        R->lastError = OCIDateTimeToText(R->usr,
+                                         R->err,
                                          R->columns[i].date,
                                          fmt, strlen(fmt),
                                          0,
@@ -186,6 +186,8 @@ static int _toString(T R, int i)
                                          (ub4*)&(R->columns[i].length), (OraText *)R->columns[i].buffer);
         return ((R->lastError == OCI_SUCCESS) || (R->lastError == OCI_SUCCESS_WITH_INFO));;
 }
+
+static void _setFetchSize(T R, int rows);
 
 
 /* ------------------------------------------------------------- Constructor */
@@ -204,8 +206,7 @@ T OracleResultSet_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env, OCISes
         R->err  = err;
         R->svc  = svc;
         R->usr  = usr;
-        R->maxRows = Connection_getMaxRows(delegator);
-        R->fetchSize = Connection_getFetchSize(R->delegator);
+        R->maxRows = Connection_getMaxRows(R->delegator);
         R->freeStatement = need_free;
         /* Get the number of columns in the select list */
         R->lastError = OCIAttrGet (R->stmt, OCI_HTYPE_STMT, &R->columnCount, NULL, OCI_ATTR_PARAM_COUNT, R->err);
@@ -215,6 +216,9 @@ T OracleResultSet_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env, OCISes
         if (!_initaleDefiningBuffers(R)) {
                 DEBUG("_new: Error %d, '%s'\n", R->lastError, OraclePreparedStatement_getLastError(R->lastError,R->err));
                 R->currentRow = -1;
+        }
+        if (R->currentRow != -1) {
+                _setFetchSize(R, Connection_getFetchSize(R->delegator));
         }
         return R;
 }
@@ -279,25 +283,26 @@ static long _getColumnSize(T R, int columnIndex) {
 
 static void _setFetchSize(T R, int rows) {
         assert(R);
+        assert(rows > 0);
         R->lastError = OCIAttrSet(R->stmt, OCI_HTYPE_STMT, (void*)&rows, (ub4)sizeof(ub4), OCI_ATTR_PREFETCH_ROWS, R->err);
         if (R->lastError != OCI_SUCCESS)
-                THROW(SQLException, "OCIAttrSet -- %s", OraclePreparedStatement_getLastError(R->lastError, R->err));
+                DEBUG("OCIAttrSet -- %s\n", OraclePreparedStatement_getLastError(R->lastError, R->err));
         R->fetchSize = rows;
 }
 
 
 static int _getFetchSize(T R) {
         assert(R);
-        return R->fetchSize ? R->fetchSize : Connection_getFetchSize(R->delegator);
+        return R->fetchSize;
 }
 
 
 static int _next(T R) {
         assert(R);
-        if ((R->maxRows > 0) && (R->currentRow >= R->maxRows))
+        if ((R->currentRow < 0) || ((R->maxRows > 0) && (R->currentRow >= R->maxRows)))
                 return false;
         R->lastError = OCIStmtFetch2(R->stmt, R->err, 1, OCI_FETCH_NEXT, 0, OCI_DEFAULT);
-        if (R->lastError == OCI_NO_DATA) 
+        if (R->lastError == OCI_NO_DATA)
                 return false;
         if (R->lastError != OCI_SUCCESS && R->lastError != OCI_SUCCESS_WITH_INFO)
                 THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
@@ -320,10 +325,8 @@ static const char *_getString(T R, int columnIndex) {
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         if (R->columns[i].isNull)
                 return NULL;
-        if (R->columns[i].date)
-        {
-                if (!_toString(R, i))
-                {
+        if (R->columns[i].date) {
+                if (!_toString(R, i)) {
                         THROW(SQLException, "%s", OraclePreparedStatement_getLastError(R->lastError, R->err));
                 }
         }
@@ -349,8 +352,8 @@ static const void *_getBlob(T R, int columnIndex, int *size) {
         do {
                 read_bytes = 0;
                 read_chars = 0;
-                R->lastError = OCILobRead2(R->svc, R->err, R->columns[i].lob_loc, &read_bytes, &read_chars, 1, 
-                                R->columns[i].buffer + total_bytes, LOB_CHUNK_SIZE, piece, NULL, NULL, 0, SQLCS_IMPLICIT);
+                R->lastError = OCILobRead2(R->svc, R->err, R->columns[i].lob_loc, &read_bytes, &read_chars, 1,
+                                           R->columns[i].buffer + total_bytes, LOB_CHUNK_SIZE, piece, NULL, NULL, 0, SQLCS_IMPLICIT);
                 if (read_bytes) {
                         total_bytes += read_bytes;
                         piece = OCI_NEXT_PIECE;

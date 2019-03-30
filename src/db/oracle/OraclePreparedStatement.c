@@ -268,10 +268,6 @@ static ResultSet_T _executeQuery(T P) {
                 P->countdown = P->timeout;
                 P->running = true;
         }
-        unsigned long fetchSize = Connection_getFetchSize(P->delegator);
-        P->lastError = OCIAttrSet(P->stmt, OCI_HTYPE_STMT, (void*)&fetchSize, (ub4)sizeof(ub4), OCI_ATTR_PREFETCH_ROWS, P->err);
-        if (P->lastError != OCI_SUCCESS)
-                DEBUG("_executeQuery: Failed to set fetch-size attribute -- %s\n", OraclePreparedStatement_getLastError(P->lastError, P->err));
         P->lastError = OCIStmtExecute(P->svc, P->stmt, P->err, 0, 0, NULL, NULL, OCI_DEFAULT);
         P->running = false;
         if (P->lastError == OCI_SUCCESS || P->lastError == OCI_SUCCESS_WITH_INFO)
