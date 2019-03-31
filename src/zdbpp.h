@@ -165,7 +165,15 @@ namespace zdb {
         long columnSize(int columnIndex) {
             except_wrapper( RETURN ResultSet_getColumnSize(t_, columnIndex) );
         }
-        
+
+        void setFetchSize(int prefetch_rows) {
+            ResultSet_setFetchSize(t_, prefetch_rows);
+        }
+
+        int getFetchSize() {
+            return ResultSet_getFetchSize(t_);
+        }
+
         int next() {
             except_wrapper( RETURN ResultSet_next(t_) );
         }
@@ -232,15 +240,7 @@ namespace zdb {
         struct tm getDateTime(const char *columnName) {
             except_wrapper( RETURN ResultSet_getDateTimeByName(t_, columnName) );
         }
-        
-        void setFetchSize(int prefetch_rows) {
-            except_wrapper( ResultSet_setFetchSize(t_, prefetch_rows) );
-        }
-        
-        int getFetchSize() {
-            except_wrapper( RETURN ResultSet_getFetchSize(t_) );
-        }
-        
+
     private:
         ResultSet_T t_;
     };
@@ -299,11 +299,11 @@ namespace zdb {
         }
         
         long long rowsChanged() {
-            except_wrapper( RETURN PreparedStatement_rowsChanged(t_) );
+            return PreparedStatement_rowsChanged(t_);
         }
         
         int getParameterCount() {
-            except_wrapper( RETURN PreparedStatement_getParameterCount(t_) );
+            return PreparedStatement_getParameterCount(t_);
         }
         
     public:
@@ -367,44 +367,44 @@ namespace zdb {
         
     public:
         void setQueryTimeout(int ms) {
-            except_wrapper( Connection_setQueryTimeout(t_, ms) );
+            Connection_setQueryTimeout(t_, ms);
         }
         
         int getQueryTimeout() {
-            except_wrapper( RETURN Connection_getQueryTimeout(t_) );
+            return Connection_getQueryTimeout(t_);
         }
         
         void setMaxRows(int max) {
-            except_wrapper( Connection_setMaxRows(t_, max) );
+            Connection_setMaxRows(t_, max);
         }
         
         int getMaxRows() {
-            except_wrapper( RETURN Connection_getMaxRows(t_) );
+            return Connection_getMaxRows(t_);
         }
         
-        void setFetchSize(int prefetch_rows) {
-            except_wrapper( RETURN Connection_setFetchSize(t_, prefetch_rows) );
+        void setFetchSize(int rows) {
+            Connection_setFetchSize(t_, rows);
         }
         
         int getFetchSize() {
-            except_wrapper( RETURN Connection_getFetchSize(t_) );
+            return Connection_getFetchSize(t_);
         }
         
         //not supported
         //URL_T Connection_getURL(T C);
         
         int ping() {
-            except_wrapper( RETURN Connection_ping(t_) );
+            return Connection_ping(t_);
         }
         
         void clear() {
-            except_wrapper( Connection_clear(t_) );
+            Connection_clear(t_);
         }
         
         //after close(), t_ is set to NULL. so this Connection object can not be used again!
         void close() {
             if (t_) {
-                except_wrapper( Connection_close(t_) );
+                Connection_close(t_);
                 setClosed();
             }
         }
@@ -422,11 +422,11 @@ namespace zdb {
         }
         
         long long lastRowId() {
-            except_wrapper( RETURN Connection_lastRowId(t_) );
+            return Connection_lastRowId(t_);
         }
         
         long long rowsChanged() {
-            except_wrapper( RETURN Connection_rowsChanged(t_) );
+            return Connection_rowsChanged(t_);
         }
         
         void execute(const char *sql) {
@@ -464,11 +464,11 @@ namespace zdb {
         }
         
         const char *getLastError() {
-            except_wrapper( RETURN Connection_getLastError(t_) );
+            return Connection_getLastError(t_);
         }
         
-        static int isSupported(const char *url) {
-            except_wrapper( RETURN Connection_isSupported(url) );
+        static bool isSupported(const char *url) {
+            return Connection_isSupported(url) > 0;
         }
         
     private:
@@ -498,46 +498,48 @@ namespace zdb {
         }
         
     public:
-        const URL& getURL() { return url_;}
+        const URL& getURL() {
+            return url_;
+        }
         
         void setInitialConnections(int connections) {
-            except_wrapper( ConnectionPool_setInitialConnections(t_, connections) );
+            ConnectionPool_setInitialConnections(t_, connections);
         }
         
         int getInitialConnections() {
-            except_wrapper( RETURN ConnectionPool_getInitialConnections(t_) );
+            return ConnectionPool_getInitialConnections(t_);
         }
         
         void setMaxConnections(int maxConnections) {
-            except_wrapper( ConnectionPool_setMaxConnections(t_, maxConnections) );
+            ConnectionPool_setMaxConnections(t_, maxConnections);
         }
         
         int getMaxConnections() {
-            except_wrapper( RETURN ConnectionPool_getMaxConnections(t_) );
+            return ConnectionPool_getMaxConnections(t_);
         }
         
         void setConnectionTimeout(int connectionTimeout) {
-            except_wrapper( ConnectionPool_setConnectionTimeout(t_, connectionTimeout) );
+            ConnectionPool_setConnectionTimeout(t_, connectionTimeout);
         }
         
         int getConnectionTimeout() {
-            except_wrapper( RETURN ConnectionPool_getConnectionTimeout(t_) );
+            return ConnectionPool_getConnectionTimeout(t_);
         }
         
         void setAbortHandler(void(*abortHandler)(const char *error)) {
-            except_wrapper( ConnectionPool_setAbortHandler(t_, abortHandler) );
+            ConnectionPool_setAbortHandler(t_, abortHandler);
         }
         
         void setReaper(int sweepInterval) {
-            except_wrapper( ConnectionPool_setReaper(t_, sweepInterval) );
+            ConnectionPool_setReaper(t_, sweepInterval);
         }
         
         int size() {
-            except_wrapper( RETURN ConnectionPool_size(t_) );
+            return ConnectionPool_size(t_);
         }
         
         int active() {
-            except_wrapper( RETURN ConnectionPool_active(t_) );
+            return ConnectionPool_active(t_);
         }
         
         void start() {
@@ -545,7 +547,7 @@ namespace zdb {
         }
         
         void stop() {
-            except_wrapper( ConnectionPool_stop(t_) );
+            ConnectionPool_stop(t_);
         }
         
         Connection getConnection() {
@@ -557,15 +559,15 @@ namespace zdb {
         }
         
         void returnConnection(Connection& con) {
-            except_wrapper(con.close());
+            con.close();
         }
         
         int reapConnections() {
-            except_wrapper( RETURN ConnectionPool_reapConnections(t_) );
+            return ConnectionPool_reapConnections(t_);
         }
         
         static const char *version(void) {
-            except_wrapper( RETURN ConnectionPool_version() );
+            return ConnectionPool_version();
         }
         
     private:
