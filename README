@@ -28,10 +28,10 @@
  * Database systems
  
    This Software supports the following database systems, 
-     - MySQL         - version 4.1 or above
-     - PostgreSQL    - version 8.0 or above 
-     - SQLite        - version 3.0 or above
-     - Oracle        - version 10 or above
+     - MySQL         - version 4.1 and later
+     - PostgreSQL    - version 8.0 and later
+     - SQLite        - version 3.0 and later
+     - Oracle        - version 10 and later
    Client libraries for at least one of these database systems must
    be installed on the host on which this Software will be built.
  
@@ -50,7 +50,10 @@
  Use ./configure --help for build and install options. By default, the
  library is built with support for MySQL, PostgreSQL and SQLite. You may
  change this with the --without-<database> options to ./configure. E.g.
- --without-mysql, --without-postgresql or --without-sqlite. 
+ --without-mysql, --without-postgresql or --without-sqlite. For Oracle,
+ if you have Oracle installed locally, try configure --with-oci=<path>
+ otherwise download Oracle Instant Client library and header files and
+ use --with-oci-lib=<oci>/lib and --with-oci-include=<oci>/include
  
  To verify the library and run unit tests, do 'make verify'. You may
  also want to take a look at test/select.c for an example on how to use
@@ -75,7 +78,7 @@
  -------------------
  
  The library implements an elegant solution for thread-safe exceptions
- handling. Use of exceptions frees programmers from the tedious return
+ handling in C. Use of exceptions frees programmers from the tedious return
  code idiom for dealing with errors. The API documents every method that
  can throw an exception. Methods that can throw an exception should be
  called from inside a try-block.
@@ -84,28 +87,24 @@
  Link and include
  ----------------
  
- Clients may use the following meta interface to include libzdb API
- interfaces;
- 
+ Include this meta interface in your code to use the libzdb API;
+
  #include <zdb.h>
  
- Alternatively, libzdb API interfaces can be included separately
- as needed.
-
  Compile and link a C program with libzdb;
 
  gcc -o select select.c -L/<prefix>/lib -lzdb -I/<prefix>/include/zdb
+
+ Libzdb can be used directly in a C++ or in an Objective-C++ project.
+ Instead of including <zdb.h>, include <zdbpp.h> which is a C++17 wrapper
+ for idiomatic usage of libzdb in your C++ project.
 
  Compile and link a C++ program with libzdb;
 
  g++ -o select select.cpp -std=c++17 -L/<prefix>/lib -lzdb -I/<prefix>/include/zdb
 
- On some systems you may have to explicit link with -lpthread and
- set LD_LIBRARY_PATH if libzdb was installed in a non-standard location
- 
- Libzdb can be used directly in a C++ or in a Objective-C(++) project.
- The <zdbpp.h> header contains a C++17 wrapper for idiomatic usage of
- libzdb in your C++ project.
+ On some systems you may have to explicit set LD_LIBRARY_PATH if
+ libzdb was installed in a non-standard location
 
   
  License Notes
@@ -125,7 +124,7 @@
  ---------------
 
  If you believe you have found a bug, please use the issue tracker 
- mentioned at http://www.tildeslash.com/libzdb/#contact to report the 
+ mentioned at https://www.tildeslash.com/libzdb/#contact to report the
  problem. Remember to include the necessary information that will enable 
  us to understand and reproduce this problem. Alternatively, you can
  send us an email at bugs-libzdb@tildeslash.com
@@ -138,7 +137,7 @@
  please subscribe to the libzdb general mailing list and post your 
  questions there. 
  
-   http://www.tildeslash.com/mailman/listinfo/libzdb-general
+   https://www.tildeslash.com/mailman/listinfo/libzdb-general
 
 
  Contributing
@@ -147,7 +146,7 @@
  You are welcome to contribute to this project, but please note that
  an electronically signed CLA is required to be on file before any Pull 
  Request or patches are accepted or you are given commit rights to the 
- project. To sign, go to http://tildeslash.com/cla/
+ project. To sign, go to https://tildeslash.com/cla/
 
 
  Contact information
@@ -163,7 +162,7 @@
    info@tildeslash.com
 
  Internet:
-   http://www.tildeslash.com/libzdb/
+   https://www.tildeslash.com/libzdb/
    
 
  Acknowledgments

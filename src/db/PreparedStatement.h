@@ -52,8 +52,8 @@
  * of the picture we submit a binary value using the 
  * method PreparedStatement_setBlob(). 
  *
- * Note that string and blob parameter values are set by reference and 
- * <b>must</b> not "disappear" before either PreparedStatement_execute()
+ * String and blob parameter values are set by reference and <b>must</b> not
+ * "disappear" before either PreparedStatement_execute()
  * or PreparedStatement_executeQuery() is called. 
  * 
  * <h2 class="desc">Example:</h2>
@@ -71,7 +71,7 @@
  * re-execute the statement as shown in this example:
  * <pre>
  * PreparedStatement_T p = Connection_prepareStatement(con, "INSERT INTO employee(name, picture) VALUES(?, ?)");
- * for (int i = 0; employees[i].name; i++) 
+ * for (int i = 0; employees[i]; i++)
  * {
  *        PreparedStatement_setString(p, 1, employees[i].name);
  *        PreparedStatement_setBlob(p, 2, employees[i].picture, employees[i].picture_size);
@@ -84,7 +84,7 @@
  * 
  * <pre>
  * PreparedStatement_T p = Connection_prepareStatement(con, "SELECT id FROM employee WHERE name LIKE ?"); 
- * PreparedStatement_setString(p, 1, "%Kaoru%");
+ * PreparedStatement_setString(p, 1, "%oru%");
  * ResultSet_T r = PreparedStatement_executeQuery(p);
  * while (ResultSet_next(r))
  *        printf("employee.id = %d\n", ResultSet_getInt(r, 1));
@@ -100,7 +100,7 @@
  * PreparedStatement_setString() with a time string format understood by your
  * database. For instance to set a SQL Date value,
  * <pre>
- *   PreparedStatement_setString(p, parameterIndex, "2013-12-28");
+ *   PreparedStatement_setString(p, parameterIndex, "2019-12-28");
  * </pre>
  *
  * <i>A PreparedStatement is reentrant, but not thread-safe and should only be used by one thread (at the time).</i>

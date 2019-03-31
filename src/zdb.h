@@ -31,17 +31,16 @@ extern "C" {
 
 /**
  * Include this interface in your C code to import the libzdb API.
- * This meta interface also wraps libzdb API interface files in an
- * 'extern "C"' block to allow for including libzdb in a C++ or in
- * a Objective-C++ project.
  *
  * @file
  */
 
+/** @cond hide */
 /* Mask out __attribute__ extension for non- GCC/llvm-clang compilers. */
 #if (! (defined(__GNUC__) || defined(__clang__)))
 #define __attribute__(x)
 #endif
+/** @endcond */
 
 /* libzdb API interfaces */
 #include <SQLException.h>

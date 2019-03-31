@@ -494,8 +494,8 @@ time_t ResultSet_getTimestampByName(T R, const char *columnName);
  *
  * @param R A ResultSet object
  * @param columnIndex The first column is 1, the second is 2, ...
- * @return A tm structure with fields for date and time. If the value
- * is SQL NULL, a zeroed tm structure is returned
+ * @return A tm structure with fields for date and time. If the value is SQL
+ * NULL, a zeroed tm structure is returned. Use ResultSet_isnull() if in doubt.
  * @exception SQLException If a database access error occurs, if
  * <code>columnIndex</code> is outside the range [1..ResultSet_getColumnCount()] 
  * or if the column value cannot be converted to a valid SQL Date, Time or 
@@ -525,8 +525,8 @@ struct tm ResultSet_getDateTime(T R, int columnIndex);
  *
  * @param R A ResultSet object
  * @param columnName The SQL name of the column. <i>case-sensitive</i>
- * @return A tm structure with fields for date and time. If the value
- * is SQL NULL, a zeroed tm structure is returned
+ * @return A tm structure with fields for date and time. If the value is SQL
+ * NULL, a zeroed tm structure is returned. Use ResultSet_isnull() if in doubt.
  * @exception SQLException If a database access error occurs, if 
  * <code>columnName</code> is not found or if the column value cannot be 
  * converted to a valid SQL Date, Time or DateTime type

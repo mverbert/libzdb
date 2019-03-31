@@ -155,7 +155,7 @@ namespace zdb {
         
     public:
         int columnCount() {
-            except_wrapper( RETURN ResultSet_getColumnCount(t_) );
+            return ResultSet_getColumnCount(t_);
         }
         
         const char *columnName(int columnIndex) {
