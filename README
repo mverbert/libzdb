@@ -87,7 +87,7 @@
  Link and include
  ----------------
  
- Include this meta interface in your code to use the libzdb API;
+ Include this interface in your C code to import the libzdb API;
 
  #include <zdb.h>
  
