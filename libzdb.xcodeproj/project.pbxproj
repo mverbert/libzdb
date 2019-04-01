@@ -12,18 +12,20 @@
 		523EC72B2238753A0066C878 /* OraclePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */; };
 		523EC72C2238753A0066C878 /* OracleResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BF013E716A0002F3C7C /* OracleResultSet.c */; };
 		523EC73D223985EE0066C878 /* libclntsh.dylib.18.1 in Frameworks */ = {isa = PBXBuildFile; fileRef = 523EC72F22387F180066C878 /* libclntsh.dylib.18.1 */; };
-		524978B62228E09000A65D6C /* libsqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 524978B52228E09000A65D6C /* libsqlite3.a */; };
+		523FDBAC2243A82200B3C767 /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
+		523FDBB22243A83E00B3C767 /* zdbpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 523FDB9622438C5400B3C767 /* zdbpp.cpp */; };
 		524B1E701543696800158F6E /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
+		524ED339224B2D80008B1070 /* libmysqlclient.21.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528E0D0822406C0100A56731 /* libmysqlclient.21.dylib */; };
 		5268692213E9F0AC00908031 /* MysqlConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE513E716A0002F3C7C /* MysqlConnection.c */; };
 		5268692313E9F0AC00908031 /* MysqlPreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE713E716A0002F3C7C /* MysqlPreparedStatement.c */; };
 		5268692413E9F0AC00908031 /* MysqlResultSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BE913E716A0002F3C7C /* MysqlResultSet.c */; };
+		526BECD62244845700A0404C /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 526BECD52244845700A0404C /* libsqlite3.0.dylib */; };
 		527116B122256CD600F2263B /* SQLiteAdapter.c in Sources */ = {isa = PBXBuildFile; fileRef = 527116AF22256CD600F2263B /* SQLiteAdapter.c */; };
 		527696B62240671D00B4725C /* libzdb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528F4D3C145A5AA3002CD67D /* libzdb.dylib */; };
-		528E0D0922406C0100A56731 /* libmysqlclient.21.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 528E0D0822406C0100A56731 /* libmysqlclient.21.dylib */; };
 		528F4D58145A5C8A002CD67D /* select.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2213E716A0002F3C7C /* select.c */; };
 		529239C114B7AD0100DFC3A1 /* pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2113E716A0002F3C7C /* pool.c */; };
 		52B1F2B913E7526E004869F0 /* URL.re in Sources */ = {isa = PBXBuildFile; fileRef = 52788C1013E716A0002F3C7C /* URL.re */; };
-		52B32B0A22371D7F00FFA20B /* libpq.5.11.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B32AD622371D6300FFA20B /* libpq.5.11.dylib */; };
+		52B48D8222448B8C0042C417 /* libpq.5.11.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 521899BA222A0445003EAC09 /* libpq.5.11.dylib */; };
 		52C32EEE145BA3FA00C72758 /* System.c in Sources */ = {isa = PBXBuildFile; fileRef = 52C32EEB145BA3F900C72758 /* System.c */; };
 		52C32EF0145BA3FA00C72758 /* Time.re in Sources */ = {isa = PBXBuildFile; fileRef = 52C32EED145BA3FA00C72758 /* Time.re */; };
 		52C32F54145BABE200C72758 /* unit.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788C2313E716A0002F3C7C /* unit.c */; };
@@ -61,6 +63,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		523FDBA82243A82200B3C767 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 521CF21713E71619004A7291 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52F236FD13E724D600D24B82;
+			remoteInfo = libzdb;
+		};
 		528F4D59145A5C8E002CD67D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 521CF21713E71619004A7291 /* Project object */;
@@ -85,6 +94,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		523FDBAD2243A82200B3C767 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		528F4D4A145A5BFC002CD67D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -115,24 +133,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		521899B8222A03DC003EAC09 /* Postgres.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Postgres.app; path = ../../../../Applications/Postgres.app; sourceTree = "<group>"; };
 		521899BA222A0445003EAC09 /* libpq.5.11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.5.11.dylib; path = ../../../../Applications/Postgres.app/Contents/Versions/11/lib/libpq.5.11.dylib; sourceTree = "<group>"; };
-		523EC72D22387E340066C878 /* libocci.dylib.18.1 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libocci.dylib.18.1; path = ../oci/lib/libocci.dylib.18.1; sourceTree = "<group>"; };
 		523EC72F22387F180066C878 /* libclntsh.dylib.18.1 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libclntsh.dylib.18.1; path = ../oci/lib/libclntsh.dylib.18.1; sourceTree = "<group>"; };
-		523EC731223882090066C878 /* libclntsh.dylib.18.1 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libclntsh.dylib.18.1; path = oci/lib/libclntsh.dylib.18.1; sourceTree = "<group>"; };
-		523EC733223882870066C878 /* libons.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libons.dylib; path = oci/lib/libons.dylib; sourceTree = "<group>"; };
-		523EC734223882870066C878 /* libociei.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; name = libociei.dylib; path = oci/lib/libociei.dylib; sourceTree = "<group>"; };
-		523EC735223882870066C878 /* libnnz18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnnz18.dylib; path = oci/lib/libnnz18.dylib; sourceTree = "<group>"; };
-		523EC736223882870066C878 /* libocci.dylib.18.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = libocci.dylib.18.1; path = oci/lib/libocci.dylib.18.1; sourceTree = "<group>"; };
-		524978B12228DF5400A65D6C /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		524978B32228E01500A65D6C /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = ../../../../opt/local/lib/libsqlite3.0.dylib; sourceTree = "<group>"; };
-		524978B52228E09000A65D6C /* libsqlite3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libsqlite3.a; path = ../zild/ext/repository/lib/libsqlite3.a; sourceTree = "<group>"; };
+		523FDB952243864B00B3C767 /* zdbpp.h */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = zdbpp.h; sourceTree = "<group>"; tabWidth = 4; };
+		523FDB9622438C5400B3C767 /* zdbpp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zdbpp.cpp; sourceTree = "<group>"; };
+		523FDBB12243A82200B3C767 /* zdbpp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = zdbpp; sourceTree = BUILT_PRODUCTS_DIR; };
 		524ACAE41B87D68100A4F85B /* select */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = select; sourceTree = BUILT_PRODUCTS_DIR; };
 		524ACAE51B87D68100A4F85B /* unit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit; sourceTree = BUILT_PRODUCTS_DIR; };
 		524ACAE61B87D68100A4F85B /* pool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pool; sourceTree = BUILT_PRODUCTS_DIR; };
 		524B24A6185E40D4004B6730 /* lex.yy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lex.yy.c; sourceTree = "<group>"; };
 		525CF56D14BFD3C600650C7D /* zdb.pc.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = zdb.pc.in; sourceTree = "<group>"; };
 		525F7F4C224189B10025D75D /* tnsnames.ora */ = {isa = PBXFileReference; lastKnownFileType = text; path = tnsnames.ora; sourceTree = "<group>"; };
+		526BECD52244845700A0404C /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = ../../../../opt/local/lib/libsqlite3.0.dylib; sourceTree = "<group>"; };
 		527116AE22256CD600F2263B /* SQLiteAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQLiteAdapter.h; sourceTree = "<group>"; };
 		527116AF22256CD600F2263B /* SQLiteAdapter.c */ = {isa = PBXFileReference; indentWidth = 8; lastKnownFileType = sourcecode.c.c; path = SQLiteAdapter.c; sourceTree = "<group>"; tabWidth = 8; };
 		52788BC613E716A0002F3C7C /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
@@ -206,167 +218,7 @@
 		528F4D3C145A5AA3002CD67D /* libzdb.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libzdb.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		52931A3D1DC2D6710032240D /* oracleoptions.html */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = text.html; path = oracleoptions.html; sourceTree = "<group>"; tabWidth = 4; };
 		52931A3E1DC2D6710032240D /* libzdboptions.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = libzdboptions.css; sourceTree = "<group>"; };
-		52B32A6022371D6300FFA20B /* libicutu.63.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutu.63.1.dylib; sourceTree = "<group>"; };
-		52B32A6122371D6300FFA20B /* libpgcommon.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpgcommon.a; sourceTree = "<group>"; };
-		52B32A6222371D6300FFA20B /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libxml2.2.dylib; sourceTree = "<group>"; };
-		52B32A6422371D6300FFA20B /* uuid-ossp.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = "uuid-ossp.so"; sourceTree = "<group>"; };
-		52B32A6522371D6300FFA20B /* pg_buffercache.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pg_buffercache.so; sourceTree = "<group>"; };
-		52B32A6622371D6300FFA20B /* tsm_system_rows.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = tsm_system_rows.so; sourceTree = "<group>"; };
-		52B32A6722371D6300FFA20B /* auto_explain.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = auto_explain.so; sourceTree = "<group>"; };
-		52B32A6822371D6300FFA20B /* pg_visibility.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pg_visibility.so; sourceTree = "<group>"; };
-		52B32A6922371D6300FFA20B /* ascii_and_mic.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = ascii_and_mic.so; sourceTree = "<group>"; };
-		52B32A6A22371D6300FFA20B /* insert_username.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = insert_username.so; sourceTree = "<group>"; };
-		52B32A6B22371D6300FFA20B /* euc_kr_and_mic.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = euc_kr_and_mic.so; sourceTree = "<group>"; };
-		52B32A6C22371D6300FFA20B /* moddatetime.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = moddatetime.so; sourceTree = "<group>"; };
-		52B32A6D22371D6300FFA20B /* citext.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = citext.so; sourceTree = "<group>"; };
-		52B32A6E22371D6300FFA20B /* utf8_and_uhc.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_uhc.so; sourceTree = "<group>"; };
-		52B32A6F22371D6300FFA20B /* libpqwalreceiver.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = libpqwalreceiver.so; sourceTree = "<group>"; };
-		52B32A7022371D6300FFA20B /* utf8_and_ascii.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_ascii.so; sourceTree = "<group>"; };
-		52B32A7122371D6300FFA20B /* timetravel.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = timetravel.so; sourceTree = "<group>"; };
-		52B32A7222371D6300FFA20B /* unaccent.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = unaccent.so; sourceTree = "<group>"; };
-		52B32A7322371D6300FFA20B /* pltcl.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pltcl.so; sourceTree = "<group>"; };
-		52B32A7422371D6300FFA20B /* cyrillic_and_mic.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = cyrillic_and_mic.so; sourceTree = "<group>"; };
-		52B32A7522371D6300FFA20B /* postgis-2.5.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = "postgis-2.5.so"; sourceTree = "<group>"; };
-		52B32A7622371D6300FFA20B /* seg.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = seg.so; sourceTree = "<group>"; };
-		52B32A7722371D6300FFA20B /* utf8_and_gbk.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_gbk.so; sourceTree = "<group>"; };
-		52B32A7822371D6300FFA20B /* amcheck.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = amcheck.so; sourceTree = "<group>"; };
-		52B32A7922371D6300FFA20B /* cube.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = cube.so; sourceTree = "<group>"; };
-		52B32A7A22371D6300FFA20B /* utf8_and_sjis2004.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_sjis2004.so; sourceTree = "<group>"; };
-		52B32A7B22371D6300FFA20B /* jsonb_plpython2.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = jsonb_plpython2.so; sourceTree = "<group>"; };
-		52B32A7C22371D6300FFA20B /* utf8_and_iso8859_1.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_iso8859_1.so; sourceTree = "<group>"; };
-		52B32A7D22371D6300FFA20B /* file_fdw.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = file_fdw.so; sourceTree = "<group>"; };
-		52B32A7E22371D6300FFA20B /* plv8-2.3.9.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = "plv8-2.3.9.so"; sourceTree = "<group>"; };
-		52B32A7F22371D6300FFA20B /* euc2004_sjis2004.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = euc2004_sjis2004.so; sourceTree = "<group>"; };
-		52B32A8022371D6300FFA20B /* autoinc.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = autoinc.so; sourceTree = "<group>"; };
-		52B32A8122371D6300FFA20B /* euc_tw_and_big5.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = euc_tw_and_big5.so; sourceTree = "<group>"; };
-		52B32A8422371D6300FFA20B /* install-sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "install-sh"; sourceTree = "<group>"; };
-		52B32A8522371D6300FFA20B /* missing */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = missing; sourceTree = "<group>"; };
-		52B32A8722371D6300FFA20B /* Makefile.shlib */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.shlib; sourceTree = "<group>"; };
-		52B32A8A22371D6300FFA20B /* regress-python3-mangle.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = "regress-python3-mangle.mk"; sourceTree = "<group>"; };
-		52B32A8B22371D6300FFA20B /* Makefile.global */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.global; sourceTree = "<group>"; };
-		52B32A8E22371D6300FFA20B /* pg_regress */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = pg_regress; sourceTree = "<group>"; };
-		52B32A9022371D6300FFA20B /* pgxs.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = pgxs.mk; sourceTree = "<group>"; };
-		52B32A9122371D6300FFA20B /* nls-global.mk */ = {isa = PBXFileReference; lastKnownFileType = text; path = "nls-global.mk"; sourceTree = "<group>"; };
-		52B32A9222371D6300FFA20B /* Makefile.port */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.port; sourceTree = "<group>"; };
-		52B32A9322371D6300FFA20B /* hstore_plperl.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = hstore_plperl.so; sourceTree = "<group>"; };
-		52B32A9422371D6300FFA20B /* pgxml.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pgxml.so; sourceTree = "<group>"; };
-		52B32A9522371D6300FFA20B /* dict_int.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = dict_int.so; sourceTree = "<group>"; };
-		52B32A9622371D6300FFA20B /* refint.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = refint.so; sourceTree = "<group>"; };
-		52B32A9722371D6300FFA20B /* plpython2.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = plpython2.so; sourceTree = "<group>"; };
-		52B32A9822371D6300FFA20B /* bloom.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = bloom.so; sourceTree = "<group>"; };
-		52B32A9922371D6300FFA20B /* utf8_and_win.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_win.so; sourceTree = "<group>"; };
-		52B32A9A22371D6300FFA20B /* hstore.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = hstore.so; sourceTree = "<group>"; };
-		52B32A9B22371D6300FFA20B /* utf8_and_euc_kr.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_euc_kr.so; sourceTree = "<group>"; };
-		52B32A9C22371D6300FFA20B /* utf8_and_johab.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_johab.so; sourceTree = "<group>"; };
-		52B32A9D22371D6300FFA20B /* isn.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = isn.so; sourceTree = "<group>"; };
-		52B32A9E22371D6300FFA20B /* postgres_fdw.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = postgres_fdw.so; sourceTree = "<group>"; };
-		52B32A9F22371D6300FFA20B /* dict_xsyn.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = dict_xsyn.so; sourceTree = "<group>"; };
-		52B32AA022371D6300FFA20B /* utf8_and_euc_tw.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_euc_tw.so; sourceTree = "<group>"; };
-		52B32AA122371D6300FFA20B /* utf8_and_big5.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_big5.so; sourceTree = "<group>"; };
-		52B32AA222371D6300FFA20B /* pg_freespacemap.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pg_freespacemap.so; sourceTree = "<group>"; };
-		52B32AA322371D6300FFA20B /* pg_prewarm.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pg_prewarm.so; sourceTree = "<group>"; };
-		52B32AA422371D6300FFA20B /* tablefunc.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = tablefunc.so; sourceTree = "<group>"; };
-		52B32AA522371D6300FFA20B /* jsonb_plperl.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = jsonb_plperl.so; sourceTree = "<group>"; };
-		52B32AA622371D6300FFA20B /* dict_snowball.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = dict_snowball.so; sourceTree = "<group>"; };
-		52B32AA722371D6300FFA20B /* pgstattuple.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pgstattuple.so; sourceTree = "<group>"; };
-		52B32AA822371D6300FFA20B /* sslinfo.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = sslinfo.so; sourceTree = "<group>"; };
-		52B32AA922371D6300FFA20B /* plperl.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = plperl.so; sourceTree = "<group>"; };
-		52B32AAA22371D6300FFA20B /* test_decoding.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = test_decoding.so; sourceTree = "<group>"; };
-		52B32AAB22371D6300FFA20B /* btree_gin.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = btree_gin.so; sourceTree = "<group>"; };
-		52B32AAC22371D6300FFA20B /* fuzzystrmatch.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = fuzzystrmatch.so; sourceTree = "<group>"; };
-		52B32AAD22371D6300FFA20B /* latin2_and_win1250.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = latin2_and_win1250.so; sourceTree = "<group>"; };
-		52B32AAE22371D6300FFA20B /* latin_and_mic.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = latin_and_mic.so; sourceTree = "<group>"; };
-		52B32AAF22371D6300FFA20B /* address_standardizer.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = address_standardizer.so; sourceTree = "<group>"; };
-		52B32AB022371D6300FFA20B /* _int.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = _int.so; sourceTree = "<group>"; };
-		52B32AB122371D6300FFA20B /* utf8_and_euc_jp.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_euc_jp.so; sourceTree = "<group>"; };
-		52B32AB222371D6300FFA20B /* plpgsql.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = plpgsql.so; sourceTree = "<group>"; };
-		52B32AB322371D6300FFA20B /* pgcrypto.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pgcrypto.so; sourceTree = "<group>"; };
-		52B32AB422371D6300FFA20B /* utf8_and_euc_cn.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_euc_cn.so; sourceTree = "<group>"; };
-		52B32AB522371D6300FFA20B /* adminpack.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = adminpack.so; sourceTree = "<group>"; };
-		52B32AB622371D6300FFA20B /* utf8_and_euc2004.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_euc2004.so; sourceTree = "<group>"; };
-		52B32AB722371D6300FFA20B /* earthdistance.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = earthdistance.so; sourceTree = "<group>"; };
-		52B32AB822371D6300FFA20B /* pg_stat_statements.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pg_stat_statements.so; sourceTree = "<group>"; };
-		52B32AB922371D6300FFA20B /* auth_delay.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = auth_delay.so; sourceTree = "<group>"; };
-		52B32ABA22371D6300FFA20B /* rtpostgis-2.5.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = "rtpostgis-2.5.so"; sourceTree = "<group>"; };
-		52B32ABB22371D6300FFA20B /* utf8_and_iso8859.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_iso8859.so; sourceTree = "<group>"; };
-		52B32ABC22371D6300FFA20B /* pgrowlocks.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pgrowlocks.so; sourceTree = "<group>"; };
-		52B32ABD22371D6300FFA20B /* passwordcheck.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = passwordcheck.so; sourceTree = "<group>"; };
-		52B32ABE22371D6300FFA20B /* utf8_and_gb18030.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_gb18030.so; sourceTree = "<group>"; };
-		52B32ABF22371D6300FFA20B /* pg_trgm.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pg_trgm.so; sourceTree = "<group>"; };
-		52B32AC022371D6300FFA20B /* ltree.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = ltree.so; sourceTree = "<group>"; };
-		52B32AC122371D6300FFA20B /* tsm_system_time.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = tsm_system_time.so; sourceTree = "<group>"; };
-		52B32AC222371D6300FFA20B /* tcn.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = tcn.so; sourceTree = "<group>"; };
-		52B32AC322371D6300FFA20B /* pgoutput.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pgoutput.so; sourceTree = "<group>"; };
-		52B32AC422371D6300FFA20B /* postgis_topology-2.5.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = "postgis_topology-2.5.so"; sourceTree = "<group>"; };
-		52B32AC522371D6300FFA20B /* dblink.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = dblink.so; sourceTree = "<group>"; };
-		52B32AC622371D6300FFA20B /* pageinspect.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = pageinspect.so; sourceTree = "<group>"; };
-		52B32AC722371D6300FFA20B /* btree_gist.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = btree_gist.so; sourceTree = "<group>"; };
-		52B32AC822371D6300FFA20B /* utf8_and_sjis.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_sjis.so; sourceTree = "<group>"; };
-		52B32AC922371D6300FFA20B /* ltree_plpython2.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = ltree_plpython2.so; sourceTree = "<group>"; };
-		52B32ACA22371D6300FFA20B /* hstore_plpython2.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = hstore_plpython2.so; sourceTree = "<group>"; };
-		52B32ACB22371D6300FFA20B /* euc_jp_and_sjis.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = euc_jp_and_sjis.so; sourceTree = "<group>"; };
-		52B32ACC22371D6300FFA20B /* utf8_and_cyrillic.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = utf8_and_cyrillic.so; sourceTree = "<group>"; };
-		52B32ACD22371D6300FFA20B /* euc_cn_and_mic.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = euc_cn_and_mic.so; sourceTree = "<group>"; };
-		52B32ACE22371D6300FFA20B /* lo.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = lo.so; sourceTree = "<group>"; };
-		52B32ACF22371D6300FFA20B /* libgeos_c.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgeos_c.dylib; sourceTree = "<group>"; };
-		52B32AD022371D6300FFA20B /* libicutest.63.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutest.63.dylib; sourceTree = "<group>"; };
-		52B32AD122371D6300FFA20B /* libicuio.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuio.dylib; sourceTree = "<group>"; };
-		52B32AD222371D6300FFA20B /* libecpg_compat.3.11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libecpg_compat.3.11.dylib; sourceTree = "<group>"; };
-		52B32AD322371D6300FFA20B /* libicutu.63.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutu.63.dylib; sourceTree = "<group>"; };
-		52B32AD422371D6300FFA20B /* libicutest.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutest.dylib; sourceTree = "<group>"; };
-		52B32AD522371D6300FFA20B /* libproj.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libproj.13.dylib; sourceTree = "<group>"; };
-		52B32AD622371D6300FFA20B /* libpq.5.11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpq.5.11.dylib; sourceTree = "<group>"; };
-		52B32AD722371D6300FFA20B /* libicudata.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.dylib; sourceTree = "<group>"; };
-		52B32AD822371D6300FFA20B /* libicuio.63.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuio.63.dylib; sourceTree = "<group>"; };
-		52B32AD922371D6300FFA20B /* libecpg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libecpg.dylib; sourceTree = "<group>"; };
-		52B32ADA22371D6300FFA20B /* libecpg.6.11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libecpg.6.11.dylib; sourceTree = "<group>"; };
-		52B32ADB22371D6300FFA20B /* libtiffxx.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libtiffxx.5.dylib; sourceTree = "<group>"; };
-		52B32ADC22371D6300FFA20B /* libicui18n.63.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicui18n.63.1.dylib; sourceTree = "<group>"; };
-		52B32ADD22371D6300FFA20B /* libpq.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpq.5.dylib; sourceTree = "<group>"; };
-		52B32ADE22371D6300FFA20B /* libgeos-3.7.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libgeos-3.7.1.dylib"; sourceTree = "<group>"; };
-		52B32ADF22371D6300FFA20B /* libgeos_c.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgeos_c.1.dylib; sourceTree = "<group>"; };
-		52B32AE022371D6300FFA20B /* libicuio.63.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuio.63.1.dylib; sourceTree = "<group>"; };
-		52B32AE122371D6300FFA20B /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssl.dylib; sourceTree = "<group>"; };
-		52B32AE222371D6300FFA20B /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssl.1.1.dylib; sourceTree = "<group>"; };
-		52B32AE322371D6300FFA20B /* libjasper.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjasper.1.dylib; sourceTree = "<group>"; };
-		52B32AE422371D6300FFA20B /* libtiffxx.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libtiffxx.dylib; sourceTree = "<group>"; };
-		52B32AE522371D6300FFA20B /* libgeos.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgeos.dylib; sourceTree = "<group>"; };
-		52B32AE622371D6300FFA20B /* libprotobuf-c.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libprotobuf-c.dylib"; sourceTree = "<group>"; };
-		52B32AE722371D6300FFA20B /* libgdal.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgdal.dylib; sourceTree = "<group>"; };
-		52B32AE822371D6300FFA20B /* libecpg.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libecpg.6.dylib; sourceTree = "<group>"; };
-		52B32AE922371D6300FFA20B /* libicuuc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.dylib; sourceTree = "<group>"; };
-		52B32AEA22371D6300FFA20B /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libxml2.dylib; sourceTree = "<group>"; };
-		52B32AEB22371D6300FFA20B /* libpgfeutils.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpgfeutils.a; sourceTree = "<group>"; };
-		52B32AEC22371D6300FFA20B /* libpgtypes.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpgtypes.3.dylib; sourceTree = "<group>"; };
-		52B32AED22371D6300FFA20B /* libpgtypes.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpgtypes.dylib; sourceTree = "<group>"; };
-		52B32AEE22371D6300FFA20B /* libicutest.63.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutest.63.1.dylib; sourceTree = "<group>"; };
-		52B32AEF22371D6300FFA20B /* libicudata.63.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.63.1.dylib; sourceTree = "<group>"; };
-		52B32AF022371D6300FFA20B /* libicuuc.63.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.63.1.dylib; sourceTree = "<group>"; };
-		52B32AF122371D6300FFA20B /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.dylib; sourceTree = "<group>"; };
-		52B32AF222371D6300FFA20B /* libjpeg.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjpeg.9.dylib; sourceTree = "<group>"; };
-		52B32AF322371D6300FFA20B /* libjson-c.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libjson-c.dylib"; sourceTree = "<group>"; };
-		52B32AF422371D6300FFA20B /* libpq.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpq.dylib; sourceTree = "<group>"; };
-		52B32AF522371D6300FFA20B /* libjson-c.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libjson-c.4.dylib"; sourceTree = "<group>"; };
-		52B32AF622371D6300FFA20B /* libicudata.63.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.63.dylib; sourceTree = "<group>"; };
-		52B32AF722371D6300FFA20B /* liblwgeom.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = liblwgeom.dylib; sourceTree = "<group>"; };
-		52B32AF822371D6300FFA20B /* libicutu.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutu.dylib; sourceTree = "<group>"; };
-		52B32AF922371D6300FFA20B /* libicui18n.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicui18n.dylib; sourceTree = "<group>"; };
-		52B32AFA22371D6300FFA20B /* libjasper.1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjasper.1.0.0.dylib; sourceTree = "<group>"; };
-		52B32AFB22371D6300FFA20B /* libtiff.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libtiff.5.dylib; sourceTree = "<group>"; };
-		52B32AFC22371D6300FFA20B /* libproj.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libproj.dylib; sourceTree = "<group>"; };
-		52B32AFD22371D6300FFA20B /* libjpeg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjpeg.dylib; sourceTree = "<group>"; };
-		52B32AFE22371D6300FFA20B /* libecpg_compat.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libecpg_compat.3.dylib; sourceTree = "<group>"; };
-		52B32AFF22371D6300FFA20B /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.1.1.dylib; sourceTree = "<group>"; };
-		52B32B0022371D6300FFA20B /* libicui18n.63.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicui18n.63.dylib; sourceTree = "<group>"; };
-		52B32B0122371D6300FFA20B /* libprotobuf-c.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "libprotobuf-c.1.dylib"; sourceTree = "<group>"; };
-		52B32B0222371D6300FFA20B /* libpgtypes.3.11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpgtypes.3.11.dylib; sourceTree = "<group>"; };
-		52B32B0322371D6300FFA20B /* libtiff.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libtiff.dylib; sourceTree = "<group>"; };
-		52B32B0422371D6300FFA20B /* liblwgeom-2.5.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = "liblwgeom-2.5.0.dylib"; sourceTree = "<group>"; };
-		52B32B0522371D6300FFA20B /* libpgport.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpgport.a; sourceTree = "<group>"; };
-		52B32B0622371D6300FFA20B /* libicuuc.63.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.63.dylib; sourceTree = "<group>"; };
-		52B32B0722371D6300FFA20B /* libjasper.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjasper.dylib; sourceTree = "<group>"; };
-		52B32B0822371D6300FFA20B /* libecpg_compat.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libecpg_compat.dylib; sourceTree = "<group>"; };
-		52B32B0922371D6300FFA20B /* libgdal.20.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libgdal.20.dylib; sourceTree = "<group>"; };
+		52B48D8022448B4F0042C417 /* Postgres.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = Postgres.app; path = ../../../../Applications/Postgres.app; sourceTree = "<group>"; };
 		52C32EE9145BA3A500C72758 /* Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
 		52C32EEB145BA3F900C72758 /* System.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 8; lastKnownFileType = sourcecode.c.c; path = System.c; sourceTree = "<group>"; tabWidth = 8; };
 		52C32EEC145BA3FA00C72758 /* System.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = System.h; sourceTree = "<group>"; };
@@ -375,112 +227,19 @@
 		52C32F57145BD12800C72758 /* Mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Mem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52DE1E032232ED8C00173D1B /* PostgresqlAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostgresqlAdapter.h; sourceTree = "<group>"; };
 		52DE1E07223478A800173D1B /* MysqlAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MysqlAdapter.h; sourceTree = "<group>"; };
-		52E793F622406B8500685CD7 /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysqlclient.a; path = "../../../../usr/local/mysql-8.0.15-macos10.14-x86_64/lib/libmysqlclient.a"; sourceTree = "<group>"; };
 		52E79D72168EA4FC00E510BF /* libzdb.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = libzdb.css; sourceTree = "<group>"; };
-		52EF36BE224074F80002952A /* mysqlclient.pc */ = {isa = PBXFileReference; lastKnownFileType = text; path = mysqlclient.pc; sourceTree = "<group>"; };
-		52EF36BF224074F80002952A /* libmysqlharness.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmysqlharness.1.dylib; sourceTree = "<group>"; };
-		52EF36C1224074F80002952A /* routing.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = routing.so; sourceTree = "<group>"; };
-		52EF36C2224074F80002952A /* syslog.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = syslog.so; sourceTree = "<group>"; };
-		52EF36C3224074F80002952A /* mysql_protocol.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = mysql_protocol.so; sourceTree = "<group>"; };
-		52EF36C4224074F80002952A /* keepalive.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = keepalive.so; sourceTree = "<group>"; };
-		52EF36C5224074F80002952A /* metadata_cache.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = metadata_cache.so; sourceTree = "<group>"; };
-		52EF36C6224074F80002952A /* libssl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssl.dylib; sourceTree = "<group>"; };
-		52EF36C8224074F80002952A /* libpluginmecab.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = libpluginmecab.so; sourceTree = "<group>"; };
-		52EF36C9224074F80002952A /* keyring_file.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = keyring_file.so; sourceTree = "<group>"; };
-		52EF36CA224074F80002952A /* version_token.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = version_token.so; sourceTree = "<group>"; };
-		52EF36CB224074F80002952A /* ha_example.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = ha_example.so; sourceTree = "<group>"; };
-		52EF36CC224074F80002952A /* rewrite_example.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = rewrite_example.so; sourceTree = "<group>"; };
-		52EF36CD224074F80002952A /* locking_service.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = locking_service.so; sourceTree = "<group>"; };
-		52EF36CE224074F80002952A /* group_replication.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = group_replication.so; sourceTree = "<group>"; };
-		52EF36CF224074F80002952A /* ha_mock.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = ha_mock.so; sourceTree = "<group>"; };
-		52EF36D0224074F80002952A /* keyring_udf.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = keyring_udf.so; sourceTree = "<group>"; };
-		52EF36D1224074F80002952A /* authentication_ldap_sasl_client.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = authentication_ldap_sasl_client.so; sourceTree = "<group>"; };
-		52EF36D2224074F80002952A /* libcrypto.1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.1.0.0.dylib; sourceTree = "<group>"; };
-		52EF36D3224074F80002952A /* adt_null.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = adt_null.so; sourceTree = "<group>"; };
-		52EF36D4224074F80002952A /* component_log_filter_dragnet.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = component_log_filter_dragnet.so; sourceTree = "<group>"; };
-		52EF36D5224074F80002952A /* component_log_sink_syseventlog.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = component_log_sink_syseventlog.so; sourceTree = "<group>"; };
-		52EF36D6224074F80002952A /* mypluglib.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = mypluglib.so; sourceTree = "<group>"; };
-		52EF36D7224074F80002952A /* connection_control.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = connection_control.so; sourceTree = "<group>"; };
-		52EF36D8224074F80002952A /* component_log_sink_json.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = component_log_sink_json.so; sourceTree = "<group>"; };
-		52EF36D9224074F80002952A /* libssl.1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssl.1.0.0.dylib; sourceTree = "<group>"; };
-		52EF36DA224074F80002952A /* rewriter.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = rewriter.so; sourceTree = "<group>"; };
-		52EF36DB224074F80002952A /* component_audit_api_message_emit.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = component_audit_api_message_emit.so; sourceTree = "<group>"; };
-		52EF36DC224074F80002952A /* mysql_no_login.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = mysql_no_login.so; sourceTree = "<group>"; };
-		52EF36DD224074F80002952A /* component_validate_password.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = component_validate_password.so; sourceTree = "<group>"; };
-		52EF36DE224074F80002952A /* innodb_engine.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = innodb_engine.so; sourceTree = "<group>"; };
-		52EF36DF224074F80002952A /* semisync_slave.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = semisync_slave.so; sourceTree = "<group>"; };
-		52EF36E0224074F80002952A /* libmemcached.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = libmemcached.so; sourceTree = "<group>"; };
-		52EF36E1224074F80002952A /* validate_password.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = validate_password.so; sourceTree = "<group>"; };
-		52EF36E3224074F80002952A /* libpluginmecab.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = libpluginmecab.so; sourceTree = "<group>"; };
-		52EF36E4224074F80002952A /* keyring_file.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = keyring_file.so; sourceTree = "<group>"; };
-		52EF36E5224074F80002952A /* version_token.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = version_token.so; sourceTree = "<group>"; };
-		52EF36E6224074F80002952A /* ha_example.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = ha_example.so; sourceTree = "<group>"; };
-		52EF36E7224074F80002952A /* rewrite_example.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = rewrite_example.so; sourceTree = "<group>"; };
-		52EF36E8224074F80002952A /* locking_service.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = locking_service.so; sourceTree = "<group>"; };
-		52EF36E9224074F80002952A /* group_replication.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = group_replication.so; sourceTree = "<group>"; };
-		52EF36EA224074F80002952A /* ha_mock.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = ha_mock.so; sourceTree = "<group>"; };
-		52EF36EB224074F80002952A /* keyring_udf.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = keyring_udf.so; sourceTree = "<group>"; };
-		52EF36EC224074F80002952A /* authentication_ldap_sasl_client.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = authentication_ldap_sasl_client.so; sourceTree = "<group>"; };
-		52EF36ED224074F80002952A /* libcrypto.1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.1.0.0.dylib; sourceTree = "<group>"; };
-		52EF36EE224074F80002952A /* adt_null.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = adt_null.so; sourceTree = "<group>"; };
-		52EF36EF224074F80002952A /* component_log_filter_dragnet.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = component_log_filter_dragnet.so; sourceTree = "<group>"; };
-		52EF36F0224074F80002952A /* component_log_sink_syseventlog.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = component_log_sink_syseventlog.so; sourceTree = "<group>"; };
-		52EF36F1224074F80002952A /* mypluglib.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = mypluglib.so; sourceTree = "<group>"; };
-		52EF36F2224074F80002952A /* connection_control.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = connection_control.so; sourceTree = "<group>"; };
-		52EF36F3224074F80002952A /* component_log_sink_json.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = component_log_sink_json.so; sourceTree = "<group>"; };
-		52EF36F4224074F80002952A /* libssl.1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssl.1.0.0.dylib; sourceTree = "<group>"; };
-		52EF36F5224074F80002952A /* rewriter.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = rewriter.so; sourceTree = "<group>"; };
-		52EF36F6224074F80002952A /* component_audit_api_message_emit.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = component_audit_api_message_emit.so; sourceTree = "<group>"; };
-		52EF36F7224074F80002952A /* mysql_no_login.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = mysql_no_login.so; sourceTree = "<group>"; };
-		52EF36F8224074F80002952A /* component_validate_password.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = component_validate_password.so; sourceTree = "<group>"; };
-		52EF36F9224074F80002952A /* innodb_engine.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = innodb_engine.so; sourceTree = "<group>"; };
-		52EF36FA224074F80002952A /* semisync_slave.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = semisync_slave.so; sourceTree = "<group>"; };
-		52EF36FB224074F80002952A /* libmemcached.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = libmemcached.so; sourceTree = "<group>"; };
-		52EF36FC224074F80002952A /* validate_password.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = validate_password.so; sourceTree = "<group>"; };
-		52EF36FD224074F80002952A /* semisync_master.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = semisync_master.so; sourceTree = "<group>"; };
-		52EF36FE224074F80002952A /* semisync_master.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.bundle"; path = semisync_master.so; sourceTree = "<group>"; };
-		52EF36FF224074F80002952A /* libmysqlharness.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmysqlharness.a; sourceTree = "<group>"; };
-		52EF3700224074F80002952A /* libmysqlclient.21.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmysqlclient.21.dylib; sourceTree = "<group>"; };
-		52EF3701224074F80002952A /* libcrypto.1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.1.0.0.dylib; sourceTree = "<group>"; };
-		52EF3702224074F80002952A /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.dylib; sourceTree = "<group>"; };
-		52EF3703224074F80002952A /* libmysqlrouter.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmysqlrouter.dylib; sourceTree = "<group>"; };
-		52EF3704224074F80002952A /* libssl.1.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssl.1.0.0.dylib; sourceTree = "<group>"; };
-		52EF3705224074F80002952A /* libmysqlclient.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmysqlclient.dylib; sourceTree = "<group>"; };
-		52EF3706224074F80002952A /* libmysqlservices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmysqlservices.a; sourceTree = "<group>"; };
-		52EF3707224074F80002952A /* libmysqlrouter.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmysqlrouter.1.dylib; sourceTree = "<group>"; };
-		52EF370B224074F80002952A /* rewrite.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = rewrite.def; sourceTree = "<group>"; };
-		52EF370C224074F80002952A /* left-id.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = "left-id.def"; sourceTree = "<group>"; };
-		52EF370D224074F80002952A /* pos-id.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = "pos-id.def"; sourceTree = "<group>"; };
-		52EF370E224074F80002952A /* matrix.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = matrix.bin; sourceTree = "<group>"; };
-		52EF370F224074F80002952A /* unk.dic */ = {isa = PBXFileReference; lastKnownFileType = file; path = unk.dic; sourceTree = "<group>"; };
-		52EF3710224074F80002952A /* sys.dic */ = {isa = PBXFileReference; lastKnownFileType = file; path = sys.dic; sourceTree = "<group>"; };
-		52EF3711224074F80002952A /* dicrc */ = {isa = PBXFileReference; lastKnownFileType = text; path = dicrc; sourceTree = "<group>"; };
-		52EF3712224074F80002952A /* right-id.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = "right-id.def"; sourceTree = "<group>"; };
-		52EF3713224074F80002952A /* char.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = char.bin; sourceTree = "<group>"; };
-		52EF3715224074F80002952A /* rewrite.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = rewrite.def; sourceTree = "<group>"; };
-		52EF3716224074F80002952A /* left-id.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = "left-id.def"; sourceTree = "<group>"; };
-		52EF3717224074F80002952A /* pos-id.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = "pos-id.def"; sourceTree = "<group>"; };
-		52EF3718224074F80002952A /* matrix.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = matrix.bin; sourceTree = "<group>"; };
-		52EF3719224074F80002952A /* unk.dic */ = {isa = PBXFileReference; lastKnownFileType = file; path = unk.dic; sourceTree = "<group>"; };
-		52EF371A224074F80002952A /* sys.dic */ = {isa = PBXFileReference; lastKnownFileType = file; path = sys.dic; sourceTree = "<group>"; };
-		52EF371B224074F80002952A /* dicrc */ = {isa = PBXFileReference; lastKnownFileType = text; path = dicrc; sourceTree = "<group>"; };
-		52EF371C224074F80002952A /* right-id.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = "right-id.def"; sourceTree = "<group>"; };
-		52EF371D224074F80002952A /* char.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = char.bin; sourceTree = "<group>"; };
-		52EF371F224074F80002952A /* rewrite.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = rewrite.def; sourceTree = "<group>"; };
-		52EF3720224074F80002952A /* left-id.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = "left-id.def"; sourceTree = "<group>"; };
-		52EF3721224074F80002952A /* pos-id.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = "pos-id.def"; sourceTree = "<group>"; };
-		52EF3722224074F80002952A /* matrix.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = matrix.bin; sourceTree = "<group>"; };
-		52EF3723224074F80002952A /* unk.dic */ = {isa = PBXFileReference; lastKnownFileType = file; path = unk.dic; sourceTree = "<group>"; };
-		52EF3724224074F80002952A /* sys.dic */ = {isa = PBXFileReference; lastKnownFileType = file; path = sys.dic; sourceTree = "<group>"; };
-		52EF3725224074F80002952A /* dicrc */ = {isa = PBXFileReference; lastKnownFileType = text; path = dicrc; sourceTree = "<group>"; };
-		52EF3726224074F80002952A /* right-id.def */ = {isa = PBXFileReference; lastKnownFileType = text; path = "right-id.def"; sourceTree = "<group>"; };
-		52EF3727224074F80002952A /* char.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = char.bin; sourceTree = "<group>"; };
-		52EF3729224074F80002952A /* mecabrc */ = {isa = PBXFileReference; lastKnownFileType = text; path = mecabrc; sourceTree = "<group>"; };
-		52EF372A224074F80002952A /* libmysqlharness.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmysqlharness.dylib; sourceTree = "<group>"; };
-		52EF372B224074F80002952A /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmysqlclient.a; sourceTree = "<group>"; };
+		52EC3B2B22470B7F00ED5E72 /* libmysqlclient.18.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.18.dylib; path = "../../../../usr/local/mysql-5.5.19-osx10.6-x86_64/lib/libmysqlclient.18.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		523FDBAB2243A82200B3C767 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				523FDBAC2243A82200B3C767 /* libzdb.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		528F4D49145A5BFC002CD67D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -509,10 +268,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				528E0D0922406C0100A56731 /* libmysqlclient.21.dylib in Frameworks */,
+				524ED339224B2D80008B1070 /* libmysqlclient.21.dylib in Frameworks */,
+				52B48D8222448B8C0042C417 /* libpq.5.11.dylib in Frameworks */,
+				526BECD62244845700A0404C /* libsqlite3.0.dylib in Frameworks */,
 				523EC73D223985EE0066C878 /* libclntsh.dylib.18.1 in Frameworks */,
-				52B32B0A22371D7F00FFA20B /* libpq.5.11.dylib in Frameworks */,
-				524978B62228E09000A65D6C /* libsqlite3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,11 +296,12 @@
 				52788C1E13E716A0002F3C7C /* test */,
 				52788C2413E716A0002F3C7C /* tools */,
 				526B7ABD13E7564B008E2CB1 /* libs */,
+				528847021DC1215F00D0BB40 /* Frameworks */,
 				528F4D43145A5AB9002CD67D /* Products */,
 				524ACAE61B87D68100A4F85B /* pool */,
 				524ACAE51B87D68100A4F85B /* unit */,
 				524ACAE41B87D68100A4F85B /* select */,
-				528847021DC1215F00D0BB40 /* Frameworks */,
+				523FDBB12243A82200B3C767 /* zdbpp */,
 			);
 			sourceTree = "<group>";
 		};
@@ -592,6 +352,7 @@
 			isa = PBXGroup;
 			children = (
 				52788C1D13E716A0002F3C7C /* zdb.h */,
+				523FDB952243864B00B3C767 /* zdbpp.h */,
 				52788BDD13E716A0002F3C7C /* Config.h */,
 				527B1E9C1B88A5B300B431F5 /* Thread.h */,
 				52788BDE13E716A0002F3C7C /* db */,
@@ -715,6 +476,7 @@
 				52788C2113E716A0002F3C7C /* pool.c */,
 				52788C2213E716A0002F3C7C /* select.c */,
 				52788C2313E716A0002F3C7C /* unit.c */,
+				523FDB9622438C5400B3C767 /* zdbpp.cpp */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -739,22 +501,12 @@
 		528847021DC1215F00D0BB40 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				52EF36BC224074F80002952A /* lib */,
+				52EC3B2B22470B7F00ED5E72 /* libmysqlclient.18.dylib */,
+				52B48D8022448B4F0042C417 /* Postgres.app */,
+				526BECD52244845700A0404C /* libsqlite3.0.dylib */,
 				528E0D0822406C0100A56731 /* libmysqlclient.21.dylib */,
-				52E793F622406B8500685CD7 /* libmysqlclient.a */,
-				523EC735223882870066C878 /* libnnz18.dylib */,
-				523EC736223882870066C878 /* libocci.dylib.18.1 */,
-				523EC734223882870066C878 /* libociei.dylib */,
-				523EC733223882870066C878 /* libons.dylib */,
 				523EC72F22387F180066C878 /* libclntsh.dylib.18.1 */,
-				523EC731223882090066C878 /* libclntsh.dylib.18.1 */,
-				523EC72D22387E340066C878 /* libocci.dylib.18.1 */,
-				52B32A5F22371D6300FFA20B /* lib */,
 				521899BA222A0445003EAC09 /* libpq.5.11.dylib */,
-				521899B8222A03DC003EAC09 /* Postgres.app */,
-				524978B52228E09000A65D6C /* libsqlite3.a */,
-				524978B32228E01500A65D6C /* libsqlite3.0.dylib */,
-				524978B12228DF5400A65D6C /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -765,247 +517,6 @@
 				528F4D3C145A5AA3002CD67D /* libzdb.dylib */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		52B32A5F22371D6300FFA20B /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				52B32A6022371D6300FFA20B /* libicutu.63.1.dylib */,
-				52B32A6122371D6300FFA20B /* libpgcommon.a */,
-				52B32A6222371D6300FFA20B /* libxml2.2.dylib */,
-				52B32A6322371D6300FFA20B /* postgresql */,
-				52B32ACF22371D6300FFA20B /* libgeos_c.dylib */,
-				52B32AD022371D6300FFA20B /* libicutest.63.dylib */,
-				52B32AD122371D6300FFA20B /* libicuio.dylib */,
-				52B32AD222371D6300FFA20B /* libecpg_compat.3.11.dylib */,
-				52B32AD322371D6300FFA20B /* libicutu.63.dylib */,
-				52B32AD422371D6300FFA20B /* libicutest.dylib */,
-				52B32AD522371D6300FFA20B /* libproj.13.dylib */,
-				52B32AD622371D6300FFA20B /* libpq.5.11.dylib */,
-				52B32AD722371D6300FFA20B /* libicudata.dylib */,
-				52B32AD822371D6300FFA20B /* libicuio.63.dylib */,
-				52B32AD922371D6300FFA20B /* libecpg.dylib */,
-				52B32ADA22371D6300FFA20B /* libecpg.6.11.dylib */,
-				52B32ADB22371D6300FFA20B /* libtiffxx.5.dylib */,
-				52B32ADC22371D6300FFA20B /* libicui18n.63.1.dylib */,
-				52B32ADD22371D6300FFA20B /* libpq.5.dylib */,
-				52B32ADE22371D6300FFA20B /* libgeos-3.7.1.dylib */,
-				52B32ADF22371D6300FFA20B /* libgeos_c.1.dylib */,
-				52B32AE022371D6300FFA20B /* libicuio.63.1.dylib */,
-				52B32AE122371D6300FFA20B /* libssl.dylib */,
-				52B32AE222371D6300FFA20B /* libssl.1.1.dylib */,
-				52B32AE322371D6300FFA20B /* libjasper.1.dylib */,
-				52B32AE422371D6300FFA20B /* libtiffxx.dylib */,
-				52B32AE522371D6300FFA20B /* libgeos.dylib */,
-				52B32AE622371D6300FFA20B /* libprotobuf-c.dylib */,
-				52B32AE722371D6300FFA20B /* libgdal.dylib */,
-				52B32AE822371D6300FFA20B /* libecpg.6.dylib */,
-				52B32AE922371D6300FFA20B /* libicuuc.dylib */,
-				52B32AEA22371D6300FFA20B /* libxml2.dylib */,
-				52B32AEB22371D6300FFA20B /* libpgfeutils.a */,
-				52B32AEC22371D6300FFA20B /* libpgtypes.3.dylib */,
-				52B32AED22371D6300FFA20B /* libpgtypes.dylib */,
-				52B32AEE22371D6300FFA20B /* libicutest.63.1.dylib */,
-				52B32AEF22371D6300FFA20B /* libicudata.63.1.dylib */,
-				52B32AF022371D6300FFA20B /* libicuuc.63.1.dylib */,
-				52B32AF122371D6300FFA20B /* libcrypto.dylib */,
-				52B32AF222371D6300FFA20B /* libjpeg.9.dylib */,
-				52B32AF322371D6300FFA20B /* libjson-c.dylib */,
-				52B32AF422371D6300FFA20B /* libpq.dylib */,
-				52B32AF522371D6300FFA20B /* libjson-c.4.dylib */,
-				52B32AF622371D6300FFA20B /* libicudata.63.dylib */,
-				52B32AF722371D6300FFA20B /* liblwgeom.dylib */,
-				52B32AF822371D6300FFA20B /* libicutu.dylib */,
-				52B32AF922371D6300FFA20B /* libicui18n.dylib */,
-				52B32AFA22371D6300FFA20B /* libjasper.1.0.0.dylib */,
-				52B32AFB22371D6300FFA20B /* libtiff.5.dylib */,
-				52B32AFC22371D6300FFA20B /* libproj.dylib */,
-				52B32AFD22371D6300FFA20B /* libjpeg.dylib */,
-				52B32AFE22371D6300FFA20B /* libecpg_compat.3.dylib */,
-				52B32AFF22371D6300FFA20B /* libcrypto.1.1.dylib */,
-				52B32B0022371D6300FFA20B /* libicui18n.63.dylib */,
-				52B32B0122371D6300FFA20B /* libprotobuf-c.1.dylib */,
-				52B32B0222371D6300FFA20B /* libpgtypes.3.11.dylib */,
-				52B32B0322371D6300FFA20B /* libtiff.dylib */,
-				52B32B0422371D6300FFA20B /* liblwgeom-2.5.0.dylib */,
-				52B32B0522371D6300FFA20B /* libpgport.a */,
-				52B32B0622371D6300FFA20B /* libicuuc.63.dylib */,
-				52B32B0722371D6300FFA20B /* libjasper.dylib */,
-				52B32B0822371D6300FFA20B /* libecpg_compat.dylib */,
-				52B32B0922371D6300FFA20B /* libgdal.20.dylib */,
-			);
-			name = lib;
-			path = ../../../../Applications/Postgres.app/Contents/Versions/11/lib;
-			sourceTree = "<group>";
-		};
-		52B32A6322371D6300FFA20B /* postgresql */ = {
-			isa = PBXGroup;
-			children = (
-				52B32A6422371D6300FFA20B /* uuid-ossp.so */,
-				52B32A6522371D6300FFA20B /* pg_buffercache.so */,
-				52B32A6622371D6300FFA20B /* tsm_system_rows.so */,
-				52B32A6722371D6300FFA20B /* auto_explain.so */,
-				52B32A6822371D6300FFA20B /* pg_visibility.so */,
-				52B32A6922371D6300FFA20B /* ascii_and_mic.so */,
-				52B32A6A22371D6300FFA20B /* insert_username.so */,
-				52B32A6B22371D6300FFA20B /* euc_kr_and_mic.so */,
-				52B32A6C22371D6300FFA20B /* moddatetime.so */,
-				52B32A6D22371D6300FFA20B /* citext.so */,
-				52B32A6E22371D6300FFA20B /* utf8_and_uhc.so */,
-				52B32A6F22371D6300FFA20B /* libpqwalreceiver.so */,
-				52B32A7022371D6300FFA20B /* utf8_and_ascii.so */,
-				52B32A7122371D6300FFA20B /* timetravel.so */,
-				52B32A7222371D6300FFA20B /* unaccent.so */,
-				52B32A7322371D6300FFA20B /* pltcl.so */,
-				52B32A7422371D6300FFA20B /* cyrillic_and_mic.so */,
-				52B32A7522371D6300FFA20B /* postgis-2.5.so */,
-				52B32A7622371D6300FFA20B /* seg.so */,
-				52B32A7722371D6300FFA20B /* utf8_and_gbk.so */,
-				52B32A7822371D6300FFA20B /* amcheck.so */,
-				52B32A7922371D6300FFA20B /* cube.so */,
-				52B32A7A22371D6300FFA20B /* utf8_and_sjis2004.so */,
-				52B32A7B22371D6300FFA20B /* jsonb_plpython2.so */,
-				52B32A7C22371D6300FFA20B /* utf8_and_iso8859_1.so */,
-				52B32A7D22371D6300FFA20B /* file_fdw.so */,
-				52B32A7E22371D6300FFA20B /* plv8-2.3.9.so */,
-				52B32A7F22371D6300FFA20B /* euc2004_sjis2004.so */,
-				52B32A8022371D6300FFA20B /* autoinc.so */,
-				52B32A8122371D6300FFA20B /* euc_tw_and_big5.so */,
-				52B32A8222371D6300FFA20B /* pgxs */,
-				52B32A9322371D6300FFA20B /* hstore_plperl.so */,
-				52B32A9422371D6300FFA20B /* pgxml.so */,
-				52B32A9522371D6300FFA20B /* dict_int.so */,
-				52B32A9622371D6300FFA20B /* refint.so */,
-				52B32A9722371D6300FFA20B /* plpython2.so */,
-				52B32A9822371D6300FFA20B /* bloom.so */,
-				52B32A9922371D6300FFA20B /* utf8_and_win.so */,
-				52B32A9A22371D6300FFA20B /* hstore.so */,
-				52B32A9B22371D6300FFA20B /* utf8_and_euc_kr.so */,
-				52B32A9C22371D6300FFA20B /* utf8_and_johab.so */,
-				52B32A9D22371D6300FFA20B /* isn.so */,
-				52B32A9E22371D6300FFA20B /* postgres_fdw.so */,
-				52B32A9F22371D6300FFA20B /* dict_xsyn.so */,
-				52B32AA022371D6300FFA20B /* utf8_and_euc_tw.so */,
-				52B32AA122371D6300FFA20B /* utf8_and_big5.so */,
-				52B32AA222371D6300FFA20B /* pg_freespacemap.so */,
-				52B32AA322371D6300FFA20B /* pg_prewarm.so */,
-				52B32AA422371D6300FFA20B /* tablefunc.so */,
-				52B32AA522371D6300FFA20B /* jsonb_plperl.so */,
-				52B32AA622371D6300FFA20B /* dict_snowball.so */,
-				52B32AA722371D6300FFA20B /* pgstattuple.so */,
-				52B32AA822371D6300FFA20B /* sslinfo.so */,
-				52B32AA922371D6300FFA20B /* plperl.so */,
-				52B32AAA22371D6300FFA20B /* test_decoding.so */,
-				52B32AAB22371D6300FFA20B /* btree_gin.so */,
-				52B32AAC22371D6300FFA20B /* fuzzystrmatch.so */,
-				52B32AAD22371D6300FFA20B /* latin2_and_win1250.so */,
-				52B32AAE22371D6300FFA20B /* latin_and_mic.so */,
-				52B32AAF22371D6300FFA20B /* address_standardizer.so */,
-				52B32AB022371D6300FFA20B /* _int.so */,
-				52B32AB122371D6300FFA20B /* utf8_and_euc_jp.so */,
-				52B32AB222371D6300FFA20B /* plpgsql.so */,
-				52B32AB322371D6300FFA20B /* pgcrypto.so */,
-				52B32AB422371D6300FFA20B /* utf8_and_euc_cn.so */,
-				52B32AB522371D6300FFA20B /* adminpack.so */,
-				52B32AB622371D6300FFA20B /* utf8_and_euc2004.so */,
-				52B32AB722371D6300FFA20B /* earthdistance.so */,
-				52B32AB822371D6300FFA20B /* pg_stat_statements.so */,
-				52B32AB922371D6300FFA20B /* auth_delay.so */,
-				52B32ABA22371D6300FFA20B /* rtpostgis-2.5.so */,
-				52B32ABB22371D6300FFA20B /* utf8_and_iso8859.so */,
-				52B32ABC22371D6300FFA20B /* pgrowlocks.so */,
-				52B32ABD22371D6300FFA20B /* passwordcheck.so */,
-				52B32ABE22371D6300FFA20B /* utf8_and_gb18030.so */,
-				52B32ABF22371D6300FFA20B /* pg_trgm.so */,
-				52B32AC022371D6300FFA20B /* ltree.so */,
-				52B32AC122371D6300FFA20B /* tsm_system_time.so */,
-				52B32AC222371D6300FFA20B /* tcn.so */,
-				52B32AC322371D6300FFA20B /* pgoutput.so */,
-				52B32AC422371D6300FFA20B /* postgis_topology-2.5.so */,
-				52B32AC522371D6300FFA20B /* dblink.so */,
-				52B32AC622371D6300FFA20B /* pageinspect.so */,
-				52B32AC722371D6300FFA20B /* btree_gist.so */,
-				52B32AC822371D6300FFA20B /* utf8_and_sjis.so */,
-				52B32AC922371D6300FFA20B /* ltree_plpython2.so */,
-				52B32ACA22371D6300FFA20B /* hstore_plpython2.so */,
-				52B32ACB22371D6300FFA20B /* euc_jp_and_sjis.so */,
-				52B32ACC22371D6300FFA20B /* utf8_and_cyrillic.so */,
-				52B32ACD22371D6300FFA20B /* euc_cn_and_mic.so */,
-				52B32ACE22371D6300FFA20B /* lo.so */,
-			);
-			path = postgresql;
-			sourceTree = "<group>";
-		};
-		52B32A8222371D6300FFA20B /* pgxs */ = {
-			isa = PBXGroup;
-			children = (
-				52B32A8322371D6300FFA20B /* config */,
-				52B32A8622371D6300FFA20B /* src */,
-			);
-			path = pgxs;
-			sourceTree = "<group>";
-		};
-		52B32A8322371D6300FFA20B /* config */ = {
-			isa = PBXGroup;
-			children = (
-				52B32A8422371D6300FFA20B /* install-sh */,
-				52B32A8522371D6300FFA20B /* missing */,
-			);
-			path = config;
-			sourceTree = "<group>";
-		};
-		52B32A8622371D6300FFA20B /* src */ = {
-			isa = PBXGroup;
-			children = (
-				52B32A8722371D6300FFA20B /* Makefile.shlib */,
-				52B32A8822371D6300FFA20B /* pl */,
-				52B32A8B22371D6300FFA20B /* Makefile.global */,
-				52B32A8C22371D6300FFA20B /* test */,
-				52B32A8F22371D6300FFA20B /* makefiles */,
-				52B32A9122371D6300FFA20B /* nls-global.mk */,
-				52B32A9222371D6300FFA20B /* Makefile.port */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		52B32A8822371D6300FFA20B /* pl */ = {
-			isa = PBXGroup;
-			children = (
-				52B32A8922371D6300FFA20B /* plpython */,
-			);
-			path = pl;
-			sourceTree = "<group>";
-		};
-		52B32A8922371D6300FFA20B /* plpython */ = {
-			isa = PBXGroup;
-			children = (
-				52B32A8A22371D6300FFA20B /* regress-python3-mangle.mk */,
-			);
-			path = plpython;
-			sourceTree = "<group>";
-		};
-		52B32A8C22371D6300FFA20B /* test */ = {
-			isa = PBXGroup;
-			children = (
-				52B32A8D22371D6300FFA20B /* regress */,
-			);
-			path = test;
-			sourceTree = "<group>";
-		};
-		52B32A8D22371D6300FFA20B /* regress */ = {
-			isa = PBXGroup;
-			children = (
-				52B32A8E22371D6300FFA20B /* pg_regress */,
-			);
-			path = regress;
-			sourceTree = "<group>";
-		};
-		52B32A8F22371D6300FFA20B /* makefiles */ = {
-			isa = PBXGroup;
-			children = (
-				52B32A9022371D6300FFA20B /* pgxs.mk */,
-			);
-			path = makefiles;
 			sourceTree = "<group>";
 		};
 		52C32EE8145BA35800C72758 /* system */ = {
@@ -1021,195 +532,6 @@
 			path = system;
 			sourceTree = "<group>";
 		};
-		52EF36BC224074F80002952A /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				52EF36BD224074F80002952A /* pkgconfig */,
-				52EF36BF224074F80002952A /* libmysqlharness.1.dylib */,
-				52EF36C0224074F80002952A /* mysqlrouter */,
-				52EF36C6224074F80002952A /* libssl.dylib */,
-				52EF36C7224074F80002952A /* plugin */,
-				52EF36FF224074F80002952A /* libmysqlharness.a */,
-				52EF3700224074F80002952A /* libmysqlclient.21.dylib */,
-				52EF3701224074F80002952A /* libcrypto.1.0.0.dylib */,
-				52EF3702224074F80002952A /* libcrypto.dylib */,
-				52EF3703224074F80002952A /* libmysqlrouter.dylib */,
-				52EF3704224074F80002952A /* libssl.1.0.0.dylib */,
-				52EF3705224074F80002952A /* libmysqlclient.dylib */,
-				52EF3706224074F80002952A /* libmysqlservices.a */,
-				52EF3707224074F80002952A /* libmysqlrouter.1.dylib */,
-				52EF3708224074F80002952A /* mecab */,
-				52EF372A224074F80002952A /* libmysqlharness.dylib */,
-				52EF372B224074F80002952A /* libmysqlclient.a */,
-			);
-			name = lib;
-			path = "../../../../usr/local/mysql-8.0.15-macos10.14-x86_64/lib";
-			sourceTree = "<group>";
-		};
-		52EF36BD224074F80002952A /* pkgconfig */ = {
-			isa = PBXGroup;
-			children = (
-				52EF36BE224074F80002952A /* mysqlclient.pc */,
-			);
-			path = pkgconfig;
-			sourceTree = "<group>";
-		};
-		52EF36C0224074F80002952A /* mysqlrouter */ = {
-			isa = PBXGroup;
-			children = (
-				52EF36C1224074F80002952A /* routing.so */,
-				52EF36C2224074F80002952A /* syslog.so */,
-				52EF36C3224074F80002952A /* mysql_protocol.so */,
-				52EF36C4224074F80002952A /* keepalive.so */,
-				52EF36C5224074F80002952A /* metadata_cache.so */,
-			);
-			path = mysqlrouter;
-			sourceTree = "<group>";
-		};
-		52EF36C7224074F80002952A /* plugin */ = {
-			isa = PBXGroup;
-			children = (
-				52EF36C8224074F80002952A /* libpluginmecab.so */,
-				52EF36C9224074F80002952A /* keyring_file.so */,
-				52EF36CA224074F80002952A /* version_token.so */,
-				52EF36CB224074F80002952A /* ha_example.so */,
-				52EF36CC224074F80002952A /* rewrite_example.so */,
-				52EF36CD224074F80002952A /* locking_service.so */,
-				52EF36CE224074F80002952A /* group_replication.so */,
-				52EF36CF224074F80002952A /* ha_mock.so */,
-				52EF36D0224074F80002952A /* keyring_udf.so */,
-				52EF36D1224074F80002952A /* authentication_ldap_sasl_client.so */,
-				52EF36D2224074F80002952A /* libcrypto.1.0.0.dylib */,
-				52EF36D3224074F80002952A /* adt_null.so */,
-				52EF36D4224074F80002952A /* component_log_filter_dragnet.so */,
-				52EF36D5224074F80002952A /* component_log_sink_syseventlog.so */,
-				52EF36D6224074F80002952A /* mypluglib.so */,
-				52EF36D7224074F80002952A /* connection_control.so */,
-				52EF36D8224074F80002952A /* component_log_sink_json.so */,
-				52EF36D9224074F80002952A /* libssl.1.0.0.dylib */,
-				52EF36DA224074F80002952A /* rewriter.so */,
-				52EF36DB224074F80002952A /* component_audit_api_message_emit.so */,
-				52EF36DC224074F80002952A /* mysql_no_login.so */,
-				52EF36DD224074F80002952A /* component_validate_password.so */,
-				52EF36DE224074F80002952A /* innodb_engine.so */,
-				52EF36DF224074F80002952A /* semisync_slave.so */,
-				52EF36E0224074F80002952A /* libmemcached.so */,
-				52EF36E1224074F80002952A /* validate_password.so */,
-				52EF36E2224074F80002952A /* debug */,
-				52EF36FE224074F80002952A /* semisync_master.so */,
-			);
-			path = plugin;
-			sourceTree = "<group>";
-		};
-		52EF36E2224074F80002952A /* debug */ = {
-			isa = PBXGroup;
-			children = (
-				52EF36E3224074F80002952A /* libpluginmecab.so */,
-				52EF36E4224074F80002952A /* keyring_file.so */,
-				52EF36E5224074F80002952A /* version_token.so */,
-				52EF36E6224074F80002952A /* ha_example.so */,
-				52EF36E7224074F80002952A /* rewrite_example.so */,
-				52EF36E8224074F80002952A /* locking_service.so */,
-				52EF36E9224074F80002952A /* group_replication.so */,
-				52EF36EA224074F80002952A /* ha_mock.so */,
-				52EF36EB224074F80002952A /* keyring_udf.so */,
-				52EF36EC224074F80002952A /* authentication_ldap_sasl_client.so */,
-				52EF36ED224074F80002952A /* libcrypto.1.0.0.dylib */,
-				52EF36EE224074F80002952A /* adt_null.so */,
-				52EF36EF224074F80002952A /* component_log_filter_dragnet.so */,
-				52EF36F0224074F80002952A /* component_log_sink_syseventlog.so */,
-				52EF36F1224074F80002952A /* mypluglib.so */,
-				52EF36F2224074F80002952A /* connection_control.so */,
-				52EF36F3224074F80002952A /* component_log_sink_json.so */,
-				52EF36F4224074F80002952A /* libssl.1.0.0.dylib */,
-				52EF36F5224074F80002952A /* rewriter.so */,
-				52EF36F6224074F80002952A /* component_audit_api_message_emit.so */,
-				52EF36F7224074F80002952A /* mysql_no_login.so */,
-				52EF36F8224074F80002952A /* component_validate_password.so */,
-				52EF36F9224074F80002952A /* innodb_engine.so */,
-				52EF36FA224074F80002952A /* semisync_slave.so */,
-				52EF36FB224074F80002952A /* libmemcached.so */,
-				52EF36FC224074F80002952A /* validate_password.so */,
-				52EF36FD224074F80002952A /* semisync_master.so */,
-			);
-			path = debug;
-			sourceTree = "<group>";
-		};
-		52EF3708224074F80002952A /* mecab */ = {
-			isa = PBXGroup;
-			children = (
-				52EF3709224074F80002952A /* dic */,
-				52EF3728224074F80002952A /* etc */,
-			);
-			path = mecab;
-			sourceTree = "<group>";
-		};
-		52EF3709224074F80002952A /* dic */ = {
-			isa = PBXGroup;
-			children = (
-				52EF370A224074F80002952A /* ipadic_sjis */,
-				52EF3714224074F80002952A /* ipadic_euc-jp */,
-				52EF371E224074F80002952A /* ipadic_utf-8 */,
-			);
-			path = dic;
-			sourceTree = "<group>";
-		};
-		52EF370A224074F80002952A /* ipadic_sjis */ = {
-			isa = PBXGroup;
-			children = (
-				52EF370B224074F80002952A /* rewrite.def */,
-				52EF370C224074F80002952A /* left-id.def */,
-				52EF370D224074F80002952A /* pos-id.def */,
-				52EF370E224074F80002952A /* matrix.bin */,
-				52EF370F224074F80002952A /* unk.dic */,
-				52EF3710224074F80002952A /* sys.dic */,
-				52EF3711224074F80002952A /* dicrc */,
-				52EF3712224074F80002952A /* right-id.def */,
-				52EF3713224074F80002952A /* char.bin */,
-			);
-			path = ipadic_sjis;
-			sourceTree = "<group>";
-		};
-		52EF3714224074F80002952A /* ipadic_euc-jp */ = {
-			isa = PBXGroup;
-			children = (
-				52EF3715224074F80002952A /* rewrite.def */,
-				52EF3716224074F80002952A /* left-id.def */,
-				52EF3717224074F80002952A /* pos-id.def */,
-				52EF3718224074F80002952A /* matrix.bin */,
-				52EF3719224074F80002952A /* unk.dic */,
-				52EF371A224074F80002952A /* sys.dic */,
-				52EF371B224074F80002952A /* dicrc */,
-				52EF371C224074F80002952A /* right-id.def */,
-				52EF371D224074F80002952A /* char.bin */,
-			);
-			path = "ipadic_euc-jp";
-			sourceTree = "<group>";
-		};
-		52EF371E224074F80002952A /* ipadic_utf-8 */ = {
-			isa = PBXGroup;
-			children = (
-				52EF371F224074F80002952A /* rewrite.def */,
-				52EF3720224074F80002952A /* left-id.def */,
-				52EF3721224074F80002952A /* pos-id.def */,
-				52EF3722224074F80002952A /* matrix.bin */,
-				52EF3723224074F80002952A /* unk.dic */,
-				52EF3724224074F80002952A /* sys.dic */,
-				52EF3725224074F80002952A /* dicrc */,
-				52EF3726224074F80002952A /* right-id.def */,
-				52EF3727224074F80002952A /* char.bin */,
-			);
-			path = "ipadic_utf-8";
-			sourceTree = "<group>";
-		};
-		52EF3728224074F80002952A /* etc */ = {
-			isa = PBXGroup;
-			children = (
-				52EF3729224074F80002952A /* mecabrc */,
-			);
-			path = etc;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1223,6 +545,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		523FDBA62243A82200B3C767 /* zdbpp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 523FDBAE2243A82200B3C767 /* Build configuration list for PBXNativeTarget "zdbpp" */;
+			buildPhases = (
+				523FDBA92243A82200B3C767 /* Sources */,
+				523FDBAB2243A82200B3C767 /* Frameworks */,
+				523FDBAD2243A82200B3C767 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				523FDBA72243A82200B3C767 /* PBXTargetDependency */,
+			);
+			name = zdbpp;
+			productName = pool;
+			productReference = 523FDBB12243A82200B3C767 /* zdbpp */;
+			productType = "com.apple.product-type.tool";
+		};
 		528F4D4B145A5BFC002CD67D /* select */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 528F4D53145A5BFC002CD67D /* Build configuration list for PBXNativeTarget "select" */;
@@ -1301,21 +641,21 @@
 		521CF21713E71619004A7291 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Tildeslash Ltd.";
 				TargetAttributes = {
 					52F236FD13E724D600D24B82 = {
-						DevelopmentTeam = Z7D8RDKK69;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
 			buildConfigurationList = 521CF21A13E71619004A7291 /* Build configuration list for PBXProject "libzdb" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 521CF21513E71619004A7291;
 			productRefGroup = 521CF21513E71619004A7291;
@@ -1326,11 +666,20 @@
 				528F4D4B145A5BFC002CD67D /* select */,
 				52C32F47145BABC300C72758 /* unit */,
 				529239B314B7ACC400DFC3A1 /* pool */,
+				523FDBA62243A82200B3C767 /* zdbpp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		523FDBA92243A82200B3C767 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				523FDBB22243A83E00B3C767 /* zdbpp.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		528F4D48145A5BFC002CD67D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1392,6 +741,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		523FDBA72243A82200B3C767 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52F236FD13E724D600D24B82 /* libzdb */;
+			targetProxy = 523FDBA82243A82200B3C767 /* PBXContainerItemProxy */;
+		};
 		528F4D5A145A5C8E002CD67D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 52F236FD13E724D600D24B82 /* libzdb */;
@@ -1414,6 +768,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1479,6 +834,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1533,6 +889,45 @@
 				);
 				SDKROOT = "";
 				USER_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = x86_64;
+			};
+			name = Release;
+		};
+		523FDBAF2243A82200B3C767 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				HEADER_SEARCH_PATHS = $SRCROOT/zdb/;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = "";
+				VALID_ARCHS = x86_64;
+			};
+			name = Debug;
+		};
+		523FDBB02243A82200B3C767 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				HEADER_SEARCH_PATHS = $SRCROOT/zdb/;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = "";
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = "";
 				VALID_ARCHS = x86_64;
 			};
 			name = Release;
@@ -1623,11 +1018,11 @@
 		52F2370013E724D600D24B82 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = Z7D8RDKK69;
+				DEVELOPMENT_TEAM = "";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1668,10 +1063,10 @@
 		52F2370113E724D600D24B82 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = Z7D8RDKK69;
+				DEVELOPMENT_TEAM = "";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -1716,6 +1111,15 @@
 			buildConfigurations = (
 				521CF22213E71619004A7291 /* Debug */,
 				521CF22313E71619004A7291 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		523FDBAE2243A82200B3C767 /* Build configuration list for PBXNativeTarget "zdbpp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				523FDBAF2243A82200B3C767 /* Debug */,
+				523FDBB02243A82200B3C767 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -28,6 +28,7 @@
 #include <oci.h>
 
 #include "zdb.h"
+#include "system/Time.h"
 
 #define WATCHDOG(FUNCNAME, TYPENAME)      \
 static void *FUNCNAME(void *args) {       \
@@ -41,7 +42,7 @@ static void *FUNCNAME(void *args) {       \
                 S->countdown -= 10;       \
             }                             \
         }                                 \
-        usleep(10000);                    \
+        Time_usleep(10000);               \
     }                                     \
     return NULL;                          \
 }
@@ -49,6 +50,6 @@ static void *FUNCNAME(void *args) {       \
 const char *OraclePreparedStatement_getLastError(int err, OCIError *errhp) __attribute__ ((visibility("hidden")));
 
 ResultSetDelegate_T OracleResultSet_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int need_free) __attribute__ ((visibility("hidden")));
-PreparedStatementDelegate_T OraclePreparedStatement_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc, int timeout) __attribute__ ((visibility("hidden")));
+PreparedStatementDelegate_T OraclePreparedStatement_new(Connection_T delegator, OCIStmt *stmt, OCIEnv *env, OCISession* usr, OCIError *err, OCISvcCtx *svc) __attribute__ ((visibility("hidden")));
 
 #endif

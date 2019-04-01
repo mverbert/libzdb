@@ -146,6 +146,14 @@ static int _doConnect(T C, char**  error) {
                 StringBuffer_append(C->sb, "/%s", servicename);
         } else /* Or just service name */
                 StringBuffer_append(C->sb, "%s", servicename);
+        // Set Connection ResultSet fetch size if found in URL
+        const char *fetchSize = URL_getParameter(url, "fetch-size");
+        if (fetchSize) {
+                int rows = Str_parseInt(fetchSize);
+                if (rows < 1)
+                        ERROR("invalid fetch-size");
+                Connection_setFetchSize(C->delegator, rows);
+        }
         /* Create a server context */
         C->lastError = OCIServerAttach(C->srv, C->err, StringBuffer_toString(C->sb), StringBuffer_length(C->sb), OCI_DEFAULT);
         if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO)
@@ -209,14 +217,12 @@ static T _new(Connection_T delegator, char **error) {
         NEW(C);
         C->delegator = delegator;
         C->sb = StringBuffer_create(STRLEN);
-        C->timeout = SQL_DEFAULT_TIMEOUT;
         if (! _doConnect(C, error)) {
                 _free(&C);
                 return NULL;
         }
         C->txnhp = NULL;
         C->running = false;
-        Thread_create(C->watchdog, watchdog, C);
         return C;
 }
 
@@ -225,6 +231,26 @@ static int _ping(T C) {
         assert(C);
         C->lastError = OCIPing(C->svc, C->err, OCI_DEFAULT);
         return (C->lastError == OCI_SUCCESS);
+}
+
+
+static void _setQueryTimeout(T C, int ms) {
+        assert(C);
+        assert(ms >= 0);
+        C->timeout = ms;
+        if (ms > 0) {
+                if (!C->watchdog) {
+                        Thread_create(C->watchdog, watchdog, C);
+                }
+        } else {
+                if (C->watchdog) {
+                        OCISvcCtx* t = C->svc;
+                        C->svc = NULL;
+                        Thread_join(C->watchdog);
+                        C->svc = t;
+                        C->watchdog = NULL;
+                }
+        }
 }
 
 
@@ -351,13 +377,6 @@ static ResultSet_T _executeQuery(T C, const char *sql, va_list ap) {
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
-        unsigned long fetchSize = Connection_getFetchSize(C->delegator);
-        C->lastError = OCIAttrSet(stmtp, OCI_HTYPE_STMT, (void*)&fetchSize, (ub4)sizeof(ub4), OCI_ATTR_PREFETCH_ROWS, C->err);
-        if (C->lastError != OCI_SUCCESS && C->lastError != OCI_SUCCESS_WITH_INFO) {
-                DEBUG("Error in OCIAttrSet(OCI_ATTR_PREFETCH_ROWS)\n");
-                OCIHandleFree(stmtp, OCI_HTYPE_STMT);
-                return NULL;
-        }
         /* Execute and create Result Set */
         if (C->timeout > 0) {
                 C->countdown = C->timeout;
@@ -397,7 +416,7 @@ static PreparedStatement_T _prepareStatement(T C, const char *sql, va_list ap) {
                 OCIHandleFree(stmtp, OCI_HTYPE_STMT);
                 return NULL;
         }
-        return PreparedStatement_new(OraclePreparedStatement_new(C->delegator, stmtp, C->env, C->usr, C->err, C->svc, C->timeout), (Pop_T)&oraclepops);
+        return PreparedStatement_new(OraclePreparedStatement_new(C->delegator, stmtp, C->env, C->usr, C->err, C->svc), (Pop_T)&oraclepops);
 }
 
 
@@ -409,6 +428,7 @@ const struct Cop_T oraclesqlcops = {
         .new              = _new,
         .free             = _free,
         .ping             = _ping,
+        .setQueryTimeout  = _setQueryTimeout,
         .beginTransaction = _beginTransaction,
         .commit           = _commit,
         .rollback         = _rollback,

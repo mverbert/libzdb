@@ -159,12 +159,14 @@
  * oracle://localhost:1521/servicename?user=scott&password=tiger
  * </pre>
  *
+ * Instead of a database name, Oracle uses a service name which you
+ * typically specify in a <code>tnsnames.ora</code> configuration file.
  * The auth-part of the URL can be used instead to specify the username 
- * and the password. In addition, you may specify a service name in the URL
- * instead if you have setup a <code>tnsnames.ora</code> configuration file.
+ * and the password as in the example below. Here we also specify that
+ * we want to connect to Oracle with the SYSDBA role.
  *
  * <pre>
- * oracle:///servicename?user=scott&password=tiger
+ * oracle://sys:password\@localhost:1521/servicename?sysdba=true
  * </pre>
  *
  * See <a href="oracleoptions.html">oracle options</a> for all properties that
@@ -311,13 +313,12 @@ int ConnectionPool_getMaxConnections(T P);
 
 /**
  * Set a Connection inactive timeout value in seconds. The method,
- * ConnectionPool_reapConnections(), if called will close inactive 
+ * ConnectionPool_reapConnections(), if called, will close inactive
  * Connections in the pool which has not been in use since 
  * <code>connectionTimeout</code> seconds. Default connectionTimeout is 
- * 30 seconds. The reaper thread if in use, see ConnectionPool_setReaper(), 
- * also use this value when closing inactive Connections. It is a 
- * checked runtime error for <code>connectionTimeout</code> to be less than, 
- * or equal to zero.
+ * 30 seconds. The reaper thread, if in use, see ConnectionPool_setReaper(),
+ * uses this value when closing inactive Connections. It is a checked runtime
+ * error for <code>connectionTimeout</code> to be less than, or equal to zero.
  * @param P A ConnectionPool object
  * @param connectionTimeout The number of <code>seconds</code> a Connection 
  * can be inactive, i.e. not in use, before the reaper close the Connection. 

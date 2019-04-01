@@ -58,7 +58,7 @@ AM_PROG_LEX
 if test -z "${LEXLIB+set}"; then
         # Require flex unless lex.yy.c already is built
         if test ! -f ./tools/filterh/lex.yy.c; then
-                AC_MSG_ERROR([flex is required. Download from http://www.gnu.org/software/flex/ or use your package manager])
+                AC_MSG_ERROR([flex is required. Download from https://www.gnu.org/software/flex/ or use your package manager])
         fi
 fi
 

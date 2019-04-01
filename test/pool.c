@@ -209,6 +209,8 @@ static void testPool(const char *testURL) {
                 int imagesize = 0;
                 Connection_T con = ConnectionPool_getConnection(pool);
                 assert(con);
+                Connection_setQueryTimeout(con, 3000);
+                assert(Connection_getQueryTimeout(con) == 3000);
                 ResultSet_T rset = Connection_executeQuery(con, "select id, name, percent, image from zild_t where id < %d order by id;", 100);
                 assert(rset);
                 printf("\tResult:\n");

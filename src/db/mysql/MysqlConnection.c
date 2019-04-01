@@ -63,7 +63,7 @@ extern const struct Pop_T mysqlpops;
 static MYSQL *_doConnect(Connection_T delegator, char **error) {
 #define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
         URL_T url = Connection_getURL(delegator);
-        _Bool yes = 1, no = 0;
+        _Bool yes = 1;
         int connectTimeout = SQL_DEFAULT_TIMEOUT / MSEC_PER_SEC;
         unsigned long clientFlags = CLIENT_MULTI_STATEMENTS;
         MYSQL *db = mysql_init(NULL);
@@ -101,8 +101,10 @@ static MYSQL *_doConnect(Connection_T delegator, char **error) {
 #if MYSQL_VERSION_ID < 80000
         if (IS(URL_getParameter(url, "secure-auth"), "true"))
                 mysql_options(db, MYSQL_SECURE_AUTH, (const char*)&yes);
-        else
+        else {
+                _Bool no = 0;
                 mysql_options(db, MYSQL_SECURE_AUTH, (const char*)&no);
+        }
 #else
         if (URL_getParameter(url, "auth-plugin")) {
                 mysql_options(db, MYSQL_DEFAULT_AUTH, URL_getParameter(url, "auth-plugin"));
@@ -187,8 +189,8 @@ static int _ping(T C) {
 static void _setQueryTimeout(T C, int ms) {
         assert(C);
 #if MYSQL_VERSION_ID >= 50704
-        C->lastError = mysql_query(C->db, StringBuffer_toString(
-                        StringBuffer_set(C->sb, "SET SESSION MAX_EXECUTION_TIME=%d;", ms)));
+        StringBuffer_set(C->sb, "SET SESSION MAX_EXECUTION_TIME=%d;", ms);
+        C->lastError = mysql_query(C->db, StringBuffer_toString(C->sb));
 #endif
 }
 
@@ -249,9 +251,7 @@ static ResultSet_T _executeQuery(T C, const char *sql, va_list ap) {
                 unsigned long cursor = CURSOR_TYPE_READ_ONLY;
                 mysql_stmt_attr_set(stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
 #endif
-                unsigned long fetchSize = Connection_getFetchSize(C->delegator);
-                if ((C->lastError = mysql_stmt_attr_set(stmt, STMT_ATTR_PREFETCH_ROWS, &fetchSize))
-                    || (C->lastError = mysql_stmt_execute(stmt))) {
+                if ((C->lastError = mysql_stmt_execute(stmt))) {
                         StringBuffer_set(C->sb, "%s", mysql_stmt_error(stmt));
                         mysql_stmt_close(stmt);
                 } else

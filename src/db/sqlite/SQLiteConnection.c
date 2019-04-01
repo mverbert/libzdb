@@ -141,18 +141,18 @@ static T _new(Connection_T delegator, char **error) {
 }
 
 
+static int _ping(T C) {
+        assert(C);
+        C->lastError = zdb_sqlite3_exec(C->db, "select 1;");
+        return (C->lastError == SQLITE_OK);
+}
+
+
 static void _setQueryTimeout(T C, int ms) {
         assert(C);
         if (ms <= 0)
                 ms = kQueryTimeoutDelta; // Ensure a minimal timeout to install a busy_timeout handler
         sqlite3_busy_timeout(C->db, ms);
-}
-
-
-static int _ping(T C) {
-        assert(C);
-        C->lastError = zdb_sqlite3_exec(C->db, "select 1;");
-        return (C->lastError == SQLITE_OK);
 }
 
 

@@ -210,9 +210,6 @@ static ResultSet_T _executeQuery(T P) {
         unsigned long cursor = CURSOR_TYPE_READ_ONLY;
         mysql_stmt_attr_set(P->stmt, STMT_ATTR_CURSOR_TYPE, &cursor);
 #endif
-        unsigned long fetchSize = Connection_getFetchSize(P->delegator);
-        if ((P->lastError = mysql_stmt_attr_set(P->stmt, STMT_ATTR_PREFETCH_ROWS, &fetchSize)))
-                THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         if ((P->lastError = mysql_stmt_execute(P->stmt)))
                 THROW(SQLException, "%s", mysql_stmt_error(P->stmt));
         if (P->lastError == MYSQL_OK)
