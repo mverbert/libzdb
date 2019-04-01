@@ -29,9 +29,6 @@
 #include <utility>
 #include <stdexcept>
 
-#if __cplusplus < 201703L
-#error "C++17 or later is required"
-#endif
 
 namespace zdb {
     
@@ -435,7 +432,7 @@ namespace zdb {
         
         template <typename ...Args>
         void execute(const char *sql, Args ... args) {
-            PreparedStatement p = this->prepareStatement(sql, args...);
+            PreparedStatement p(this->prepareStatement(sql, args...));
             p.execute();
         }
         
@@ -486,6 +483,8 @@ namespace zdb {
         ConnectionPool(const char* url)
         :url_(url)
         {
+            if (!url_)
+                throw sql_exception("Invalid URL");
             t_ = ConnectionPool_new(url_);
         }
         
