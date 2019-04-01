@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <map>
-#include <set>
 
 #include "zdbpp.h"
 using namespace zdb;
@@ -36,7 +35,6 @@ static void testCreateSchema(ConnectionPool& pool) {
 static void testPrepared(ConnectionPool& pool) {
         double percent = 0.12;
         Connection con = pool.getConnection();
-        // A plain explicit prepared statement
         PreparedStatement p1 = con.prepareStatement("insert into zild_t (name, percent, image) values(?, ?, ?);");
         con.beginTransaction();
         for (const auto &[name, image] : data) {
@@ -56,7 +54,7 @@ static void testPrepared(ConnectionPool& pool) {
 
 static void testQuery(ConnectionPool& pool) {
         Connection con = pool.getConnection();
-        // Also translated into a prepared statement because use of parameter
+        // Implicit prepared statement because of parameters
         ResultSet result = con.executeQuery("select id, name, percent, image from zild_t where id < ? order by id;", 100);
         result.setFetchSize(100);
         assert(result.columnCount() == 4);
