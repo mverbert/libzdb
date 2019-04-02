@@ -292,7 +292,10 @@ namespace zdb {
         }
         
         ResultSet executeQuery() {
-            except_wrapper( RETURN ResultSet(PreparedStatement_executeQuery(t_)) );
+            except_wrapper(
+                           ResultSet_T r = PreparedStatement_executeQuery(t_);
+                           RETURN ResultSet(r);
+                           );
         }
         
         long long rowsChanged() {
@@ -437,7 +440,10 @@ namespace zdb {
         }
         
         ResultSet executeQuery(const char *sql) {
-            except_wrapper( RETURN ResultSet(Connection_executeQuery(t_, "%s", sql)) );
+            except_wrapper(
+                           ResultSet_T r = Connection_executeQuery(t_, "%s", sql);
+                           RETURN ResultSet(r);
+                           );
         }
         
         template <typename ...Args>
@@ -447,7 +453,10 @@ namespace zdb {
         }
         
         PreparedStatement prepareStatement(const char *sql) {
-            except_wrapper( RETURN PreparedStatement(Connection_prepareStatement(t_, "%s", sql)) );
+            except_wrapper(
+                           PreparedStatement_T p = Connection_prepareStatement(t_, "%s", sql);
+                           RETURN PreparedStatement(p);
+                           );
         }
         
         template <typename ...Args>

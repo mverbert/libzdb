@@ -28,7 +28,7 @@ const std::map<std::string, std::string> schema {
 
 static void testCreateSchema(ConnectionPool& pool) {
         Connection con = pool.getConnection();
-        try { con.execute("drop table zild_t;"); } catch (...) {}
+        try { con.execute("drop table zild_t;"); } catch (...) { }
         con.execute(schema.at(pool.getURL().protocol()).c_str());
 }
 
@@ -68,6 +68,24 @@ static void testQuery(ConnectionPool& pool) {
         }
 }
 
+static void testException(ConnectionPool& pool) {
+        try {
+                Connection con = pool.getConnection();
+                PreparedStatement p = con.prepareStatement("blablablabla ?;", "Bla");
+                p.executeQuery();
+                std::cout << "Test failed, did not get exception\n";
+                exit(1);
+        } catch (sql_exception& e) {}
+
+        try {
+                Connection con = pool.getConnection();
+                ResultSet r = con.executeQuery("blablabala ? ;", "bla!");
+                r.getString(1);
+                std::cout << "Test failed, did not get exception\n";
+                exit(1);
+        } catch (sql_exception& e) {}
+}
+
 static void testDropSchema(ConnectionPool& pool) {
         pool.getConnection().execute("drop table zild_t;");
 }
@@ -96,6 +114,7 @@ int main(void) {
                 testCreateSchema(pool);
                 testPrepared(pool);
                 testQuery(pool);
+                testException(pool);
                 testDropSchema(pool);
                 std::cout << std::string(50, '=') + "> Tests: OK\n\n";
                 std::cout << help;
