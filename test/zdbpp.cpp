@@ -28,7 +28,7 @@ const std::map<std::string, std::string> schema {
 
 static void testCreateSchema(ConnectionPool& pool) {
         Connection con = pool.getConnection();
-        try { con.execute("drop table zild_t;"); } catch (...) { }
+        try { con.execute("drop table zild_t;"); } catch (...) {}
         con.execute(schema.at(pool.getURL().protocol()).c_str());
 }
 
@@ -63,24 +63,24 @@ static void testQuery(ConnectionPool& pool) {
                 int id = result.getInt(1);
                 const char *name = result.getString("name");
                 double percent = result.getDouble("percent");
-                auto [blob, size] = result.getBlob(4);
-                printf("\t%-5d%-20s%-10.2f%-16.38s\n", id, name ? name : "null", percent, size ? (char *)blob : "null");
+                auto [image, size] = result.getBlob(4);
+                printf("\t%-5d%-20s%-10.2f%-16.38s\n", id, name ? name : "null", percent, size ? (char *)image : "null");
+                // Assert that SQL null above was set
+                if (id == 11) {
+                    assert(result.isnull(4));
+                }
         }
 }
 
 static void testException(ConnectionPool& pool) {
         try {
-                Connection con = pool.getConnection();
-                PreparedStatement p = con.prepareStatement("blablablabla ?;", "Bla");
-                p.executeQuery();
+                pool.getConnection().prepareStatement("blablablabla ?;", "Bla");
                 std::cout << "Test failed, did not get exception\n";
                 exit(1);
         } catch (sql_exception& e) {}
 
         try {
-                Connection con = pool.getConnection();
-                ResultSet r = con.executeQuery("blablabala ? ;", "bla!");
-                r.getString(1);
+                pool.getConnection().executeQuery("blablabala ? ;", "bla!");
                 std::cout << "Test failed, did not get exception\n";
                 exit(1);
         } catch (sql_exception& e) {}
@@ -110,13 +110,13 @@ int main(void) {
                 }
                 ConnectionPool pool(line);
                 pool.start();
-                std::cout << std::string(50, '=') + "> Start Tests\n";
+                std::cout << std::string(8, '=') + "> Start Tests\n";
                 testCreateSchema(pool);
                 testPrepared(pool);
                 testQuery(pool);
                 testException(pool);
                 testDropSchema(pool);
-                std::cout << std::string(50, '=') + "> Tests: OK\n\n";
+                std::cout << std::string(8, '=') + "> Tests: OK\n\n";
                 std::cout << help;
         }
 }
