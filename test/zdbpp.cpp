@@ -63,7 +63,7 @@ static void testQuery(ConnectionPool& pool) {
                 int id = result.getInt(1);
                 const char *name = result.getString("name");
                 double percent = result.getDouble("percent");
-                auto [image, size] = result.getBlob(4);
+                auto [image, size] = result.getBlob("image");
                 printf("\t%-5d%-20s%-10.2f%-16.38s\n", id, name ? name : "null", percent, size ? (char *)image : "null");
                 // Assert that SQL null above was set
                 if (id == 11) {
@@ -74,13 +74,17 @@ static void testQuery(ConnectionPool& pool) {
 
 static void testException(ConnectionPool& pool) {
         try {
-                pool.getConnection().prepareStatement("blablablabla ?;", "Bla");
+                Connection con = pool.getConnection();
+                PreparedStatement p = con.prepareStatement("blablablabla ?;", "Bla");
+                p.execute();
                 std::cout << "Test failed, did not get exception\n";
                 exit(1);
         } catch (sql_exception& e) {}
 
         try {
-                pool.getConnection().executeQuery("blablabala ? ;", "bla!");
+                Connection con = pool.getConnection();
+                ResultSet r = con.executeQuery("blablabala ? ;", "bla!");
+                r.next();
                 std::cout << "Test failed, did not get exception\n";
                 exit(1);
         } catch (sql_exception& e) {}
@@ -98,7 +102,7 @@ int main(void) {
         "E.g. postgresql://localhost:5432/test?user=root&password=root\n"
         "E.g. oracle://scott:tiger@localhost:1521/servicename\n"
         "To exit, enter '.' on a single line\n\nConnection URL> ";
-        std::cout << std::string(80, '=') + "\n" << "C++17 zdbpp.h Interface Test\n\n" << help;
+        std::cout << "\033[0;35m\nC++17 zdbpp.h API Test:\033[0m\n\n" << help;
         for (std::string line; std::getline(std::cin, line);) {
                 if (line == "q" || line == ".")
                         break;
