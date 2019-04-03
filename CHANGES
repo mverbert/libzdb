@@ -4,22 +4,20 @@
 
 Version 3.2
 -----------
-* New: C++17 support. A new header file, zdbpp.h, is distributed
-  with libzdb for a more idiomatic use of libzdb from C++. Thanks
-  to dragon jiang <jianlinlong@gmail.com>.
-* New: Support prefetch rows for MySQL and Oracle. Either programatically
-  via Connection_setFetchSize() and ResultSet_setFetchSize() or via a new
-  'fetch-size' URL option. 'Thanks to dragon jiang <jianlinlong@gmail.com>
-  for the suggestion and pull request.
-* New: MySQL 5.7 and later. Added session query timeout accessible
-  via Connection_setQueryTimeout()
-* New: MySQL 8. Added a new URL option 'auth-plugin' which specify the
-  authentication_plugin to use when connecting to a MySQL server.
+* New: C++17 support via <em>zdbpp.h</em> which is distributed with libzdb
+  for more idiomatic use of libzdb from C++.
+* New: Support <em>prefetch</em> rows for MySQL and Oracle. Either
+  programatically via Connection_setFetchSize() or via ResultSet_setFetchSize()
+  or via a new global 'fetch-size' URL option. Thanks to dragon
+  jiang (jianlinlong)
+* New: MySQL 5.7 and later. Added session query timeout accessible via
+  Connection_setQueryTimeout()
+* New: MySQL 8. Added a new URL option 'auth-plugin' which specify
+  the authentication plugin to use when connecting to a MySQL server.
 * New: Oracle: Added a new URL option 'sysdba' for connecting with
   sysdba privileges.
-* Fixed: Revert previous fix (#8) and remove last SQL terminator
-  character ';' in statements, except if preceded with END; to allow
-  for ending a pl/sql block.
+* Fixed: Revert previous fix and remove last SQL terminator character ';' in
+  statements, except if preceded with END; to allow for ending a pl/sql block.
 * Fixed: Oracle: Set SQL null value in prepared statement
 * Fixed: Oracle: Handle date/time literal values
 
