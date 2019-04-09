@@ -113,8 +113,6 @@ static int _doConnect(T C, char **error) {
         if (PQstatus(C->db) == CONNECTION_OK)
                 return true;
         *error = Str_dup(PQerrorMessage(C->db));
-        PQfinish(C->db);
-        C->db = NULL;
 error:
         return false;
 }
