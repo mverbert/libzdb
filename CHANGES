@@ -4,9 +4,9 @@
 
 Version 3.2
 -----------
-* New: C++17 support via <em>zdbpp.h</em> which is distributed with libzdb
+* New: C++17 support via zdbpp.h which is distributed with libzdb
   for more idiomatic use of libzdb from C++.
-* New: Support <em>prefetch</em> rows for MySQL and Oracle. Either
+* New: Support prefetch rows for MySQL and Oracle. Either
   programatically via Connection_setFetchSize() or via ResultSet_setFetchSize()
   or via a new global 'fetch-size' URL option. Thanks to dragon
   jiang (jianlinlong)
@@ -93,7 +93,7 @@ Version 2.11
   bytes in the first row. Thanks to Me from China for bug report
   and patch.
 * Fixed: Using configure flags --with-xxx without arguments
-  now works as expected. Thanks to Johan BergstrÃ¶m for report
+  now works as expected. Thanks to Johan Bergström for report
 
 Version 2.10.6
 --------------
@@ -332,8 +332,8 @@ Version 1.1.3
 Bug fixes:
 * This release fixes a MySQL prepared statement bug. If a prepared
   statement was used with two or more number parameters, the numbers
-  were saved with a bogus value in the database. Thanks to JosÃ© Antonio
-  SÃ¡nchez
+  were saved with a bogus value in the database. Thanks to José Antonio
+  Sánchez
 
 Version 1.1.2
 -------------
