@@ -33,13 +33,15 @@
  * @file
  */
 
-
-#include <assert.h>
-#include <errno.h>
 #include "xconfig.h"
 
-#include "system/Mem.h"
+#include <errno.h>
+#include <assert.h>
+#include <stdint.h>
+#include <stdbool.h>
+
 #include "Str.h"
+#include "system/Mem.h"
 #include "SQLException.h"
 #include "system/System.h"
 
@@ -162,41 +164,14 @@
 #define IS      Str_isEqual
 
 
-/* ---------------------------------------------------------- Build macros */
-
-
-/* Mask out __attribute__ extension for non- GCC/llvm-clang compilers. */
-#if (! (defined(__GNUC__) || defined(__clang__)))
-#define __attribute__(x)
-#endif
-
-
 /* ------------------------------------------------------ Type definitions */
 
 
 /**
  * The internal 8-bit char type
  */
+#ifndef HAVE_UCHAR_T
 typedef unsigned char uchar_t;
-
-
-/**
- * The internal 32 bits integer type
- */
-typedef  unsigned int uint32_t;
-
-
-/**
- * The internal boolean integer type
- */
-#ifndef HAVE_BOOLEAN_T
-typedef enum {
-        false = 0,
-        true
-} boolean_t;
-#else
-#define false 0
-#define true  1
 #endif
 
 
