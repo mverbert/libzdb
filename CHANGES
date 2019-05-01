@@ -1,6 +1,10 @@
-                         CHANGES version 3.2
+                        CHANGES version 3.2.1
 
               This file summarizes changes made since 1.0
+
+Version 3.2.1
+-------------
+* New: Include Library version number in zdb.h
 
 Version 3.2
 -----------

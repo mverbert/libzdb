@@ -42,7 +42,13 @@ extern "C" {
 #endif
 /** @endcond */
 
-/* libzdb API interfaces */
+/* ----------------------------- Version major(nn).minor(nn).revision(nnn) */
+
+#define LIBZDB_VERSION          "3.2.1"
+#define LIBZDB_VERSION_NUMBER   3002001
+
+/* ------------------------------------------------- libzdb API interfaces */
+
 #include <SQLException.h>
 #include <URL.h>
 #include <ResultSet.h>
