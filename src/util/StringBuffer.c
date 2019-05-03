@@ -98,13 +98,17 @@ static int _prepare(T S, char prefix) {
 }
 
 
-static inline int isterminating(T S) {
-        if (S->buffer[S->used - 1] == ';') {
-                if (S->used > 3)
-                        return ! (tolower(S->buffer[S->used - 2]) == 'd'
-                                  && tolower(S->buffer[S->used - 3]) == 'n'
-                                  && tolower(S->buffer[S->used - 4]) == 'e');
-                return true;
+static inline int _istrailingws(T S) {
+        if (S->used > 0) {
+                if (isspace(S->buffer[S->used - 1]))
+                    return true;
+                if (S->buffer[S->used - 1] == ';') {
+                        if (S->used > 3)
+                                return ! (tolower(S->buffer[S->used - 2]) == 'd'
+                                          && tolower(S->buffer[S->used - 3]) == 'n'
+                                          && tolower(S->buffer[S->used - 4]) == 'e');
+                        return true;
+                }
         }
         return false;
 }
@@ -231,7 +235,7 @@ int StringBuffer_prepare4oracle(T S) {
 T StringBuffer_trim(T S) {
         assert(S);
         // Right trim
-        while (S->used && (isspace(S->buffer[S->used - 1]) || isterminating(S)))
+        while (_istrailingws(S))
                 S->buffer[--S->used] = 0;
         // Left trim
         if (isspace(*S->buffer)) {
