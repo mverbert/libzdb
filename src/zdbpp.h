@@ -117,14 +117,6 @@ namespace zdb {
             return URL_toString(t_);
         }
         
-        static char *unescape(char *url) {
-            return URL_unescape(url);
-        }
-        
-        static char *escape(const char *url) {
-            return URL_escape(url);
-        }
-        
     private:
         URL_T t_;
     };
