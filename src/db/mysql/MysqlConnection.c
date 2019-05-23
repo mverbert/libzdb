@@ -180,7 +180,7 @@ static void _free(T *C) {
 }
 
 
-static int _ping(T C) {
+static bool _ping(T C) {
         assert(C);
         return (mysql_ping(C->db) == 0);
 }
@@ -195,21 +195,21 @@ static void _setQueryTimeout(T C, int ms) {
 }
 
 
-static int _beginTransaction(T C) {
+static bool _beginTransaction(T C) {
         assert(C);
         C->lastError = mysql_query(C->db, "START TRANSACTION;");
         return (C->lastError == MYSQL_OK);
 }
 
 
-static int _commit(T C) {
+static bool _commit(T C) {
         assert(C);
         C->lastError = mysql_query(C->db, "COMMIT;");
         return (C->lastError == MYSQL_OK);
 }
 
 
-static int _rollback(T C) {
+static bool _rollback(T C) {
         assert(C);
         C->lastError = mysql_query(C->db, "ROLLBACK;");
         return (C->lastError == MYSQL_OK);
@@ -228,7 +228,7 @@ static long long _rowsChanged(T C) {
 }
 
 
-static int _execute(T C, const char *sql, va_list ap) {
+static bool _execute(T C, const char *sql, va_list ap) {
         assert(C);
         va_list ap_copy;
         va_copy(ap_copy, ap);

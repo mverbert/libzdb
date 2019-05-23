@@ -145,7 +145,7 @@ static T _new(Connection_T delegator, char **error) {
 }
 
 
-static int _ping(T C) {
+static bool _ping(T C) {
         assert(C);
         return (PQstatus(C->db) == CONNECTION_OK);
 }
@@ -158,7 +158,7 @@ static void _setQueryTimeout(T C, int ms) {
 }
 
 
-static int _beginTransaction(T C) {
+static bool _beginTransaction(T C) {
 	assert(C);
         PGresult *res = PQexec(C->db, "BEGIN TRANSACTION;");
         C->lastError = PQresultStatus(res);
@@ -167,7 +167,7 @@ static int _beginTransaction(T C) {
 }
 
 
-static int _commit(T C) {
+static bool _commit(T C) {
 	assert(C);
         PGresult *res = PQexec(C->db, "COMMIT TRANSACTION;");
         C->lastError = PQresultStatus(res);
@@ -176,7 +176,7 @@ static int _commit(T C) {
 }
 
 
-static int _rollback(T C) {
+static bool _rollback(T C) {
 	assert(C);
         PGresult *res = PQexec(C->db, "ROLLBACK TRANSACTION;");
         C->lastError = PQresultStatus(res);
@@ -198,7 +198,7 @@ static long long _rowsChanged(T C) {
 }
 
 
-static int _execute(T C, const char *sql, va_list ap) {
+static bool _execute(T C, const char *sql, va_list ap) {
 	assert(C);
         PQclear(C->res);
         va_list ap_copy;

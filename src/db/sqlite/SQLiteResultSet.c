@@ -107,7 +107,7 @@ static long _getColumnSize(T R, int columnIndex) {
 }
 
 
-static int _next(T R) {
+static bool _next(T R) {
         assert(R);
         if (R->maxRows && (R->currentRow++ >= R->maxRows))
                 return false;
@@ -123,7 +123,7 @@ static int _next(T R) {
 }
 
 
-static int _isnull(T R, int columnIndex) {
+static bool _isnull(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         return (sqlite3_column_type(R->stmt, i) == SQLITE_NULL);

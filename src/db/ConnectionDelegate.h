@@ -42,14 +42,14 @@ typedef struct Cop_T {
         // Methods
         T (*new)(Connection_T delegator, char **error);
         void (*free)(T *C);
-        int (*ping)(T C);
+        bool (*ping)(T C);
         void (*setQueryTimeout)(T C, int ms);
-        int (*beginTransaction)(T C);
-        int (*commit)(T C);
-        int (*rollback)(T C);
+        bool (*beginTransaction)(T C);
+        bool (*commit)(T C);
+        bool (*rollback)(T C);
         long long (*lastRowId)(T C);
         long long (*rowsChanged)(T C);
-        int (*execute)(T C, const char *sql, va_list ap);
+        bool (*execute)(T C, const char *sql, va_list ap);
         ResultSet_T (*executeQuery)(T C, const char *sql, va_list ap);
         PreparedStatement_T (*prepareStatement)(T C, const char *sql, va_list ap);
         const char *(*getLastError)(T C);

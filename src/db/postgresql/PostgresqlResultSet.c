@@ -163,14 +163,14 @@ static long _getColumnSize(T R, int columnIndex) {
 }
 
 
-static int _next(T R) {
+static bool _next(T R) {
         assert(R);
         R->currentRow += 1;
         return (! ((R->currentRow >= R->rowCount) || (R->maxRows && (R->currentRow >= R->maxRows))));
 }
 
 
-static int _isnull(T R, int columnIndex) {
+static bool _isnull(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         return PQgetisnull(R->res, R->currentRow, i);

@@ -129,12 +129,12 @@ int ResultSet_getFetchSize(T R) {
 /* -------------------------------------------------------- Public methods */
 
 
-int ResultSet_next(T R) {
+bool ResultSet_next(T R) {
         return R ? R->op->next(R->D) : false;
 }
 
 
-int ResultSet_isnull(T R, int columnIndex) {
+bool ResultSet_isnull(T R, int columnIndex) {
         assert(R);
         return R->op->isnull(R->D, columnIndex);
 }

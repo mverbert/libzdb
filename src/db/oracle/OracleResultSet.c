@@ -297,7 +297,7 @@ static int _getFetchSize(T R) {
 }
 
 
-static int _next(T R) {
+static bool _next(T R) {
         assert(R);
         if ((R->currentRow < 0) || ((R->maxRows > 0) && (R->currentRow >= R->maxRows)))
                 return false;
@@ -313,7 +313,7 @@ static int _next(T R) {
 }
 
 
-static int _isnull(T R, int columnIndex) {
+static bool _isnull(T R, int columnIndex) {
         assert(R);
         int i = checkAndSetColumnIndex(columnIndex, R->columnCount);
         return R->columns[i].isNull != 0;

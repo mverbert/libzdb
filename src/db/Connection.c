@@ -84,7 +84,7 @@ struct Connection_S {
         URL_T url;
         int maxRows;
         int fetchSize;
-        int isAvailable;
+        bool isAvailable;
         int queryTimeout;
         Vector_T prepared;
         int isInTransaction;
@@ -170,7 +170,7 @@ void Connection_setAvailable(T C, int isAvailable) {
 }
 
 
-int Connection_isAvailable(T C) {
+bool Connection_isAvailable(T C) {
         assert(C);
         return C->isAvailable;
 }
@@ -182,7 +182,7 @@ time_t Connection_getLastAccessedTime(T C) {
 }
 
 
-int Connection_isInTransaction(T C) {
+bool Connection_isInTransaction(T C) {
         assert(C);
         return (C->isInTransaction > 0);
 }
@@ -244,7 +244,7 @@ int Connection_getFetchSize(T C) {
 /* -------------------------------------------------------- Public methods */
 
 
-int Connection_ping(T C) {
+bool Connection_ping(T C) {
         assert(C);
         return C->op->ping(C->D);
 }
@@ -362,7 +362,7 @@ const char *Connection_getLastError(T C) {
 }
 
 
-int Connection_isSupported(const char *url) {
+bool Connection_isSupported(const char *url) {
         return (url ? (_getOp(url) != NULL) : false);
 }
 

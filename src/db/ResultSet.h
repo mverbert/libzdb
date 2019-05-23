@@ -203,7 +203,7 @@ int ResultSet_getFetchSize(T R);
  * more rows
  * @exception SQLException If a database access error occurs
  */
-int ResultSet_next(T R);
+bool ResultSet_next(T R);
 
 /** @name Columns */
 //@{
@@ -221,7 +221,7 @@ int ResultSet_next(T R);
  * columnIndex is outside the valid range
  * @see SQLException.h
  */
-int ResultSet_isnull(T R, int columnIndex);
+bool ResultSet_isnull(T R, int columnIndex);
 
 
 /**

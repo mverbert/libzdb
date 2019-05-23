@@ -227,7 +227,7 @@ static T _new(Connection_T delegator, char **error) {
 }
 
 
-static int _ping(T C) {
+static bool _ping(T C) {
         assert(C);
         C->lastError = OCIPing(C->svc, C->err, OCI_DEFAULT);
         return (C->lastError == OCI_SUCCESS);
@@ -254,7 +254,7 @@ static void _setQueryTimeout(T C, int ms) {
 }
 
 
-static int _beginTransaction(T C) {
+static bool _beginTransaction(T C) {
         assert(C);
         if (C->txnhp == NULL) /* Allocate handler only once, if it is necessary */
         {
@@ -269,14 +269,14 @@ static int _beginTransaction(T C) {
 }
 
 
-static int _commit(T C) {
+static bool _commit(T C) {
         assert(C);
         C->lastError = OCITransCommit(C->svc, C->err, OCI_DEFAULT);
         return C->lastError == OCI_SUCCESS;
 }
 
 
-static int _rollback(T C) {
+static bool _rollback(T C) {
         assert(C);
         C->lastError = OCITransRollback(C->svc, C->err, OCI_DEFAULT);
         return C->lastError == OCI_SUCCESS;
@@ -319,7 +319,7 @@ static long long _rowsChanged(T C) {
 }
 
 
-static int _execute(T C, const char *sql, va_list ap) {
+static bool _execute(T C, const char *sql, va_list ap) {
         OCIStmt* stmtp;
         va_list ap_copy;
         assert(C);

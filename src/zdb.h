@@ -29,6 +29,8 @@
 extern "C" {
 #endif
 
+#include <stdbool.h>
+
 /**
  * Include this interface in your C code to import the libzdb API.
  *

@@ -98,7 +98,7 @@ void Connection_setAvailable(T C, int isAvailable);
  * @param C A Connection object
  * @return true If this Connection is available otherwise false
  */
-int Connection_isAvailable(T C);
+bool Connection_isAvailable(T C);
 
 
 /**
@@ -118,7 +118,7 @@ time_t Connection_getLastAccessedTime(T C);
  * @param C A Connection object
  * @return true if this Connection is in a transaction otherwise false
  */
-int Connection_isInTransaction(T C);
+bool Connection_isInTransaction(T C);
 
 
 //>> End Protected methods
@@ -212,7 +212,7 @@ URL_T Connection_getURL(T C);
  * @return true if Connection is connected to a database server 
  * otherwise false
  */
-int Connection_ping(T C);
+bool Connection_ping(T C);
 
 
 /**
@@ -368,7 +368,7 @@ const char *Connection_getLastError(T C);
  * @param url A database url string
  * @return true if supported otherwise false
  */
-int Connection_isSupported(const char *url);
+bool Connection_isSupported(const char *url);
 
 // @}
 
