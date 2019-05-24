@@ -44,7 +44,7 @@ extern "C" {
 #endif
 /** @endcond */
 
-/* ----------------------------- Version major(nn).minor(nn).revision(nnn) */
+/* -------------------- Version: major * 1000000 + minor * 1000 + revision */
 
 #define LIBZDB_VERSION          "3.2.1"
 #define LIBZDB_VERSION_NUMBER   3002001
