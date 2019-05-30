@@ -47,7 +47,7 @@
 #pragma GCC visibility push(hidden)
 #endif
 
-int Str_isEqual(const char *a, const char *b) {
+bool Str_isEqual(const char *a, const char *b) {
 	if (a && b) { 
                 while (*a && *b)
                         if (toupper(*a++) != toupper(*b++)) return false;
@@ -57,7 +57,7 @@ int Str_isEqual(const char *a, const char *b) {
 }
 
 
-int Str_isByteEqual(const char *a, const char *b) {
+bool Str_isByteEqual(const char *a, const char *b) {
 	if (a && b) {
                 while (*a && *b)
                         if (*a++ != *b++) return false;
@@ -67,7 +67,7 @@ int Str_isByteEqual(const char *a, const char *b) {
 }
 
 
-int Str_startsWith(const char *a, const char *b) {
+bool Str_startsWith(const char *a, const char *b) {
 	if (a && b) {
 	        do 
 	                if (*a++ != *b++) return false;

@@ -129,7 +129,7 @@ void *Vector_pop(T V);
  * @return true if this Vector has no elements, i.e. it's size is 0
  * otherwise false.
  */
-int Vector_isEmpty(T V);
+bool Vector_isEmpty(T V);
 
 
 /**

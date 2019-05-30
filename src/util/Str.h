@@ -61,7 +61,7 @@
  * @param b The string to test for equality with <code>a</code>
  * @return true if a equals b, otherwise false
  */
-int Str_isEqual(const char *a, const char *b);
+bool Str_isEqual(const char *a, const char *b);
 
 
 /**
@@ -71,7 +71,7 @@ int Str_isEqual(const char *a, const char *b);
  * @param b The string to test for equality with <code>a</code>
  * @return true if a equals b, otherwise false
  */
-int Str_isByteEqual(const char *a, const char *b);
+bool Str_isByteEqual(const char *a, const char *b);
 
 
 /**
@@ -81,7 +81,7 @@ int Str_isByteEqual(const char *a, const char *b);
  * @param b The <i>sub-string</i> to test a against
  * @return true if a starts with b, otherwise false
  */
-int Str_startsWith(const char *a, const char *b);
+bool Str_startsWith(const char *a, const char *b);
 
 
 /**
