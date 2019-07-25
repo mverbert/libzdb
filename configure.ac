@@ -252,51 +252,6 @@ AC_SEARCH_LIBS([pthread_create], [pthread], [], [AC_MSG_ERROR([POSIX thread libr
 
 # Database Libraries
 
-mysql="yes"
-check_mysql_config()
-{
-        AC_PATH_PROG([MYSQLCONFIG], [mysql_config], [no], [$PATH:/usr/local/bin:/usr/local/mysql/bin])
-        if test "x$MYSQLCONFIG" = "xno"
-        then
-                AC_MSG_WARN([mysql_config is required to build libzdb with mysql])
-                mysql="no"
-        fi
-}
-AC_MSG_CHECKING(for mysql)
-AC_ARG_WITH([mysql],
-        AS_HELP_STRING([--with-mysql(=<path>)],
-                [Path is optional and if given should specify the full path to the MySQL
-                 configure script, mysql_config. E.g. --with-mysql=/<path>/mysql_config]),
-        [
-                if test "xno" = "x$with_mysql"; then
-                        AC_MSG_RESULT([no])
-                        mysql="no"
-                else
-                        AC_MSG_RESULT([yes])
-                        AC_CHECK_FILE([$with_mysql], [MYSQLCONFIG=$with_mysql], [check_mysql_config])
-                fi
-        ],
-        [
-                AC_MSG_RESULT([yes])
-                check_mysql_config
-        ])
-if test "xyes" = "x$mysql"; then
-        svd_CPPFLAGS=$CPPFLAGS
-        svd_LDFLAGS=$LDFLAGS
-        CPPFLAGS="`$MYSQLCONFIG --include` $CPPFLAGS"
-        LDFLAGS="`$MYSQLCONFIG --libs` $LDFLAGS"
-        AC_CHECK_HEADERS([mysql.h], [], [mysql="no"])
-        if test "xyes" = "x$mysql"; then
-                DBCPPFLAGS="$DBCPPFLAGS `$MYSQLCONFIG --include`"
-                DBLDFLAGS="$DBLDFLAGS `$MYSQLCONFIG --libs`"
-                AC_DEFINE([HAVE_LIBMYSQLCLIENT], 1, [Define to 1 to enable mysql])
-        else
-                CPPFLAGS=$svd_CPPFLAGS
-                LDFLAGS=$svd_LDFLAGS
-        fi
-fi
-AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
-
 postgresql="yes"
 check_postgres_config()
 {
@@ -384,6 +339,51 @@ if test "xyes" = "x$sqlite"; then
         AC_SEARCH_LIBS([sqlite3_errstr], [sqlite3], [AC_DEFINE([HAVE_SQLITE3_ERRSTR], [1], [sqlite3_errstr])], [], [-ldl])
 fi
 AM_CONDITIONAL([WITH_SQLITE], test "xyes" = "x$sqlite")
+
+mysql="yes"
+check_mysql_config()
+{
+        AC_PATH_PROG([MYSQLCONFIG], [mysql_config], [no], [$PATH:/usr/local/bin:/usr/local/mysql/bin])
+        if test "x$MYSQLCONFIG" = "xno"
+        then
+                AC_MSG_WARN([mysql_config is required to build libzdb with mysql])
+                mysql="no"
+        fi
+}
+AC_MSG_CHECKING(for mysql)
+AC_ARG_WITH([mysql],
+        AS_HELP_STRING([--with-mysql(=<path>)],
+                [Path is optional and if given should specify the full path to the MySQL
+                 configure script, mysql_config. E.g. --with-mysql=/<path>/mysql_config]),
+        [
+                if test "xno" = "x$with_mysql"; then
+                        AC_MSG_RESULT([no])
+                        mysql="no"
+                else
+                        AC_MSG_RESULT([yes])
+                        AC_CHECK_FILE([$with_mysql], [MYSQLCONFIG=$with_mysql], [check_mysql_config])
+                fi
+        ],
+        [
+                AC_MSG_RESULT([yes])
+                check_mysql_config
+        ])
+if test "xyes" = "x$mysql"; then
+        svd_CPPFLAGS=$CPPFLAGS
+        svd_LDFLAGS=$LDFLAGS
+        CPPFLAGS="`$MYSQLCONFIG --include` $CPPFLAGS"
+        LDFLAGS="`$MYSQLCONFIG --libs` $LDFLAGS"
+        AC_CHECK_HEADERS([mysql.h], [], [mysql="no"])
+        if test "xyes" = "x$mysql"; then
+                DBCPPFLAGS="$DBCPPFLAGS `$MYSQLCONFIG --include`"
+                DBLDFLAGS="$DBLDFLAGS `$MYSQLCONFIG --libs`"
+                AC_DEFINE([HAVE_LIBMYSQLCLIENT], 1, [Define to 1 to enable mysql])
+        else
+                CPPFLAGS=$svd_CPPFLAGS
+                LDFLAGS=$svd_LDFLAGS
+        fi
+fi
+AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
 
 oracle="yes"
 AC_MSG_CHECKING(for oracle)
