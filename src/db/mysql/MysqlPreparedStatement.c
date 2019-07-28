@@ -60,7 +60,11 @@ struct T {
         int parameterCount;
         Connection_T delegator;
 };
-static _Bool yes = true;
+#if MYSQL_VERSION_ID < 80000
+static my_bool yes = true;
+#else
+static bool yes = true;
+#endif
 extern const struct Rop_T mysqlrops;
 
 

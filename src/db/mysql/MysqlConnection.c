@@ -63,7 +63,7 @@ extern const struct Pop_T mysqlpops;
 static MYSQL *_doConnect(Connection_T delegator, char **error) {
 #define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
         URL_T url = Connection_getURL(delegator);
-        _Bool yes = 1;
+        bool yes = 1;
         int connectTimeout = SQL_DEFAULT_TIMEOUT / MSEC_PER_SEC;
         unsigned long clientFlags = CLIENT_MULTI_STATEMENTS;
         MYSQL *db = mysql_init(NULL);
@@ -102,7 +102,7 @@ static MYSQL *_doConnect(Connection_T delegator, char **error) {
         if (IS(URL_getParameter(url, "secure-auth"), "true"))
                 mysql_options(db, MYSQL_SECURE_AUTH, (const char*)&yes);
         else {
-                _Bool no = 0;
+                bool no = 0;
                 mysql_options(db, MYSQL_SECURE_AUTH, (const char*)&no);
         }
 #else
