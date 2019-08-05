@@ -46,7 +46,7 @@
 #define MYSQL_OK 0
 typedef struct column_t {
         char *buffer;
-#if MYSQL_VERSION_ID < 80000
+#if MYSQL_VERSION_ID < 80000 || MARIADB_VERSION_ID
         my_bool is_null;
 #else
         bool is_null;

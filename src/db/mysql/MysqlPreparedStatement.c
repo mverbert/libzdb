@@ -60,7 +60,7 @@ struct T {
         int parameterCount;
         Connection_T delegator;
 };
-#if MYSQL_VERSION_ID < 80000
+#if MYSQL_VERSION_ID < 80000 || MARIADB_VERSION_ID
 static my_bool yes = true;
 #else
 static bool yes = true;
