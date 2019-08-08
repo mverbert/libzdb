@@ -82,7 +82,7 @@ static sqlite3 *_doConnect(Connection_T delegator, char **error) {
 }
 
 
-static int _setProperties(T C, char **error) {
+static bool _setProperties(T C, char **error) {
         URL_T url = Connection_getURL(C->delegator);
         const char **properties = URL_getParameterNames(url);
         if (properties) {

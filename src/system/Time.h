@@ -128,7 +128,7 @@ long long Time_milli(void);
  * @param u Micro seconds to sleep
  * @return true
  */
-int Time_usleep(long u);
+bool Time_usleep(long u);
 
 //@}
 

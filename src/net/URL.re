@@ -103,7 +103,7 @@ static const uchar_t urlunsafe[256] = {
 /* ------------------------------------------------------- Private methods */
 
 
-static int _parseURL(T U) {
+static bool _parseURL(T U) {
         param_t param = NULL;
 	/*!re2c
          re2c:define:YYCTYPE      = "unsigned char";

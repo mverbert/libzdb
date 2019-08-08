@@ -109,7 +109,7 @@ static const char *_getErrorDescription(T C) {
 }
 
 
-static int _doConnect(T C, char**  error) {
+static bool _doConnect(T C, char**  error) {
 #define ERROR(e) do {*error = Str_dup(e); return false;} while (0)
 #define ORAERROR(e) do{ *error = Str_dup(_getErrorDescription(e)); return false;} while(0)
         URL_T url = Connection_getURL(C->delegator);

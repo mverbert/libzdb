@@ -313,7 +313,7 @@ long long Time_milli(void) {
 }
 
 
-int Time_usleep(long u) {
+bool Time_usleep(long u) {
         struct timeval t;
         t.tv_sec = u / USEC_PER_SEC;
         t.tv_usec = (suseconds_t)(u % USEC_PER_SEC);

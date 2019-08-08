@@ -107,7 +107,7 @@ static Cop_T _getOp(const char *protocol) {
 }
 
 
-static int _setDelegate(T C, char **error) {
+static bool _setDelegate(T C, char **error) {
         C->op = _getOp(URL_getProtocol(C->url));
         if (! C->op) {
                 *error = Str_cat("database protocol '%s' not supported", URL_getProtocol(C->url));

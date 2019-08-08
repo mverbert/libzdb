@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		521EB84622EE59A400AF1FEE /* libmysqlclient.20.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 521EB84522EE59A400AF1FEE /* libmysqlclient.20.dylib */; };
+		523D176022FBABB600EE2746 /* libmysqlclient.21.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 523D175F22FBABB600EE2746 /* libmysqlclient.21.dylib */; };
 		523EC7292238753A0066C878 /* OracleAdapter.c in Sources */ = {isa = PBXBuildFile; fileRef = 52869C112236B1A200799A65 /* OracleAdapter.c */; };
 		523EC72A2238753A0066C878 /* OracleConnection.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEC13E716A0002F3C7C /* OracleConnection.c */; };
 		523EC72B2238753A0066C878 /* OraclePreparedStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 52788BEE13E716A0002F3C7C /* OraclePreparedStatement.c */; };
@@ -136,6 +136,7 @@
 		521899BA222A0445003EAC09 /* libpq.5.11.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpq.5.11.dylib; path = ../../../../Applications/Postgres.app/Contents/Versions/11/lib/libpq.5.11.dylib; sourceTree = "<group>"; };
 		521EB84322EE560E00AF1FEE /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysqlclient.a; path = "../../../../usr/local/mysql-5.7.27-macos10.14-x86_64/lib/libmysqlclient.a"; sourceTree = "<group>"; };
 		521EB84522EE59A400AF1FEE /* libmysqlclient.20.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.20.dylib; path = "../../../../usr/local/mysql-5.7.27-macos10.14-x86_64/lib/libmysqlclient.20.dylib"; sourceTree = "<group>"; };
+		523D175F22FBABB600EE2746 /* libmysqlclient.21.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmysqlclient.21.dylib; path = "../../../../usr/local/mysql-8.0.15-macos10.14-x86_64/lib/libmysqlclient.21.dylib"; sourceTree = "<group>"; };
 		523EC72F22387F180066C878 /* libclntsh.dylib.18.1 */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libclntsh.dylib.18.1; path = ../oci/lib/libclntsh.dylib.18.1; sourceTree = "<group>"; };
 		523FDB952243864B00B3C767 /* zdbpp.h */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = zdbpp.h; sourceTree = "<group>"; tabWidth = 4; };
 		523FDB9622438C5400B3C767 /* zdbpp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zdbpp.cpp; sourceTree = "<group>"; };
@@ -267,7 +268,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				521EB84622EE59A400AF1FEE /* libmysqlclient.20.dylib in Frameworks */,
+				523D176022FBABB600EE2746 /* libmysqlclient.21.dylib in Frameworks */,
 				52B48D8222448B8C0042C417 /* libpq.5.11.dylib in Frameworks */,
 				526BECD62244845700A0404C /* libsqlite3.0.dylib in Frameworks */,
 				523EC73D223985EE0066C878 /* libclntsh.dylib.18.1 in Frameworks */,
@@ -500,6 +501,7 @@
 		528847021DC1215F00D0BB40 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				523D175F22FBABB600EE2746 /* libmysqlclient.21.dylib */,
 				521EB84522EE59A400AF1FEE /* libmysqlclient.20.dylib */,
 				521EB84322EE560E00AF1FEE /* libmysqlclient.a */,
 				526BECD52244845700A0404C /* libsqlite3.0.dylib */,
@@ -1043,6 +1045,7 @@
 					/opt/local/lib,
 					$SRCROOT/oci/lib,
 					"/usr/local/mysql-5.7.27-macos10.14-x86_64/lib",
+					"/usr/local/mysql-8.0.15-macos10.14-x86_64/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
@@ -1087,6 +1090,7 @@
 					/opt/local/lib,
 					$SRCROOT/oci/lib,
 					"/usr/local/mysql-5.7.27-macos10.14-x86_64/lib",
+					"/usr/local/mysql-8.0.15-macos10.14-x86_64/lib",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (

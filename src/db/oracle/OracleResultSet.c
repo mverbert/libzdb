@@ -78,7 +78,7 @@ struct T {
 /* ------------------------------------------------------- Private methods */
 
 
-static int _initaleDefiningBuffers(T R) {
+static bool _initaleDefiningBuffers(T R) {
         ub2 dtype = 0;
         int deptlen;
         int sizelen = sizeof(deptlen);
@@ -168,7 +168,7 @@ static int _initaleDefiningBuffers(T R) {
         return true;
 }
 
-static int _toString(T R, int i)
+static bool _toString(T R, int i)
 {
         const char fmt[] = "IYYY-MM-DD HH24.MI.SS"; // "YYYY-MM-DD HH24:MI:SS TZR TZD"
         

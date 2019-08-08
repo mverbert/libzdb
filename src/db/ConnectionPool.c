@@ -86,7 +86,7 @@ static void _drainPool(T P) {
 }
 
 
-static int _fillPool(T P) {
+static bool _fillPool(T P) {
 	for (int i = 0; i < P->initialConnections; i++) {
                 Connection_T con = Connection_new(P, &P->error);
 		if (! con) {

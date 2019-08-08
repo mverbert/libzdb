@@ -60,7 +60,7 @@ extern const struct Pop_T postgresqlpops;
 /* ------------------------------------------------------- Private methods */
 
 
-static int _doConnect(T C, char **error) {
+static bool _doConnect(T C, char **error) {
 #define ERROR(e) do {*error = Str_dup(e); goto error;} while (0)
         URL_T url = Connection_getURL(C->delegator);
         /* User */

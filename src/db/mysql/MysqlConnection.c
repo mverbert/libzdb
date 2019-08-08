@@ -138,7 +138,7 @@ error:
 }
 
 
-static int _prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
+static bool _prepare(T C, const char *sql, int len, MYSQL_STMT **stmt) {
         if (! (*stmt = mysql_stmt_init(C->db))) {
                 DEBUG("mysql_stmt_init -- Out of memory\n");
                 C->lastError = CR_OUT_OF_MEMORY;
