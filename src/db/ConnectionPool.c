@@ -133,7 +133,7 @@ static int _reapConnections(T P) {
 
 static void *_doSweep(void *args) {
         T P = args;
-        struct timespec wait = {0, 0};
+        struct timespec wait = {};
         Mutex_lock(P->mutex);
         while (! P->stopped) {
                 wait.tv_sec = Time_now() + P->sweepInterval;
