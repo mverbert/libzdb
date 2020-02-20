@@ -163,11 +163,11 @@ namespace zdb {
             return ResultSet_getFetchSize(t_);
         }
 
-        int next() {
+        bool next() {
             except_wrapper( RETURN ResultSet_next(t_) );
         }
         
-        int isnull(int columnIndex) {
+        bool isnull(int columnIndex) {
             except_wrapper( RETURN ResultSet_isnull(t_, columnIndex) );
         }
         
@@ -204,13 +204,13 @@ namespace zdb {
         }
         
         template <typename T>
-        std::tuple<const void*, int> getBlob(T i) {
+        std::tuple<const void*, int> getBlob(T v) {
             int size = 0;
             const void *blob = NULL;
             if constexpr (std::is_integral<T>::value)
-                except_wrapper( blob = ResultSet_getBlob(t_, i, &size));
+                except_wrapper( blob = ResultSet_getBlob(t_, v, &size) );
             else
-                except_wrapper( blob = ResultSet_getBlobByName(t_, i, &size));
+                except_wrapper( blob = ResultSet_getBlobByName(t_, v, &size) );
             return {blob, size};
         }
         
@@ -385,7 +385,7 @@ namespace zdb {
         //not supported
         //URL_T Connection_getURL(T C);
         
-        int ping() {
+        bool ping() {
             return Connection_ping(t_);
         }
         
@@ -466,7 +466,7 @@ namespace zdb {
         }
         
         static bool isSupported(const char *url) {
-            return Connection_isSupported(url) > 0;
+            return Connection_isSupported(url);
         }
         
     private:
