@@ -46,7 +46,6 @@ esac
 
 AC_PROG_CC
 AC_PROG_CXX
-AC_PROG_GCC_TRADITIONAL
 AC_PATH_PROG([RE2C], [re2c], [no], [$PATH:/usr/local/bin:/usr/bin])
 if test "x$RE2C" = "xno"; then
         # Require re2c unless URL.c and Time.c already are built
@@ -434,6 +433,17 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"]
 # does this compiler support -Wno-address ?
 svd_CFLAGS="$CFLAGS"
 CFLAGS="-Wno-address $CFLAGS"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
+
+# Clang: turn-off auto added checks to -Wall as of clang-902.0.39.1/Xcode 9.3
+
+# does this compiler support -Wno-nullability-completeness ?
+svd_CFLAGS="$CFLAGS"
+CFLAGS="-Wno-nullability-completeness $CFLAGS"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
+# does this compiler support -Wno-expansion-to-defined ?
+svd_CFLAGS="$CFLAGS"
+CFLAGS="-Wno-expansion-to-defined $CFLAGS"
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
 
 # Require at least C99 and use C11 if available
