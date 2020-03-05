@@ -98,7 +98,7 @@ static int _prepare(T S, char prefix) {
 }
 
 
-static inline int _istrailingws(T S) {
+static inline int _hasTrailingWs(T S) {
         if (S->used > 0) {
                 if (isspace(S->buffer[S->used - 1]))
                     return true;
@@ -235,7 +235,7 @@ int StringBuffer_prepare4oracle(T S) {
 T StringBuffer_trim(T S) {
         assert(S);
         // Right trim
-        while (_istrailingws(S))
+        while (_hasTrailingWs(S))
                 S->buffer[--S->used] = 0;
         // Left trim
         if (isspace(*S->buffer)) {
