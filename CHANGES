@@ -5,6 +5,8 @@
 Version 3.2.1
 -------------
 * New: Include Library version number in zdb.h
+* Fix: Simplified test/zdbpp.cpp and added missing header
+* Fix: Improved support for MySQL 8 and MariaDB
 
 Version 3.2
 -----------
