@@ -3,7 +3,7 @@ AUTOMAKE_OPTIONS = foreign no-dependencies
 DEFAULT_INCLUDES =
 LDADD = ../libzdb.la
 zdbpp_CXXFLAGS = -I../zdb -std=c++17
-CFLAGS = -I../src -I../src/util -I../src/net -I../src/db -I../src/exceptions
+CFLAGS = -I../src -I../src/util -I../src/net -I../src/db -I../src/exceptions @CFLAGS@
 
 noinst_PROGRAMS = unit pool select exception zdbpp
 unit_SOURCES = unit.c
