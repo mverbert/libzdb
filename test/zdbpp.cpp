@@ -39,7 +39,7 @@ static void testPrepared(ConnectionPool& pool) {
         PreparedStatement p1 = con.prepareStatement("insert into zild_t (name, percent, image) values(?, ?, ?);");
         con.beginTransaction();
         for (const auto &[name, image] : data) {
-                percent += 1 + percent / 7;
+                percent += 1 + percent;
                 p1.bind(1, name);
                 p1.bind(2, percent);
                 p1.bind(3, std::tuple{image.c_str(), int(image.length() + 1)}); // include terminating \0
@@ -57,7 +57,7 @@ static void testQuery(ConnectionPool& pool) {
         Connection con = pool.getConnection();
         // Implicit prepared statement because of parameters
         ResultSet result = con.executeQuery("select id, name, percent, image from zild_t where id < ? order by id;", 100);
-        result.setFetchSize(100);
+        result.setFetchSize(10); // Optionally set prefetched rows. Default is 100
         assert(result.columnCount() == 4);
         assert(std::string(result.columnName(1)) == "id");
         while (result.next()) {
