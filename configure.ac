@@ -27,6 +27,7 @@ OpenBSD*)
 Darwin*)
 	AC_DEFINE([DARWIN], 1, [Define to 1 if the system is OSX])
 	LDFLAGS="$LDFLAGS -Wl,-search_paths_first"
+    ondarwin=1
 	;;
 SunOS*)
 	AC_DEFINE([SOLARIS], 1, [Define to 1 if the system is SOLARIS])
@@ -447,6 +448,12 @@ CFLAGS="-Wno-expansion-to-defined $CFLAGS"
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
 
 # Require at least C99 and use C11 if available
+# Use gnu extension to include posix headers etc, except on MacOS
+if test $ondarwin -eq 1; then
+    stdc="c"
+else
+    stdc="gnu"
+fi
 AC_RUN_IFELSE(
 [AC_LANG_PROGRAM([], [dnl
         #ifdef __STDC_VERSION__
@@ -455,7 +462,7 @@ AC_RUN_IFELSE(
         #endif
         #endif
         return 1;
-        ])], [CFLAGS="$CFLAGS -std=c11"], [CFLAGS="$CFLAGS -std=c99"])
+        ])], [CFLAGS="$CFLAGS -std=${stdc}11"], [CFLAGS="$CFLAGS -std=${stdc}99"])
 AC_CHECK_HEADERS([stdint.h stdbool.h], [], [AC_MSG_ERROR([toolchain does not have C99 headers])])
 
 # ---------------------------------------------------------------------------
