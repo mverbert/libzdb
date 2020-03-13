@@ -36,6 +36,7 @@ test/zdbpp
 !config/Doxyfile
 !config/DoxygenLayout.xml
 !config/ax_lib_oracle_oci.m4
+!config/ax_configure_info.m4
 !config/doxy_bottom
 !config/doxy_head
 !config/tnsnames.ora
