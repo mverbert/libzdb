@@ -9,7 +9,6 @@ AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/Config.h])
 AC_CONFIG_COMMANDS([libtool_patch],[test `uname` = "OpenBSD" && perl -p -i -e "s/deplibs_check_method=.*/deplibs_check_method=pass_all/g" libtool])
 
-
 # ------------------------------------------------------------------------
 # Architecture/OS
 # ------------------------------------------------------------------------
@@ -40,13 +39,55 @@ AIX*)
 	;;
 esac
 
+# ---------------------------------------------------------------------------
+# Compiler
+# ---------------------------------------------------------------------------
+
+AC_PROG_CC
+AC_PROG_CXX
+AC_C_CONST
+AC_C_BIGENDIAN
+# Define _GNU_SOURCE so we can have Posix headers etc included. We use the
+# -std=cXX compiler switch which only include a minimum of C headers
+CFLAGS="$CFLAGS -D_GNU_SOURCE"
+
+# Compiler; tune warnings and make the char type unsigned and enable C11 support
+CFLAGS="$CFLAGS -Wall -Wunused -Wno-unused-label -funsigned-char";
+# does this compiler support -Wno-pointer-sign ?
+svd_CFLAGS="$CFLAGS"
+CFLAGS="-Wno-pointer-sign $CFLAGS"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
+# does this compiler support -Wno-address ?
+svd_CFLAGS="$CFLAGS"
+CFLAGS="-Wno-address $CFLAGS"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
+
+# Clang: turn-off auto added checks to -Wall as of clang-902.0.39.1/Xcode 9.3
+# does this compiler support -Wno-nullability-completeness ?
+svd_CFLAGS="$CFLAGS"
+CFLAGS="-Wno-nullability-completeness $CFLAGS"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
+# does this compiler support -Wno-expansion-to-defined ?
+svd_CFLAGS="$CFLAGS"
+CFLAGS="-Wno-expansion-to-defined $CFLAGS"
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
+
+# Require at least C99 and use C11 if available
+AC_RUN_IFELSE(
+[AC_LANG_PROGRAM([], [dnl
+        #ifdef __STDC_VERSION__
+        #if __STDC_VERSION__ >= 201112L
+        return 0;
+        #endif
+        #endif
+        return 1;
+        ])], [CFLAGS="$CFLAGS -std=c11"], [CFLAGS="$CFLAGS -std=c99"])
+AC_CHECK_HEADERS([stdint.h stdbool.h], [], [AC_MSG_ERROR([toolchain does not have C99 headers])])
 
 # ---------------------------------------------------------------------------
 # Programs
 # ---------------------------------------------------------------------------
 
-AC_PROG_CC
-AC_PROG_CXX
 AC_PATH_PROG([RE2C], [re2c], [no], [$PATH:/usr/local/bin:/usr/bin])
 if test "x$RE2C" = "xno"; then
         # Require re2c unless URL.c and Time.c already are built
@@ -89,30 +130,13 @@ AC_PROG_LIBTOOL
 # Build options
 # ---------------------------------------------------------------------------
 
-AC_ARG_ENABLE(profiling,
-        AS_HELP_STRING([--enable-profiling],
-                [Build with debug and profiling options]),
-    [
-        if test "x$enableval" = "xyes" ; then
-                CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
-                CFLAGS="$CFLAGS -g -pg"
-                profile="true"
-        else
-                profile="false"
-        fi
-    ],
-    [
-        profile="false"
-    ]
-)
-
 AC_ARG_ENABLE(optimized,
         AS_HELP_STRING([--enable-optimized],
                 [Build software optimized]),
     [
         if test "x$enableval" = "xyes" ; then
-                CFLAGS=`echo $CFLAGS|sed 's/-g[[^ ]]*//g'`
-                CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
+                CFLAGS=`echo $CFLAGS|sed 's/\-g[[^ ]]*//g'`
+                CFLAGS=`echo $CFLAGS|sed 's/\-O.//'`
                 CFLAGS="$CFLAGS -O3"
                 OPTIMIZED=1
         else
@@ -124,6 +148,33 @@ AC_ARG_ENABLE(optimized,
     ]
 )
 
+AC_ARG_ENABLE(profiling,
+        AS_HELP_STRING([--enable-profiling],
+                [Build with debug and profiling options]),
+    [
+        if test "x$enableval" = "xyes" ; then
+            AC_MSG_CHECKING([whether the compiler supports profiling options])
+            svd_CFLAGS="$CFLAGS"
+            CFLAGS="-pg $CFLAGS"
+            AC_RUN_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [
+                AC_MSG_RESULT([yes])
+                CFLAGS=`echo $CFLAGS|sed 's/-O.//'`
+                CFLAGS="$CFLAGS -g"
+                PROFILE=1
+            ], [
+                AC_MSG_RESULT([no])
+                CFLAGS="$svd_CFLAGS"
+                PROFILE=0
+            ])
+        else
+                PROFILE=0
+        fi
+    ],
+    [
+        PROFILE=0
+    ]
+)
+
 AC_ARG_ENABLE([zild],
         AS_HELP_STRING([--enable-zild],
                 [Reduce visibility of objects for linking with the zild app server.
@@ -131,15 +182,15 @@ AC_ARG_ENABLE([zild],
                 build option and should NOT be used by a third-party]),
      [
         if test "x$enableval" = "xyes" ; then
-                zild_protect="true"
+                ZILD_PROTECT=1
                 AC_DEFINE([PACKAGE_PROTECTED], 1, [Define to 1 to package protect (hide) non-api objects])
                 AC_DEFINE([ZILD_PACKAGE_PROTECTED], 1, [Define to 1 to hide objects for linking with zild])
         else
-                zild_protect="false"
+                ZILD_PROTECT=0
         fi
-     ],[zild_protect="false"]
+     ],[ZILD_PROTECT=0]
 )
-AM_CONDITIONAL([WITH_ZILD], test "xtrue" = "x$zild_protect")
+AM_CONDITIONAL([WITH_ZILD], test $ZILD_PROTECT -eq 1)
 
 AC_ARG_ENABLE([protected],
         AS_HELP_STRING([--enable-protected],
@@ -150,12 +201,12 @@ AC_ARG_ENABLE([protected],
          namespace conflicts for clients linking with the library. Recommend]),
      [
         if test "x$enableval" = "xyes" ; then
-                protect="true"
+                PROTECT=1
                 AC_DEFINE([PACKAGE_PROTECTED], 1, [Define to 1 to package protect (hide) non-api objects])
         else
-             protect="false"
+             PROTECT=0
         fi
-     ],[protect="false"]
+     ],[PROTECT=0]
 )
 
 AC_ARG_ENABLE([openssl],
@@ -167,15 +218,15 @@ AC_ARG_ENABLE([openssl],
                 link with]),
      [
         if test "x$enableval" = "xno" ; then
-                openssl="false"
+                OPENSSL=0
         else
-                openssl="true"
+                OPENSSL=1
                 if test "x$enableval" = "xyes"; then
                         AC_CHECK_LIB([ssl], [SSL_CTX_new], [], [AC_MSG_ERROR([libssl not found])])
                         AC_CHECK_LIB([crypto], [SHA1_Init], [], [AC_MSG_ERROR([libcrypto not found])])
                 else
                         AC_MSG_CHECKING([for openssl in $enableval])
-                        LDFLAGS="-L$enableval/lib -lssl -lcrypto $LDFLAGS "
+                        LDFLAGS="-L$enableval/lib -lssl -lcrypto $LDFLAGS"
                         CPPFLAGS="-I$enableval/include $CPPFLAGS"
                         if test -r "$enableval/lib/libssl.a" -a -r "$enableval/lib/libcrypto.a"; then
                                 AC_MSG_RESULT([ok])
@@ -184,7 +235,7 @@ AC_ARG_ENABLE([openssl],
                         fi
                 fi
         fi
-     ],[openssl="false"]
+     ],[OPENSSL=0]
 )
 
 AC_ARG_ENABLE(sqliteunlock,
@@ -206,13 +257,11 @@ AC_ARG_ENABLE(sqliteunlock,
     ]
 )
 
-if test "xfalse" = "x$protect" -a "xfalse" = "x$zild_protect"; then
-        zild_build="false"
-        test_build="true"
+if test $PROTECT -eq 0 -a $ZILD_PROTECT -eq 0; then
+        test_build=1
         UNIT_TEST="test"
 else
-        zild_build="true"
-        test_build="false"
+        test_build=0
         UNIT_TEST=""
 fi
 AC_SUBST(UNIT_TEST)
@@ -419,53 +468,6 @@ AC_CHECK_TYPES([uchar_t])
 AC_CHECK_MEMBERS([struct tm.tm_gmtoff], [], [], [[#include <time.h>]])
 
 # ---------------------------------------------------------------------------
-# Compiler
-# ---------------------------------------------------------------------------
-
-AC_C_CONST
-AC_C_BIGENDIAN
-
-# Compiler; tune warnings and make the char type unsigned and enable C11 support
-CFLAGS="$CFLAGS -Wall -Wunused -Wno-unused-label -funsigned-char";
-# does this compiler support -Wno-pointer-sign ?
-svd_CFLAGS="$CFLAGS"
-CFLAGS="-Wno-pointer-sign $CFLAGS"
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
-# does this compiler support -Wno-address ?
-svd_CFLAGS="$CFLAGS"
-CFLAGS="-Wno-address $CFLAGS"
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
-
-# Clang: turn-off auto added checks to -Wall as of clang-902.0.39.1/Xcode 9.3
-
-# does this compiler support -Wno-nullability-completeness ?
-svd_CFLAGS="$CFLAGS"
-CFLAGS="-Wno-nullability-completeness $CFLAGS"
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
-# does this compiler support -Wno-expansion-to-defined ?
-svd_CFLAGS="$CFLAGS"
-CFLAGS="-Wno-expansion-to-defined $CFLAGS"
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])], [], [CFLAGS="$svd_CFLAGS"])
-
-# Require at least C99 and use C11 if available
-# Use gnu extension to include posix headers etc, except on MacOS
-if test $ondarwin -eq 1; then
-    stdc="c"
-else
-    stdc="gnu"
-fi
-AC_RUN_IFELSE(
-[AC_LANG_PROGRAM([], [dnl
-        #ifdef __STDC_VERSION__
-        #if __STDC_VERSION__ >= 201112L
-        return 0;
-        #endif
-        #endif
-        return 1;
-        ])], [CFLAGS="$CFLAGS -std=${stdc}11"], [CFLAGS="$CFLAGS -std=${stdc}99"])
-AC_CHECK_HEADERS([stdint.h stdbool.h], [], [AC_MSG_ERROR([toolchain does not have C99 headers])])
-
-# ---------------------------------------------------------------------------
 # Outputs
 # ---------------------------------------------------------------------------
 
@@ -488,67 +490,24 @@ cat <<EOT
 | the terms of this license agreement. If you do not agree   |
 | with the terms of this license, you must abort the         |
 | installation process at this point.                        |
-+------------------------------------------------------------+
+|------------------------------------------------------------|
 | Libzdb is configured as follows:                           |
 |                                                            |
 EOT
 
-if test "x1" = "x$OPTIMIZED"; then
-echo "|   Optimized:                                    ENABLED    |"
-else
-echo "|   Optimized:                                    DISABLED   |"
-fi
-if test "xfalse" = "x$protect" -a "xfalse" = "x$zild_protect"; then
-echo "|   Protected:                                    DISABLED   |"
-else
-echo "|   Protected:                                    ENABLED    |"
-fi
-if test "xfalse" = "x$profile"; then
-echo "|   Profiling:                                    DISABLED   |"
-else
-echo "|   Profiling:                                    ENABLED    |"
-fi
-if test "xfalse" = "x$zild_protect"; then
-echo "|   Zild:                                         DISABLED   |"
-else
-echo "|   Zild:                                         ENABLED    |"
-fi
-if test "x1" = "x$SQLITEUNLOCK"; then
-echo "|   Sqlite3 unlock notification API:              ENABLED    |"
-else
-echo "|   Sqlite3 unlock notification API:              DISABLED   |"
-fi
-if test "xtrue" = "x$openssl"; then
-echo "|   Openssl:                                      ENABLED    |"
-else
-echo "|   Openssl:                                      DISABLED   |"
-fi
-if test "xfalse" = "x$test_build"; then
-echo "|   Unit Tests Build:                             DISABLED   |"
-else
-echo "|   Unit Tests Build:                             ENABLED    |"
-fi
-echo "|------------------------------------------------------------|"
-if test "xyes" = "x$sqlite"; then
-echo "|   SQLite3:                                      ENABLED    |"
-else
-echo "|   SQLite3:                                      DISABLED   |"
-fi
-if test "xyes" = "x$mysql"; then
-echo "|   MySQL:                                        ENABLED    |"
-else
-echo "|   MySQL:                                        DISABLED   |"
-fi
-if test "xyes" = "x$postgresql"; then
-echo "|   PostgreSQL:                                   ENABLED    |"
-else
-echo "|   PostgreSQL:                                   DISABLED   |"
-fi
-if test "xyes" = "x$oracle"; then
-echo "|   Oracle:                                       ENABLED    |"
-else
-echo "|   Oracle:                                       DISABLED   |"
-fi
-echo "+------------------------------------------------------------+"
+AX_CONFIGURE_INFO([Optimized:],        [test $OPTIMIZED -eq 1])
+AX_CONFIGURE_INFO([Protected:],        [test $PROTECT -eq 1 -o $ZILD_PROTECT -eq 1])
+AX_CONFIGURE_INFO([Profiling:],        [test $PROFILE -eq 1])
+AX_CONFIGURE_INFO([Zild:],             [test $ZILD_PROTECT -eq 1])
+AX_CONFIGURE_INFO([Sqlite3 unlock:],   [test $SQLITEUNLOCK -eq 1])
+AX_CONFIGURE_INFO([Openssl:],          [test $OPENSSL -eq 1])
+AX_CONFIGURE_INFO([Unit Tests Build:], [test $test_build -eq 1])
 
+AX_CONFIGURE_INFO_SEPARATOR()
 
+AX_CONFIGURE_INFO([SQLite3:],          [test \"x$sqlite\" = \"xyes\"])
+AX_CONFIGURE_INFO([MySQL:],            [test \"x$mysql\" = \"xyes\"])
+AX_CONFIGURE_INFO([PostgreSQL:],       [test \"x$postgresql\" = \"xyes\"])
+AX_CONFIGURE_INFO([Oracle:],           [test \"x$oracle\" = \"xyes\"])
+
+AX_CONFIGURE_INFO_BREAK()
