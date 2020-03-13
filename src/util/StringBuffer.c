@@ -98,7 +98,7 @@ static int _prepare(T S, char prefix) {
 }
 
 
-static inline int _hasTrailingWs(T S) {
+static inline bool _hasTrailingWs(T S) {
         if (S->used > 0) {
                 if (isspace(S->buffer[S->used - 1]))
                     return true;
