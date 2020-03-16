@@ -479,35 +479,18 @@ AC_CONFIG_FILES([
 ])
 AC_OUTPUT
 
-cat <<EOT
-+------------------------------------------------------------+
-| License:                                                   |
-| This is Open Source Software and use is subject to the GNU |
-| GENERAL PUBLIC LICENSE, available in this distribution in  |
-| the file COPYING.                                          |
-|                                                            |
-| By continuing this installation process, you are bound by  |
-| the terms of this license agreement. If you do not agree   |
-| with the terms of this license, you must abort the         |
-| installation process at this point.                        |
-|------------------------------------------------------------|
-| Libzdb is configured as follows:                           |
-|                                                            |
-EOT
-
-AX_CONFIGURE_INFO([Optimized:],        [test $OPTIMIZED -eq 1])
-AX_CONFIGURE_INFO([Protected:],        [test $PROTECT -eq 1 -o $ZILD_PROTECT -eq 1])
-AX_CONFIGURE_INFO([Profiling:],        [test $PROFILE -eq 1])
-AX_CONFIGURE_INFO([Zild:],             [test $ZILD_PROTECT -eq 1])
-AX_CONFIGURE_INFO([Sqlite3 unlock:],   [test $SQLITEUNLOCK -eq 1])
-AX_CONFIGURE_INFO([Openssl:],          [test $OPENSSL -eq 1])
-AX_CONFIGURE_INFO([Unit Tests Build:], [test $test_build -eq 1])
-
+AX_CONFIGURE_INFO_GPL()
+AX_CONFIGURE_INFO_TITLE([Libzdb is configured as follows])
+AX_CONFIGURE_INFO_ENABLED([Optimized:],        [test $OPTIMIZED -eq 1])
+AX_CONFIGURE_INFO_ENABLED([Protected:],        [test $PROTECT -eq 1 -o $ZILD_PROTECT -eq 1])
+AX_CONFIGURE_INFO_ENABLED([Profiling:],        [test $PROFILE -eq 1])
+AX_CONFIGURE_INFO_ENABLED([Zild:],             [test $ZILD_PROTECT -eq 1])
+AX_CONFIGURE_INFO_ENABLED([Sqlite3 unlock:],   [test $SQLITEUNLOCK -eq 1])
+AX_CONFIGURE_INFO_ENABLED([Openssl:],          [test $OPENSSL -eq 1])
+AX_CONFIGURE_INFO_ENABLED([Unit Tests Build:], [test $test_build -eq 1])
 AX_CONFIGURE_INFO_SEPARATOR()
-
-AX_CONFIGURE_INFO([SQLite3:],          [test \"x$sqlite\" = \"xyes\"])
-AX_CONFIGURE_INFO([MySQL:],            [test \"x$mysql\" = \"xyes\"])
-AX_CONFIGURE_INFO([PostgreSQL:],       [test \"x$postgresql\" = \"xyes\"])
-AX_CONFIGURE_INFO([Oracle:],           [test \"x$oracle\" = \"xyes\"])
-
+AX_CONFIGURE_INFO_ENABLED([SQLite3:],          [test \"x$sqlite\" = \"xyes\"])
+AX_CONFIGURE_INFO_ENABLED([MySQL:],            [test \"x$mysql\" = \"xyes\"])
+AX_CONFIGURE_INFO_ENABLED([PostgreSQL:],       [test \"x$postgresql\" = \"xyes\"])
+AX_CONFIGURE_INFO_ENABLED([Oracle:],           [test \"x$oracle\" = \"xyes\"])
 AX_CONFIGURE_INFO_BREAK()
