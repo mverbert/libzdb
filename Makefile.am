@@ -53,7 +53,7 @@ libzdb_la_SOURCES += src/db/oracle/OracleConnection.c \
                      src/db/oracle/OracleAdapter.c
 endif
 
-API_INTERFACES  = src/zdb.h src/zdbpp.h src/Thread.h src/db/ConnectionPool.h \
+API_INTERFACES  = src/zdb.h src/zdbpp.h src/db/ConnectionPool.h \
                   src/db/Connection.h src/db/ResultSet.h src/net/URL.h \
                   src/db/PreparedStatement.h src/exceptions/SQLException.h \
                   src/exceptions/Exception.h
