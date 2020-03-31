@@ -4,7 +4,7 @@
 #  Copyright © 2020 Tildeslash Ltd. All rights reserved.
 
 
-AC_DEFUN([AX_CONFIGURE_INFO_GPL],
+AC_DEFUN([AX_INFO_GPL],
 [
 cat <<EOT
 +------------------------------------------------------------+
@@ -21,7 +21,7 @@ cat <<EOT
 EOT
 ])
 
-AC_DEFUN([AX_CONFIGURE_INFO_AGPL],
+AC_DEFUN([AX_INFO_AGPL],
 [
 cat <<EOT
 +------------------------------------------------------------+
@@ -38,14 +38,14 @@ cat <<EOT
 EOT
 ])
 
-AC_DEFUN([AX_CONFIGURE_INFO_TITLE],
+AC_DEFUN([AX_INFO_TITLE],
 [
     printf "| %-58.58s |\n" "$1"
     printf "|%60s|\n"
     
 ])
 
-AC_DEFUN([AX_CONFIGURE_INFO_ENABLED],
+AC_DEFUN([AX_INFO_ENABLED],
 [
     if $($2); then
         printf "|  %-47.47s %-24s  |\n" "$1" "$(tput bold)$(tput setaf 2)ENABLED$(tput sgr 0)"
@@ -54,13 +54,13 @@ AC_DEFUN([AX_CONFIGURE_INFO_ENABLED],
     fi
 ])
 
-AC_DEFUN([AX_CONFIGURE_INFO_SEPARATOR],
+AC_DEFUN([AX_INFO_SEPARATOR],
 [
     printf "|%60s|\n" | tr " " "-"
 ])
 
 
-AC_DEFUN([AX_CONFIGURE_INFO_BREAK],
+AC_DEFUN([AX_INFO_BREAK],
 [
     printf "+%60s+\n" | tr " " "-"
 ])

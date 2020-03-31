@@ -230,7 +230,7 @@
 		52C32F57145BD12800C72758 /* Mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Mem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		52DE1E032232ED8C00173D1B /* PostgresqlAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostgresqlAdapter.h; sourceTree = "<group>"; };
 		52DE1E07223478A800173D1B /* MysqlAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MysqlAdapter.h; sourceTree = "<group>"; };
-		52E160F9241B068400022FD7 /* ax_configure_info.m4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ax_configure_info.m4; sourceTree = "<group>"; };
+		52E160F9241B068400022FD7 /* ax_info.m4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ax_info.m4; sourceTree = "<group>"; };
 		52E79D72168EA4FC00E510BF /* libzdb.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = libzdb.css; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -318,7 +318,7 @@
 		52788BC913E716A0002F3C7C /* config */ = {
 			isa = PBXGroup;
 			children = (
-				52E160F9241B068400022FD7 /* ax_configure_info.m4 */,
+				52E160F9241B068400022FD7 /* ax_info.m4 */,
 				52788BCA13E716A0002F3C7C /* ax_lib_oracle_oci.m4 */,
 				52788BCB13E716A0002F3C7C /* doxy_bottom */,
 				52788BCC13E716A0002F3C7C /* doxy_head */,
