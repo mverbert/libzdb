@@ -26,7 +26,7 @@
 #ifndef EXCEPTION_INCLUDED
 #define EXCEPTION_INCLUDED
 #include <setjmp.h>
-
+#include <pthread.h>
 
 /**
  * An <b>Exception</b> indicate an error condition from which recovery may
@@ -194,7 +194,6 @@
 
 #define T Exception_T
 /** @cond hide */
-#include "Thread.h"
 #ifndef CLANG_ANALYZER_NORETURN
 #if defined(__clang__)
 #define CLANG_ANALYZER_NORETURN __attribute__((analyzer_noreturn))
@@ -217,10 +216,10 @@ struct Exception_Frame {
         char message[EXCEPTION_MESSAGE_LENGTH + 1];
 };
 enum { Exception_entered=0, Exception_thrown, Exception_handled, Exception_finalized };
-extern ThreadData_T Exception_stack;
+extern pthread_key_t Exception_stack;
 void Exception_init(void);
 void Exception_throw(const T *e, const char *func, const char *file, int line, const char *cause, ...) CLANG_ANALYZER_NORETURN;
-#define pop_Exception_stack ThreadData_set(Exception_stack, ((Exception_Frame*)ThreadData_get(Exception_stack))->prev)
+#define pop_Exception_stack pthread_setspecific(Exception_stack, ((Exception_Frame*)pthread_getspecific(Exception_stack))->prev)
 /** @endcond */
 
 
@@ -260,8 +259,8 @@ void Exception_throw(const T *e, const char *func, const char *file, int line, c
 	volatile int Exception_flag; \
         Exception_Frame Exception_frame; \
         Exception_frame.message[0] = 0; \
-        Exception_frame.prev = (Exception_Frame*)ThreadData_get(Exception_stack); \
-        ThreadData_set(Exception_stack, &Exception_frame); \
+        Exception_frame.prev = (Exception_Frame*)pthread_getspecific(Exception_stack); \
+        pthread_setspecific(Exception_stack, &Exception_frame); \
         Exception_flag = setjmp(Exception_frame.env); \
         if (Exception_flag == Exception_entered) {
                 
