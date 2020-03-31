@@ -37,13 +37,6 @@ extern "C" {
  * @file
  */
 
-/** @cond hide */
-/* Mask out __attribute__ extension for non- GCC/llvm-clang compilers. */
-#if (! (defined(__GNUC__) || defined(__clang__)))
-#define __attribute__(x)
-#endif
-/** @endcond */
-
 /* -------------------- Version: major * 1000000 + minor * 1000 + revision */
 
 #define LIBZDB_VERSION          "3.2.1"
