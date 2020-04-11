@@ -14,7 +14,7 @@ RE2C		= @RE2C@
 RE2CFLAGS       = -b
 FILTERH         = ./tools/bin/filterh
 
-AM_CPPFLAGS     = -Isrc -Isrc/util -Isrc/net -Isrc/db -Isrc/exceptions
+INCLUDES     = -Isrc -Isrc/util -Isrc/net -Isrc/db -Isrc/exceptions
 
 pkgconfigdir 	= $(libdir)/pkgconfig
 pkgconfig_DATA 	= $(LIBRARY_NAME).pc
