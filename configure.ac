@@ -357,15 +357,15 @@ AC_ARG_WITH([mysql],
 		with_mysql="yes"
 	])	
 if test "xyes" = "x$with_mysql"; then
-	MYSQL_CLIENT([], [thread-safe])
-	if test "x" != "x$MYSQL_CLIENT_LIBS"; then
-		DB_MYSQL_CPPFLAGS="$MYSQL_CLIENT_CFLAGS"
-		DB_MYSQL_LDFLAGS="$MYSQL_CLIENT_LIBS"
-		AC_SUBST(DB_MYSQL_LDFLAGS)
+   	PKG_CHECK_MODULES([MYSQL], [mysqlclient], [
+		DB_MYSQL_CPPFLAGS="$MYSQL_CFLAGS"
+		DB_MYSQL_LDFLAGS="$MYSQL_LIBS"
 		AC_SUBST(DB_MYSQL_CPPFLAGS)
+		AC_SUBST(DB_MYSQL_LDFLAGS)
 		AC_DEFINE([HAVE_LIBMYSQLCLIENT], 1, [Define to 1 to enable mysql])
 		mysql="yes"
-	fi 
+	],
+	[])
 fi
 AM_CONDITIONAL([WITH_MYSQL], test "xyes" = "x$mysql")
 
