@@ -44,6 +44,7 @@ esac
 # ---------------------------------------------------------------------------
 
 AC_PROG_CC
+AM_PROG_CC_C_O
 AC_PROG_CXX
 AC_C_CONST
 AC_C_BIGENDIAN
