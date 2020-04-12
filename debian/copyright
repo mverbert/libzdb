@@ -1,0 +1,21 @@
+This package was debianized by Paul J Stevens <paul@nfg.nl> on
+Tue, 19 Feb 2008 16:51:32 +0100.
+
+It was downloaded from <http://www.tildeslash.com/libzdb/dist/libzdb-2.1.tar.gz>
+
+Upstream Authors: 
+
+    Jan-Henrik Haukeland <hauk@tildeslash.com>
+    Martin Pala <martinp@tildeslash.com>
+
+Copyright: 
+
+    Copyright (C) 2008 Tildeslash Ltd. All rights reserved.
+
+License:
+
+    GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+
+The Debian packaging is (C) 2008, Paul J Stevens <paul@nfg.nl> and
+is licensed under the GPL version 3, see `/usr/share/common-licenses/GPL-3'.
+
