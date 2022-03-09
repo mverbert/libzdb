@@ -43,6 +43,7 @@
  above are satisfied, building the library is conducted via the
  standard;
 
+  ./bootstrap
   ./configure
   make
   make install 
